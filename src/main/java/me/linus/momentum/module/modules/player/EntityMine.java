@@ -20,13 +20,7 @@ public class EntityMine extends Module {
 
     @Override
     public void onUpdate() {
-        mc.world.loadedEntityList.stream()
-                .filter(entity -> entity instanceof EntityLivingBase)
-                .filter(entity -> mc.player == entity)
-                .map(   entity -> (EntityLivingBase) entity)
-                .filter(entity -> !(entity.isDead))
-                .forEach(this::process);
-
+        mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityLivingBase).filter(entity -> mc.player == entity).map(entity -> (EntityLivingBase) entity).filter(entity -> !(entity.isDead)).forEach(this::process);
         RayTraceResult normalResult = mc.objectMouseOver;
 
         if (normalResult != null) {

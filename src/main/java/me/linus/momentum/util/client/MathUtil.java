@@ -46,6 +46,12 @@ public class MathUtil {
 		};
 	}
 
+	public static double round(double value) {
+		BigDecimal bd = new BigDecimal(value);
+		bd = bd.setScale(3, RoundingMode.HALF_UP);
+		return bd.doubleValue();
+	}
+
 	public static double degToRad(double deg) {
 		return deg * (float) (Math.PI / 180.0f);
 	}

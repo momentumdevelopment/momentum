@@ -10,6 +10,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBow;
 import net.minecraft.util.math.Vec3d;
 
+/**
+ * @author linustouchtips
+ * @since 12/07/2020
+ */
+
 public class AimBot extends Module {
     public AimBot() {
         super("AimBot", Category.COMBAT, "Automatically rotates to nearby entities");

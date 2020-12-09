@@ -113,6 +113,8 @@ public class PacketFlight extends Module {
 
         if (lastTeleportId != -1)
             mc.player.connection.sendPacket(new CPacketConfirmTeleport(lastTeleportId++));
+
+        mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, mc.player.onGround));
     }
 
     @SubscribeEvent

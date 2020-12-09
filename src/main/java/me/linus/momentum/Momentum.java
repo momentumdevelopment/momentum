@@ -51,7 +51,6 @@ public class Momentum implements MixinInterface {
     public static CommandManager commandManager;
     public static FriendManager friendManager;
     public static HUDComponentManager componentManager;
-    public static me.linus.momentum.event.EventHandler eventHandler;
     public static CapeAPI capeAPI;
 
     @Mod.Instance
@@ -80,14 +79,10 @@ public class Momentum implements MixinInterface {
         LOGGER.info("Friends System Initialized!");
         commandManager = new CommandManager();
         LOGGER.info("Commands Initialized!");
-        eventHandler = new me.linus.momentum.event.EventHandler();
-        LOGGER.info("Events Initialized!");
         componentManager = new HUDComponentManager();
         LOGGER.info("HUD System Initialized!");
         Runtime.getRuntime().addShutdownHook(new ShutdownHook());
         LOGGER.info("Config System Saved!");
-
-        MinecraftForge.EVENT_BUS.register(new me.linus.momentum.event.EventHandler());
     }
     
     @EventHandler

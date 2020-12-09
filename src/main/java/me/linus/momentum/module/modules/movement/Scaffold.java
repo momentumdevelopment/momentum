@@ -49,7 +49,7 @@ public class Scaffold extends Module {
     private static final Checkbox sprint = new Checkbox("UseSprint", true);
     private static final Checkbox replenishBlocks = new Checkbox("ReplenishBlocks", true);
     private static final Checkbox down = new Checkbox("Down", false);
-    private static final Slider expand = new Slider("Expand", 1.0, 3.0, 6.0, 0);
+    private static final Slider expand = new Slider("Expand", 1.0, 1.0, 6.0, 0);
 
     @Override
     public void setup() {

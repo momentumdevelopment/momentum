@@ -462,6 +462,10 @@ public class PlayerUtil implements MixinInterface {
         return true;
     }
 
+    public static boolean hasMotion() {
+        return mc.player.motionX != 0.0 && mc.player.motionZ != 0.0 && mc.player.motionY != 0.0;
+    }
+
     public static boolean getArmor(EntityPlayer target, double durability) {
         for (ItemStack stack : target.getArmorInventoryList()) {
             if (stack == null || stack.getItem() == Items.AIR)
