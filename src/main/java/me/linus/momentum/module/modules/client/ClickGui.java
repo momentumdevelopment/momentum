@@ -21,6 +21,8 @@ public class ClickGui extends Module {
 	public static Slider scrollSpeed = new Slider("Scroll Speed", 0.0D, 10.0D, 20.0D, 0);
 	public static Slider speed = new Slider("Animation Speed", 0.0D, 2.5D, 5.0D, 1);
 
+	public static Checkbox blurEffect = new Checkbox("Blur Effect", true);
+
 	public static Checkbox snapSlider = new Checkbox("Slider Snap", true);
 	public static SubSlider snapSub = new SubSlider(snapSlider, "Snap Distance", 1.0D, 5.0D, 10.0D, 0);
 	
@@ -35,6 +37,7 @@ public class ClickGui extends Module {
 		addSetting(font);
 		addSetting(scrollSpeed);
 		addSetting(speed);
+		addSetting(blurEffect);
 		addSetting(snapSlider);
 		addSetting(theme);
 	}
@@ -46,6 +49,8 @@ public class ClickGui extends Module {
 
 		super.onEnable();
 		mc.displayGuiScreen(clickGui);
-		mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
+
+		if (blurEffect.getValue())
+			mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
 	}
 }

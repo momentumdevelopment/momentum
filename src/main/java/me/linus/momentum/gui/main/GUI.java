@@ -62,7 +62,9 @@ public class GUI extends GuiScreen {
 	public void onGuiClosed() {
 		super.onGuiClosed();
 		ModuleManager.getModuleByClass(ClickGui.class).disable();
-		mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+
+		if (ClickGui.blurEffect.getValue())
+			mc.entityRenderer.getShaderGroup().deleteShaderGroup();
 	}
 	
 	@Override
