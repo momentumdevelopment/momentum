@@ -7,10 +7,11 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
     }
 }
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
@@ -20,6 +21,7 @@ group = "me.linus.momentum"
 archivesBaseName = "momentum"
 
 sourceCompatibility = targetCompatibility = '1.8'
+
 compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
@@ -51,16 +53,18 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains:annotations:19.0.0'
-    compile ('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+
+    compile("org.spongepowered:mixin:0.7.4-SNAPSHOT") {
         exclude module: 'launchwrapper'
         exclude module: 'guava'
         exclude module: 'gson'
         exclude module: 'commons-io'
-        exclude module: 'log4j-core' }
+    }
 
     compile 'com.github.cabaletta:baritone:1.2.14'
     compile 'cabaletta:baritone-api:1.2'
     compile 'org.slick2d:slick2d-core:1.0.2'
+    compile group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.1'
 }
 
 mixin {
@@ -71,12 +75,14 @@ shadowJar {
     dependencies {
         include(dependency('cabaletta:baritone-api'))
         include(dependency('org.slick2d:slick2d-core'))
+        include(dependency('club.minnced:java-discord-rpc:2.0.1'))
     }
 
     exclude 'dummyThing'
     exclude 'LICENSE.txt'
     classifier = ''
 }
+
 build.dependsOn(shadowJar)
 
 reobf {

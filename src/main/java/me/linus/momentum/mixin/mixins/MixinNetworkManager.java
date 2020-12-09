@@ -21,7 +21,7 @@ import java.io.IOException;
  * @since 11/21/20
  */
 
-@Mixin(value = NetworkManager.class, priority = 1006)
+@Mixin(value = NetworkManager.class/*, priority = 1006*/)
 public class MixinNetworkManager {
 
 	@Inject(method = "sendPacket(Lnet/minecraft/network/Packet;)V", at = @At("HEAD"), cancellable = true)

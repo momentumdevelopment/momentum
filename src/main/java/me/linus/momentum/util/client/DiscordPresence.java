@@ -29,7 +29,7 @@ public class DiscordPresence implements MixinInterface {
                     state = mc.player.getName();
 
                     if (mc.isIntegratedServerRunning()) {
-                        details = "Singleplayer - " + mc.getIntegratedServer().getWorldName();
+                        details = "Singleplayer | " + mc.getIntegratedServer().getWorldName();
                     } else if (mc.currentScreen instanceof GuiMultiplayer) {
                         details = "Multiplayer Menu";
                     } else if (mc.getCurrentServerData() != null) {
