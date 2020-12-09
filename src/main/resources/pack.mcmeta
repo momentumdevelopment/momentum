@@ -1,0 +1,7 @@
+{
+    "pack": {
+        "description": "Velocity Resources",
+        "pack_format": 3,
+        "_comment": "Resources for Velocity Client."
+    }
+}

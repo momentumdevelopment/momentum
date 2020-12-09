@@ -1,0 +1,103 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://repo.spongepowered.org/maven' }
+        maven { url = 'https://plugins.gradle.org/m2' }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+version = "1.0.9"
+group = "me.linus.momentum"
+archivesBaseName = "momentum"
+
+sourceCompatibility = targetCompatibility = '1.8'
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
+minecraft {
+    version = "1.12.2-14.23.5.2845"
+    runDir = "run"
+    mappings = "snapshot_20171003"
+    coreMod = 'me.linus.momentum.mixin.MixinLoader'
+    makeObfSourceJar = false
+}
+
+jar.manifest.attributes(
+        'FMLCorePluginContainsFMLMod': true,
+        'FMLCorePlugin': 'me.linus.momentum.mixin.MixinLoader',
+        'ForceLoadAsMod': true,
+        'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+        'FMLAT': 'momentum_at.cfg'
+)
+
+repositories {
+    jcenter()
+    mavenCentral()
+
+    maven { url = 'https://repo.spongepowered.org/maven'}
+    maven { url = 'https://jitpack.io'}
+    maven { url = 'https://impactdevelopment.github.io/maven/'}
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:19.0.0'
+    compile ('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+        exclude module: 'launchwrapper'
+        exclude module: 'guava'
+        exclude module: 'gson'
+        exclude module: 'commons-io'
+        exclude module: 'log4j-core' }
+
+    compile 'com.github.cabaletta:baritone:1.2.14'
+    compile 'cabaletta:baritone-api:1.2'
+    compile 'org.slick2d:slick2d-core:1.0.2'
+}
+
+mixin {
+    add sourceSets.main, 'mixins.momentum.refmap.json'
+}
+
+shadowJar {
+    dependencies {
+        include(dependency('cabaletta:baritone-api'))
+        include(dependency('org.slick2d:slick2d-core'))
+    }
+
+    exclude 'dummyThing'
+    exclude 'LICENSE.txt'
+    classifier = ''
+}
+build.dependsOn(shadowJar)
+
+reobf {
+    shadowJar {
+        mappingType = 'SEARGE'
+        classpath = sourceSets.main.compileClasspath
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+
+    rename '(.+_at.cfg)', 'META-INF/$1';
+}
