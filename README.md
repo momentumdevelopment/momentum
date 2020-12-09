@@ -1,7 +1,7 @@
 # Momentum
 
 todo:
-- rewrite speed 
+- rewrite speed (rewritten, but it still rubberbands)
 - rewrite packet fly (phase good, but rubberbanding, also modified from salhack so gay)
 - rewrite surround (got fucking patched somehow)
 - rewrite autotrap (paste from dream)
