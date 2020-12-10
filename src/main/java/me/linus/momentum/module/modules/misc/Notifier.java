@@ -1,8 +1,11 @@
 package me.linus.momentum.module.modules.misc;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.client.Timer;
 import me.linus.momentum.util.client.notification.Notification;
@@ -16,7 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.HashMap;
 
 /**
- * @author linustouchtips
+ * @author linustouchtips & olliem5
  * @since 12/07/2020
  */
 
@@ -25,51 +28,64 @@ public class Notifier extends Module {
         super("Notifier", Category.MISC, "Notifies you for various things");
     }
 
-    private static Checkbox totem = new Checkbox("Totem Pop", true);
-    private static Checkbox armor = new Checkbox("Armor", true);
-    private static Checkbox visualRange = new Checkbox("Visual Range", false);
+    private static Checkbox events = new Checkbox("Events", true);
+    private static SubCheckbox totem = new SubCheckbox(events,"Totem Pop", true);
+    private static SubCheckbox armor = new SubCheckbox(events,"Armor", true);
+    private static SubCheckbox visualRange = new SubCheckbox(events,"Visual Range", false);
+
+    private static Checkbox delays = new Checkbox("Delays", true);
+    private static SubSlider armorDelay = new SubSlider(delays, "Armor Delay", 5000, 8000, 10000, 0);
+    private static SubSlider visualRangeDelay = new SubSlider(delays, "VisualRng Delay", 5000, 8000, 10000, 0);
 
     @Override
     public void setup() {
-        addSetting(totem);
-        addSetting(armor);
-        addSetting(visualRange);
+        addSetting(events);
+        addSetting(delays);
     }
 
-    private HashMap<String, Integer> totemPopContainer = new HashMap<String, Integer>();
-    Timer visualTimer = new Timer();
+    private HashMap<String, Integer> totemPopContainer = new HashMap<>();
+
+    Timer visualRangeTimer = new Timer();
+    Timer armorTimer = new Timer();
 
     @Override
     public void onUpdate() {
-        if (nullCheck())
-            return;
+        if (nullCheck()) return;
 
         if (armor.getValue() && PlayerUtil.getArmor(mc.player, 15)) {
-            NotificationManager.notifications.add(new Notification("ArmorNotifier", "Your armor durability is getting low!"));
-            MessageUtil.sendClientMessage("Your armor durability is getting low!");
+            if (armorTimer.passed((long) armorDelay.getValue())) {
+                armorTimer.reset();
+
+                NotificationManager.notifications.add(new Notification("ArmorDurability", "Your armor durability is getting low!"));
+                MessageUtil.sendClientMessage("Your armor durability is getting low!");
+            }
         }
 
         for (EntityPlayer player : mc.world.playerEntities) {
             if (totem.getValue()) {
-                if (!totemPopContainer.containsKey(player.getName()))
-                    continue;
+                if (!totemPopContainer.containsKey(player.getName())) continue;
 
                 if (player.isDead || player.getHealth() <= 0.0f) {
                     int count = totemPopContainer.get(player.getName()).intValue();
 
                     totemPopContainer.remove(player.getName());
 
-                    NotificationManager.notifications.add(new Notification("TotemPopNotifier", player.getName() + " died after popping " + count + " totems!"));
+                    NotificationManager.notifications.add(new Notification("TotemPop", player.getName() + " died after popping " + count + " totems!"));
                     MessageUtil.sendClientMessage(player.getName() + " died after popping " + count + " totems!");
                 }
             }
 
-            if (player != mc.player && visualTimer.passed(10000)) {
-                NotificationManager.notifications.add(new Notification("RangeNotifier", player.getName() + "has entered your visual range!"));
-                MessageUtil.sendClientMessage(player.getName() + "has entered your visual range!");
-            }
+            if (player != mc.player && visualRangeTimer.passed((long) visualRangeDelay.getValue())) {
+                visualRangeTimer.reset();
 
-            visualTimer.reset();
+                if (Momentum.friendManager.isFriend(player.getName())) {
+                    NotificationManager.notifications.add(new Notification("VisualRange", "Your friend, " + player.getName() + ", has entered your visual range!"));
+                    MessageUtil.sendClientMessage("Your friend, " + player.getName() + ", has entered your visual range!");
+                } else {
+                    NotificationManager.notifications.add(new Notification("RangeNotifier", player.getName() + "has entered your visual range!"));
+                    MessageUtil.sendClientMessage(player.getName() + "has entered your visual range!");
+                }
+            }
         }
     }
 
@@ -80,20 +96,24 @@ public class Notifier extends Module {
             if (packet.getOpCode() == 35) {
                 Entity entity = packet.getEntity(mc.world);
 
-                if (entity == null)
-                    return;
+                if (entity == null) return;
 
                 int count = 1;
+
                 if (totemPopContainer.containsKey(entity.getName())) {
                     count = totemPopContainer.get(entity.getName()).intValue();
                     totemPopContainer.put(entity.getName(), count++);
+                } else {
+                    totemPopContainer.put(entity.getName(), count);
                 }
 
-                else
-                    totemPopContainer.put(entity.getName(), count);
-
-                NotificationManager.notifications.add(new Notification("TotemPopNotifier", entity.getName() + " popped " + count + " totems!"));
-                MessageUtil.sendClientMessage(entity.getName() + " popped " + count + " totems!");
+                if (Momentum.friendManager.isFriend(entity.getName())) {
+                    NotificationManager.notifications.add(new Notification("TotemPopNotifier", "Your friend, " + entity.getName() + ", popped " + count + " totems!"));
+                    MessageUtil.sendClientMessage("Your friend, " + entity.getName() + ", popped " + count + " totems!");
+                } else {
+                    NotificationManager.notifications.add(new Notification("TotemPopNotifier", entity.getName() + " popped " + count + " totems!"));
+                    MessageUtil.sendClientMessage(entity.getName() + " popped " + count + " totems!");
+                }
             }
         }
     }
