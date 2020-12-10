@@ -6,6 +6,7 @@ import java.util.List;
 
 import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.gui.theme.Color;
+import me.linus.momentum.module.modules.bot.Milo;
 import me.linus.momentum.module.modules.combat.*;
 import me.linus.momentum.module.modules.misc.*;
 import me.linus.momentum.module.modules.player.*;
@@ -141,7 +142,10 @@ public class ModuleManager implements MixinInterface {
 		 	new Tracers(),
 			new Trajectories(),
 			new ViewModel(),
-			new VoidESP()
+			new VoidESP(),
+
+			//Bot
+			new Milo()
 		);
 	
 	public static List<Module> getModules(){

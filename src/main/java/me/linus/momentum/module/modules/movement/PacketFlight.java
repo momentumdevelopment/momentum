@@ -14,6 +14,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Random;
 
+/**
+ * @author linustouchtips
+ * @since 12/07/2020
+ */
+
 public class PacketFlight extends Module {
     public PacketFlight() {
         super("PacketFlight", Category.MOVEMENT, "Allows you to fly using packets");

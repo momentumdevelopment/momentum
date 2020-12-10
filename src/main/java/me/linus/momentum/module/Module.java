@@ -95,19 +95,15 @@ public abstract class Module implements MixinInterface {
 
 		MinecraftForge.EVENT_BUS.unregister(this);
 	}
+
+	public void onToggle() {
+
+	}
 	
 	public void onUpdate() {
 		
 	}
-	
-	/*
-	 * this method runs at an extremely fast tick rate
-	 * much greater than 20tps
-	 * 
-	 * only use for things like killaura or autototem,
-	 * nothing that requires long calculations or you will
-	 * experience heavy fps drop.
-	 */
+
 	public void onFastUpdate() {
 		
 	}
@@ -117,6 +113,7 @@ public abstract class Module implements MixinInterface {
 	}
 	
 	public void toggle() {
+		onToggle();
 		this.enabled = !this.enabled;
 		try {
 			if(this.isEnabled()) {
@@ -158,10 +155,7 @@ public abstract class Module implements MixinInterface {
 
 		ModuleManager.onRender3D(event);
 	}
-	
-	/**
-	 * @return true if null, false if non-null.
-	 **/
+
 	public boolean nullCheck() {
 		return (mc.player == null || mc.world == null);
 	}
@@ -211,19 +205,17 @@ public abstract class Module implements MixinInterface {
 	}
 
 	public enum Category {
-		/*
-		 * Adjust these categories as needed.
-		 */
 		CLIENT("Client"),
 		COMBAT("Combat"),
 		PLAYER("Player"),
 		MISC("Miscellaneous"),
 		MOVEMENT("Movement"),
 		RENDER("Render"),
-		HUD("Hud");
+		HUD("Hud"),
+		BOT("Bot");
 		
 		private final String name;
-		
+
 		private Category(final String name) {
 			this.name = name;
 		}
