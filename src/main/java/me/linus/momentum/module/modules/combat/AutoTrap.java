@@ -169,5 +169,4 @@ public class AutoTrap extends Module {
 
         return slot;
     }
-
 }

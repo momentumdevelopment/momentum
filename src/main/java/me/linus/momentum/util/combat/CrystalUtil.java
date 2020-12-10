@@ -7,12 +7,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.Explosion;
+
+import java.util.ArrayList;
 
 /**
  * @author linustouchtips
@@ -24,6 +29,8 @@ public class CrystalUtil implements MixinInterface {
     private static boolean isSpoofingAngles;
     private static double yaw;
     private static double pitch;
+    private static int oldSlot = -1;
+    private static int newSlot;
 
     public static float calculateDamage(final double posX, final double posY, final double posZ, final Entity entity) {
         final float doubleExplosionSize = 12.0f;
@@ -118,6 +125,23 @@ public class CrystalUtil implements MixinInterface {
         }
     }
 
+    public static boolean attackCheck(Entity crystal, int mode, double breakRange, ArrayList<BlockPos> placedCrystals) {
+        if (!(crystal instanceof EntityEnderCrystal))
+            return false;
+
+        switch (mode) {
+            case 0:
+                return true;
+            case 1:
+                for (BlockPos placePos : new ArrayList<>(placedCrystals)) {
+                    if (placePos != null && placePos.getDistance((int) crystal.posX, (int) crystal.posY, (int) crystal.posZ) <= breakRange)
+                        return true;
+                }
+        }
+
+        return false;
+    }
+
     public static void placeCrystal(BlockPos pos, double delay, boolean offhand) {
         lookAtPacket(pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5, mc.player);
         final RayTraceResult result = mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5));
@@ -135,31 +159,53 @@ public class CrystalUtil implements MixinInterface {
     }
 
     public static void getSwingArm(int mode) {
-        if (mode == 0)
-            mc.player.swingArm(EnumHand.MAIN_HAND);
+        switch (mode) {
+            case 0:
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+            case 1:
+                if (!mc.player.getHeldItemOffhand().isEmpty())
+                    mc.player.swingArm(EnumHand.OFF_HAND);
+            case 2:
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.OFF_HAND);
+            case 3:
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+        }
+    }
 
-        if (mode == 1 && !mc.player.getHeldItemOffhand().isEmpty())
-            mc.player.swingArm(EnumHand.OFF_HAND);
+    public static void doAntiWeakness(boolean switchCooldown) {
+        newSlot = -1;
+        for (int i = 0; i < 9; i++) {
+            ItemStack stack = mc.player.inventory.getStackInSlot(i);
+            if (stack == ItemStack.EMPTY) {
+                continue;
+            }
+            if ((stack.getItem() instanceof ItemSword)) {
+                newSlot = i;
+                break;
+            }
+            if ((stack.getItem() instanceof ItemTool)) {
+                newSlot = i;
+                break;
+            }
+        }
 
-        if (mode == 2)
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.OFF_HAND);
-
-        if (mode == 3) {
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
+        if (newSlot != -1) {
+            mc.player.inventory.currentItem = newSlot;
+            switchCooldown = true;
         }
     }
 }

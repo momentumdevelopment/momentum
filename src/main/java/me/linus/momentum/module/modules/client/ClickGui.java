@@ -9,7 +9,7 @@ import me.linus.momentum.setting.slider.SubSlider;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * @author bon
+ * @author bon & linustouchtips
  * @since 11/16/20
  */
 

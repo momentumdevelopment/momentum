@@ -8,7 +8,7 @@ import me.linus.momentum.command.Command;
 
 public class Toggle extends Command {
     public Toggle() {
-        super("Toggle", new String[]{"toggle"});
+        super("Toggle", new String[]{"toggle", "t"});
     }
 
     @Override

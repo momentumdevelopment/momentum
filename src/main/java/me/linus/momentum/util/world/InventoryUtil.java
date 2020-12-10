@@ -1,9 +1,12 @@
 package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockObsidian;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -55,6 +58,16 @@ public class InventoryUtil implements MixinInterface {
         }
 
         return slot;
+    }
+
+    public static int getBlockInHotbar(Block block) {
+        for (int i = 0; i < 9; i++) {
+            Item item = mc.player.inventory.getStackInSlot(i).getItem();
+            if (item instanceof ItemBlock && ((ItemBlock) item).getBlock().equals(block))
+                return i;
+        }
+
+        return -1;
     }
 
     public static void moveItemToOffhand(int slot) {
