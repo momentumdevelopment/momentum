@@ -69,7 +69,7 @@ public class Aura extends Module {
     public static Checkbox rotate = new Checkbox("Rotate", false);
     public static SubCheckbox spoof = new SubCheckbox(rotate, "Spoof Angles", false);
 
-    public static Slider range = new Slider("Range", 0.0D, 5.0D, 10.0D, 0);
+    public static Slider range = new Slider("Range", 0.0D, 6.0D, 10.0D, 0);
 
     @Override
     public void setup() {

@@ -1,10 +1,19 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url = 'https://repo.spongepowered.org/maven' }
-        maven { url = 'https://plugins.gradle.org/m2' }
+        maven {
+            url = 'https://files.minecraftforge.net/maven'
+        }
+
+        maven {
+            url = 'https://repo.spongepowered.org/maven'
+        }
+
+        maven {
+            url = 'https://plugins.gradle.org/m2'
+        }
     }
+
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
@@ -20,10 +29,10 @@ version = "1.0.9"
 group = "me.linus.momentum"
 archivesBaseName = "momentum"
 
-sourceCompatibility = targetCompatibility = '1.8'
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
 compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 minecraft {
@@ -46,9 +55,17 @@ repositories {
     jcenter()
     mavenCentral()
 
-    maven { url = 'https://repo.spongepowered.org/maven'}
-    maven { url = 'https://jitpack.io'}
-    maven { url = 'https://impactdevelopment.github.io/maven/'}
+    maven {
+        url = 'https://repo.spongepowered.org/maven'
+    }
+
+    maven {
+        url = 'https://jitpack.io'
+    }
+
+    maven {
+        url = 'https://impactdevelopment.github.io/maven/'
+    }
 }
 
 dependencies {

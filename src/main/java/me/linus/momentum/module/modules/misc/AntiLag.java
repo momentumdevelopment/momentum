@@ -15,12 +15,14 @@ public class AntiLag extends Module {
     }
 
     private static Checkbox particles = new Checkbox("Particles", true);
+    private static Checkbox fireworks = new Checkbox("Fireworks", true);
     private static Checkbox offhand = new Checkbox("Offhand", true);
     private static Checkbox slime = new Checkbox("Slime", false);
 
     @Override
     public void setup() {
         addSetting(particles);
+        addSetting(fireworks);
         addSetting(offhand);
         addSetting(slime);
     }

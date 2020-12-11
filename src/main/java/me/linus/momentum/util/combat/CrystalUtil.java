@@ -1,6 +1,7 @@
 package me.linus.momentum.util.combat;
 
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.module.modules.combat.AutoCrystal;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -207,5 +208,22 @@ public class CrystalUtil implements MixinInterface {
             mc.player.inventory.currentItem = newSlot;
             switchCooldown = true;
         }
+    }
+
+    public static EnumFacing getEnumFacing(boolean rayTrace, BlockPos render, BlockPos finalPos) {
+        final RayTraceResult result = mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(finalPos.getX() + 0.5, finalPos.getY() - 0.5, finalPos.getZ() + 0.5));
+
+        EnumFacing enumFacing = null;
+        if (rayTrace) {
+            if (result == null || result.sideHit == null) {
+                render = null;
+                CrystalUtil.resetRotation();
+                return null;
+            } else {
+                enumFacing = result.sideHit;
+            }
+        }
+
+        return enumFacing;
     }
 }

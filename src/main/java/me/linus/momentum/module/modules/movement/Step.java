@@ -1,6 +1,8 @@
 package me.linus.momentum.module.modules.movement;
 
 import me.linus.momentum.module.Module;
+import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -17,12 +19,17 @@ public class Step extends Module {
     }
 
     private static Mode mode = new Mode("Mode", "Normal", "Spider", "Vanilla");
-    public static Slider height = new Slider("Height", 0.0D, 2.0D, 5.0D, 0);
+    public static Slider height = new Slider("Height", 0.0D, 2.0D, 5.0D, 1);
+
+    public static Checkbox pause = new Checkbox("Pause", true);
+    public static SubCheckbox sneakPause = new SubCheckbox(pause, "When Sneaking", true);
+    public static SubCheckbox waterPause = new SubCheckbox(pause, "When in Liquid", true);
 
     @Override
     public void setup() {
         addSetting(mode);
         addSetting(height);
+        addSetting(pause);
     }
 
     @Override
@@ -31,7 +38,7 @@ public class Step extends Module {
             return;
 
         if (mode.getValue() == 2)
-        mc.player.stepHeight = (float) height.getValue();
+            mc.player.stepHeight = (float) height.getValue();
     }
 
     @Override
@@ -45,13 +52,16 @@ public class Step extends Module {
             if (nullCheck())
                 return;
 
-            if (!this.mc.player.collidedHorizontally)
+            if (!mc.player.collidedHorizontally)
                 return;
 
-            if (!mc.player.onGround || mc.player.isOnLadder() || mc.player.isInWater() || mc.player.isInLava() || mc.player.movementInput.jump || mc.player.noClip)
+            if (!mc.player.onGround || mc.player.isOnLadder() || (mc.player.isInWater() && waterPause.getValue()) || (mc.player.isInLava() && waterPause.getValue()) || mc.player.movementInput.jump || mc.player.noClip)
                 return;
 
             if (mc.player.moveForward == 0.0f && mc.player.moveStrafing == 0.0f)
+                return;
+
+            if (mc.player.isSneaking() && sneakPause.getValue())
                 return;
 
             final double stepNormal = getCollision();
@@ -86,8 +96,7 @@ public class Step extends Module {
                 this.mc.player.setPosition(this.mc.player.posX, this.mc.player.posY + 1.0, this.mc.player.posZ);
             }
 
-        } else {
-            if (mc.player.collidedHorizontally) {
+        } else if (mc.player.collidedHorizontally) {
                 mc.player.motionY = 0.2;
                 float baseHeight = 0.15F;
 
@@ -109,7 +118,6 @@ public class Step extends Module {
                     mc.player.motionY = (-0.15D);
                 }
             }
-        }
     }
 
     public double getCollision() {

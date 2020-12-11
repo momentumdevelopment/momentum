@@ -56,7 +56,7 @@ public class Notifier extends Module {
             if (armorTimer.passed((long) armorDelay.getValue())) {
                 armorTimer.reset();
 
-                NotificationManager.notifications.add(new Notification("ArmorDurability", "Your armor durability is getting low!"));
+                NotificationManager.notifications.add(new Notification("Your armor durability is getting low!"));
                 MessageUtil.sendClientMessage("Your armor durability is getting low!");
             }
         }
@@ -70,19 +70,19 @@ public class Notifier extends Module {
 
                     totemPopContainer.remove(player.getName());
 
-                    NotificationManager.notifications.add(new Notification("TotemPop", player.getName() + " died after popping " + count + " totems!"));
+                    NotificationManager.notifications.add(new Notification(player.getName() + " died after popping " + count + " totems!"));
                     MessageUtil.sendClientMessage(player.getName() + " died after popping " + count + " totems!");
                 }
             }
 
-            if (player != mc.player && visualRangeTimer.passed((long) visualRangeDelay.getValue())) {
+            if (player != mc.player && visualRangeTimer.passed((long) visualRangeDelay.getValue()) && visualRange.getValue()) {
                 visualRangeTimer.reset();
 
                 if (Momentum.friendManager.isFriend(player.getName())) {
-                    NotificationManager.notifications.add(new Notification("VisualRange", "Your friend, " + player.getName() + ", has entered your visual range!"));
+                    NotificationManager.notifications.add(new Notification("Your friend, " + player.getName() + ", has entered your visual range!"));
                     MessageUtil.sendClientMessage("Your friend, " + player.getName() + ", has entered your visual range!");
                 } else {
-                    NotificationManager.notifications.add(new Notification("RangeNotifier", player.getName() + "has entered your visual range!"));
+                    NotificationManager.notifications.add(new Notification(player.getName() + "has entered your visual range!"));
                     MessageUtil.sendClientMessage(player.getName() + "has entered your visual range!");
                 }
             }
@@ -108,10 +108,10 @@ public class Notifier extends Module {
                 }
 
                 if (Momentum.friendManager.isFriend(entity.getName())) {
-                    NotificationManager.notifications.add(new Notification("TotemPopNotifier", "Your friend, " + entity.getName() + ", popped " + count + " totems!"));
+                    NotificationManager.notifications.add(new Notification("Your friend, " + entity.getName() + ", popped " + count + " totems!"));
                     MessageUtil.sendClientMessage("Your friend, " + entity.getName() + ", popped " + count + " totems!");
                 } else {
-                    NotificationManager.notifications.add(new Notification("TotemPopNotifier", entity.getName() + " popped " + count + " totems!"));
+                    NotificationManager.notifications.add(new Notification(entity.getName() + " popped " + count + " totems!"));
                     MessageUtil.sendClientMessage(entity.getName() + " popped " + count + " totems!");
                 }
             }

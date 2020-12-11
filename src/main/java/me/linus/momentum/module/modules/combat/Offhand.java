@@ -21,7 +21,7 @@ public class Offhand extends Module {
         super("Offhand", Category.COMBAT, "Switches items in the offhand to a totem when low on health");
     }
 
-    private static Mode mode = new Mode("Mode", "Gapple", "Crystal", "Bed", "Chorus", "Pearl", "Potion");
+    private static Mode mode = new Mode("Mode", "Gapple", "Crystal", "Bed", "Chorus", "Pearl", "Potion", "Totem");
     private static Mode fallback = new Mode("Fall-Back", "Totem", "Pearl");
     public static Slider health = new Slider("Health", 0.0D, 16.0D, 36.0D, 0);
     public static Slider holeHealth = new Slider("Hole Health", 0.0D, 10.0D, 36.0D, 0);

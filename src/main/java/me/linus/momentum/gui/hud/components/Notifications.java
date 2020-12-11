@@ -74,18 +74,18 @@ public class Notifications extends HUDComponent<NotificationModule> {
             if (continuedNotification.remainingAnimation > width && !continuedNotification.isComplete())
                 continuedNotification.remainingAnimation = width;
             
-            GuiScreen.drawRect((int) (Momentum.componentManager.getComponentByName("Notifications").getX() - continuedNotification.remainingAnimation) + 63, currY - 5, (int) (Momentum.componentManager.getComponentByName("Notifications").getX() + width + 111 - continuedNotification.remainingAnimation), currY + mc.fontRenderer.FONT_HEIGHT + 5, new Color(0, 0, 0, 70).getRGB());
+            GuiScreen.drawRect((int) (Momentum.componentManager.getComponentByName("Notifications").getX() - continuedNotification.remainingAnimation) + 63, currY - 5 - (13 * NotificationManager.notifications.size()), (int) (Momentum.componentManager.getComponentByName("Notifications").getX() + width + 111 - continuedNotification.remainingAnimation), currY + mc.fontRenderer.FONT_HEIGHT + 5  - (13 * NotificationManager.notifications.size()), new Color(0, 0, 0, 70).getRGB());
 
             GlStateManager.enableAlpha();
             mc.getTextureManager().bindTexture(widget);
             GlStateManager.color((float) Colors.r.getValue(), (float) Colors.g.getValue(), (float) Colors.b.getValue(), 1);
             GL11.glPushMatrix();
-            GuiScreen.drawScaledCustomSizeModalRect((int) (Momentum.componentManager.getComponentByName("Notifications").getX() - continuedNotification.remainingAnimation) + 65, Momentum.componentManager.getComponentByName("Notifications").getY() - 4, 0,0,512,512,16,16,512,512);
+            GuiScreen.drawScaledCustomSizeModalRect((int) (Momentum.componentManager.getComponentByName("Notifications").getX() - continuedNotification.remainingAnimation) + 65, Momentum.componentManager.getComponentByName("Notifications").getY() - 4 - (13 * NotificationManager.notifications.size()), 0,0,512,512,16,16,512,512);
             GL11.glPopMatrix();
             GlStateManager.disableAlpha();
             GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
 
-            FontUtil.drawStringWithShadow(continuedNotification.getMessage(), Momentum.componentManager.getComponentByName("Notifications").getX() + 98 - continuedNotification.remainingAnimation, currY + continuedNotification.getY(), new Color(255, 255, 255).getRGB());
+            FontUtil.drawStringWithShadow(continuedNotification.getMessage(), Momentum.componentManager.getComponentByName("Notifications").getX() + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), new Color(255, 255, 255).getRGB());
 
             currY -= 13;
 

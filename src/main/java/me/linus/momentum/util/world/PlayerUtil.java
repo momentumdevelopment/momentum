@@ -277,6 +277,7 @@ public class PlayerUtil implements MixinInterface {
             } else if (side < 0.0f) {
                 yaw += (float)(forward > 0.0f ? 45 : -45);
             }
+
             side = 0.0f;
             if (forward > 0.0f) {
                 forward = 1.0f;
@@ -284,11 +285,14 @@ public class PlayerUtil implements MixinInterface {
                 forward = -1.0f;
             }
         }
+
         double sin = Math.sin(Math.toRadians(yaw + 90.0f));
         double cos = Math.cos(Math.toRadians(yaw + 90.0f));
         double posX = (double)forward * speed * cos + (double)side * speed * sin;
         double posZ = (double)forward * speed * sin - (double)side * speed * cos;
-        return new double[]{posX, posZ};
+        return new double[] {
+                posX, posZ
+        };
     }
 
     public static boolean inPlayer(BlockPos pos) {
@@ -405,7 +409,7 @@ public class PlayerUtil implements MixinInterface {
             return false;
     }
 
-    public static double[] baseMotion(EntityPlayerSP player){
+    public static double[] baseMotion(EntityPlayerSP player) {
         double yaw = player.rotationYaw;
         double pitch = player.rotationPitch;
 
