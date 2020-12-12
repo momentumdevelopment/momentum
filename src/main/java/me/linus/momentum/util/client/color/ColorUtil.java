@@ -58,4 +58,17 @@ public abstract class ColorUtil implements MixinInterface {
 			return new Color(85, 231, 215);
 		else return new Color(215, 46, 46);
 	}
+
+	public static Color getHealthColor(float health) {
+		if (health <= 5)
+			return new Color(200, 0, 0);
+		if (health <= 10)
+			return new Color(231, 143, 85);
+		if (health <= 15)
+			return new Color(219, 201, 106);
+		if (health <= 20)
+			return new Color(117, 231, 85);
+		else
+			return new Color(44, 186, 19);
+	}
 }

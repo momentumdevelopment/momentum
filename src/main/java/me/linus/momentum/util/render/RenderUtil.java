@@ -50,7 +50,7 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         releaseGL();
     }
 
-    private static void prepareGL() {
+    public static void prepareGL() {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.glLineWidth(1.5F);
@@ -64,7 +64,7 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GlStateManager.color(1, 1, 1);
     }
 
-    private static void releaseGL() {
+    public static void releaseGL() {
         GlStateManager.enableCull();
         GlStateManager.depthMask(true);
         GlStateManager.enableTexture2D();

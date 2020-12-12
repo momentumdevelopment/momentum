@@ -21,11 +21,13 @@ public class Burrow extends Module {
     }
 
     private static Mode mode = new Mode("Mode", "Rubberband", "Teleport");
+    private static Checkbox rotate = new Checkbox("Rotate", true);
     private static Checkbox center = new Checkbox("Center", true);
 
     @Override
     public void setup() {
         addSetting(mode);
+        addSetting(rotate);
         addSetting(center);
     }
 
@@ -48,11 +50,11 @@ public class Burrow extends Module {
 
     @Override
     public void onUpdate() {
-        if (mc.player.posY > this.originalPos.getY() + 1.2) {
+        if (mc.player.posY > originalPos.getY() + 1.2) {
             final int oldSlot = mc.player.inventory.currentItem;
             mc.player.inventory.currentItem = PlayerUtil.getHotbarSlot(getBlock());
 
-            PlayerUtil.placeBlock(this.originalPos);
+            PlayerUtil.placeBlock(originalPos, rotate.getValue());
             mc.player.inventory.currentItem = oldSlot;
 
             if (mode.getValue() == 0)

@@ -4,152 +4,114 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.render.GeometryMasks;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockObsidian;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author linustouchtips
- * @since 12/07/2020
- * more or less a paste of autotrap lol
+ * @author linustouchtips & olliem5
+ * @since 11/28/2020
+ * more or less a paste of autotrap
  */
 
 public class SelfTrap extends Module {
     public SelfTrap() {
-        super("SelfTrap", Category.COMBAT, "Traps yourself");
+        super("SelfTrap", Category.COMBAT, "Automatically traps yourself");
     }
 
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
-    public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
-    private static Checkbox rotate = new Checkbox("Rotate", false);
+    public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
+    private static Checkbox rotate = new Checkbox("Rotate", true);
     private static Checkbox disable = new Checkbox("Disables", true);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 255.0D, 255.0D, 0);
-    public static SubSlider g = new SubSlider(color, "Green", 0.0D, 120.0D, 255.0D, 0);
+    public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 30.0D, 255.0D, 0);
 
     @Override
     public void setup() {
         addSetting(delay);
-        addSetting(range);
+        addSetting(blocksPerTick);
         addSetting(rotate);
         addSetting(disable);
         addSetting(color);
     }
 
     private final ArrayList<BlockPos> renderBlocks = new ArrayList<>();
-    private int ticksOn;
+    private boolean hasPlaced;
 
     @Override
     public void onEnable() {
-        ticksOn = 0;
+        hasPlaced = false;
     }
 
     @Override
     public void onUpdate() {
         if (nullCheck())
             return;
-        
-        List<BlockPos> fullPos = new ArrayList<>(Arrays.asList(
-                (new BlockPos(mc.player.getPositionVector())).add(0, -1, 0),
-                (new BlockPos(mc.player.getPositionVector())).add(1, 0, 0),
-                (new BlockPos(mc.player.getPositionVector())).add(-1, 0, -1),
-                (new BlockPos(mc.player.getPositionVector())).add(0, 0, -1),
-                (new BlockPos(mc.player.getPositionVector())).add(0, 0, -1),
-                (new BlockPos(mc.player.getPositionVector())).add(1, 1, 0),
-                (new BlockPos(mc.player.getPositionVector())).add(-1, 1, -1),
-                (new BlockPos(mc.player.getPositionVector())).add(0, 1, -1),
-                (new BlockPos(mc.player.getPositionVector())).add(0, 1, -1),
-                (new BlockPos(mc.player.getPositionVector())).add(0, 2, 0)
-        ));
 
-        renderBlocks.clear();
+        if (hasPlaced && disable.getValue())
+            this.disable();
 
-        for (Object object : new ArrayList<>(fullPos)) {
-            BlockPos blockPos = (BlockPos) object;
-            fullPos.add(0, blockPos.down());
+        int blocksPlaced = 0;
 
-            if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR))
+        for (Vec3d autoTrapBox : fullTrap) {
+            final EntityPlayer target = mc.player;
+
+
+            BlockPos blockPos = new BlockPos(autoTrapBox.add(mc.player.getPositionVector()));
+
+            if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)) {
+                int oldInventorySlot = mc.player.inventory.currentItem;
+                mc.player.inventory.currentItem = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+                PlayerUtil.placeBlock(blockPos, rotate.getValue());
                 renderBlocks.add(blockPos);
-        }
+                mc.player.inventory.currentItem = oldInventorySlot;
+                blocksPlaced++;
 
-        int slot = getObsidianSlot();
-
-        if (slot != -1) {
-            if (disable.getValue())
-                ticksOn++;
-
-            int i = 0;
-            int hand = mc.player.inventory.currentItem;
-            for (BlockPos blockPos : fullPos) {
-                if (PlayerUtil.placeBlock(blockPos, slot, rotate.getValue(), rotate.getValue())) i++;
-
-                int BPT = (int) (Math.round(delay.getValue() / 300f) + 1);
-                if (i >= BPT) break;
-            }
-
-            mc.player.inventory.currentItem = hand;
-
-            if (ticksOn > 30) {
-                if (disable.getValue())
-                    disable();
-
-                renderBlocks.clear();
+                if (blocksPlaced == blocksPerTick.getValue())
+                    return;
             }
         }
 
-        else {
-            if (disable.getValue())
-                disable();
-
-            renderBlocks.clear();
-        }
+        if (blocksPlaced == 0)
+            hasPlaced = true;
     }
 
     @SubscribeEvent
-    public void onRender3D(RenderWorldLastEvent eventRender) {
-        for (BlockPos blockPos : renderBlocks) {
-            if (renderBlocks != null) {
-                RenderUtil.prepareRender(GL11.GL_QUADS);
-                RenderUtil.drawBoxFromBlockPos(blockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()), GeometryMasks.Quad.ALL);
-                RenderUtil.releaseRender();
-            }
+    public void onRender3D(RenderWorldLastEvent renderEvent) {
+        for (BlockPos renderBlock : renderBlocks) {
+            RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
         }
     }
 
-    public int getObsidianSlot() {
-        int slot = -1;
-
-        for (int i = 0; i < 9; i++) {
-            ItemStack stack = mc.player.inventory.getStackInSlot(i);
-
-            if (stack == ItemStack.EMPTY || !(stack.getItem() instanceof ItemBlock))
-                continue;
-
-            Block block = ((ItemBlock) stack.getItem()).getBlock();
-
-            if (block instanceof BlockObsidian) {
-                slot = i;
-                break;
-            }
-        }
-
-        return slot;
-    }
+    private final List<Vec3d> fullTrap = new ArrayList<>(Arrays.asList(
+            new Vec3d(0, -1, -1),
+            new Vec3d(1, -1, 0),
+            new Vec3d(0, -1, 1),
+            new Vec3d(-1, -1, 0),
+            new Vec3d(0, 0, -1),
+            new Vec3d(1, 0, 0),
+            new Vec3d(0, 0, 1),
+            new Vec3d(-1, 0, 0),
+            new Vec3d(0, 1, -1),
+            new Vec3d(1, 1, 0),
+            new Vec3d(0, 1, 1),
+            new Vec3d(-1, 1, 0),
+            new Vec3d(0, 2, -1),
+            new Vec3d(0, 2, 1),
+            new Vec3d(0, 2, 0)
+    ));
 }

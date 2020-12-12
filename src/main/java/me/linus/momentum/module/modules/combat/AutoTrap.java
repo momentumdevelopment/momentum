@@ -2,30 +2,26 @@ package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.render.GeometryMasks;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
+import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockObsidian;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author linustouchtips
+ * @author linustouchtips & olliem5
  * @since 11/28/2020
  */
 
@@ -34,9 +30,11 @@ public class AutoTrap extends Module {
         super("AutoTrap", Category.COMBAT, "Automatically traps nearby players");
     }
 
+    private static Mode mode = new Mode("Mode", "Full", "Feet");
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
-    private static Checkbox rotate = new Checkbox("Rotate", false);
+    public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
+    private static Checkbox rotate = new Checkbox("Rotate", true);
     private static Checkbox disable = new Checkbox("Disables", true);
 
     public static Checkbox color = new Checkbox("Color", true);
@@ -47,19 +45,21 @@ public class AutoTrap extends Module {
 
     @Override
     public void setup() {
+        addSetting(mode);
         addSetting(delay);
         addSetting(range);
+        addSetting(blocksPerTick);
         addSetting(rotate);
         addSetting(disable);
         addSetting(color);
     }
 
     private final ArrayList<BlockPos> renderBlocks = new ArrayList<>();
-    private int ticksOn;
+    private boolean hasPlaced;
 
     @Override
     public void onEnable() {
-        ticksOn = 0;
+        hasPlaced = false;
     }
 
     @Override
@@ -67,106 +67,83 @@ public class AutoTrap extends Module {
         if (nullCheck())
             return;
 
-        EntityPlayer closestPlayer = EntityUtil.getClosestPlayer(range.getValue());
+        if (hasPlaced && disable.getValue())
+            this.disable();
 
-        if (closestPlayer == null) {
-            if (disable.getValue())
-                disable();
+        int blocksPlaced = 0;
 
-            renderBlocks.clear();
-            return;
-        }
+        for (Vec3d autoTrapBox : getTrap()) {
+            final EntityPlayer target = EntityUtil.getClosestPlayer(range.getValue());
 
-        List<BlockPos> fullPos = new ArrayList<>(Arrays.asList(
-                (new BlockPos(closestPlayer.getPositionVector())).add(0, -1, -1),
-                (new BlockPos(closestPlayer.getPositionVector())).add(1, -1, 0),
-                (new BlockPos(closestPlayer.getPositionVector())).add(0, -1, 1),
-                (new BlockPos(closestPlayer.getPositionVector())).add(-1, -1, 0),
-                (new BlockPos(closestPlayer.getPositionVector())).add(0, 0, -1),
-                (new BlockPos(closestPlayer.getPositionVector())).add(1, 0, 0),
-                (new BlockPos(closestPlayer.getPositionVector())).add(0, 0, 1),
-                (new BlockPos(closestPlayer.getPositionVector())).add(-1, 0, 0),
-                (new BlockPos(closestPlayer.getPositionVector())).add(0, 1, -1),
-                (new BlockPos(closestPlayer.getPositionVector())).add(1, 1, 0),
-                (new BlockPos(closestPlayer.getPositionVector())).add(0, 1, 1),
-                (new BlockPos(closestPlayer.getPositionVector())).add(-1, 1, 0),
-                (new BlockPos(closestPlayer.getPositionVector())).add(0, 2, -1),
-                (new BlockPos(closestPlayer.getPositionVector())).add(0, 2, 1),
-                (new BlockPos(closestPlayer.getPositionVector())).add(0, 2, 0)
-        ));
+            if (target != null) {
+                BlockPos blockPos = new BlockPos(autoTrapBox.add(EntityUtil.getClosestPlayer(range.getValue()).getPositionVector()));
 
-        renderBlocks.clear();
+                if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)) {
+                    int oldInventorySlot = mc.player.inventory.currentItem;
+                    mc.player.inventory.currentItem = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+                    PlayerUtil.placeBlock(blockPos, rotate.getValue());
+                    renderBlocks.add(blockPos);
+                    mc.player.inventory.currentItem = oldInventorySlot;
+                    blocksPlaced++;
 
-        for (Object object : new ArrayList<>(fullPos)) {
-            BlockPos blockPos = (BlockPos) object;
-            fullPos.add(0, blockPos.down());
-
-            if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR))
-                renderBlocks.add(blockPos);
-        }
-
-
-        int slot = getObsidianSlot();
-
-        if (slot != -1) {
-            if (disable.getValue())
-                ticksOn++;
-
-            int i = 0;
-            int hand = mc.player.inventory.currentItem;
-            for (BlockPos blockPos : fullPos) {
-                if (PlayerUtil.placeBlock(blockPos, slot, rotate.getValue(), rotate.getValue())) i++;
-
-                int BPT = (int) (Math.round(delay.getValue() / 300f) + 1);
-                if (i >= BPT) break;
-            }
-
-            mc.player.inventory.currentItem = hand;
-
-            if (ticksOn > 30) {
-                if (disable.getValue())
-                    disable();
-
-                renderBlocks.clear();
+                    if (blocksPlaced == blocksPerTick.getValue())
+                        return;
+                }
             }
         }
 
-        else {
-            if (disable.getValue())
-                disable();
-
-            renderBlocks.clear();
-        }
+        if (blocksPlaced == 0)
+            hasPlaced = true;
     }
 
     @SubscribeEvent
-    public void onRender3D(RenderWorldLastEvent eventRender) {
-        for (BlockPos blockPos : renderBlocks) {
-            if (renderBlocks != null) {
-                RenderUtil.prepareRender(GL11.GL_QUADS);
-                RenderUtil.drawBoxFromBlockPos(blockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()), GeometryMasks.Quad.ALL);
-                RenderUtil.releaseRender();
-            }
+    public void onRender3D(RenderWorldLastEvent renderEvent) {
+        for (BlockPos renderBlock : renderBlocks) {
+            RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
         }
     }
 
-    public int getObsidianSlot() {
-        int slot = -1;
-
-        for (int i = 0; i < 9; i++) {
-            ItemStack stack = mc.player.inventory.getStackInSlot(i);
-
-            if (stack == ItemStack.EMPTY || !(stack.getItem() instanceof ItemBlock))
-                continue;
-
-            Block block = ((ItemBlock) stack.getItem()).getBlock();
-
-            if (block instanceof BlockObsidian) {
-                slot = i;
-                break;
-            }
+    public List<Vec3d> getTrap() {
+        switch (mode.getValue()) {
+            case 0:
+                return fullTrap;
+            case 1:
+                return feetTrap;
         }
 
-        return slot;
+        return fullTrap;
     }
+
+    private final List<Vec3d> fullTrap = new ArrayList<>(Arrays.asList(
+            new Vec3d(0, -1, -1),
+            new Vec3d(1, -1, 0),
+            new Vec3d(0, -1, 1),
+            new Vec3d(-1, -1, 0),
+            new Vec3d(0, 0, -1),
+            new Vec3d(1, 0, 0),
+            new Vec3d(0, 0, 1),
+            new Vec3d(-1, 0, 0),
+            new Vec3d(0, 1, -1),
+            new Vec3d(1, 1, 0),
+            new Vec3d(0, 1, 1),
+            new Vec3d(-1, 1, 0),
+            new Vec3d(0, 2, -1),
+            new Vec3d(0, 2, 1),
+            new Vec3d(0, 2, 0)
+    ));
+
+    private final List<Vec3d> feetTrap = new ArrayList<>(Arrays.asList(
+            new Vec3d(0, -1, -1),
+            new Vec3d(1, -1, 0),
+            new Vec3d(0, -1, 1),
+            new Vec3d(-1, -1, 0),
+            new Vec3d(0, 0, 1),
+            new Vec3d(0, 1, -1),
+            new Vec3d(1, 1, 0),
+            new Vec3d(0, 1, 1),
+            new Vec3d(-1, 1, 0),
+            new Vec3d(0, 2, -1),
+            new Vec3d(0, 2, 1),
+            new Vec3d(0, 2, 0)
+    ));
 }

@@ -5,6 +5,7 @@ import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
@@ -24,11 +25,11 @@ public class Offhand extends Module {
     private static Mode mode = new Mode("Mode", "Gapple", "Crystal", "Bed", "Chorus", "Pearl", "Potion", "Creeper", "Totem");
     private static Mode fallback = new Mode("Fall-Back", "Totem", "Pearl");
     public static Slider health = new Slider("Health", 0.0D, 16.0D, 36.0D, 0);
-    public static Slider holeHealth = new Slider("Hole Health", 0.0D, 10.0D, 36.0D, 0);
     private static Checkbox swordGap = new Checkbox("Sword Gapple", true);
     private static Checkbox chorusTrap = new Checkbox("Chorus on Trap", true);
     private static Checkbox caFunction = new Checkbox("Switch Only when Crystalling", false);
     private static Checkbox holeFunction = new Checkbox("Switch Only In Hole", false);
+    public static SubSlider holeHealth = new SubSlider(holeFunction, "Hole Health", 0.0D, 10.0D, 36.0D, 0);
     private static Checkbox hotbar = new Checkbox("Search Hotbar", false);
 
     @Override
@@ -36,7 +37,6 @@ public class Offhand extends Module {
         addSetting(mode);
         addSetting(fallback);
         addSetting(health);
-        addSetting(holeHealth);
         addSetting(swordGap);
         addSetting(chorusTrap);
         addSetting(caFunction);
@@ -75,8 +75,10 @@ public class Offhand extends Module {
         if (!(PlayerUtil.getHealth() <= health.getValue())) {
             if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordGap.getValue())
                 toSwitch = Items.GOLDEN_APPLE;
-            if (PlayerUtil.isPlayerTrapped() && chorusTrap.getValue())
+
+            else if (PlayerUtil.isPlayerTrapped() && chorusTrap.getValue())
                 toSwitch = Items.CHORUS_FRUIT;
+
             else {
                 switch (mode.getValue()) {
                     case 0:
@@ -103,13 +105,14 @@ public class Offhand extends Module {
                 }
             }
 
-        } else if (PlayerUtil.isInHole() && holeFunction.getValue() && !(PlayerUtil.getHealth() <= health.getValue())) {
+        } else if (PlayerUtil.isInHole() && holeFunction.getValue() && !(PlayerUtil.getHealth() <= holeHealth.getValue())) {
             if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordGap.getValue())
                 toSwitch = Items.GOLDEN_APPLE;
-            if (PlayerUtil.isPlayerTrapped() && chorusTrap.getValue())
+
+            else if (PlayerUtil.isPlayerTrapped() && chorusTrap.getValue())
                 toSwitch = Items.CHORUS_FRUIT;
 
-            if (!PlayerUtil.isInHole() && holeFunction.getValue())
+            else if (!PlayerUtil.isInHole() && holeFunction.getValue())
                 return findFirstItemSlot(toSwitch);
 
             else {

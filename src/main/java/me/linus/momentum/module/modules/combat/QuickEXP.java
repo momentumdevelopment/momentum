@@ -43,19 +43,20 @@ public class QuickEXP extends Module {
         if (expInMainHand || expNotInMainHand)
             mc.rightClickDelayTimer = (int) delay.getValue();
 
-        if (mode.getValue() == 0) {
-            if (mc.player.isSneaking() && 0 < armorDurability) {
-                if (mode.getValue() == 1)
+        if (mc.player.isSneaking() && 0 < armorDurability && (mode.getValue() == 0 || mode.getValue() == 1)) {
+            switch (mode.getValue()) {
+                case 1:
                     mc.player.inventory.currentItem = findEXPInHotbar();
-
-                if (mode.getValue() == 0)
+                    break;
+                case 0:
                     InventoryUtil.switchToSlotGhost(findEXPInHotbar());
+                    break;
+            }
 
-                if (footEXP.getValue())
+            if (footEXP.getValue())
                     mc.player.connection.sendPacket(new CPacketPlayer.Rotation(0, 90, true));
 
-                mc.rightClickMouse();
-            }
+            mc.rightClickMouse();
         }
     }
 

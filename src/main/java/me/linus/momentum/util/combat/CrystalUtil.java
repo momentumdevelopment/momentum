@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
@@ -124,6 +125,18 @@ public class CrystalUtil implements MixinInterface {
         } else {
             mc.playerController.attackEntity(mc.player, crystal);
         }
+    }
+
+    public static boolean canPlaceCrystal(BlockPos blockPos) {
+        final BlockPos boost = blockPos.add(0, 1, 0);
+        final BlockPos boost2 = blockPos.add(0, 2, 0);
+        return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getBlockState(boost).getBlock() == Blocks.AIR && mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
+    }
+
+    public static boolean canPlaceThirteenCrystal(BlockPos blockPos) {
+        final BlockPos boost = blockPos.add(0, 1, 0);
+        final BlockPos boost2 = blockPos.add(0, 2, 0);
+        return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
     }
 
     public static boolean attackCheck(Entity crystal, int mode, double breakRange, ArrayList<BlockPos> placedCrystals) {

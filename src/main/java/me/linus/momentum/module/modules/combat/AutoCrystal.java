@@ -12,13 +12,13 @@ import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.world.BlockUtils;
 import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -259,7 +259,7 @@ public class AutoCrystal extends Module {
                       if (calcDamage <= damage && !(damageCalc.getValue() == 1))
                         continue;
 
-                    final double selfDamage = CrystalUtil.calculateDamage(blockPos.getX() + 0.5, blockPos.getY() + 1, blockPos.getZ() + 0.5, (Entity) mc.player);
+                    final double selfDamage = CrystalUtil.calculateDamage(blockPos.getX() + 0.5, blockPos.getY() + 1, blockPos.getZ() + 0.5, mc.player);
                     if (PlayerUtil.getHealth() - selfDamage <= pauseHealth.getValue() && pause.getValue() && (pauseMode.getValue() == 0 || pauseMode.getValue() == 2))
                         continue;
                     if (selfDamage  > calcDamage)
@@ -342,39 +342,13 @@ public class AutoCrystal extends Module {
         }
     }
 
-    private boolean canPlaceCrystal(final BlockPos blockPos) {
-        final BlockPos boost = blockPos.add(0, 1, 0);
-        final BlockPos boost2 = blockPos.add(0, 2, 0);
-        if (blockCalc.getValue() == 1)
-            return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
-        else
-            return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getBlockState(boost).getBlock() == Blocks.AIR && mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
-    }
-
     private List<BlockPos> findCrystalBlocks() {
         NonNullList positions = NonNullList.create();
-        positions.addAll(this.getSphere(CrystalUtil.getPlayerPos(), (float) placeRange.getValue(), (int) placeRange.getValue(), false, true, 0).stream().filter(this::canPlaceCrystal).collect(Collectors.toList()));
+        if (blockCalc.getValue() == 0)
+            positions.addAll(BlockUtils.getSphere(CrystalUtil.getPlayerPos(), (float) placeRange.getValue(), (int) placeRange.getValue(), false, true, 0).stream().filter(CrystalUtil::canPlaceCrystal).collect(Collectors.toList()));
+        else
+            positions.addAll(BlockUtils.getSphere(CrystalUtil.getPlayerPos(), (float) placeRange.getValue(), (int) placeRange.getValue(), false, true, 0).stream().filter(CrystalUtil::canPlaceThirteenCrystal).collect(Collectors.toList()));
         return (List<BlockPos>) positions;
-    }
-
-    public List<BlockPos> getSphere(final BlockPos loc, final float r, final int h, final boolean hollow, final boolean sphere, final int plus_y) {
-        final List<BlockPos> circleblocks = new ArrayList<>();
-        final int cx = loc.getX();
-        final int cy = loc.getY();
-        final int cz = loc.getZ();
-        for (int x = cx - (int) r; x <= cx + r; ++x) {
-            for (int z = cz - (int) r; z <= cz + r; ++z) {
-                for (int y = sphere ? (cy - (int) r) : cy; y < (sphere ? (cy + r) : ((float) (cy + h))); ++y) {
-                    final double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? ((cy - y) * (cy - y)) : 0);
-                    if (dist < r * r && (!hollow || dist >= (r - 1.0f) * (r - 1.0f))) {
-                        final BlockPos l = new BlockPos(x, y + plus_y, z);
-                        circleblocks.add(l);
-                    }
-                }
-            }
-        }
-
-        return circleblocks;
     }
 
     @Override

@@ -7,10 +7,10 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.GeometryMasks;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.world.BlockUtils;
+import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -29,7 +29,7 @@ public class HoleFill extends Module {
 
     private static Mode mode = new Mode("Mode", "Obsidian", "Ender Chest", "Web");
     public static Slider range = new Slider("Range", 0.0D, 2.0D, 10.0D, 0);
-    private static Checkbox rotate = new Checkbox("Rotate", false);
+    private static Checkbox rotate = new Checkbox("Rotate", true);
     private static Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
@@ -48,7 +48,7 @@ public class HoleFill extends Module {
     }
 
     private int oldHand;
-    private BlockPos renderBlock;
+    BlockPos renderBlock;
 
     @Override
     public void onEnable() {
@@ -65,11 +65,12 @@ public class HoleFill extends Module {
 
     @Override
     public void onUpdate() {
-        List<BlockPos> blocks = getHoles();
         if (nullCheck())
             return;
 
-        int slot = getSlot();
+        List<BlockPos> blocks = getHoles(range.getValue());
+
+        int slot = getItem();
         List<BlockPos> blocksToRemove = new ArrayList<>();
 
         if (slot == -1) {
@@ -94,35 +95,20 @@ public class HoleFill extends Module {
         }
 
         renderBlock = blocks.get(0);
-        PlayerUtil.placeBlock(blocks.get(0));
+        PlayerUtil.placeBlock(blocks.get(0), rotate.getValue());
     }
 
-    private int getSlot() {
-        Block block = Blocks.AIR;
-
+    private int getItem() {
         switch (mode.getValue()) {
             case 0:
-                block = Blocks.OBSIDIAN;
-                break;
+                return InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
             case 1:
-                block = Blocks.ENDER_CHEST;
-                break;
+                return InventoryUtil.getBlockInHotbar(Blocks.ENDER_CHEST);
             case 3:
-                block = Blocks.WEB;
-                break;
+                return InventoryUtil.getBlockInHotbar(Blocks.WEB);
         }
 
-        int slot = mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(block) ? mc.player.inventory.currentItem : -1;
-        if (slot == -1) {
-            for (int i = 0; i < 9; i++) {
-                if (mc.player.inventory.getStackInSlot(i).getItem() == Item.getItemFromBlock(block)) {
-                    slot = i;
-                    break;
-                }
-            }
-        }
-
-        return slot;
+        return InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
     }
 
     @SubscribeEvent
@@ -134,33 +120,13 @@ public class HoleFill extends Module {
         }
     }
 
-    private List<BlockPos> getHoles() {
+    public List<BlockPos> getHoles(double range) {
         NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(this::isHole).collect(Collectors.toList()));
+        positions.addAll(BlockUtils.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range, (int) range, false, true, 0).stream().filter(this::isHole).collect(Collectors.toList()));
         return positions;
     }
 
-    public List<BlockPos> getSphere(BlockPos loc, float r, int h, boolean hollow, boolean sphere, int plus_y) {
-        List<BlockPos> blocks = new ArrayList<>();
-        int cx = loc.getX();
-        int cy = loc.getY();
-        int cz = loc.getZ();
-        for (int x = cx - (int) r; x <= cx + r; x++) {
-            for (int z = cz - (int) r; z <= cz + r; z++) {
-                for (int y = (sphere ? cy - (int) r : cy); y < (sphere ? cy + r : cy + h); y++) {
-                    double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
-                    if (dist < r * r && !(hollow && dist < (r - 1) * (r - 1))) {
-                        BlockPos l = new BlockPos(x, y + plus_y, z);
-                        blocks.add(l);
-                    }
-                }
-            }
-        }
-
-        return blocks;
-    }
-
-    private boolean isHole(BlockPos blockPos) {
+    public boolean isHole(BlockPos blockPos) {
         BlockPos b1 = blockPos.add(0, 1, 0);
         BlockPos b2 = blockPos.add(0, 0, 0);
         BlockPos b3 = blockPos.add(0, 0, -1);

@@ -95,4 +95,8 @@ public class EnemyUtil implements MixinInterface {
         else
             return false;
     }
+
+    public static float getHealth(EntityPlayer entityPlayer) {
+        return entityPlayer.getHealth() + entityPlayer.getAbsorptionAmount();
+    }
 }

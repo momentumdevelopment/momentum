@@ -1,8 +1,12 @@
 package me.linus.momentum.util.render;
 
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.util.client.color.ColorUtil;
+import me.linus.momentum.util.combat.EnemyUtil;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.EXTPackedDepthStencil;
 import org.lwjgl.opengl.GL11;
@@ -68,6 +72,34 @@ public class ESPUtil implements MixinInterface {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glPopAttrib();
+    }
+    
+    public static void draw2D(Entity drawEntity) {
+        GL11.glBegin(2);
+        GL11.glVertex2d(-drawEntity.width, 0);
+        GL11.glVertex2d(-drawEntity.width, drawEntity.height);
+        GL11.glEnd();
+        GL11.glBegin(2);
+        GL11.glVertex2d(-drawEntity.width, 0);
+        GL11.glVertex2d(drawEntity.width, 0);
+        GL11.glEnd();
+        GL11.glBegin(2);
+        GL11.glVertex2d(drawEntity.width, 0);
+        GL11.glVertex2d(drawEntity.width, drawEntity.height);
+        GL11.glEnd();
+        GL11.glBegin(2);
+        GL11.glVertex2d(-drawEntity.width, drawEntity.height);
+        GL11.glVertex2d(drawEntity.width, drawEntity.height);
+        GL11.glEnd();
+        if (drawEntity instanceof EntityPlayer) {
+            GL11.glBegin(GL11.GL_POLYGON);
+            setColor(ColorUtil.getHealthColor(EnemyUtil.getHealth((EntityPlayer) drawEntity)));
+            GL11.glVertex2d(-drawEntity.width + 0.05, 0);
+            GL11.glVertex2d(-drawEntity.width + 0.1, 0);
+            GL11.glVertex2d(-drawEntity.width + 0.1, (drawEntity.height / 36) * (EnemyUtil.getHealth((EntityPlayer) drawEntity)));
+            GL11.glVertex2d(-drawEntity.width + 0.05, (drawEntity.height / 36) * (EnemyUtil.getHealth((EntityPlayer) drawEntity)));
+            GL11.glEnd();
+        }
     }
 
     public static void setColor(Color c) {
