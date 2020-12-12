@@ -6,12 +6,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.network.play.client.CPacketEntityAction;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -32,38 +28,14 @@ public class BlockUtils implements MixinInterface {
 
     public static boolean isInterceptedByOther(final BlockPos pos) {
         for (final Entity entity : mc.world.loadedEntityList) {
-            if (entity.equals(mc.player)) continue;
-            if (new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox())) return true;
+            if (entity.equals(mc.player))
+                continue;
+
+            if (new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox()))
+                return true;
         }
 
         return false;
-    }
-
-    public static boolean IsObbyHole(BlockPos blockPos) {
-        BlockPos boost = blockPos.add(0, 1, 0);
-        BlockPos boost2 = blockPos.add(0, 0, 0);
-        BlockPos boost3 = blockPos.add(0, 0, -1);
-        BlockPos boost4 = blockPos.add(1, 0, 0);
-        BlockPos boost5 = blockPos.add(-1, 0, 0);
-        BlockPos boost6 = blockPos.add(0, 0, 1);
-        BlockPos boost7 = blockPos.add(0, 2, 0);
-        BlockPos boost8 = blockPos.add(0.5, 0.5, 0.5);
-        BlockPos boost9 = blockPos.add(0, -1, 0);
-        return !(mc.world.getBlockState(boost).getBlock() != Blocks.AIR || IsBRockHole(blockPos) || mc.world.getBlockState(boost2).getBlock() != Blocks.AIR || mc.world.getBlockState(boost7).getBlock() != Blocks.AIR || mc.world.getBlockState(boost3).getBlock() != Blocks.OBSIDIAN && mc.world.getBlockState(boost3).getBlock() != Blocks.BEDROCK || mc.world.getBlockState(boost4).getBlock() != Blocks.OBSIDIAN && mc.world.getBlockState(boost4).getBlock() != Blocks.BEDROCK || mc.world.getBlockState(boost5).getBlock() != Blocks.OBSIDIAN && mc.world.getBlockState(boost5).getBlock() != Blocks.BEDROCK || mc.world.getBlockState(boost6).getBlock() != Blocks.OBSIDIAN && mc.world.getBlockState(boost6).getBlock() != Blocks.BEDROCK || mc.world.getBlockState(boost8).getBlock() != Blocks.AIR || mc.world.getBlockState(boost9).getBlock() != Blocks.OBSIDIAN && mc.world.getBlockState(boost9).getBlock() != Blocks.BEDROCK);
-    }
-
-    public static boolean IsBRockHole(BlockPos blockPos) {
-        BlockPos boost = blockPos.add(0, 1, 0);
-        BlockPos boost2 = blockPos.add(0, 0, 0);
-        BlockPos boost3 = blockPos.add(0, 0, -1);
-        BlockPos boost4 = blockPos.add(1, 0, 0);
-        BlockPos boost5 = blockPos.add(-1, 0, 0);
-        BlockPos boost6 = blockPos.add(0, 0, 1);
-        BlockPos boost7 = blockPos.add(0, 2, 0);
-        BlockPos boost8 = blockPos.add(0.5, 0.5, 0.5);
-        BlockPos boost9 = blockPos.add(0, -1, 0);
-
-        return mc.world.getBlockState(boost).getBlock() == Blocks.AIR && mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && mc.world.getBlockState(boost7).getBlock() == Blocks.AIR && mc.world.getBlockState(boost3).getBlock() == Blocks.BEDROCK && mc.world.getBlockState(boost4).getBlock() == Blocks.BEDROCK && mc.world.getBlockState(boost5).getBlock() == Blocks.BEDROCK && mc.world.getBlockState(boost6).getBlock() == Blocks.BEDROCK && mc.world.getBlockState(boost8).getBlock() == Blocks.AIR && mc.world.getBlockState(boost9).getBlock() == Blocks.BEDROCK;
     }
 
     public static boolean isBlockNotEmpty(BlockPos pos) {
@@ -98,38 +70,6 @@ public class BlockUtils implements MixinInterface {
             return false;
 
         return true;
-    }
-
-    public static boolean canBeClicked(BlockPos pos) {
-        return mc.world.getBlockState(pos).getBlock().canCollideCheck(mc.world.getBlockState(pos), false);
-    }
-
-    public static void placeBlockScaffold(BlockPos pos, boolean rotate) {
-        for (EnumFacing side : EnumFacing.values()) {
-            final BlockPos neighbor = pos.offset(side);
-            final EnumFacing side2 = side.getOpposite();
-
-            if (!BlockUtils.canBeClicked(neighbor))
-                continue;
-
-            final Vec3d hitVec = new Vec3d(neighbor).add(new Vec3d(0.5, 0.5, 0.5)).add(new Vec3d(side2.getDirectionVec()).scale(0.5));
-            if (rotate) PlayerUtil.faceVectorPacketInstant(hitVec);
-            mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
-            mc.playerController.processRightClickBlock(mc.player, mc.world, pos, side, hitVec, EnumHand.MAIN_HAND);
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-            mc.rightClickDelayTimer = 0;
-            mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
-            return;
-        }
-    }
-
-    public static boolean hasNeighbour(BlockPos blockPos) {
-        for (EnumFacing side : EnumFacing.values()) {
-            BlockPos neighbour = blockPos.offset(side);
-            if (!mc.world.getBlockState(neighbour).getMaterial().isReplaceable())
-                return true;
-        }
-        return false;
     }
 
     static {

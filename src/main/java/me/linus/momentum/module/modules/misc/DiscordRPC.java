@@ -4,6 +4,11 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.util.client.DiscordPresence;
 import me.linus.momentum.util.client.MessageUtil;
 
+/**
+ * @author linustouchtips
+ * @since 11/30/2020
+ */
+
 public class DiscordRPC extends Module {
     public DiscordRPC() {
         super("DiscordRPC", Category.MISC, "Displays a custom Discord Rich Presence");

@@ -37,6 +37,7 @@ public class Quiver extends Module {
     @Override
     public void setup() {
         addSetting(mode);
+        addSetting(toggle);
     }
 
     private int randomVariation;

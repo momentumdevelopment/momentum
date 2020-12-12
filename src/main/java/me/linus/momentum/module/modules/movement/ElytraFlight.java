@@ -83,6 +83,7 @@ public class ElytraFlight extends Module {
         disableCheck();
         flyTick();
 
+        mc.player.fallDistance = 0;
         switch (mode.getValue()) {
             case 0:
                 flyControl();

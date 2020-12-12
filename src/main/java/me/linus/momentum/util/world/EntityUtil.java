@@ -30,8 +30,10 @@ public class EntityUtil implements MixinInterface {
     public static boolean isPassive(Entity e) {
         if (e instanceof EntityWolf && ((EntityWolf) e).isAngry())
             return false;
+
         if (e instanceof EntityAnimal || e instanceof EntityAgeable || e instanceof EntityTameable || e instanceof EntityAmbientCreature || e instanceof EntitySquid)
             return true;
+
         if (e instanceof EntityIronGolem && ((EntityIronGolem) e).getRevengeTarget() == null)
             return true;
 

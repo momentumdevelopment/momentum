@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EnumPlayerModelParts;
 
 public class SkinBlinker extends Module {
     public SkinBlinker() {
-        super("SkinBlinker", Category.MISC, "Switches swin parts");
+        super("SkinBlinker", Category.MISC, "Switches skin model parts");
     }
 
     private static final EnumPlayerModelParts[] PARTS_HORIZONTAL;

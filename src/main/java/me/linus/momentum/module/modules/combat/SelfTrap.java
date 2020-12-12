@@ -67,17 +67,15 @@ public class SelfTrap extends Module {
             return;
         
         List<BlockPos> fullPos = new ArrayList<>(Arrays.asList(
-                (new BlockPos(mc.player.getPositionVector())).add(0, -1, -1),
-                (new BlockPos(mc.player.getPositionVector())).add(1, -1, 0),
-                (new BlockPos(mc.player.getPositionVector())).add(0, -1, 1),
-                (new BlockPos(mc.player.getPositionVector())).add(-1, -1, 0),
-                (new BlockPos(mc.player.getPositionVector())).add(-1, 0, 0),
-                (new BlockPos(mc.player.getPositionVector())).add(0, 1, -1),
+                (new BlockPos(mc.player.getPositionVector())).add(0, -1, 0),
+                (new BlockPos(mc.player.getPositionVector())).add(1, 0, 0),
+                (new BlockPos(mc.player.getPositionVector())).add(-1, 0, -1),
+                (new BlockPos(mc.player.getPositionVector())).add(0, 0, -1),
+                (new BlockPos(mc.player.getPositionVector())).add(0, 0, -1),
                 (new BlockPos(mc.player.getPositionVector())).add(1, 1, 0),
-                (new BlockPos(mc.player.getPositionVector())).add(0, 1, 1),
-                (new BlockPos(mc.player.getPositionVector())).add(-1, 1, 0),
-                (new BlockPos(mc.player.getPositionVector())).add(0, 2, -1),
-                (new BlockPos(mc.player.getPositionVector())).add(0, 2, 1),
+                (new BlockPos(mc.player.getPositionVector())).add(-1, 1, -1),
+                (new BlockPos(mc.player.getPositionVector())).add(0, 1, -1),
+                (new BlockPos(mc.player.getPositionVector())).add(0, 1, -1),
                 (new BlockPos(mc.player.getPositionVector())).add(0, 2, 0)
         ));
 

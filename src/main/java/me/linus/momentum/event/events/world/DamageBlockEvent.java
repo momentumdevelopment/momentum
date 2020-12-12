@@ -1,12 +1,12 @@
 package me.linus.momentum.event.events.world;
 
+import me.linus.momentum.event.MomentumEvent;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
 
 @Cancelable
-public class DamageBlockEvent extends Event {
+public class DamageBlockEvent extends MomentumEvent {
     private BlockPos pos;
     private EnumFacing face;
 

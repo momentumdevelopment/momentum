@@ -45,11 +45,12 @@ public class AutoTotem extends Module {
 
         if (returnI) {
             int t = -1;
-            for (int i = 0; i < 45; i++)
-                if (mc.player.inventory.getStackInSlot(i).isEmpty()){
+            for (int i = 0; i < 45; i++) {
+                if (mc.player.inventory.getStackInSlot(i).isEmpty()) {
                     t = i;
                     break;
                 }
+            }
 
             if (t == -1)
                 return;

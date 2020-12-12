@@ -61,7 +61,7 @@ public class Aura extends Module {
     private static SubCheckbox thirtyTwoKOnly = new SubCheckbox(weaponCheck, "32K Only", false);
 
     public static Checkbox pause = new Checkbox("Pause", true);
-    public static SubCheckbox cannotSee = new SubCheckbox(pause, "Target Cannot be Seen", true);
+    public static SubCheckbox cannotSee = new SubCheckbox(pause, "Target Cannot be Seen", false);
     public static SubCheckbox crystalPause = new SubCheckbox(pause, "When Crystalling", false);
     public static SubCheckbox holePause = new SubCheckbox(pause, "When not in Hole", false);
     public static SubCheckbox eatPause = new SubCheckbox(pause, "When Eating", false);

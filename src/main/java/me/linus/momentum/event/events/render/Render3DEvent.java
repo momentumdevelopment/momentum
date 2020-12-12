@@ -6,7 +6,6 @@ public class Render3DEvent extends MomentumEvent {
     private final float partialTicks;
 
     public Render3DEvent(float ticks) {
-        super();
         partialTicks = ticks;
     }
 

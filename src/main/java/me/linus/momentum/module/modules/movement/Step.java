@@ -5,6 +5,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.setting.slider.SubSlider;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 
@@ -21,6 +22,9 @@ public class Step extends Module {
     private static Mode mode = new Mode("Mode", "Normal", "Spider", "Vanilla");
     public static Slider height = new Slider("Height", 0.0D, 2.0D, 5.0D, 1);
 
+    public static Checkbox useTimer = new Checkbox("Use Timer", false);
+    private static SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.1D, 1.1D, 2.0D, 2);
+
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubCheckbox sneakPause = new SubCheckbox(pause, "When Sneaking", true);
     public static SubCheckbox waterPause = new SubCheckbox(pause, "When in Liquid", true);
@@ -29,6 +33,7 @@ public class Step extends Module {
     public void setup() {
         addSetting(mode);
         addSetting(height);
+        addSetting(useTimer);
         addSetting(pause);
     }
 
@@ -67,6 +72,9 @@ public class Step extends Module {
             final double stepNormal = getCollision();
             if (stepNormal < 0.0 || stepNormal > 2.0)
                 return;
+
+            if (useTimer.getValue())
+                mc.timer.tickLength = (float) (50.0f / timerTicks.getValue());
 
             if (stepNormal == 2.0) {
                 this.mc.player.connection.sendPacket(new CPacketPlayer.Position(this.mc.player.posX, this.mc.player.posY + 0.42, this.mc.player.posZ, this.mc.player.onGround));

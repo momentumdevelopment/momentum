@@ -2,6 +2,7 @@ package me.linus.momentum.module.modules.movement;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.event.events.packet.PacketSendEvent;
+import me.linus.momentum.event.events.player.PushEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
@@ -9,6 +10,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.world.PlayerUtil;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -35,7 +37,7 @@ public class PacketFlight extends Module {
     private static Mode phase = new Mode("Phase","Full", "Semi", "None");
     public static SubCheckbox packet = new SubCheckbox(phase, "Packet", false);
     public static SubCheckbox noMove = new SubCheckbox(phase, "Unnatural Movement", false);
-    public static SubCheckbox noClip = new SubCheckbox(phase, "NoClip", false);
+    public static SubCheckbox noClip = new SubCheckbox(phase, "NoClip", true);
 
     public static Checkbox pause = new Checkbox("Pause", false);
     public static SubCheckbox pauseRotation = new SubCheckbox(pause, "Server Rotations", false);
@@ -88,24 +90,32 @@ public class PacketFlight extends Module {
         switch (mode.getValue()) {
             case 0:
                 phasePlayer();
-            case 1:
-                phasePlayer();
+                break;
         }
     }
 
     public void phasePlayer() {
         final double[] dirSpeed = PlayerUtil.directionSpeed(teleport ? 0.02250000089406967 : 0.02239999920129776);
-        mc.player.connection.sendPacket(new CPacketPlayer.PositionRotation(mc.player.posX + dirSpeed[0], mc.player.posY + (mc.gameSettings.keyBindJump.isKeyDown() ? (teleport ? upSpeed.getValue() : 0.0624) : fallSpeed.getValue()) - (mc.gameSettings.keyBindSneak.isKeyDown() ? (teleport ? 0.0625 : 0.0624) : 2.0E-8), mc.player.posZ + dirSpeed[1], mc.player.rotationYaw, mc.player.rotationPitch, false));
+        mc.player.connection.sendPacket(new CPacketPlayer.PositionRotation(mc.player.posX + dirSpeed[0], mc.player.posY + (mc.gameSettings.keyBindJump.isKeyDown() ? (teleport ? 0.0625 : 0.0624) : 1.0E-8) - (mc.gameSettings.keyBindSneak.isKeyDown() ? (teleport ? 0.0625 : 0.0624) : 2.0E-8), mc.player.posZ + dirSpeed[1], mc.player.rotationYaw, mc.player.rotationPitch, false));
         mc.player.connection.sendPacket(new CPacketPlayer.PositionRotation(mc.player.posX, -1337.0, mc.player.posZ, mc.player.rotationYaw, mc.player.rotationPitch, true));
         mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_FALL_FLYING));
-        mc.player.setPosition(mc.player.posX + dirSpeed[0], mc.player.posY + (mc.gameSettings.keyBindJump.isKeyDown() ? (teleport ? upSpeed.getValue() : 0.0624) : fallSpeed.getValue()) - (mc.gameSettings.keyBindSneak.isKeyDown() ? (teleport ? upSpeed.getValue() : 0.0624) : 2.0E-8), mc.player.posZ + dirSpeed[1]);
+        mc.player.setPosition(mc.player.posX + dirSpeed[0], mc.player.posY + (mc.gameSettings.keyBindJump.isKeyDown() ? (teleport ? 0.0625 : 0.0624) : 1.0E-8) - (mc.gameSettings.keyBindSneak.isKeyDown() ? (teleport ? 0.0625 : 0.0624) : 2.0E-8), mc.player.posZ + dirSpeed[1]);
         teleport = !teleport;
-        mc.player.motionZ = 0.0;
-        mc.player.motionY = 0.0;
-        mc.player.motionX = 0.0;
+        final EntityPlayerSP player = mc.player;
+        final EntityPlayerSP player2 = mc.player;
+        final EntityPlayerSP player3 = mc.player;
+        final double motionX = 0.0;
+        player3.motionZ = motionX;
+        player2.motionY = motionX;
+        player.motionX = motionX;
 
         if (noClip.getValue())
             mc.player.noClip = teleport;
+    }
+
+    @SubscribeEvent
+    public void onPush(PushEvent event) {
+        event.setCanceled(true);
     }
 
     @SubscribeEvent

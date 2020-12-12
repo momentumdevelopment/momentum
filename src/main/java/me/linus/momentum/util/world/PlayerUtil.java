@@ -3,10 +3,8 @@ package me.linus.momentum.util.world;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.Timer;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayer.Rotation;
 import net.minecraft.block.Block;
@@ -27,7 +25,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 import java.text.DecimalFormat;
-import java.util.Objects;
 
 /**
  * @author linustouchtips
@@ -175,16 +172,6 @@ public class PlayerUtil implements MixinInterface {
         return new float[]{mc.player.rotationYaw + MathHelper.wrapDegrees(yaw - mc.player.rotationYaw), mc.player.rotationPitch + MathHelper.wrapDegrees(pitch - mc.player.rotationPitch)};
     }
 
-    public static int getHotbarSlot(final Item item) {
-        for (int i = 0; i < 9; i++) {
-            final Item item1 = mc.player.inventory.getStackInSlot(i).getItem();
-
-            if (item.equals(item1)) return i;
-        }
-
-        return -1;
-    }
-
     public static boolean isMoving() {
         return (mc.player.moveForward != 0.0D || mc.player.moveStrafing != 0.0D);
     }
@@ -229,16 +216,6 @@ public class PlayerUtil implements MixinInterface {
             input = -1f;
         } else input = 0f;
         return input;
-    }
-
-    public static double getDefaultSpeed() {
-        double baseSpeed = 0.272;
-        if (mc.player.isPotionActive(MobEffects.SPEED)) {
-            final int amplifier = Objects.requireNonNull(mc.player.getActivePotionEffect(MobEffects.SPEED)).getAmplifier();
-            baseSpeed *= 1.0 + 0.2 * amplifier;
-        }
-
-        return baseSpeed;
     }
 
     public static int getHotbarSlot(final Block block) {
@@ -402,44 +379,6 @@ public class PlayerUtil implements MixinInterface {
         return "Invalid";
     }
 
-    public static boolean constrainedCheck() {
-        if (mc.player.isInLava() || mc.player.isInWater() || mc.player.isOnLadder() || mc.player.isInWeb)
-            return true;
-        else
-            return false;
-    }
-
-    public static double[] baseMotion(EntityPlayerSP player) {
-        double yaw = player.rotationYaw;
-        double pitch = player.rotationPitch;
-
-        double forward = player.movementInput.moveForward;
-        double strafe  = player.movementInput.moveStrafe;
-
-        if (forward != 0.0d && strafe != 0.0d) {
-            if (forward != 0.0d) {
-                if (strafe > 0.0d) {
-                    yaw += ((forward > 0.0d) ? -45 : 45);
-                } else if (strafe < 0) {
-                    yaw += ((forward > 0.0d) ? 45 : -45);
-                }
-
-                strafe = 0.0d;
-
-                if (forward > 0.0d) {
-                    forward = 1.0d;
-                } else if (forward < 0.0d) {
-                    forward = -1.0d;
-                }
-            }
-        }
-
-        return new double[] {
-                yaw, pitch,
-                forward, strafe
-        };
-    }
-
     public static boolean isPlayerTrapped() {
         BlockPos playerPos = getLocalPlayerPosFloored();
 
@@ -481,5 +420,13 @@ public class PlayerUtil implements MixinInterface {
         }
 
         return false;
+    }
+
+    public static Vec3d getCenter(double posX, double posY, double posZ) {
+        double x = Math.floor(posX) + 0.5D;
+        double y = Math.floor(posY);
+        double z = Math.floor(posZ) + 0.5D;
+
+        return new Vec3d(x, y, z);
     }
 }

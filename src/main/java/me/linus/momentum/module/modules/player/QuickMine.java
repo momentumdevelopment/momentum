@@ -20,7 +20,7 @@ public class QuickMine extends Module {
         super("QuickMine", Category.PLAYER, "Allows you to mine faster");
     }
 
-    private static Mode mode = new Mode("Mode", "Packet", "Damage", "Creative", "Instant", "Vanilla");
+    private static Mode mode = new Mode("Mode", "Packet", "Damage", "Creative", "Instant", "Delay", "Vanilla");
 
     @Override
     public void setup() {
@@ -54,9 +54,8 @@ public class QuickMine extends Module {
                     event.setCanceled(true);
                     break;
                 case 1:
-                    if (mc.playerController.curBlockDamageMP >= 0.7f) {
+                    if (mc.playerController.curBlockDamageMP >= 0.7f)
                         mc.playerController.curBlockDamageMP = 1.0f;
-                    }
 
                     break;
                 case 2:
@@ -68,6 +67,9 @@ public class QuickMine extends Module {
                     mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.getPos(), event.getFace()));
                     mc.playerController.onPlayerDestroyBlock(event.getPos());
                     mc.world.setBlockToAir(event.getPos());
+                    break;
+                case 4:
+                    mc.playerController.blockHitDelay = 0;
                     break;
             }
         }

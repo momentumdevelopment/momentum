@@ -104,13 +104,6 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_DONT_CARE);
     }
 
-    public static void beginRender(int mode) {
-        INSTANCE.getBuffer().begin(mode, DefaultVertexFormats.POSITION_COLOR);
-    }
-
-    public static void onWorldRender() {
-        INSTANCE.draw();
-    }
 
     /**
      * 3D Rendering
@@ -209,9 +202,9 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         builder.begin(5, DefaultVertexFormats.POSITION_COLOR);
         //north
         builder.pos(bb.maxX, bb.minY, bb.minZ).color(red2, green2, blue2, alpha2).endVertex();
-        builder.pos(bb.minX, bb.minY, bb.minZ).color(red2, green2, blue2, alpha2).endVertex();
+        builder.pos(bb.maxX, bb.minY, bb.minZ).color(red2, green2, blue2, alpha2).endVertex();
         builder.pos(bb.minX, bb.maxY, bb.minZ).color(red, green, blue, alpha).endVertex();
-        builder.pos(bb.maxX, bb.maxY, bb.minZ).color(red, green, blue, alpha).endVertex();
+        builder.pos(bb.minX, bb.maxY, bb.minZ).color(red, green, blue, alpha).endVertex();
         //west
         builder.pos(bb.minX, bb.minY, bb.minZ).color(red2, green2, blue2, alpha2).endVertex();
         builder.pos(bb.minX, bb.minY, bb.maxZ).color(red2, green2, blue2, alpha2).endVertex();
@@ -223,9 +216,9 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         builder.pos(bb.maxX, bb.maxY, bb.minZ).color(red, green, blue, alpha).endVertex();
         builder.pos(bb.maxX, bb.maxY, bb.maxZ).color(red, green, blue, alpha).endVertex();
         //south
-        builder.pos(bb.minX, bb.minY, bb.maxZ).color(red2, green2, blue2, alpha2).endVertex();
         builder.pos(bb.maxX, bb.minY, bb.maxZ).color(red2, green2, blue2, alpha2).endVertex();
-        builder.pos(bb.maxX, bb.maxY, bb.maxZ).color(red, green, blue, alpha).endVertex();
+        builder.pos(bb.maxX, bb.minY, bb.maxZ).color(red2, green2, blue2, alpha2).endVertex();
+        builder.pos(bb.minX, bb.maxY, bb.maxZ).color(red, green, blue, alpha).endVertex();
         builder.pos(bb.minX, bb.maxY, bb.maxZ).color(red, green, blue, alpha).endVertex();
         //up + down
         builder.pos(bb.minX, bb.maxY, bb.minZ).color(red3, green3, blue3, alpha3).endVertex();
@@ -333,8 +326,8 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         bufferbuilder.pos(bb.minX, bb.minY, bb.maxZ).color(r, g, b, alpha).endVertex();
         bufferbuilder.pos(bb.minX, bb.maxY, bb.maxZ).color(r, g, b, alpha).endVertex();
         tessellator.draw();
-        GL11.glDisable((int) 2848);
-        GlStateManager.depthMask((boolean) true);
+        GL11.glDisable(2848);
+        GlStateManager.depthMask(true);
         GlStateManager.enableDepth();
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
@@ -368,8 +361,8 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         bufferbuilder.pos(bb.minX, bb.minY, bb.maxZ).color(r, g, b, alpha).endVertex();
         bufferbuilder.pos(bb.minX, bb.minY, bb.minZ).color(r, g, b, alpha).endVertex();
         tessellator.draw();
-        GL11.glDisable((int) 2848);
-        GlStateManager.depthMask((boolean) true);
+        GL11.glDisable(2848);
+        GlStateManager.depthMask(true);
         GlStateManager.enableDepth();
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
@@ -444,6 +437,7 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GL11.glEnable(2884);
         mc.entityRenderer.disableLightmap();
         GL11.glEnable(2848);
+        GL11.glEnable(GL_CULL_FACE);
         GL11.glHint(3154, 4354);
         GL11.glHint(3155, 4354);
         GlStateManager.disableTexture2D();
@@ -461,6 +455,7 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GL11.glDisable(3042);
         GL11.glEnable(3008);
         GL11.glDepthMask(true);
+        GL11.glDisable(GL_CULL_FACE);
         GL11.glCullFace(1029);
         GL11.glDisable(2848);
         GL11.glHint(3154, 4352);

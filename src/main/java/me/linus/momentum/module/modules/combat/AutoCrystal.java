@@ -26,6 +26,7 @@ import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
+import net.minecraft.world.Explosion;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -58,14 +59,8 @@ public class AutoCrystal extends Module {
     public static SubCheckbox prediction = new SubCheckbox(explode, "Prediction", true);
     public static SubCheckbox damageSync = new SubCheckbox(explode, "Damage Sync", false);
     public static SubCheckbox antiWeakness = new SubCheckbox(explode, "Anti-Weakness", false);
-    public static SubMode rotate = new SubMode(explode, "Spoof", "Legit");
+    public static SubMode rotate = new SubMode(explode, "Rotate", "Spoof", "Legit");
     public static SubMode breakHand = new SubMode(explode, "BreakHand", "MainHand", "OffHand", "Both", "GhostHand");
-
-    public static Checkbox pause = new Checkbox("Pause", true);
-    public static SubSlider pauseHealth = new SubSlider(pause, "Pause Health", 0.0D, 7.0D, 36.0D, 0);
-    public static SubMode pauseMode = new SubMode(pause, "Mode", "Place", "Break", "Both");
-    public static SubCheckbox whenMining = new SubCheckbox(pause, "When Mining", false);
-    public static SubCheckbox whenEating = new SubCheckbox(pause, "When Eating", false);
 
     public static Checkbox place = new Checkbox("Place", true);
     public static SubSlider placeRange = new SubSlider(place, "Place Range", 0.0D, 5.0D, 7.0D, 1);
@@ -76,6 +71,17 @@ public class AutoCrystal extends Module {
     public static SubCheckbox rayTrace = new SubCheckbox(place, "Ray-Trace", true);
     public static SubCheckbox multiPlace = new SubCheckbox(place, "MultiPlace", false);
 
+    public static Checkbox pause = new Checkbox("Pause", true);
+    public static SubSlider pauseHealth = new SubSlider(pause, "Pause Health", 0.0D, 7.0D, 36.0D, 0);
+    public static SubMode pauseMode = new SubMode(pause, "Mode", "Place", "Break", "Both");
+    public static SubCheckbox whenMining = new SubCheckbox(pause, "When Mining", false);
+    public static SubCheckbox whenEating = new SubCheckbox(pause, "When Eating", false);
+
+    public static Checkbox prevent = new Checkbox("Prevent", true);
+    public static SubCheckbox waste = new SubCheckbox(prevent, "Waste", false);
+    public static SubSlider wasteAmount = new SubSlider(prevent, "Waste Amount", 0.0D, 20.0D, 40.0D, 0);
+    public static SubCheckbox closePlacements = new SubCheckbox(prevent, "Close Placements", false);
+
     public static Checkbox facePlace = new Checkbox("Face-Place", true);
     public static SubSlider facePlaceHealth = new SubSlider(facePlace, "Face-Place Health", 0.0D, 16.0D, 36.0D, 0);
     public static SubCheckbox armorMelt = new SubCheckbox(facePlace, "Armor Melt", false);
@@ -83,6 +89,8 @@ public class AutoCrystal extends Module {
 
     public static Checkbox calculations = new Checkbox("Calculations", true);
     public static SubMode placeCalc = new SubMode(calculations, "Place Calculation", "Ideal", "Actual");
+    public static SubMode enemyCalc = new SubMode(calculations, "Enemy Calculation", "None", "Dynamic", "Priority");
+    public static SubMode verifyCalc = new SubMode(calculations, "Verify Calculation", "None", "Check");
     public static SubMode damageCalc = new SubMode(calculations, "Damage Calculation", "Full", "Semi");
 
     public static Checkbox logic = new Checkbox("Logic", true);
@@ -106,10 +114,11 @@ public class AutoCrystal extends Module {
         addSetting(place);
         addSetting(facePlace);
         addSetting(pause);
+        addSetting(prevent);
         addSetting(calculations);
+        addSetting(logic);
         addSetting(hole);
         addSetting(renderCrystal);
-        addSetting(logic);
     }
 
     Timer breakTimer = new Timer();
@@ -142,10 +151,13 @@ public class AutoCrystal extends Module {
     }
 
     public void breakCrystal() {
-        final EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> CrystalUtil.attackCheck(entity, breakMode.getValue(), breakRange.getValue(), placedCrystals)).min(Comparator.comparing(c -> mc.player.getDistance(c))).orElse(null);
+        EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> CrystalUtil.attackCheck(entity, breakMode.getValue(), breakRange.getValue(), placedCrystals)).min(Comparator.comparing(c -> mc.player.getDistance(c))).orElse(null);
         float[] angles = MathUtil.calcAngle(EntityUtil.interpolateEntityTime(this.mc.player, this.mc.getRenderPartialTicks()), EntityUtil.interpolateEntityTime(crystal, this.mc.getRenderPartialTicks()));
         if (crystal != null && mc.player.getDistance(crystal) <= breakRange.getValue() && breakTimer.passed((long) breakDelay.getValue())) {
             if (pause.getValue() && PlayerUtil.getHealth() <= pauseHealth.getValue() && pauseMode.getValue() == 0 && (pauseMode.getValue() == 1 || pauseMode.getValue() == 2))
+                return;
+
+            if (closePlacements.getValue() && mc.player.getDistance(crystal) < 2)
                 return;
 
             if (!mc.player.canEntityBeSeen(crystal) && mc.player.getDistance(crystal) > wallRange.getValue())
@@ -167,13 +179,16 @@ public class AutoCrystal extends Module {
             }
 
             CrystalUtil.getSwingArm(breakHand.getValue());
-            if (syncBreak.getValue()) {
+            if (syncBreak.getValue())
                 crystal.setDead();
-                if (unload.getValue()) {
-                    mc.world.removeAllEntities();
-                    mc.world.getLoadedEntityList();
-                }
+
+            if (unload.getValue()) {
+                mc.world.removeAllEntities();
+                mc.world.getLoadedEntityList();
             }
+
+            if (damageSync.getValue())
+                currentTarget.attackEntityFrom(DamageSource.causeExplosionDamage(new Explosion(mc.world, crystal, crystal.posX, crystal.posY, crystal.posZ, 6.0f, false, true)), 8);
         }
 
         breakTimer.reset();
@@ -194,17 +209,15 @@ public class AutoCrystal extends Module {
         }
 
         boolean offhand = false;
-        if (mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL) {
+        if (mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL)
             offhand = true;
-        } else if (crystalSlot == -1) {
+        else if (crystalSlot == -1)
             return;
-        }
 
         Entity entity = null;
-        Entity lastTarget = null;
         BlockPos finalPos = null;
-        final List<BlockPos> blocks = findCrystalBlocks();
-        final List<Entity> entities = new ArrayList<>();
+        List<BlockPos> blocks = findCrystalBlocks();
+        List<Entity> entities = new ArrayList<>();
         entities.addAll(mc.world.playerEntities.stream().collect(Collectors.toList()));
         double damage = 0.5;
         for (final Entity entityTarget : entities) {
@@ -219,11 +232,14 @@ public class AutoCrystal extends Module {
                     continue;
 
                 for (final BlockPos blockPos : blocks) {
-                    if (!CrystalUtil.canBlockBeSeen(blockPos) && mc.player.getDistanceSq(blockPos) > placeRange.getValue() * placeRange.getValue())
+                    if (!CrystalUtil.canBlockBeSeen(blockPos) && mc.player.getDistanceSq(blockPos) > wallRange.getValue() * wallRange.getValue())
                         continue;
 
                     final double targetDistanceSq = entityTarget.getDistanceSq(blockPos);
                     if (targetDistanceSq > 56.2)
+                        continue;
+
+                    if (verifyCalc.getValue() == 1 && mc.player.getDistanceSq(blockPos) > breakRange.getValue() * breakRange.getValue())
                         continue;
 
                     final double calcDamage;
@@ -268,9 +284,8 @@ public class AutoCrystal extends Module {
 
         if (true) {
             if (!offhand && mc.player.inventory.currentItem != crystalSlot) {
-                if (autoSwitch.getValue()) {
+                if (autoSwitch.getValue())
                     mc.player.inventory.currentItem = crystalSlot;
-                }
 
                 CrystalUtil.resetRotation();
                 this.switchCooldown = true;

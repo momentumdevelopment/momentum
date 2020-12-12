@@ -17,10 +17,12 @@
         "MixinBlockLiquid",
         "MixinC00Handshake",
         "MixinAbstractClientPlayer",
-        "MixinGuiPlayerTabOverlay"
+        "MixinGuiPlayerTabOverlay",
+        "MixinEntityPlayerSP",
+        "MixinEntity"
     ],
 
     "client": [
-        "MixinEntityPlayerSP"
+
     ]
 }

@@ -2,27 +2,26 @@ package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.mode.Mode;
+import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.BlockUtils;
-import me.linus.momentum.util.world.EntityUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockObsidian;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
+import me.linus.momentum.util.world.InventoryUtil;
+import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
- * @author linustouchtips
- * @since 11/30/2020
+ * @author linustouchtips & olliem5
+ * @since 12/11/2020
  */
 
 public class Surround extends Module {
@@ -30,269 +29,155 @@ public class Surround extends Module {
         super("Surround", Category.COMBAT, "Surrounds your feet with obsidian");
     }
 
-    private static Checkbox rotate = new Checkbox("Rotate", true);
-    private static Checkbox center = new Checkbox("Center", true);
-    private static Checkbox disable = new Checkbox("Disables", false);
-    private static Checkbox jumpDisable = new Checkbox("Disables on Jump", true);
-    private static Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
+    private static Mode mode = new Mode("Mode", "Standard", "Full", "Anti-City");
+    private static Mode disable = new Mode("Disable", "Jump", "Completion", "Never");
+    public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
 
-    BlockPos northFace;
-    BlockPos southFace;
-    BlockPos westFace;
-    BlockPos eastFace;
-    boolean placed;
+    private static Checkbox timeout = new Checkbox("Timeout", true);
+    public static SubSlider timeoutTick = new SubSlider(timeout, "Timeout Ticks", 1.0D, 15.0D, 20.0D, 1);
+
+    private static Checkbox rotate = new Checkbox("Rotate", true);
+    private static Checkbox centerPlayer = new Checkbox("Center", true);
+    private static Checkbox onlyObsidian = new Checkbox("Only Obsidian", true);
+    private static Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
 
     @Override
     public void setup() {
-        addSetting(rotate);
-        addSetting(center);
+        addSetting(mode);
         addSetting(disable);
-        addSetting(jumpDisable);
+        addSetting(blocksPerTick);
+        addSetting(timeout);
+        addSetting(rotate);
+        addSetting(centerPlayer);
+        addSetting(onlyObsidian);
         addSetting(antiChainPop);
     }
 
+    private final List<BlockPos> renderBlocks = new ArrayList<>();
+    private boolean hasPlaced;
+    private Vec3d center = Vec3d.ZERO;
+    int blocksPlaced = 0;
+
     @Override
+    public void onEnable() {
+        hasPlaced = false;
+        center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
+
+        if (centerPlayer.getValue()) {
+            mc.player.motionX = 0;
+            mc.player.motionZ = 0;
+            mc.player.connection.sendPacket(new CPacketPlayer.Position(center.x, center.y, center.z, true));
+            mc.player.setPosition(center.x, center.y, center.z);
+        }
+    }
+
     public void onUpdate() {
-        if (mc.player == null) return;
-        if (!mc.player.onGround && jumpDisable.getValue()) {
-            toggle();
-            return;
-        }
-
-        final Vec3d vec3d = EntityUtil.getInterpolatedPos(mc.player, 0);
-        BlockPos northBlockPos = new BlockPos(vec3d).north();
-        BlockPos southBlockPos = new BlockPos(vec3d).south();
-        BlockPos eastBlockPos = new BlockPos(vec3d).east();
-        BlockPos westBlockPos = new BlockPos(vec3d).west();
-        northFace = northBlockPos;
-        southFace = southBlockPos;
-        westFace = westBlockPos;
-        eastFace = eastBlockPos;
-
-        final int newSlot = findBlockInHotbar();
-        if (newSlot == -1)
+        if (nullCheck())
             return;
 
-        final BlockPos centerPos = mc.player.getPosition();
-        double y = centerPos.getY();
-        double x = centerPos.getX();
-        double z = centerPos.getZ();
-        final Vec3d plusPlus = new Vec3d(x + 0.5, y, z + 0.5);
-        final Vec3d plusMinus = new Vec3d(x + 0.5, y, z - 0.5);
-        final Vec3d minusMinus = new Vec3d(x - 0.5, y, z - 0.5);
-        final Vec3d minusPlus = new Vec3d(x - 0.5, y, z + 0.5);
-
-        final int oldSlot = mc.player.inventory.currentItem;
-        mc.player.inventory.currentItem = newSlot;
-
-        if (!BlockUtils.hasNeighbour(northBlockPos)) {
-            for (EnumFacing side : EnumFacing.values()) {
-                BlockPos neighbour = northBlockPos.offset(side);
-                if (BlockUtils.hasNeighbour(neighbour)) {
-                    northBlockPos = neighbour;
-                    break;
+        switch (disable.getValue()) {
+            case 0:
+                if (!mc.player.onGround)
+                    this.disable();
+                break;
+            case 1:
+                if (hasPlaced)
+                    this.disable();
+                break;
+            case 2:
+                if (timeout.getValue()) {
+                    if (mode.getValue() != 2) {
+                        if (mc.player.ticksExisted % timeoutTick.getValue() == 0)
+                            this.disable();
+                    }
                 }
-            }
+
+                break;
         }
 
-        if (!BlockUtils.hasNeighbour(southBlockPos)) {
-            for (EnumFacing side : EnumFacing.values()) {
-                BlockPos neighbour = southBlockPos.offset(side);
-                if (BlockUtils.hasNeighbour(neighbour)) {
-                    southBlockPos = neighbour;
-                    break;
-                }
-            }
+        surroundPlayer();
+
+        if (blocksPlaced == 0) {
+            hasPlaced = true;
         }
+    }
 
-        if (!BlockUtils.hasNeighbour(eastBlockPos)) {
-            for (EnumFacing side : EnumFacing.values()) {
-                BlockPos neighbour = eastBlockPos.offset(side);
-                if (BlockUtils.hasNeighbour(neighbour)) {
-                    eastBlockPos = neighbour;
-                    break;
-                }
+    public void surroundPlayer() {
+        for (Vec3d placePositions : getSurround()) {
+            BlockPos blockPos = new BlockPos(placePositions.add(mc.player.getPositionVector()));
+
+            if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)) {
+                int oldInventorySlot = mc.player.inventory.currentItem;
+
+                if (onlyObsidian.getValue())
+                    mc.player.inventory.currentItem = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+                else
+                    mc.player.inventory.currentItem = InventoryUtil.getAnyBlockInHotbar();
+
+                PlayerUtil.placeBlock(blockPos);
+                renderBlocks.add(blockPos);
+                mc.player.inventory.currentItem = oldInventorySlot;
+                blocksPlaced++;
+
+                if (blocksPlaced == blocksPerTick.getValue() && disable.getValue() != 2)
+                    return;
             }
-        }
-
-        if (!BlockUtils.hasNeighbour(westBlockPos)) {
-            for (EnumFacing side : EnumFacing.values()) {
-                BlockPos neighbour = westBlockPos.offset(side);
-                if (BlockUtils.hasNeighbour(neighbour)) {
-                    westBlockPos = neighbour;
-                    break;
-                }
-            }
-        }
-
-        if (mc.world.getBlockState(northBlockPos).getMaterial().isReplaceable() && isEntitiesEmpty(northBlockPos)) {
-            if (mc.player.onGround) {
-                if (getDistance(plusPlus) < getDistance(plusMinus) && getDistance(plusPlus) < getDistance(minusMinus) && getDistance(plusPlus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() + 0.5;
-                    z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
-                }
-
-                if (getDistance(plusMinus) < getDistance(plusPlus) && getDistance(plusMinus) < getDistance(minusMinus) && getDistance(plusMinus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() + 0.5;
-                    z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
-                }
-
-                if (getDistance(minusMinus) < getDistance(plusPlus) && getDistance(minusMinus) < getDistance(plusMinus) && getDistance(minusMinus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() - 0.5;
-                    z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
-                }
-
-                if (getDistance(minusPlus) < getDistance(plusPlus) && getDistance(minusPlus) < getDistance(plusMinus) && getDistance(minusPlus) < getDistance(minusMinus)) {
-                    x = centerPos.getX() - 0.5;
-                    z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
-                }
-            }
-
-            BlockUtils.placeBlockScaffold(northBlockPos, rotate.getValue());
-            placed = true;
-        }
-
-        if (mc.world.getBlockState(southBlockPos).getMaterial().isReplaceable() && isEntitiesEmpty(southBlockPos)) {
-            if (mc.player.onGround) {
-                if (getDistance(plusPlus) < getDistance(plusMinus) && getDistance(plusPlus) < getDistance(minusMinus) && getDistance(plusPlus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() + 0.5;
-                    z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
-                }
-
-                if (getDistance(plusMinus) < getDistance(plusPlus) && getDistance(plusMinus) < getDistance(minusMinus) && getDistance(plusMinus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() + 0.5;
-                    z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
-                }
-
-                if (getDistance(minusMinus) < getDistance(plusPlus) && getDistance(minusMinus) < getDistance(plusMinus) && getDistance(minusMinus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() - 0.5;
-                    z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
-                }
-
-                if (getDistance(minusPlus) < getDistance(plusPlus) && getDistance(minusPlus) < getDistance(plusMinus) && getDistance(minusPlus) < getDistance(minusMinus)) {
-                    x = centerPos.getX() - 0.5;
-                    z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
-                }
-            }
-
-            BlockUtils.placeBlockScaffold(southBlockPos, rotate.getValue());
-            placed = true;
-        }
-
-        if (mc.world.getBlockState(eastBlockPos).getMaterial().isReplaceable() && isEntitiesEmpty(eastBlockPos)) {
-            if (mc.player.onGround) {
-                if (getDistance(plusPlus) < getDistance(plusMinus) && getDistance(plusPlus) < getDistance(minusMinus) && getDistance(plusPlus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() + 0.5;
-                    z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
-                }
-                if (getDistance(plusMinus) < getDistance(plusPlus) && getDistance(plusMinus) < getDistance(minusMinus) && getDistance(plusMinus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() + 0.5;
-                    z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
-                }
-                if (getDistance(minusMinus) < getDistance(plusPlus) && getDistance(minusMinus) < getDistance(plusMinus) && getDistance(minusMinus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() - 0.5;
-                    z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
-                }
-                if (getDistance(minusPlus) < getDistance(plusPlus) && getDistance(minusPlus) < getDistance(plusMinus) && getDistance(minusPlus) < getDistance(minusMinus)) {
-                    x = centerPos.getX() - 0.5;
-                    z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
-                }
-            }
-
-            BlockUtils.placeBlockScaffold(eastBlockPos, rotate.getValue());
-            placed = true;
-        }
-
-        if (mc.world.getBlockState(westBlockPos).getMaterial().isReplaceable() && isEntitiesEmpty(westBlockPos)) {
-            if (mc.player.onGround) {
-                if (getDistance(plusPlus) < getDistance(plusMinus) && getDistance(plusPlus) < getDistance(minusMinus) && getDistance(plusPlus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() + 0.5;
-                    z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
-                }
-
-                if (getDistance(plusMinus) < getDistance(plusPlus) && getDistance(plusMinus) < getDistance(minusMinus) && getDistance(plusMinus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() + 0.5;
-                    z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
-                }
-
-                if (getDistance(minusMinus) < getDistance(plusPlus) && getDistance(minusMinus) < getDistance(plusMinus) && getDistance(minusMinus) < getDistance(minusPlus)) {
-                    x = centerPos.getX() - 0.5;
-                    z = centerPos.getZ() - 0.5;
-                    centerPlayer(x, y, z);
-                }
-
-                if (getDistance(minusPlus) < getDistance(plusPlus) && getDistance(minusPlus) < getDistance(plusMinus) && getDistance(minusPlus) < getDistance(minusMinus)) {
-                    x = centerPos.getX() - 0.5;
-                    z = centerPos.getZ() + 0.5;
-                    centerPlayer(x, y, z);
-                }
-            }
-
-            BlockUtils.placeBlockScaffold(westBlockPos, rotate.getValue());
-            placed = true;
-        }
-
-        mc.player.inventory.currentItem = oldSlot;
-        if ((disable.getValue() || antiChainPop.getValue()) && (mc.world.getBlockState(new BlockPos(vec3d).north()).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(new BlockPos(vec3d).north()).getBlock() == Blocks.BEDROCK) && (mc.world.getBlockState(new BlockPos(vec3d).south()).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(new BlockPos(vec3d).south()).getBlock() == Blocks.BEDROCK) && (mc.world.getBlockState(new BlockPos(vec3d).west()).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(new BlockPos(vec3d).west()).getBlock() == Blocks.BEDROCK) && (mc.world.getBlockState(new BlockPos(vec3d).east()).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(new BlockPos(vec3d).east()).getBlock() == Blocks.BEDROCK)) {
-            toggle();
         }
     }
 
     @SubscribeEvent
-    public void onRender3D(RenderWorldLastEvent eventRender) {
-        if (northFace != null)
-            RenderUtil.drawVanillaBoxFromBlockPos(northFace, 0, 1, 0, 30 / 255);
-
-        if (southFace != null)
-            RenderUtil.drawVanillaBoxFromBlockPos(southFace, 0, 1, 0, 30 / 255);
-
-        if (westFace != null)
-            RenderUtil.drawVanillaBoxFromBlockPos(westFace, 0, 1, 0, 30 / 255);
-
-        if (eastFace != null)
-            RenderUtil.drawVanillaBoxFromBlockPos(eastFace, 0, 1, 0, 30 / 255);
-    }
-
-    private int findBlockInHotbar() {
-        for (int i = 0; i < 9; ++i) {
-            final ItemStack stack = mc.player.inventory.getStackInSlot(i);
-            if (stack != ItemStack.EMPTY && stack.getItem() instanceof ItemBlock) {
-                final Block block = ((ItemBlock) stack.getItem()).getBlock();
-                if (block instanceof BlockObsidian) {
-                    return i;
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    private void centerPlayer(double x, double y, double z) {
-        if (center.getValue()) {
-            mc.player.connection.sendPacket(new CPacketPlayer.Position(x, y, z, true));
-            mc.player.setPosition(x, y, z);
+    public void onRender3D(RenderWorldLastEvent renderEvent) {
+        for (BlockPos renderBlock : renderBlocks) {
+            RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, 0.0f, 1.0f, 0.0f, 0.15f);
         }
     }
 
-    private double getDistance(Vec3d vec) {
-        return mc.player.getDistance(vec.x, vec.y, vec.z);
+    public List<Vec3d> getSurround() {
+        switch (mode.getValue()) {
+            case 0:
+                return standardSurround;
+            case 1:
+                return fullSurround;
+            case 2:
+                return antiCitySurround;
+        }
+
+        return standardSurround;
     }
 
-    private boolean isEntitiesEmpty(BlockPos pos) {
-        return mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos)).stream().filter(e -> !(e instanceof EntityItem) && !(e instanceof EntityXPOrb)).count() == 0;
-    }
+    private final List<Vec3d> standardSurround = new ArrayList<>(Arrays.asList(
+            new Vec3d(0, -1, 0),
+            new Vec3d(1, 0, 0),
+            new Vec3d(-1, 0, 0),
+            new Vec3d(0, 0, 1),
+            new Vec3d(0, 0, -1)
+    ));
+
+    private final List<Vec3d> fullSurround = new ArrayList<>(Arrays.asList(
+            new Vec3d(0, -1, 0),
+            new Vec3d(1, -1, 0),
+            new Vec3d(0, -1, 1),
+            new Vec3d(-1, -1, 0),
+            new Vec3d(0, -1, -1),
+            new Vec3d(1, 0, 0),
+            new Vec3d(0, 0, 1),
+            new Vec3d(-1, 0, 0),
+            new Vec3d(0, 0, -1)
+    ));
+
+    private final List<Vec3d> antiCitySurround = new ArrayList<>(Arrays.asList(
+            new Vec3d(0, -1, 0),
+            new Vec3d(1, 0, 0),
+            new Vec3d(-1, 0, 0),
+            new Vec3d(0, 0, 1),
+            new Vec3d(0, 0, -1),
+            new Vec3d(2, 0, 0),
+            new Vec3d(-2, 0, 0),
+            new Vec3d(0, 0, 2),
+            new Vec3d(0, 0, -2),
+            new Vec3d(3, 0, 0),
+            new Vec3d(-3, 0, 0),
+            new Vec3d(0, 0, 3),
+            new Vec3d(0, 0, -3)
+    ));
 }

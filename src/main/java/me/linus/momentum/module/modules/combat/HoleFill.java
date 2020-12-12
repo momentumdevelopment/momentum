@@ -121,6 +121,7 @@ public class HoleFill extends Module {
                 }
             }
         }
+
         return slot;
     }
 
@@ -155,6 +156,7 @@ public class HoleFill extends Module {
                 }
             }
         }
+
         return blocks;
     }
 

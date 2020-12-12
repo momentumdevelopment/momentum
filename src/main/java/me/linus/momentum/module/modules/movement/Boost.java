@@ -23,6 +23,9 @@ public class Boost extends Module {
 
     @Override
     public void onUpdate() {
+        if (nullCheck())
+            return;
+
         mc.player.onGround = true;
 
         if (packet.getValue()) {

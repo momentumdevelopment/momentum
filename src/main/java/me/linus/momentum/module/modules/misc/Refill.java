@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author linustouchtips
+ * @author linustouchtips & dnger
  * @since 11/30/2020
  */
 
