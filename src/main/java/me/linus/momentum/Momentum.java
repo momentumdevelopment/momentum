@@ -46,6 +46,7 @@ public class Momentum implements MixinInterface {
     public static CustomFont latoFont = new CustomFont("Lato", 18.0f);
     public static CustomFont comicFont = new CustomFont("comic-sans", 18.0f);
     public static CustomFont comfortaaFont = new CustomFont("comfortaa", 18.0f);
+    public static CustomFont ubuntuFont = new CustomFont("Ubuntu", 18.0f);
     
     public static ModuleManager moduleManager;
     public static CommandManager commandManager;

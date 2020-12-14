@@ -122,20 +122,7 @@ public class HoleFill extends Module {
 
     public List<BlockPos> getHoles(double range) {
         NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(BlockUtils.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range, (int) range, false, true, 0).stream().filter(this::isHole).collect(Collectors.toList()));
+        positions.addAll(BlockUtils.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range, (int) range, false, true, 0).stream().filter(BlockUtils::isHole).collect(Collectors.toList()));
         return positions;
-    }
-
-    public boolean isHole(BlockPos blockPos) {
-        BlockPos b1 = blockPos.add(0, 1, 0);
-        BlockPos b2 = blockPos.add(0, 0, 0);
-        BlockPos b3 = blockPos.add(0, 0, -1);
-        BlockPos b4 = blockPos.add(1, 0, 0);
-        BlockPos b5 = blockPos.add(-1, 0, 0);
-        BlockPos b6 = blockPos.add(0, 0, 1);
-        BlockPos b7 = blockPos.add(0, 2, 0);
-        BlockPos b8 = blockPos.add(0.5, 0.5, 0.5);
-        BlockPos b9 = blockPos.add(0, -1, 0);
-        return mc.world.getBlockState(b1).getBlock() == Blocks.AIR && (mc.world.getBlockState(b2).getBlock() == Blocks.AIR) && (mc.world.getBlockState(b7).getBlock() == Blocks.AIR) && ((mc.world.getBlockState(b3).getBlock() == Blocks.OBSIDIAN) || (mc.world.getBlockState(b3).getBlock() == Blocks.BEDROCK)) && ((mc.world.getBlockState(b4).getBlock() == Blocks.OBSIDIAN) || (mc.world.getBlockState(b4).getBlock() == Blocks.BEDROCK)) && ((mc.world.getBlockState(b5).getBlock() == Blocks.OBSIDIAN) || (mc.world.getBlockState(b5).getBlock() == Blocks.BEDROCK)) && ((mc.world.getBlockState(b6).getBlock() == Blocks.OBSIDIAN) || (mc.world.getBlockState(b6).getBlock() == Blocks.BEDROCK)) && (mc.world.getBlockState(b8).getBlock() == Blocks.AIR) && ((mc.world.getBlockState(b9).getBlock() == Blocks.OBSIDIAN) || (mc.world.getBlockState(b9).getBlock() == Blocks.BEDROCK));
     }
 }

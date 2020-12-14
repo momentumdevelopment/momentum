@@ -116,7 +116,7 @@ public abstract class Module implements MixinInterface {
 		onToggle();
 		this.enabled = !this.enabled;
 		try {
-			if(this.isEnabled()) {
+			if (this.isEnabled()) {
 				this.onEnable();
 			} else {
 				this.onDisable();
@@ -127,6 +127,7 @@ public abstract class Module implements MixinInterface {
 	}
 	
 	public void enable() {
+		remainingAnimation = -1.0f;
 		if (!this.isEnabled()) {
 			this.enabled = true;
 			try {

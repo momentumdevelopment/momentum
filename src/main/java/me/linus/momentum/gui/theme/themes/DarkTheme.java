@@ -48,22 +48,6 @@ public class DarkTheme extends Theme implements MixinInterface {
 	
 	private static FontRenderer font = mc.fontRenderer;
 	
-	public static void drawTextWithShadow(String text, float x, float y, int color) {
-		if(ClickGui.font.getValue() == 1) {
-			Momentum.verdanaFont.drawStringWithShadow(text, x - 1, y - 2, color);
-		} else {
-			font.drawStringWithShadow(text, x, y, color);
-		}
-	}
-	
-	public static void drawText(String text, float x, float y, int color) {
-		if(ClickGui.font.getValue() == 1) {
-			Momentum.verdanaFont.drawString(text, x - 1, y - 2, color);
-		} else {
-			font.drawString(text, x, y, color, false);
-		}
-	}
-	
 	@Override
 	public void updateColors() {
 		Color.updateColors();
@@ -88,6 +72,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 					m.toggleState();
 				}
 			}
+
 			GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 			GuiScreen.drawRect(x + 1, y + height + (boost * height) + 1, (x + width) - 1, y + height*2 + (boost * height), m.isEnabled() ? (Color.GRADIENT ? ColorUtil.rainbow(boost) : Color.COLOR) : 0xCC232323);
 			drawTextWithShadow(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
@@ -343,10 +328,50 @@ public class DarkTheme extends Theme implements MixinInterface {
 				}
 			}
 
-			GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), m.isEnabled() ? Color.COLOR : 0xCC232323);
+			GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
+			GuiScreen.drawRect(x + 1, y + height + (boost * height) + 1, (x + width) - 1, y + height*2 + (boost * height), m.isEnabled() ? (Color.GRADIENT ? ColorUtil.rainbow(boost) : Color.COLOR) : 0xCC232323);
 			drawTextWithShadow(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
 			boost++;
 		}
 	}
-	
+
+	public static void drawTextWithShadow(String text, float x, float y, int color) {
+		if (ClickGui.font.getValue() == 0)
+			Momentum.latoFont.drawStringWithShadow(text, x - 1, y - 2, color);
+
+		if (ClickGui.font.getValue() == 1)
+			Momentum.ubuntuFont.drawStringWithShadow(text, x - 1, y - 2, color);
+
+		if (ClickGui.font.getValue() == 2)
+			Momentum.verdanaFont.drawStringWithShadow(text, x - 1, y - 2, color);
+
+		if (ClickGui.font.getValue() == 3)
+			Momentum.comfortaaFont.drawStringWithShadow(text, x - 1, y - 2, color);
+
+		if (ClickGui.font.getValue() == 4)
+			Momentum.comicFont.drawStringWithShadow(text, x - 1, y - 2, color);
+
+		if (ClickGui.font.getValue() == 5)
+			mc.fontRenderer.drawStringWithShadow(text, x, y, color);
+	}
+
+	public static void drawText(String text, float x, float y, int color) {
+		if (ClickGui.font.getValue() == 0)
+			Momentum.latoFont.drawString(text, x - 1, y - 2, color);
+
+		if (ClickGui.font.getValue() == 1)
+			Momentum.ubuntuFont.drawStringWithShadow(text, x - 1, y - 2, color);
+
+		if (ClickGui.font.getValue() == 2)
+			Momentum.verdanaFont.drawString(text, x - 1, y - 2, color);
+
+		if (ClickGui.font.getValue() == 3)
+			Momentum.comfortaaFont.drawString(text, x - 1, y - 2, color);
+
+		if (ClickGui.font.getValue() == 4)
+			Momentum.comicFont.drawString(text, x - 1, y - 2, color);
+
+		if (ClickGui.font.getValue() == 5)
+			mc.fontRenderer.drawString(text, (int) x, (int) y, color);
+	}
 }

@@ -54,6 +54,9 @@ public class SelfTrap extends Module {
 
     @Override
     public void onEnable() {
+        if (nullCheck())
+            return;
+
         hasPlaced = false;
     }
 

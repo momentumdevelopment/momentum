@@ -10,13 +10,10 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGui;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
 /**
- * @author bon
+ * @author bon & linustouchtips
  * @since 11/16/20
  */
 
@@ -64,6 +61,7 @@ public class Window implements MixinInterface {
 		windows.add(new Window(Category.MOVEMENT.getName(), 348, 22, Category.MOVEMENT));
 		windows.add(new Window(Category.RENDER.getName(), 458, 22, Category.RENDER));
 		windows.add(new Window(Category.CLIENT.getName(), 568, 22, Category.CLIENT));
+		windows.add(new Window(Category.BOT.getName(), 568, 258, Category.BOT));
 	}
 	
 	public void drawGui(int mouseX, int mouseY) {

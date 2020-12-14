@@ -94,10 +94,18 @@ public class ESPUtil implements MixinInterface {
         if (drawEntity instanceof EntityPlayer) {
             GL11.glBegin(GL11.GL_POLYGON);
             setColor(ColorUtil.getHealthColor(EnemyUtil.getHealth((EntityPlayer) drawEntity)));
-            GL11.glVertex2d(-drawEntity.width + 0.05, 0);
-            GL11.glVertex2d(-drawEntity.width + 0.1, 0);
-            GL11.glVertex2d(-drawEntity.width + 0.1, (drawEntity.height / 36) * (EnemyUtil.getHealth((EntityPlayer) drawEntity)));
-            GL11.glVertex2d(-drawEntity.width + 0.05, (drawEntity.height / 36) * (EnemyUtil.getHealth((EntityPlayer) drawEntity)));
+            GL11.glVertex2d(-drawEntity.width - 0.05, 0);
+            GL11.glVertex2d(-drawEntity.width - 0.075, 0);
+            GL11.glVertex2d(-drawEntity.width - 0.075, (drawEntity.height / 20) * ((EntityPlayer) drawEntity).getHealth());
+            GL11.glVertex2d(-drawEntity.width - 0.05, (drawEntity.height / 20) * ((EntityPlayer) drawEntity).getHealth());
+            GL11.glEnd();
+
+            GL11.glBegin(GL11.GL_POLYGON);
+            setColor(new Color(232, 188, 65));
+            GL11.glVertex2d(-drawEntity.width - 0.1, 0);
+            GL11.glVertex2d(-drawEntity.width - 0.125, 0);
+            GL11.glVertex2d(-drawEntity.width - 0.125, (drawEntity.height / 16) * ((EntityPlayer) drawEntity).getAbsorptionAmount());
+            GL11.glVertex2d(-drawEntity.width - 0.1, (drawEntity.height / 16) * ((EntityPlayer) drawEntity).getAbsorptionAmount());
             GL11.glEnd();
         }
     }

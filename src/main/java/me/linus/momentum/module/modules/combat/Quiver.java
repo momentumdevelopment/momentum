@@ -49,17 +49,15 @@ public class Quiver extends Module {
         boolean hasSpeed;
         boolean hasStrength;
 
-        if (speedEffect != null) {
+        if (speedEffect != null)
             hasSpeed = true;
-        } else {
+        else
             hasSpeed = false;
-        }
 
-        if (strengthEffect != null) {
+        if (strengthEffect != null)
             hasStrength = true;
-        } else {
+        else
             hasStrength = false;
-        }
 
         if (mc.player.getHeldItemMainhand().getItem() instanceof ItemBow) {
             mc.player.connection.sendPacket(new CPacketPlayer.Rotation(0, -90, true));

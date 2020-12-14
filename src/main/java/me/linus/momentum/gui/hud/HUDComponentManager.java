@@ -19,7 +19,7 @@ public class HUDComponentManager implements MixinInterface {
     public HUDComponentManager() {
         components = Lists.newArrayList(
             new WaterMark(),
-            new ArrayList(),
+            new ActiveModules(),
             new FPS(),
             new Welcomer(),
             new Inventory(),

@@ -19,7 +19,8 @@
         "MixinAbstractClientPlayer",
         "MixinGuiPlayerTabOverlay",
         "MixinEntityPlayerSP",
-        "MixinEntity"
+        "MixinEntity",
+        "MixinRenderEnderCrystal"
     ],
 
     "client": [

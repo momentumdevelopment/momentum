@@ -57,6 +57,7 @@ public class ModuleManager implements MixinInterface {
 			new SelfTrap(),
 			new Surround(),
 			new Trigger(),
+			new Web(),
 
 			//Player
 			new AntiHunger(),
@@ -129,7 +130,6 @@ public class ModuleManager implements MixinInterface {
 			//Render
 			new BreakESP(),
 			new BurrowESP(),
-			new Chams(),
 			new CityESP(),
 			new CrossHairs(),
 			new CustomFOV(),

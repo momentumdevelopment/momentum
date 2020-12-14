@@ -27,7 +27,7 @@ public class ClickGui extends Module {
 	public static SubSlider snapSub = new SubSlider(snapSlider, "Snap Distance", 1.0D, 5.0D, 10.0D, 0);
 	
 	public static Mode theme = new Mode("Theme", "Default", "Velocity");
-	public static Mode font = new Mode("Font", "Lato", "Verdana", "Comfortaa", "Comic Sans", "Minecraft");
+	public static Mode font = new Mode("Font", "Lato", "Ubuntu", "Verdana", "Comfortaa", "Comic Sans", "Minecraft");
 	
 	public static GUI clickGui = new GUI();
 	

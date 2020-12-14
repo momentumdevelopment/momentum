@@ -26,7 +26,6 @@ abstract class MixinRender<T extends Entity> {
     protected boolean renderOutlines;
 
     @Shadow
-
     @Final
     protected RenderManager renderManager;
 }

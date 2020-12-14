@@ -59,6 +59,9 @@ public class AutoTrap extends Module {
 
     @Override
     public void onEnable() {
+        if (nullCheck())
+            return;
+
         hasPlaced = false;
     }
 

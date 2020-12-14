@@ -15,9 +15,8 @@ public class Color {
 				GRADIENT = false;
 				COLOR = ColorUtil.rainbow(1);
 			}
-		} else {
+		} else if (!Colors.rainbow.getValue()) {
 			COLOR = ColorUtil.toRGBA((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), (int) Colors.a.getValue());
 		}
 	}
-	
 }
