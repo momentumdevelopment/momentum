@@ -3,7 +3,6 @@
 todo:
 - rewrite speed (rewritten, but it still rubberbands)
 - rewrite packet fly (phase good, but rubberbanding, also modified from salhack so gay)
-- rewrite autotrap (paste from dream)
 - rewrite holefill (paste from dream)
 
 fix:
