@@ -8,7 +8,6 @@
         "MixinGuiMainMenu",
         "MixinNetworkManager",
         "MixinRenderLivingBase",
-        "MixinRender",
         "MixinModelPlayer",
         "MixinGuiBossOverlay",
         "MixinLayerBipedArmor",

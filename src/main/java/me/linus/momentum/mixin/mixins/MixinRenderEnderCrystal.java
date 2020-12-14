@@ -36,13 +36,13 @@ public abstract class MixinRenderEnderCrystal implements MixinInterface {
 
     @Redirect(method = { "doRender(Lnet/minecraft/entity/item/EntityEnderCrystal;DDDFF)V" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V"))
     private void render1(final ModelBase modelBase, final Entity entityIn, final float limbSwing, final float limbSwingAmount, final float ageInTicks, final float netHeadYaw, final float headPitch, final float scale) {
-        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue() && ESP.mode.getValue() == 2)
+        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue() && (ESP.mode.getValue() == 3 || ESP.mode.getValue() == 4))
             return;
     }
 
     @Redirect(method = { "doRender(Lnet/minecraft/entity/item/EntityEnderCrystal;DDDFF)V" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V", ordinal = 1))
     private void render2(final ModelBase modelBase, final Entity entityIn, final float limbSwing, final float limbSwingAmount, final float ageInTicks, final float netHeadYaw, final float headPitch, final float scale) {
-        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue() && ESP.mode.getValue() == 2)
+        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue() && (ESP.mode.getValue() == 3 || ESP.mode.getValue() == 4))
             return;
     }
 

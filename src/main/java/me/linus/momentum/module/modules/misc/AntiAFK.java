@@ -11,7 +11,6 @@ public class AntiAFK extends Module {
     private static Checkbox jump = new Checkbox("Jump", true);
     private static Checkbox chat = new Checkbox("Chat", false);
 
-
     @Override
     public void setup() {
         addSetting(jump);

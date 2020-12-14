@@ -19,9 +19,9 @@ public class Toggle extends Command {
                 if (m.getName().equalsIgnoreCase(args[1])) {
                     m.toggle();
                     if (m.isEnabled()) {
-                        MessageUtil.sendClientMessage(TextFormatting.AQUA + m.getName() + TextFormatting.WHITE + " is now " + TextFormatting.GREEN + "ON");
+                        MessageUtil.sendClientMessage(TextFormatting.AQUA + m.getName() + TextFormatting.WHITE + " is now " + TextFormatting.GREEN + "ENABLED");
                     } else {
-                        MessageUtil.sendClientMessage(TextFormatting.AQUA + m.getName() + TextFormatting.WHITE + " is now " + TextFormatting.RED + "OFF");
+                        MessageUtil.sendClientMessage(TextFormatting.AQUA + m.getName() + TextFormatting.WHITE + " is now " + TextFormatting.RED + "DISABLED");
                     }
                 }
             }

@@ -15,7 +15,7 @@ public class FullBright extends Module {
         super("FullBright", Category.RENDER, "Adjusts light levels");
     }
 
-    private static Mode mode = new Mode("Mode", "Gamma", "Vanilla");
+    private static Mode mode = new Mode("Mode", "Gamma", "Potion");
 
     @Override
     public void setup() {

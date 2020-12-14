@@ -15,7 +15,7 @@ public class Swing extends Module {
 
     @Override
     public void onUpdate() {
-        if (mc.world == null)
+        if (nullCheck())
             return;
 
         mc.player.swingingHand = EnumHand.OFF_HAND;

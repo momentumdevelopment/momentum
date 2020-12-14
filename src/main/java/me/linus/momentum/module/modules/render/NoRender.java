@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.render;
 import me.linus.momentum.event.events.world.BossBarEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -21,6 +22,7 @@ public class NoRender extends Module {
     public static Checkbox armor = new Checkbox("Armor", false);
     private static Checkbox bossBar = new Checkbox("Boss Bars", true);
     private static Checkbox blockOverlay = new Checkbox("Block Overlay", true);
+    private static Checkbox noCluster = new Checkbox("Cluster", true);
 
     @Override
     public void setup() {
@@ -29,6 +31,7 @@ public class NoRender extends Module {
         addSetting(armor);
         addSetting(bossBar);
         addSetting(blockOverlay);
+        addSetting(noCluster);
     }
 
     @SubscribeEvent
@@ -47,5 +50,12 @@ public class NoRender extends Module {
     public void onRenderBossBar(BossBarEvent event) {
         if (bossBar.getValue())
             event.setCanceled(true);
+    }
+
+    public static boolean transparentModel(Entity entity) {
+        if (mc.player.getDistance(entity) < 1)
+            return true;
+        else
+            return false;
     }
 }

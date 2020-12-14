@@ -1,6 +1,5 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.mixin.mixins.MixinRenderEnderCrystal;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
@@ -37,7 +36,7 @@ public class ESP extends Module {
         super("ESP", Category.RENDER, "Highlights entities");
     }
 
-    public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "CS:GO");
+    public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "Wire-Frame", "CS:GO");
     private static SubCheckbox players = new SubCheckbox(mode, "Players", true);
     private static SubCheckbox animals = new SubCheckbox(mode, "Animals", true);
     private static SubCheckbox mobs = new SubCheckbox(mode, "Mobs", true);
@@ -51,7 +50,6 @@ public class ESP extends Module {
     public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 144.0D, 255.0D, 0);
-
 
     @Override
     public void setup() {
@@ -89,23 +87,65 @@ public class ESP extends Module {
             return;
 
         if (entitylivingbaseIn instanceof EntityPlayer && !(entitylivingbaseIn instanceof EntityPlayerSP) && players.getValue() || (EntityUtil.isPassive(entitylivingbaseIn) && animals.getValue()) || (EntityUtil.isHostileMob(entitylivingbaseIn) && mobs.getValue()) || (EntityUtil.isVehicle(entitylivingbaseIn) && vehicles.getValue()) || (entitylivingbaseIn instanceof EntityEnderCrystal && crystals.getValue())) {
-            GlStateManager.pushMatrix();
-            Color color = ColorUtil.getEntityColor(entitylivingbaseIn);
-            ESPUtil.setColor(color);
-            mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-            ESPUtil.renderOne((float) lineWidth.getValue());
-            mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-            ESPUtil.renderTwo();
-            mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-            ESPUtil.renderThree();
-            ESPUtil.renderFour();
-            ESPUtil.setColor(color);
-            mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-            ESPUtil.renderFive();
-            ESPUtil.setColor(Color.WHITE);
-            GL11.glColor4f(1f, 1f, 1f, 1f);
-            GlStateManager.popMatrix();
+            if (mode.getValue() == 0) {
+                Color color = ColorUtil.getEntityColor(entitylivingbaseIn);
+                ESPUtil.setColor(color);
+                mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                ESPUtil.renderOne((float) lineWidth.getValue());
+                mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                ESPUtil.renderTwo();
+                mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                ESPUtil.renderThree();
+                ESPUtil.renderFour();
+                ESPUtil.setColor(color);
+                mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                ESPUtil.renderFive();
+                ESPUtil.setColor(Color.WHITE);
+            }
         }
+    }
+
+    public static void renderChams(ModelBase mainModel, Entity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+            if (mode.getValue() == 3) {
+                GL11.glPushMatrix();
+                GL11.glPushAttrib(1048575);
+                GL11.glPolygonMode(1032, 6913);
+                GL11.glDisable(3553);
+                GL11.glDisable(2896);
+                GL11.glDisable(2929);
+                GL11.glEnable(2848);
+                GL11.glEnable(3042);
+                GL11.glBlendFunc(770, 771);
+                ESPUtil.setColor(ColorUtil.getEntityColor(entitylivingbaseIn));
+                mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                GL11.glLineWidth((float) lineWidth.getValue());
+                GL11.glPopAttrib();
+                GL11.glPopMatrix();
+            }
+
+            if (mode.getValue() == 4) {
+                GL11.glPushAttrib(1048575);
+                GL11.glDisable(3008);
+                GL11.glDisable(3553);
+                GL11.glDisable(2896);
+                GL11.glEnable(3042);
+                GL11.glBlendFunc(770, 771);
+                GL11.glLineWidth(1.5f);
+                GL11.glEnable(2960);
+                GL11.glDisable(2929);
+                GL11.glDepthMask(false);
+                GL11.glEnable(10754);
+                GL11.glColor4f(ColorUtil.getEntityColor(entitylivingbaseIn).getRed() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getGreen() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getBlue() / 255.0f, (int) a.getValue() / 255.0f);
+                mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                GL11.glEnable(2929);
+                GL11.glDepthMask(true);
+                mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                GL11.glEnable(3042);
+                GL11.glEnable(2896);
+                GL11.glEnable(3553);
+                GL11.glEnable(3008);
+                GL11.glPopAttrib();
+            }
     }
 
     public static void renderCrystal(ModelBase modelEnderCrystal, ModelBase modelEnderCrystalNoBase, EntityEnderCrystal entity, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo callback, ResourceLocation texture) {
@@ -139,6 +179,7 @@ public class ESP extends Module {
 
             ESPUtil.renderThree();
             ESPUtil.renderFour();
+            ESPUtil.setColor(new Color((int) r.getValue() / 255.0f, (int) g.getValue() / 255.0f, (int) b.getValue() / 255.0f, 1.0f));
 
             if (entity.shouldShowBottom())
                 modelEnderCrystal.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
@@ -149,7 +190,7 @@ public class ESP extends Module {
             GlStateManager.popMatrix();
         }
 
-        if (mode.getValue() == 2)  {
+        if (mode.getValue() == 3 || mode.getValue() == 4)  {
             GL11.glPushMatrix();
 
             float rotation = entity.innerRotation + partialTicks;
@@ -160,7 +201,12 @@ public class ESP extends Module {
             GL11.glEnable(32823);
             GL11.glPolygonOffset(1.0f, -1.0E7f);
             GL11.glPushAttrib(1048575);
-            GL11.glPolygonMode(1028, 6913);
+
+            if (mode.getValue() == 3)
+                GL11.glPolygonMode(1028, 6913);
+            else if (mode.getValue() == 4)
+                GL11.glPolygonMode(1028, 6914);
+
             GL11.glDisable(3553);
             GL11.glDisable(2896);
             GL11.glDisable(2929);
@@ -168,7 +214,9 @@ public class ESP extends Module {
             GL11.glEnable(3042);
             GL11.glBlendFunc(770, 771);
             GL11.glColor4f((int) r.getValue() / 255.0f, (int) g.getValue() / 255.0f, (int) b.getValue() / 255.0f, (int) a.getValue() / 255.0f);
-            GL11.glLineWidth((float) ESP.lineWidth.getValue());
+
+            if (mode.getValue() == 3)
+                GL11.glLineWidth((float) ESP.lineWidth.getValue());
 
             if (entity.shouldShowBottom())
                 modelEnderCrystal.render(entity, 0.0f, rotation * 3.0f, rotationMoved * 0.2f, 0.0f, 0.0f, 0.0625f);
@@ -181,7 +229,6 @@ public class ESP extends Module {
             GL11.glPopMatrix();
         }
     }
-
 
     public void renderGlow() {
         for (Entity entitylivingbaseIn : mc.world.loadedEntityList) {
@@ -212,7 +259,7 @@ public class ESP extends Module {
             GL11.glLineWidth(1.0f);
             GL11.glEnable(2848);
 
-            if ((entitylivingbaseIn instanceof EntityPlayer && !(entitylivingbaseIn instanceof EntityPlayerSP) && players.getValue()) || (EntityUtil.isPassive(entitylivingbaseIn) && animals.getValue()) || (EntityUtil.isHostileMob(entitylivingbaseIn) && mobs.getValue()) || (EntityUtil.isVehicle(entitylivingbaseIn) && vehicles.getValue())) {
+            if ((entitylivingbaseIn instanceof EntityPlayer && !(entitylivingbaseIn instanceof EntityPlayerSP) && players.getValue()) || (EntityUtil.isPassive(entitylivingbaseIn) && animals.getValue()) || (EntityUtil.isHostileMob(entitylivingbaseIn) && mobs.getValue()) || (EntityUtil.isVehicle(entitylivingbaseIn) && vehicles.getValue()) || (entitylivingbaseIn instanceof EntityEnderCrystal && crystals.getValue())) {
                 Color color = ColorUtil.getEntityColor(entitylivingbaseIn);
                 ESPUtil.setColor(color);
                 ESPUtil.draw2D(entitylivingbaseIn);
@@ -223,7 +270,6 @@ public class ESP extends Module {
             ESPUtil.setColor(new Color(255, 255, 255, 255));
         });
     }
-
 
     @Override
     public String getHUDData() {

@@ -56,17 +56,18 @@ public abstract class ColorUtil implements MixinInterface {
 			return new Color(131, 19, 199);
 		if (FriendManager.isFriend(e.getName()))
 			return new Color(85, 231, 215);
-		else return new Color(215, 46, 46);
+		else
+			return new Color(215, 46, 46);
 	}
 
 	public static Color getHealthColor(float health) {
-		if (health <= 5)
+		if (health <= 4)
 			return new Color(200, 0, 0);
-		if (health <= 10)
+		if (health <= 8)
 			return new Color(231, 143, 85);
-		if (health <= 15)
+		if (health <= 12)
 			return new Color(219, 201, 106);
-		if (health <= 20)
+		if (health <= 16)
 			return new Color(117, 231, 85);
 		else
 			return new Color(44, 186, 19);

@@ -3,13 +3,18 @@ package me.linus.momentum.module.modules.bot;
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
 import me.linus.momentum.module.Module;
+import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.module.modules.combat.Aura;
 import me.linus.momentum.util.world.BlockUtils;
+import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.PlayerUtil;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemSword;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,17 +26,47 @@ import java.util.stream.Collectors;
 
 public class Milo extends Module {
     public Milo() {
-        super("Milo", Category.BOT, "A bot made for anarchy");
+        super("Milo", Category.BOT, "A bot made for anarchy, named after my dog");
     }
 
     private boolean lookingForHoles = true;
+    EntityPlayer targetPlayer;
 
     @Override
     public void onUpdate() {
         if (nullCheck())
             return;
 
+        targetPlayer = EntityUtil.getClosestPlayer(20);
+
+        if (!playerCheck())
+            return;
+
         baritoneIntoHole();
+        autoTrapTarget();
+        swordFagTarget();
+    }
+
+    private void swordFagTarget() {
+        if (mc.player.getDistance(targetPlayer) < Aura.range.getValue() && targetPlayer.getHeldItemMainhand().getItem() instanceof ItemSword) {
+            ModuleManager.getModuleByName("Aura").enable();
+        }
+
+        if (mc.player.getDistance(targetPlayer) < Aura.range.getValue() || targetPlayer.getHeldItemMainhand().getItem() instanceof ItemSword) {
+            ModuleManager.getModuleByName("Aura").disable();
+        }
+    }
+
+    private void autoTrapTarget() {
+        if (mc.player.getDistance(targetPlayer) < 1) {
+            ModuleManager.getModuleByName("AutoTrap").enable();
+            lookingForHoles = true;
+        }
+
+        if (targetPlayer.getHeldItemMainhand().getItem() instanceof ItemSword && PlayerUtil.getHealth() <= 16) {
+            ModuleManager.getModuleByName("AutoTrap").enable();
+            lookingForHoles = true;
+        }
     }
 
     private void baritoneIntoHole() {
@@ -53,5 +88,12 @@ public class Milo extends Module {
         NonNullList<BlockPos> positions = NonNullList.create();
         positions.addAll(BlockUtils.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range, (int) range, false, true, 0).stream().filter(BlockUtils::isHole).collect(Collectors.toList()));
         return positions;
+    }
+
+    public boolean playerCheck() {
+        if (targetPlayer != null && (!targetPlayer.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem().equals(Items.AIR)))
+            return true;
+        else
+            return false;
     }
 }

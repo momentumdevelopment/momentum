@@ -67,10 +67,7 @@ public class Burrow extends Module {
     }
 
     public Block getBlock() {
-        if (mode.getValue() == 0)
-            return Blocks.OBSIDIAN;
-        else
-            return Blocks.WEB;
+        return Blocks.OBSIDIAN;
     }
 
     @Override
