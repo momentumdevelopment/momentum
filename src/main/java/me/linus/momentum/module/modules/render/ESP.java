@@ -106,6 +106,7 @@ public class ESP extends Module {
     }
 
     public static void renderChams(ModelBase mainModel, Entity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+        if (entitylivingbaseIn instanceof EntityPlayer && !(entitylivingbaseIn instanceof EntityPlayerSP) && players.getValue() || (EntityUtil.isPassive(entitylivingbaseIn) && animals.getValue()) || (EntityUtil.isHostileMob(entitylivingbaseIn) && mobs.getValue()) || (EntityUtil.isVehicle(entitylivingbaseIn) && vehicles.getValue()) || (entitylivingbaseIn instanceof EntityEnderCrystal && crystals.getValue())) {
             if (mode.getValue() == 3) {
                 GL11.glPushMatrix();
                 GL11.glPushAttrib(1048575);
@@ -146,6 +147,7 @@ public class ESP extends Module {
                 GL11.glEnable(3008);
                 GL11.glPopAttrib();
             }
+        }
     }
 
     public static void renderCrystal(ModelBase modelEnderCrystal, ModelBase modelEnderCrystalNoBase, EntityEnderCrystal entity, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo callback, ResourceLocation texture) {

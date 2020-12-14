@@ -8,6 +8,7 @@ import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 
 /**
  * @author bon
@@ -63,8 +64,7 @@ public class GUI extends GuiScreen {
 		super.onGuiClosed();
 		ModuleManager.getModuleByClass(ClickGui.class).disable();
 
-		if (ClickGui.blurEffect.getValue())
-			mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+		mc.entityRenderer.getShaderGroup().deleteShaderGroup();
 	}
 	
 	@Override

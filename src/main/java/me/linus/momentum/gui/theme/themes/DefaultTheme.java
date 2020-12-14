@@ -356,7 +356,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
         int color = 0xCC232323;
         for (HUDComponent m : modules) {
             if (GuiUtil.mouseOver(x, y + height + 1 + (boost * height), (x + width) - 1, y + height*2 + (boost * height))) {
-                color = 0xCC383838;
                 if (GuiUtil.ldown) {
                     m.toggle();
                 }
