@@ -98,6 +98,7 @@ public class ModuleManager implements MixinInterface {
 			new SkinBlinker(),
 			new StashFinder(),
 			new Timer(),
+			new ChatLogger(),
 
 			//Movement
 			new Anchor(),
