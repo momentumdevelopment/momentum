@@ -5,7 +5,6 @@ todo:
 - rewrite holefill (paste from dream)
 
 fix:
-- 0fps on main menu bug 
 - mixin priority
 - hud editor
 
