@@ -8,7 +8,9 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.client.color.ColorUtil;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
@@ -87,11 +89,10 @@ public class Aura extends Module {
 
     @Override
     public void onUpdate() {
-        int slot = -1;
-
         if (nullCheck())
             return;
 
+        int slot;
         if (autoSwitch.getValue()) {
             for (int i = 0; i < 9; i++) {
                 if (mc.player.inventory.getStackInSlot(i).getItem().equals(getItem())) {
@@ -182,6 +183,6 @@ public class Aura extends Module {
 
     @Override
     public String getHUDData() {
-        return mode.getMode(mode.getValue());
+        return " " + mode.getMode(mode.getValue());
     }
 }

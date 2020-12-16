@@ -3,21 +3,22 @@ package me.linus.momentum.gui.hud.components;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.module.modules.client.Colors;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.WaterMarkModule;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.util.text.TextFormatting;
 
 import java.awt.*;
 
-public class WaterMark extends HUDComponent<WaterMarkModule>  {
+public class WaterMark extends HUDComponent {
 	public WaterMark() {
-		super("WaterMark", 2, 2, WaterMarkModule.INSTANCE);
+		super("WaterMark", 2, 2, null);
 	}
 
 	@Override
 	public void render() {
-		FontUtil.drawStringWithShadow("Momentum " + TextFormatting.RESET + Momentum.VERSION, Momentum.componentManager.getComponentByName("WaterMark").getX(), Momentum.componentManager.getComponentByName("WaterMark").getY(), new Color((int) Colors.r.getValue(), (int)  Colors.g.getValue() ,(int)  Colors.b.getValue()).getRGB());
-		width = (int) (FontUtil.getStringWidth("Momentum " + TextFormatting.RESET + Momentum.VERSION) + 2);
+		FontUtil.drawStringWithShadow("Momentum " + TextFormatting.WHITE + Momentum.VERSION, Momentum.componentManager.getComponentByName("WaterMark").getX(), Momentum.componentManager.getComponentByName("WaterMark").getY(), new Color((int) Colors.r.getValue(), (int)  Colors.g.getValue() ,(int)  Colors.b.getValue()).getRGB());
+		width = (int) (FontUtil.getStringWidth("Momentum " + TextFormatting.WHITE + Momentum.VERSION) + 2);
 	}
 
 	@Override

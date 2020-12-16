@@ -267,6 +267,6 @@ public class HoleESP extends Module {
         if (mode.getValue() == 2 || mode.getValue() == 4)
             postText = "Box";
 
-        return subText + ", " + postText;
+        return " " + subText + ", " + postText;
     }
 }

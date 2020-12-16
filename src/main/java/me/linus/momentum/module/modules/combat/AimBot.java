@@ -51,6 +51,6 @@ public class AimBot extends Module {
 
     @Override
     public String getHUDData() {
-        return mode.getMode(mode.getValue());
+        return " " + mode.getMode(mode.getValue());
     }
 }

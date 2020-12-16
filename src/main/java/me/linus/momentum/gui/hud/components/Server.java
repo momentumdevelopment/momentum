@@ -2,14 +2,15 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.ServerModule;
 import me.linus.momentum.util.render.FontUtil;
 
 import java.awt.*;
 
-public class Server extends HUDComponent<ServerModule> {
+public class Server extends HUDComponent {
     public Server() {
-        super("Server", 2, 46, ServerModule.INSTANCE);
+        super("Server", 2, 46, FPSModule.INSTANCE);
     }
 
     @Override

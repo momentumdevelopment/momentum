@@ -2,6 +2,7 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.InventoryModule;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -10,9 +11,9 @@ import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 
-public class Inventory extends HUDComponent<InventoryModule> {
+public class Inventory extends HUDComponent {
     public Inventory() {
-        super("Inventory", 400, 2, InventoryModule.INSTANCE);
+        super("Inventory", 400, 2, null);
         width = 146;
         height = 50;
     }

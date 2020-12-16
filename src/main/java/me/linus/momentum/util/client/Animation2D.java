@@ -14,6 +14,7 @@ public class Animation2D {
             movement = Math.max(minSpeed, movement);
             movement = Math.min(end - current, movement);
         }
+
         else if (movement < 0) {
             movement = Math.min(-minSpeed, movement);
             movement = Math.max(end - current, movement);

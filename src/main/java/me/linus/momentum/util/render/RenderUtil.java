@@ -22,6 +22,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL32;
 import org.lwjgl.util.glu.GLU;
+import org.newdawn.slick.util.FontUtils;
 
 import java.awt.*;
 import java.nio.FloatBuffer;
@@ -289,9 +290,9 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GlStateManager.tryBlendFuncSeparate((int) 770, (int) 771, (int) 0, (int) 1);
         GlStateManager.disableTexture2D();
         GlStateManager.depthMask((boolean) false);
-        GL11.glEnable((int) 2848);
-        GL11.glHint((int) 3154, (int) 4354);
-        GL11.glLineWidth((float) width);
+        GL11.glEnable(2848);
+        GL11.glHint(3154, (int) 4354);
+        GL11.glLineWidth(width);
         double x = (double) bp.getX() - mc.getRenderManager().viewerPosX;
         double y = (double) bp.getY() - mc.getRenderManager().viewerPosY;
         double z = (double) bp.getZ() - mc.getRenderManager().viewerPosZ;
@@ -370,6 +371,80 @@ public class RenderUtil extends Tessellator implements MixinInterface {
     }
 
     // nametags
+    public static void drawNametag (Entity entity, String[] text, Color color, int type) {
+        Vec3d pos = EntityUtil.getInterpolatedPos(entity, mc.getRenderPartialTicks());
+        drawNametag(pos.x, pos.y + entity.height, pos.z, text, color, type);
+    }
+
+    public static void drawNametag (double x, double y, double z, String[] text, Color color, int type) {
+        double dist = mc.player.getDistance(x, y, z);
+        double scale = 1, offset = 0;
+        int start = 0;
+        switch (type) {
+            case 0:
+                scale = dist / 20 * Math.pow(1.2589254,0.1 / (dist < 25 ? 0.5 : 2));
+                scale = Math.min(Math.max(scale, 0.5), 5);
+                offset = scale > 2 ? scale / 2 : scale;
+                scale /= 40;
+                start = 10;
+                break;
+            case 1:
+                scale =- ((int) dist) / 6.0;
+
+                if (scale < 1)
+                    scale = 1;
+
+                scale *= 2.0 / 75.0;
+                break;
+            case 2:
+                scale = 0.0018 + 0.003 * dist;
+
+                if (dist <= 8.0)
+                    scale = 0.0245;
+
+                start =- 8;
+                break;
+        }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x - mc.getRenderManager().viewerPosX,y + offset-mc.getRenderManager().viewerPosY,z - mc.getRenderManager().viewerPosZ);
+        GlStateManager.rotate(-mc.getRenderManager().playerViewY, 0, 1, 0);
+        GlStateManager.rotate(mc.getRenderManager().playerViewX, mc.gameSettings.thirdPersonView == 2? -1 : 1, 0, 0);
+        GlStateManager.scale(-scale, -scale, scale);
+
+        if (type == 2) {
+            double width = 0;
+            for (int i = 0; i<text.length; i++) {
+                double w = FontUtil.getStringWidth(text[i]) / 2;
+                if (w > width)
+                    width = w;
+            }
+
+            drawBorderedRect(-width - 1, -mc.fontRenderer.FONT_HEIGHT,width + 2,1, new Color(0, 0, 0, 90));
+        }
+
+        GlStateManager.enableTexture2D();
+        for (int i = 0; i < text.length; i++)
+            FontUtil.drawStringWithShadow(text[i], -FontUtil.getStringWidth(text[i]) / 2,i * (mc.fontRenderer.FONT_HEIGHT + 1) + start, color.getRGB());
+
+        GlStateManager.disableTexture2D();
+
+        if (type!=2)
+            GlStateManager.popMatrix();
+    }
+
+    private static void drawBorderedRect (double x, double y, double x1, double y1, Color color) {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        GL11.glColor4f(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
+        bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        bufferbuilder.pos(x,y1,0).endVertex();
+        bufferbuilder.pos(x1,y1,0).endVertex();
+        bufferbuilder.pos(x1,y,0).endVertex();
+        bufferbuilder.pos(x,y,0).endVertex();
+        tessellator.draw();
+    }
+
     public static void drawNametagFromBlockPos(final BlockPos pos, final String text) {
         GlStateManager.pushMatrix();
         glBillboardDistanceScaled(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, mc.player, 1.0f);

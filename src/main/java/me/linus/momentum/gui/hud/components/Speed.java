@@ -2,15 +2,16 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.SpeedModule;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 
 import java.awt.*;
 
-public class Speed extends HUDComponent<SpeedModule> {
+public class Speed extends HUDComponent {
     public Speed() {
-        super("Speed", 2, 46, SpeedModule.INSTANCE);
+        super("Speed", 2, 46, null);
     }
 
     @Override

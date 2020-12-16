@@ -5,6 +5,7 @@ import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.HUD;
 import me.linus.momentum.module.modules.client.ClickGui;
 import me.linus.momentum.module.modules.client.Colors;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.NotificationModule;
 import me.linus.momentum.util.client.Animation2D;
 import me.linus.momentum.util.client.notification.Notification;
@@ -18,9 +19,9 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 import java.util.Iterator;
 
-public class Notifications extends HUDComponent<NotificationModule> {
+public class Notifications extends HUDComponent {
     public Notifications() {
-        super("Notifications", 400, 400, NotificationModule.INSTANCE);
+        super("Notifications", 400, 400, null);
         this.toggle();
     }
 

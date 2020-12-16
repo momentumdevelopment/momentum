@@ -2,15 +2,16 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.TPSModule;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.world.TickUtil;
 
 import java.awt.*;
 
-public class TPS extends HUDComponent<TPSModule> {
+public class TPS extends HUDComponent {
     public TPS() {
-        super("TPS", 2, 57, TPSModule.INSTANCE);
+        super("TPS", 2, 57, null);
     }
 
     @Override

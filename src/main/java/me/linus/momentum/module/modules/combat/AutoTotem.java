@@ -115,6 +115,6 @@ public class AutoTotem extends Module {
 
     @Override
     public String getHUDData() {
-        return String.valueOf(totems);
+        return " " + totems;
     }
 }

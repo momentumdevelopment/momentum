@@ -19,6 +19,8 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
+import javax.annotation.Nullable;
+
 /**
  * @author bon
  * @since 11/13/20
@@ -35,11 +37,11 @@ public abstract class Module implements MixinInterface {
 	private boolean opened;
 	protected boolean isKeyDown = false;
 	private boolean isBinding;
-	public float remainingAnimation = -1.0f;
+	public float remainingAnimation = 0.0f;
 	
 	public List<Setting> settingsList = new ArrayList<>();
 	
-	public Module(String name, Category category, String description) {
+	public Module(String name, Category category, @Nullable String description) {
 		this.name = name;
 		this.category = category;
 		this.description = description;
@@ -50,14 +52,6 @@ public abstract class Module implements MixinInterface {
 		ClientRegistry.registerKeyBinding(this.key);
 		
 		this.setup();
-	}
-	
-	public Module(String name, Category category) {
-		this.name = name;
-		this.category = category;
-		this.description = "null";
-		this.key = new KeyBinding(name, Keyboard.KEY_NONE, Momentum.NAME);
-		ClientRegistry.registerKeyBinding(this.key);
 	}
 	
 	public void setup() {
@@ -81,6 +75,7 @@ public abstract class Module implements MixinInterface {
 	}
 
 	public void onEnable() {
+		remainingAnimation = 0.0f;
 		if (ModuleManager.getModuleByClass(EnableMessage.class).isEnabled() && !this.name.equalsIgnoreCase("clickgui")) {
 			MessageUtil.sendClientMessage(this.name + ChatFormatting.GREEN + " ENABLED");
 		}
@@ -89,6 +84,7 @@ public abstract class Module implements MixinInterface {
 	}
 	
 	public void onDisable() {
+		remainingAnimation = 0.0f;
 		if (ModuleManager.getModuleByClass(EnableMessage.class).isEnabled() && !this.name.equalsIgnoreCase("clickgui")) {
 			MessageUtil.sendClientMessage(this.name + ChatFormatting.RED + " DISABLED");
 		}
@@ -97,7 +93,7 @@ public abstract class Module implements MixinInterface {
 	}
 
 	public void onToggle() {
-
+		remainingAnimation = 0.0f;
 	}
 	
 	public void onUpdate() {
@@ -127,7 +123,6 @@ public abstract class Module implements MixinInterface {
 	}
 	
 	public void enable() {
-		remainingAnimation = -1.0f;
 		if (!this.isEnabled()) {
 			this.enabled = true;
 			try {
@@ -139,7 +134,7 @@ public abstract class Module implements MixinInterface {
 	}
 	
 	public void disable() {
-		if(this.isEnabled()) {
+		if (this.isEnabled()) {
 			this.enabled = false;
 			try {
 				this.onDisable();

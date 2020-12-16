@@ -27,6 +27,6 @@ public class Timer extends Module {
 
     @Override
     public String getHUDData() {
-        return String.valueOf(ticks.getValue());
+        return " " + ticks.getValue();
     }
 }

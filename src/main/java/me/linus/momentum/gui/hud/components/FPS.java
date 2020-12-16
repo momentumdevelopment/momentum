@@ -8,9 +8,9 @@ import net.minecraft.client.Minecraft;
 
 import java.awt.*;
 
-public class FPS extends HUDComponent<FPSModule> {
+public class FPS extends HUDComponent {
     public FPS() {
-        super("FPS", 2, 13, FPSModule.INSTANCE);
+        super("FPS", 2, 13, null);
     }
 
     @Override

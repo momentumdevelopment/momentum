@@ -354,8 +354,8 @@ public class AutoCrystal extends Module {
     @Override
     public String getHUDData() {
         if (currentTarget != null)
-            return currentTarget.getName();
+            return " " + currentTarget.getName();
         else
-            return "None";
+            return " None";
     }
 }

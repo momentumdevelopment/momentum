@@ -2,6 +2,7 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.TimeModule;
 import me.linus.momentum.util.render.FontUtil;
 
@@ -9,9 +10,9 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Time extends HUDComponent<TimeModule> {
+public class Time extends HUDComponent {
     public Time() {
-        super("Time", 2, 35, TimeModule.INSTANCE);
+        super("Time", 2, 35, null);
     }
 
     @Override

@@ -3,15 +3,16 @@ package me.linus.momentum.gui.hud.components;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.module.modules.hud.CrystalModule;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 
-public class Crystal extends HUDComponent<CrystalModule> {
+public class Crystal extends HUDComponent {
     public Crystal() {
-        super("Crystal", 2, 57, CrystalModule.INSTANCE);
+        super("Crystal", 2, 57, null);
     }
 
     @Override

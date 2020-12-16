@@ -391,7 +391,7 @@ public class ConfigManager {
             File guiPos = new File(config.getAbsolutePath(), "HUDPositions.txt");
             BufferedWriter bw = new BufferedWriter(new FileWriter(guiPos));
             for (HUDComponent component : Momentum.componentManager.getComponents()) {
-                bw.write(component.getName() + ":x:" + component.getX() + ":" + "y:" + component.getY());
+                bw.write( component.getX() + ":" + component.getY());
                 bw.write("\r\n");
             }
 
@@ -410,10 +410,9 @@ public class ConfigManager {
             for (String line : linezz) {
                 String[] regex = line.split(":");
                 HUDComponent component = Momentum.componentManager.getComponents().get(lineIndex);
-                if (regex[0].startsWith(component.getName())) {
-                    component.setX(Integer.parseInt(regex[1]));
-                    component.setX(Integer.parseInt(regex[4]));
-                }
+
+                component.setX(Integer.parseInt(regex[0]));
+                component.setY(Integer.parseInt(regex[1]));
 
                 lineIndex++;
             }

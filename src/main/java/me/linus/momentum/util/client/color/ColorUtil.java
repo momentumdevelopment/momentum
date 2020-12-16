@@ -5,6 +5,7 @@ import java.awt.Color;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.client.Colors;
+import me.linus.momentum.util.client.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.Entity;
@@ -25,6 +26,17 @@ public abstract class ColorUtil implements MixinInterface {
         int blue = rgb & 255;
         int color = toRGBA(red, green, blue, (int) Colors.a.getValue());
 		return color;
+	}
+
+	public static int alphaStep(float seconds, float saturation, float brightness, int index) {
+		float hue = System.currentTimeMillis() + index % (int) (seconds * 1000) / (seconds * 1000);
+		int color = Color.HSBtoRGB(hue, saturation, brightness);
+		return color;
+	}
+
+	public static float alphaMove(float seconds) {
+		float hue = System.currentTimeMillis() % (int) (seconds * 1000) / (seconds * 1000);
+		return hue;
 	}
 	
 	public static int toRGBA(int r, int g, int b, int a) {

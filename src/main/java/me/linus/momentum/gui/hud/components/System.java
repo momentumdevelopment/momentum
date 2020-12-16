@@ -2,6 +2,7 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.SystemModule;
 import me.linus.momentum.module.modules.hud.TimeModule;
 import me.linus.momentum.util.render.FontUtil;
@@ -10,9 +11,9 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class System extends HUDComponent<SystemModule> {
+public class System extends HUDComponent {
     public System() {
-        super("System", 2, 500, SystemModule.INSTANCE);
+        super("System", 2, 500, null);
         this.toggle();
     }
 

@@ -49,6 +49,6 @@ public class Velocity extends Module {
 
 	@Override
 	public String getHUDData() {
-		return "H:0% V:0%";
+		return " H:0% V:0%";
 	}
 }

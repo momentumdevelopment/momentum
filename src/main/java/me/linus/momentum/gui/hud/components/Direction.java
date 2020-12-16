@@ -3,14 +3,15 @@ package me.linus.momentum.gui.hud.components;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.module.modules.hud.DirectionModule;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 
 import java.awt.*;
 
-public class Direction extends HUDComponent<DirectionModule> {
+public class Direction extends HUDComponent {
     public Direction() {
-        super("Direction", 2, 68, DirectionModule.INSTANCE);
+        super("Direction", 2, 68, null);
     }
 
     @Override

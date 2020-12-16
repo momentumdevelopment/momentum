@@ -96,85 +96,87 @@ public class DefaultTheme extends Theme implements MixinInterface {
     }
 
     public static void drawDropdown(Module m, int x, int y) {
-        for (Setting s : m.getSettings()) {
-            boost++;
-            if (s instanceof Checkbox) {
-                Checkbox c = (Checkbox) s;
-                drawCheckbox(c, x, y);
-                for (SubSetting ss : c.getSubSettings()) {
-                    if (c.isOpened()) {
-                        boost++;
+        if (m.hasSettings()) {
+            for (Setting s : m.getSettings()) {
+                boost++;
+                if (s instanceof Checkbox) {
+                    Checkbox c = (Checkbox) s;
+                    drawCheckbox(c, x, y);
+                    for (SubSetting ss : c.getSubSettings()) {
+                        if (c.isOpened()) {
+                            boost++;
 
-                        if (ss instanceof SubCheckbox) {
-                            SubCheckbox sc = (SubCheckbox) ss;
-                            drawSubCheckbox(sc, x, y);
+                            if (ss instanceof SubCheckbox) {
+                                SubCheckbox sc = (SubCheckbox) ss;
+                                drawSubCheckbox(sc, x, y);
+                            }
+
+                            if (ss instanceof SubMode) {
+                                SubMode sm = (SubMode) ss;
+                                drawSubMode(sm, x, y);
+                            }
+
+                            if (ss instanceof SubSlider) {
+                                SubSlider ssl = (SubSlider) ss;
+                                drawSubSlider(ssl, x, y);
+                            }
+
+                            GuiScreen.drawRect(x + 4, y + (boost * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
-
-                        if (ss instanceof SubMode) {
-                            SubMode sm = (SubMode) ss;
-                            drawSubMode(sm, x, y);
-                        }
-
-                        if (ss instanceof SubSlider) {
-                            SubSlider ssl = (SubSlider) ss;
-                            drawSubSlider(ssl, x, y);
-                        }
-
-                        GuiScreen.drawRect(x + 4, y + (boost * height) + 1, x + 5, y + height*2 + (boost * height), 0xFF202020);
                     }
                 }
-            }
 
-            if (s instanceof Mode) {
-                Mode mode = (Mode) s;
-                drawMode(mode, x, y);
-                for (SubSetting ss : mode.getSubSettings()) {
-                    if (mode.isOpened()) {
-                        boost++;
+                if (s instanceof Mode) {
+                    Mode mode = (Mode) s;
+                    drawMode(mode, x, y);
+                    for (SubSetting ss : mode.getSubSettings()) {
+                        if (mode.isOpened()) {
+                            boost++;
 
-                        if (ss instanceof SubCheckbox) {
-                            SubCheckbox sc = (SubCheckbox) ss;
-                            drawSubCheckbox(sc, x, y);
+                            if (ss instanceof SubCheckbox) {
+                                SubCheckbox sc = (SubCheckbox) ss;
+                                drawSubCheckbox(sc, x, y);
+                            }
+
+                            if (ss instanceof SubMode) {
+                                SubMode sm = (SubMode) ss;
+                                drawSubMode(sm, x, y);
+                            }
+
+                            if (ss instanceof SubSlider) {
+                                SubSlider ssl = (SubSlider) ss;
+                                drawSubSlider(ssl, x, y);
+                            }
+
+                            GuiScreen.drawRect(x + 4, y + (boost * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
-
-                        if (ss instanceof SubMode) {
-                            SubMode sm = (SubMode) ss;
-                            drawSubMode(sm, x, y);
-                        }
-
-                        if (ss instanceof SubSlider) {
-                            SubSlider ssl = (SubSlider) ss;
-                            drawSubSlider(ssl, x, y);
-                        }
-
-                        GuiScreen.drawRect(x + 4, y + (boost * height) + 1, x + 5, y + height*2 + (boost * height), 0xFF202020);
                     }
                 }
-            }
 
-            if (s instanceof Slider) {
-                Slider sl = (Slider) s;
-                drawSlider(sl, x, y);
-                for (SubSetting ss : sl.getSubSettings()) {
-                    if (sl.isOpened()) {
-                        boost++;
+                if (s instanceof Slider) {
+                    Slider sl = (Slider) s;
+                    drawSlider(sl, x, y);
+                    for (SubSetting ss : sl.getSubSettings()) {
+                        if (sl.isOpened()) {
+                            boost++;
 
-                        if (ss instanceof SubCheckbox) {
-                            SubCheckbox sc = (SubCheckbox) ss;
-                            drawSubCheckbox(sc, x, y);
+                            if (ss instanceof SubCheckbox) {
+                                SubCheckbox sc = (SubCheckbox) ss;
+                                drawSubCheckbox(sc, x, y);
+                            }
+
+                            if (ss instanceof SubMode) {
+                                SubMode sm = (SubMode) ss;
+                                drawSubMode(sm, x, y);
+                            }
+
+                            if (ss instanceof SubSlider) {
+                                SubSlider ssl = (SubSlider) ss;
+                                drawSubSlider(ssl, x, y);
+                            }
+
+                            GuiScreen.drawRect(x + 4, y + (boost * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
-
-                        if (ss instanceof SubMode) {
-                            SubMode sm = (SubMode) ss;
-                            drawSubMode(sm, x, y);
-                        }
-
-                        if (ss instanceof SubSlider) {
-                            SubSlider ssl = (SubSlider) ss;
-                            drawSubSlider(ssl, x, y);
-                        }
-
-                        GuiScreen.drawRect(x + 4, y + (boost * height) + 1, x + 5, y + height*2 + (boost * height), 0xFF202020);
                     }
                 }
             }
@@ -355,13 +357,13 @@ public class DefaultTheme extends Theme implements MixinInterface {
         boost = 0;
         int color = 0xCC232323;
         for (HUDComponent m : modules) {
-            if (GuiUtil.mouseOver(x, y + height + 1 + (boost * height), (x + width) - 1, y + height*2 + (boost * height))) {
+            if (GuiUtil.mouseOver(x, y + height + 1 + (boost * height), (x + width) - 1, y + height * 2 + (boost * height))) {
                 if (GuiUtil.ldown) {
                     m.toggle();
                 }
 
                 if (GuiUtil.rdown) {
-                    m.toggle();
+                    m.toggleState();
                 }
             }
 

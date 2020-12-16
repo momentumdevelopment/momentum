@@ -2,6 +2,7 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.TargetHUDModule;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.FontUtil;
@@ -31,9 +32,9 @@ import java.util.Objects;
  * this is the most spaghetti code shit i've ever seen - linus from the future
  */
 
-public class TargetHUD extends HUDComponent<TargetHUDModule> {
+public class TargetHUD extends HUDComponent {
         public TargetHUD() {
-            super("TargetHUD", 400, 160, TargetHUDModule.INSTANCE);
+            super("TargetHUD", 400, 160, null);
             width = 183;
             height = 90;
         }

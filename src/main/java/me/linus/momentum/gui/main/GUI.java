@@ -61,10 +61,14 @@ public class GUI extends GuiScreen {
 	
 	@Override
 	public void onGuiClosed() {
-		super.onGuiClosed();
-		ModuleManager.getModuleByClass(ClickGui.class).disable();
+		try {
+			super.onGuiClosed();
+			ModuleManager.getModuleByName("ClickGui").disable();
 
-		mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+			mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+		} catch (NullPointerException NPE) {
+
+		}
 	}
 	
 	@Override

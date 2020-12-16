@@ -2,17 +2,21 @@ package me.linus.momentum.gui.hud;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
+import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 
-public class HUDComponent<T extends Module> implements MixinInterface {
+import javax.annotation.Nullable;
+
+public class HUDComponent implements MixinInterface {
 
     private final String name;
     protected int x;
     protected int y;
     protected int width = 10;
     protected int height = mc.fontRenderer.FONT_HEIGHT + 3;
-    protected final T module;
+    protected final Module module;
+    private boolean opened;
 
     private boolean dragging = false;
     private int dragX = 0;
@@ -20,12 +24,13 @@ public class HUDComponent<T extends Module> implements MixinInterface {
     private boolean enabled;
     public int colors;
 
-    public HUDComponent(String name, int x, int y, T module) {
+    public HUDComponent(String name, int x, int y, @Nullable Module module) {
         this.name = name;
         this.x = x;
-        enabled = false;
+        this.enabled = false;
         this.y = y;
         this.module = module;
+        this.opened = false;
     }
 
     public void renderInGui(int mouseX, int mouseY) {
@@ -46,27 +51,36 @@ public class HUDComponent<T extends Module> implements MixinInterface {
             int screenHeight = new ScaledResolution(mc).getScaledHeight();
 
             if (width < 0) {
-                if (x > screenWidth) x = screenWidth;
-                if (x + width < 0) x = -width;
+                if (x > screenWidth)
+                    x = screenWidth;
+
+                if (x + width < 0)
+                    x = -width;
             } else {
-                if (x < 0) x = 0;
-                if (x + width > screenWidth) x = screenWidth - width;
+                if (x < 0)
+                    x = 0;
+
+                if (x + width > screenWidth)
+                    x = screenWidth - width;
             }
 
-            if (y < 0) y = 0;
-            if (y + height > screenHeight) y = screenHeight - height;
+            if (y < 0)
+                y = 0;
+
+            if (y + height > screenHeight)
+                y = screenHeight - height;
         }
     }
 
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        if(width < 0) {
-            if(button == 0 && mouseX < x && mouseX > x + width && mouseY > y && mouseY < y + height){
+        if (width < 0) {
+            if (button == 0 && mouseX < x && mouseX > x + width && mouseY > y && mouseY < y + height){
                 dragX = x - mouseX;
                 dragY = y - mouseY;
                 dragging = true;
             }
         } else {
-            if(button == 0 && mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height){
+            if (button == 0 && mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height){
                 dragX = x - mouseX;
                 dragY = y - mouseY;
                 dragging = true;
@@ -82,10 +96,24 @@ public class HUDComponent<T extends Module> implements MixinInterface {
         dragging = false;
     }
 
-    public void mouseHovered(int mouseX, int mouseY){}
+    public void mouseHovered(int mouseX, int mouseY){
+
+    }
+
+    public void toggleState() {
+        this.opened = !this.opened;
+    }
+
+    public boolean isOpened() {
+        return this.opened;
+    }
 
     public String getName() {
         return name;
+    }
+
+    public Module getModule() {
+        return module;
     }
 
     public int getX() {

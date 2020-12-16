@@ -7,6 +7,11 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * @author 086
+ * @since 11/28/2020
+ */
+
 public class AutoFish extends Module {
     public AutoFish() {
         super("AutoFish", Category.MISC, "Automatically fishes for you");

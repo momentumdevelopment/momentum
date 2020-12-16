@@ -4,13 +4,14 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.module.modules.hud.CoordinatesModule;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.util.render.FontUtil;
 
 import java.awt.*;
 
-public class Coordinates extends HUDComponent<CoordinatesModule> {
+public class Coordinates extends HUDComponent {
     public Coordinates() {
-        super("Coordinates", 2, 350, CoordinatesModule.INSTANCE);
+        super("Coordinates", 2, 350, null);
     }
 
     String coords;

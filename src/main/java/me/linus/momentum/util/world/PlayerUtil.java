@@ -3,6 +3,7 @@ package me.linus.momentum.util.world;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.Timer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -248,6 +250,22 @@ public class PlayerUtil implements MixinInterface {
 
     public static Vec3d direction(float yaw) {
         return new Vec3d(Math.cos(MathUtil.degToRad(yaw + 90f)), 0, Math.sin(MathUtil.degToRad(yaw + 90f)));
+    }
+
+    public static void setSpeed(EntityLivingBase entity, double speed){
+        double[] dir = directionSpeed(speed);
+        entity.motionX = dir[0];
+        entity.motionZ = dir[1];
+    }
+
+    public static double getBaseMoveSpeed(){
+        double baseSpeed = 0.2873;
+        if (mc.player != null && mc.player.isPotionActive(Potion.getPotionById(1))){
+            final int amplifier = mc.player.getActivePotionEffect(Potion.getPotionById(1)).getAmplifier();
+            baseSpeed *= 1.0 + 0.2 * (amplifier + 1);
+        }
+
+        return baseSpeed;
     }
 
     public static double[] directionSpeed(double speed) {

@@ -3,15 +3,16 @@ package me.linus.momentum.gui.hud.components;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.module.modules.hud.ArmorModule;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 
-public class Armor extends HUDComponent<ArmorModule> {
+public class Armor extends HUDComponent {
     public Armor() {
-        super("Armor", 200, 200, ArmorModule.INSTANCE);
+        super("Armor", 200, 200, null);
     }
 
     static final RenderItem itemRender = mc.getRenderItem();

@@ -31,9 +31,8 @@ public class HUD extends GuiScreen {
 			GuiUtil.lclickListen();
 		}
 
-		if (mouseButton == 1) {
+		if (mouseButton == 1)
 			GuiUtil.rclickListen();
-		}
 
 		for (HUDComponent c : Momentum.componentManager.getComponents()) {
 			c.mouseClicked(mouseX, mouseY, mouseButton);
@@ -67,5 +66,4 @@ public class HUD extends GuiScreen {
 	public boolean doesGuiPauseGame() {
 		return false;
 	}
-	
 }

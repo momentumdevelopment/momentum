@@ -40,7 +40,6 @@ public class HUDWindow implements MixinInterface {
 		Theme current = Theme.getTheme(currentTheme);
 		current.drawTitles(name, x, y);
 		current.drawHUDModules(modules, x, y);
-		
 		reset();
 	}
 	

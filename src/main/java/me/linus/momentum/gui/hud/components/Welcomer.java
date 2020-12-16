@@ -2,14 +2,15 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.WelcomerModule;
 import me.linus.momentum.util.render.FontUtil;
 
 import java.awt.*;
 
-public class Welcomer extends HUDComponent<WelcomerModule> {
+public class Welcomer extends HUDComponent {
     public Welcomer() {
-        super("Welcomer", 200, 2, WelcomerModule.INSTANCE);
+        super("Welcomer", 200, 2, null);
     }
 
     @Override

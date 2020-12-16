@@ -2,6 +2,7 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.TotemModule;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.init.Items;
@@ -9,9 +10,9 @@ import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 
-public class Totem extends HUDComponent<TotemModule> {
+public class Totem extends HUDComponent {
     public Totem() {
-        super("Totem", 2, 57, TotemModule.INSTANCE);
+        super("Totem", 2, 57, null);
     }
 
     @Override

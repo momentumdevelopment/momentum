@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
+import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.module.modules.hud.PlayerViewerModule;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -11,9 +12,9 @@ import net.minecraft.entity.EntityLivingBase;
 
 import java.awt.*;
 
-public class PlayerViewer extends HUDComponent<PlayerViewerModule> {
+public class PlayerViewer extends HUDComponent {
     public PlayerViewer() {
-        super("PlayerViewer", 400, 70, PlayerViewerModule.INSTANCE);
+        super("PlayerViewer", 400, 70, null);
         height = 80;
         width = 50;
     }
