@@ -9,7 +9,7 @@ public class ArrayListModule extends Module {
         INSTANCE = this;
     }
 
-    private static Mode mode = new Mode("Mode", "Alpha", "Category", "Rainbow");
+    private static final Mode mode = new Mode("Mode", "Alpha", "Category", "Rainbow");
 
     @Override
     public void setup() {

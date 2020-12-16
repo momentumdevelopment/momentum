@@ -17,6 +17,6 @@ public interface MixinInterface {
 	 * everywhere else.
 	 */
 	
-	final static Minecraft mc = Minecraft.getMinecraft();
+	Minecraft mc = Minecraft.getMinecraft();
 	
 }

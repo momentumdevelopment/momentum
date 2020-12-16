@@ -1,10 +1,10 @@
 package me.linus.momentum.setting.checkbox;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author bon
@@ -13,11 +13,11 @@ import me.linus.momentum.setting.SubSetting;
 
 public class Checkbox extends Setting {
 	
-	private String name;
+	private final String name;
 	private boolean checked;
 	private boolean opened;
 	
-	private List<SubSetting> subs = new ArrayList<>();
+	private final List<SubSetting> subs = new ArrayList<>();
 	
 	public Checkbox(String name, boolean checked) {
 		this.name = name;

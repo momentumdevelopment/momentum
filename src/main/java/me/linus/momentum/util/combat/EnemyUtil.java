@@ -35,9 +35,8 @@ public class EnemyUtil implements MixinInterface {
     public static boolean enemyCheck(EntityPlayer enemy, int range) {
         if (enemy.getHealth() <= 0.0f) {
             return false;
-        } if (mc.player.getDistanceSq(enemy) > range * range) {
-            return false;
-        } else return true;
+        }
+        return !(mc.player.getDistanceSq(enemy) > range * range);
     }
 
     public static List<BlockPos> getCityBlocks(final EntityPlayer player, final boolean crystal) {
@@ -89,11 +88,7 @@ public class EnemyUtil implements MixinInterface {
         if (animals && (EntityUtil.isPassive(entity) || EntityUtil.isNeutralMob(entity)))
             return true;
 
-        if (mobs && EntityUtil.isHostileMob(entity))
-            return true;
-
-        else
-            return false;
+        return mobs && EntityUtil.isHostileMob(entity);
     }
 
     public static float getHealth(EntityPlayer entityPlayer) {

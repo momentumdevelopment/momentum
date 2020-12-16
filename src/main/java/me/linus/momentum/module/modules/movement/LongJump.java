@@ -25,10 +25,10 @@ public class LongJump extends Module {
     private boolean boostable = false;
     double yVel = 0;
 
-    private static Mode mode = new Mode("Mode", "ByPass", "Glide", "Deer");
+    private static final Mode mode = new Mode("Mode", "ByPass", "Glide", "Deer");
     public static Slider speed = new Slider("Speed", 0.0D, 4.0D, 10.0D, 0);
-    private static Checkbox packet = new Checkbox("Packet", true);
-    private static Checkbox knockback = new Checkbox("Knockback", true);
+    private static final Checkbox packet = new Checkbox("Packet", true);
+    private static final Checkbox knockback = new Checkbox("Knockback", true);
 
     @Override
     public void setup() {

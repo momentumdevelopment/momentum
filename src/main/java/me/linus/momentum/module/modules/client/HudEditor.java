@@ -2,7 +2,6 @@ package me.linus.momentum.module.modules.client;
 
 import me.linus.momentum.gui.main.HUD;
 import me.linus.momentum.module.Module;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 

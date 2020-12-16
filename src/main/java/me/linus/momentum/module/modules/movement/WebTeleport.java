@@ -13,7 +13,7 @@ public class WebTeleport extends Module {
         super("WebTeleport", Category.MOVEMENT, "Allows you to fall through webs faster");
     }
 
-    private static Mode mode = new Mode("Mode", "Normal", "Vanilla");
+    private static final Mode mode = new Mode("Mode", "Normal", "Vanilla");
 
     @Override
     public void setup() {

@@ -13,7 +13,7 @@ public class Sprint extends Module {
         super("Sprint", Category.MOVEMENT, "Automatically sprints");
     }
 
-    private static Mode mode = new Mode("Mode", "Rage", "Legit");
+    private static final Mode mode = new Mode("Mode", "Rage", "Legit");
 
     @Override
     public void setup() {

@@ -122,5 +122,5 @@ processResources {
         exclude 'mcmod.info'
     }
 
-    rename '(.+_at.cfg)', 'META-INF/$1';
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }

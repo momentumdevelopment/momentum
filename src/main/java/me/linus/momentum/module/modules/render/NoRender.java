@@ -18,11 +18,11 @@ public class NoRender extends Module {
     }
 
     public static Checkbox hurtCamera = new Checkbox("Hurt Camera", true);
-    private static Checkbox fire = new Checkbox("Fire", true);
+    private static final Checkbox fire = new Checkbox("Fire", true);
     public static Checkbox armor = new Checkbox("Armor", false);
-    private static Checkbox bossBar = new Checkbox("Boss Bars", true);
-    private static Checkbox blockOverlay = new Checkbox("Block Overlay", true);
-    private static Checkbox noCluster = new Checkbox("Cluster", true);
+    private static final Checkbox bossBar = new Checkbox("Boss Bars", true);
+    private static final Checkbox blockOverlay = new Checkbox("Block Overlay", true);
+    private static final Checkbox noCluster = new Checkbox("Cluster", true);
 
     @Override
     public void setup() {
@@ -53,9 +53,6 @@ public class NoRender extends Module {
     }
 
     public static boolean transparentModel(Entity entity) {
-        if (mc.player.getDistance(entity) < 1)
-            return true;
-        else
-            return false;
+        return mc.player.getDistance(entity) < 1;
     }
 }

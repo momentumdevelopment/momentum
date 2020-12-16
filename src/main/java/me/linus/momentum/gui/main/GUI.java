@@ -1,14 +1,10 @@
 package me.linus.momentum.gui.main;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import me.linus.momentum.gui.util.GuiUtil;
 import me.linus.momentum.module.ModuleManager;
-import me.linus.momentum.module.modules.client.ClickGui;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Keyboard;
+
+import java.io.IOException;
 
 /**
  * @author bon

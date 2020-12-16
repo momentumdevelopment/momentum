@@ -1,8 +1,5 @@
 package me.linus.momentum.gui.main;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.gui.util.GuiUtil;
 import me.linus.momentum.mixin.MixinInterface;
@@ -11,6 +8,9 @@ import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGui;
 import org.lwjgl.input.Mouse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author bon & linustouchtips
@@ -32,9 +32,9 @@ public class Window implements MixinInterface {
 	
 	private int lastmX;
 	private int lastmY;
-	private String name;
-	private Category category;
-	private List<Module> modules;
+	private final String name;
+	private final Category category;
+	private final List<Module> modules;
 	public static final List<Window> windows = new ArrayList<>();
 	
 	/**

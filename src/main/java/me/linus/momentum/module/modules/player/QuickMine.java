@@ -20,7 +20,7 @@ public class QuickMine extends Module {
         super("QuickMine", Category.PLAYER, "Allows you to mine faster");
     }
 
-    private static Mode mode = new Mode("Mode", "Packet", "Damage", "Creative", "Instant", "Delay", "Vanilla");
+    private static final Mode mode = new Mode("Mode", "Packet", "Damage", "Creative", "Instant", "Delay", "Vanilla");
 
     @Override
     public void setup() {

@@ -1,8 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
-import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.Module;
-import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
@@ -11,9 +9,7 @@ import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemChorusFruit;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -33,18 +29,18 @@ public class Surround extends Module {
         super("Surround", Category.COMBAT, "Surrounds your feet with obsidian");
     }
 
-    private static Mode mode = new Mode("Mode", "Standard", "Full", "Anti-City");
-    private static Mode disable = new Mode("Disable", "Jump", "Completion", "Never");
+    private static final Mode mode = new Mode("Mode", "Standard", "Full", "Anti-City");
+    private static final Mode disable = new Mode("Disable", "Jump", "Completion", "Never");
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
 
-    private static Checkbox timeout = new Checkbox("Timeout", true);
+    private static final Checkbox timeout = new Checkbox("Timeout", true);
     public static SubSlider timeoutTick = new SubSlider(timeout, "Timeout Ticks", 1.0D, 15.0D, 20.0D, 1);
 
-    private static Checkbox rotate = new Checkbox("Rotate", true);
-    private static Checkbox centerPlayer = new Checkbox("Center", true);
-    private static Checkbox onlyObsidian = new Checkbox("Only Obsidian", true);
-    private static Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
-    private static Checkbox chorusSave = new Checkbox("Chorus Save", false);
+    private static final Checkbox rotate = new Checkbox("Rotate", true);
+    private static final Checkbox centerPlayer = new Checkbox("Center", true);
+    private static final Checkbox onlyObsidian = new Checkbox("Only Obsidian", true);
+    private static final Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
+    private static final Checkbox chorusSave = new Checkbox("Chorus Save", false);
 
     @Override
     public void setup() {

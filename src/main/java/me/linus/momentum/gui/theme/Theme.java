@@ -1,11 +1,12 @@
 package me.linus.momentum.gui.theme;
 
+import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.gui.theme.themes.DarkTheme;
+import me.linus.momentum.gui.theme.themes.DefaultTheme;
+import me.linus.momentum.module.Module;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.gui.theme.themes.*;
-import me.linus.momentum.module.Module;
 
 /**
  * @author bon
@@ -14,9 +15,9 @@ import me.linus.momentum.module.Module;
 
 public abstract class Theme {
 	
-	private String name;
-	private int width;
-	private int height;
+	private final String name;
+	private final int width;
+	private final int height;
 	
 	public Theme(String name, int width, int height) {
 		this.name = name;

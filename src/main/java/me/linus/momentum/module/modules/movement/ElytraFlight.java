@@ -23,29 +23,29 @@ public class ElytraFlight extends Module {
         super("ElytraFlight", Category.MOVEMENT, "Allows you to fly faster on an elytra");
     }
 
-    private static Mode mode = new Mode("Mode", "Control", "Pitch", "NCP-Pitch", "Highway");
-    private static SubSlider rotationNCP = new SubSlider(mode, "NCP Rotation", 0.0D, 30.0D, 90.0D, 1);
-    private static SubCheckbox pitchReset = new SubCheckbox(mode, "Pitch Reset", false);
+    private static final Mode mode = new Mode("Mode", "Control", "Pitch", "NCP-Pitch", "Highway");
+    private static final SubSlider rotationNCP = new SubSlider(mode, "NCP Rotation", 0.0D, 30.0D, 90.0D, 1);
+    private static final SubCheckbox pitchReset = new SubCheckbox(mode, "Pitch Reset", false);
 
     public static Slider hSpeed = new Slider("Glide Speed", 0.0D, 2.1D, 3.0D, 1);
     public static Slider ySpeed = new Slider("Vertical Speed", 0.0D, 1.0D, 3.0D, 1);
     public static Slider yOffset = new Slider("Y-Offset", 0.0D, 0.009D, 0.1D, 3);
     public static Slider fallSpeed = new Slider("Fall Speed", 0.0D, 0.0D, 0.1D, 3);
 
-    private static Checkbox takeoffTimer = new Checkbox("Takeoff Timer", false);
-    private static SubSlider takeoffTicks = new SubSlider(takeoffTimer, "Takeoff Timer Speed", 0.1D, 0.5D, 1.0D, 2);
+    private static final Checkbox takeoffTimer = new Checkbox("Takeoff Timer", false);
+    private static final SubSlider takeoffTicks = new SubSlider(takeoffTimer, "Takeoff Timer Speed", 0.1D, 0.5D, 1.0D, 2);
 
-    private static Checkbox useTimer = new Checkbox("Use Timer", false);
-    private static SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.1D, 1.1D, 2.0D, 2);
+    private static final Checkbox useTimer = new Checkbox("Use Timer", false);
+    private static final SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.1D, 1.1D, 2.0D, 2);
 
-    private static Checkbox pitchSpoof = new Checkbox("Pitch Spoof", false);
-    private static Checkbox autoTakeoff = new Checkbox("Auto-Takeoff", false);
+    private static final Checkbox pitchSpoof = new Checkbox("Pitch Spoof", false);
+    private static final Checkbox autoTakeoff = new Checkbox("Auto-Takeoff", false);
 
-    private static Checkbox disable = new Checkbox("Disable", true);
-    private static SubCheckbox waterCancel = new SubCheckbox(disable, "Disable in Liquid", true);
-    private static SubCheckbox onUpward = new SubCheckbox(disable, "Disable on Upward Motion", false);
-    private static SubCheckbox onCollision = new SubCheckbox(disable, "Disable on Collision", false);
-    private static SubSlider lowestY = new SubSlider(disable, "Disable Below Y-Level", 0.0D, 65.0D, 256.0D, 0);
+    private static final Checkbox disable = new Checkbox("Disable", true);
+    private static final SubCheckbox waterCancel = new SubCheckbox(disable, "Disable in Liquid", true);
+    private static final SubCheckbox onUpward = new SubCheckbox(disable, "Disable on Upward Motion", false);
+    private static final SubCheckbox onCollision = new SubCheckbox(disable, "Disable on Collision", false);
+    private static final SubSlider lowestY = new SubSlider(disable, "Disable Below Y-Level", 0.0D, 65.0D, 256.0D, 0);
 
     @Override
     public void setup() {

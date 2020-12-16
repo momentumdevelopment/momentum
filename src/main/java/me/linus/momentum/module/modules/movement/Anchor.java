@@ -16,8 +16,8 @@ public class Anchor extends Module {
         super("Anchor", Category.MOVEMENT, "Stops all movement above a hole");
     }
 
-    private static Checkbox pull = new Checkbox("Pull", false);
-    private static SubSlider speed = new SubSlider(pull, "Pull Speed", 0.0D, 3.0D, 10.0D, 1);
+    private static final Checkbox pull = new Checkbox("Pull", false);
+    private static final SubSlider speed = new SubSlider(pull, "Pull Speed", 0.0D, 3.0D, 10.0D, 1);
 
     @Override
     public void setup() {

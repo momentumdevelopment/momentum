@@ -1,18 +1,17 @@
 package me.linus.momentum.mixin.mixins;
 
+import io.netty.channel.ChannelHandlerContext;
+import me.linus.momentum.event.MomentumEvent.Stage;
+import me.linus.momentum.event.events.packet.PacketReceiveEvent;
+import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.ModuleManager;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import me.linus.momentum.event.MomentumEvent.Stage;
-import me.linus.momentum.event.events.packet.PacketReceiveEvent;
-import me.linus.momentum.event.events.packet.PacketSendEvent;
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraftforge.common.MinecraftForge;
 
 import java.io.IOException;
 

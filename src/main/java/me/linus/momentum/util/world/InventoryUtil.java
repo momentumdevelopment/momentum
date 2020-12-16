@@ -2,7 +2,6 @@ package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockObsidian;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;

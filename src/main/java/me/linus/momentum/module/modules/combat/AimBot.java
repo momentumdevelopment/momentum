@@ -20,7 +20,7 @@ public class AimBot extends Module {
         super("AimBot", Category.COMBAT, "Automatically rotates to nearby entities");
     }
 
-    private static Mode mode = new Mode("Mode", "Rotate", "Spoof");
+    private static final Mode mode = new Mode("Mode", "Rotate", "Spoof");
     public static Slider range = new Slider("Range", 0.0D, 8.0D, 20.0D, 0);
 
     @Override

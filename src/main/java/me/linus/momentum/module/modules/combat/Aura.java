@@ -8,9 +8,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.client.Timer;
-import me.linus.momentum.util.client.color.ColorUtil;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
@@ -42,13 +40,13 @@ public class Aura extends Module {
         super("Aura", Category.COMBAT, "Attacks entities");
     }
 
-    private static Mode mode = new Mode("Mode", "Closest", "Priority", "Armor");
+    private static final Mode mode = new Mode("Mode", "Closest", "Priority", "Armor");
     public static SubSlider priorityHealth = new SubSlider(mode, "Priority Health", 0.0D, 20.0D, 36.0D, 0);
 
     public static Checkbox attackCheck = new Checkbox("Attack Check", true);
-    private static SubCheckbox players = new SubCheckbox(attackCheck, "Players", true);
-    private static SubCheckbox animals = new SubCheckbox(attackCheck, "Animals", true);
-    private static SubCheckbox mobs = new SubCheckbox(attackCheck, "Mobs", true);
+    private static final SubCheckbox players = new SubCheckbox(attackCheck, "Players", true);
+    private static final SubCheckbox animals = new SubCheckbox(attackCheck, "Animals", true);
+    private static final SubCheckbox mobs = new SubCheckbox(attackCheck, "Mobs", true);
 
     public static Checkbox delay = new Checkbox("Delay", true);
     public static SubCheckbox useTicks = new SubCheckbox(delay, "Use Ticks", true);
@@ -58,9 +56,9 @@ public class Aura extends Module {
     public static Checkbox armorMelt = new Checkbox("Armor Melt", false);
 
     public static Mode weaponCheck = new Mode("Weapon", "Swing", "Damage");
-    private static SubCheckbox autoSwitch = new SubCheckbox(weaponCheck, "Auto Switch", true);
-    private static SubCheckbox swordOnly = new SubCheckbox(weaponCheck, "Sword Only", true);
-    private static SubCheckbox thirtyTwoKOnly = new SubCheckbox(weaponCheck, "32K Only", false);
+    private static final SubCheckbox autoSwitch = new SubCheckbox(weaponCheck, "Auto Switch", true);
+    private static final SubCheckbox swordOnly = new SubCheckbox(weaponCheck, "Sword Only", true);
+    private static final SubCheckbox thirtyTwoKOnly = new SubCheckbox(weaponCheck, "32K Only", false);
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubCheckbox cannotSee = new SubCheckbox(pause, "Target Cannot be Seen", false);

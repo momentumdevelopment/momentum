@@ -8,7 +8,6 @@ import me.linus.momentum.module.modules.client.ClickGui;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.module.modules.hud.ArrayListModule;
 import me.linus.momentum.util.client.Animation2D;
-import me.linus.momentum.util.client.color.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.text.TextFormatting;

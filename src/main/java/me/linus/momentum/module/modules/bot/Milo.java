@@ -91,9 +91,6 @@ public class Milo extends Module {
     }
 
     public boolean playerCheck() {
-        if (targetPlayer != null && (!targetPlayer.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem().equals(Items.AIR)))
-            return true;
-        else
-            return false;
+        return targetPlayer != null && (!targetPlayer.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem().equals(Items.AIR));
     }
 }

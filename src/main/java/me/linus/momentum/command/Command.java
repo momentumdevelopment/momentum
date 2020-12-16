@@ -1,8 +1,8 @@
 package me.linus.momentum.command;
 
 public class Command {
-    private String command;
-    private String[] usage;
+    private final String command;
+    private final String[] usage;
 
     public Command(String name, String[] usage){
         this.command = name;

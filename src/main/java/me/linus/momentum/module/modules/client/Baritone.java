@@ -14,29 +14,29 @@ public class Baritone extends Module {
         this.enable();
     }
 
-    private static Checkbox color = new Checkbox("Colors", true);
-    private static SubCheckbox path = new SubCheckbox(color, "Render Path", true);
-    private static SubCheckbox goal = new SubCheckbox(color, "Render Goal", true);
-    private static SubSlider pathRed = new SubSlider(color, "Path Red", 0.0D, 255.0D, 255.0D, 0);
-    private static SubSlider pathGreen = new SubSlider(color, "Path Green", 0.0D, 0.0D, 255.0D, 0);
-    private static SubSlider pathBlue = new SubSlider(color, "Path Blue", 0.0D, 255.0D, 255.0D, 0);
-    private static SubSlider goalRed = new SubSlider(color, "Goal Red", 0.0D, 0.0D, 255.0D, 0);
-    private static SubSlider goalGreen = new SubSlider(color, "Goal Green", 0.0D, 255.0D, 255.0D, 0);
-    private static SubSlider goalBlue = new SubSlider(color, "Goal Blue", 0.0D, 0.0D, 255.0D, 0);
+    private static final Checkbox color = new Checkbox("Colors", true);
+    private static final SubCheckbox path = new SubCheckbox(color, "Render Path", true);
+    private static final SubCheckbox goal = new SubCheckbox(color, "Render Goal", true);
+    private static final SubSlider pathRed = new SubSlider(color, "Path Red", 0.0D, 255.0D, 255.0D, 0);
+    private static final SubSlider pathGreen = new SubSlider(color, "Path Green", 0.0D, 0.0D, 255.0D, 0);
+    private static final SubSlider pathBlue = new SubSlider(color, "Path Blue", 0.0D, 255.0D, 255.0D, 0);
+    private static final SubSlider goalRed = new SubSlider(color, "Goal Red", 0.0D, 0.0D, 255.0D, 0);
+    private static final SubSlider goalGreen = new SubSlider(color, "Goal Green", 0.0D, 255.0D, 255.0D, 0);
+    private static final SubSlider goalBlue = new SubSlider(color, "Goal Blue", 0.0D, 0.0D, 255.0D, 0);
 
-    private static Checkbox allow = new Checkbox("Allow", true);
-    private static SubCheckbox jumpAt256 = new SubCheckbox(allow, "Jump at Build Height", true);
-    private static SubCheckbox placeBlocks = new SubCheckbox(allow, "Place Blocks", true);
-    private static SubCheckbox breakBlocks = new SubCheckbox(allow, "Break Blocks", true);
-    private static SubCheckbox parkour = new SubCheckbox(allow, "Parkour", true);
-    private static SubCheckbox waterBucket = new SubCheckbox(allow, "Water Bucket", false);
-    private static SubCheckbox sprint = new SubCheckbox(allow, "Sprint", true);
-    private static SubCheckbox downward = new SubCheckbox(allow, "Downward", true);
-    private static SubCheckbox vines = new SubCheckbox(allow, "Vines", false);
-    private static SubCheckbox lava = new SubCheckbox(allow, "Lava", false);
-    private static SubCheckbox water = new SubCheckbox(allow, "Water", false);
+    private static final Checkbox allow = new Checkbox("Allow", true);
+    private static final SubCheckbox jumpAt256 = new SubCheckbox(allow, "Jump at Build Height", true);
+    private static final SubCheckbox placeBlocks = new SubCheckbox(allow, "Place Blocks", true);
+    private static final SubCheckbox breakBlocks = new SubCheckbox(allow, "Break Blocks", true);
+    private static final SubCheckbox parkour = new SubCheckbox(allow, "Parkour", true);
+    private static final SubCheckbox waterBucket = new SubCheckbox(allow, "Water Bucket", false);
+    private static final SubCheckbox sprint = new SubCheckbox(allow, "Sprint", true);
+    private static final SubCheckbox downward = new SubCheckbox(allow, "Downward", true);
+    private static final SubCheckbox vines = new SubCheckbox(allow, "Vines", false);
+    private static final SubCheckbox lava = new SubCheckbox(allow, "Lava", false);
+    private static final SubCheckbox water = new SubCheckbox(allow, "Water", false);
 
-    private static Checkbox avoid = new Checkbox("Avoid Dangers", true);
+    private static final Checkbox avoid = new Checkbox("Avoid Dangers", true);
 
     @Override
     public void setup() {

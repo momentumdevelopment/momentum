@@ -23,7 +23,7 @@ public class Criticals extends Module {
         super("Criticals", Category.COMBAT, "Makes every attack a critical");
     }
 
-    private static Mode mode = new Mode("Mode", "ByPass", "Packet", "2b2t", "NCP-Packet", "NCP-ByPass", "Absurd", "Overflow", "Dynamic", "Jump", "MiniJump", "QuickSwitch");
+    private static final Mode mode = new Mode("Mode", "ByPass", "Packet", "2b2t", "NCP-Packet", "NCP-ByPass", "Absurd", "Overflow", "Dynamic", "Jump", "MiniJump", "QuickSwitch");
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubCheckbox auraNotEnabled = new SubCheckbox(pause, "Aura not Enabled", false);

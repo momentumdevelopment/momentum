@@ -1,10 +1,10 @@
 package me.linus.momentum.setting.slider;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author bon
@@ -13,14 +13,14 @@ import me.linus.momentum.setting.SubSetting;
 
 public class Slider extends Setting {
 	
-	private String name;
-	private double min;
+	private final String name;
+	private final double min;
 	private double value;
-	private double max;
-	private int scale;
+	private final double max;
+	private final int scale;
 	private boolean opened;
 	
-	private List<SubSetting> subs = new ArrayList<>();
+	private final List<SubSetting> subs = new ArrayList<>();
 	
 	public Slider(String name, double min, double value, double max, int scale) {
 		this.name = name;

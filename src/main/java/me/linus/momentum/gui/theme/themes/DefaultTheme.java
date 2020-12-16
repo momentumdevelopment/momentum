@@ -1,13 +1,7 @@
 package me.linus.momentum.gui.theme.themes;
 
-import java.util.List;
-
-import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.util.client.color.ColorUtil;
-import me.linus.momentum.util.render.FontUtil;
-import org.lwjgl.input.Keyboard;
-
 import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.Color;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.gui.util.GuiUtil;
@@ -23,9 +17,14 @@ import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.color.ColorUtil;
+import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.math.MathHelper;
+import org.lwjgl.input.Keyboard;
+
+import java.util.List;
 
 /**
  * @author linustouchtips
@@ -43,7 +42,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         super(name, width, height);
     }
 
-    private static FontRenderer font = mc.fontRenderer;
+    private static final FontRenderer font = mc.fontRenderer;
 
     @Override
     public void updateColors() {
@@ -285,7 +284,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
         GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
         GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, x + 4 + (rectAdd > width - 1 ? (width - 5) : rectAdd), (y + height) + height + (boost * height), Color.GRADIENT ? ColorUtil.rainbow(boost) : Color.COLOR);
-        drawTextWithShadow(sl.getName() + " " + Double.toString(sl.getValue()), x + 6, (y + height) + 4 + (boost * height), -1);
+        drawTextWithShadow(sl.getName() + " " + sl.getValue(), x + 6, (y + height) + 4 + (boost * height), -1);
 
         if (sl.hasSubSettings() && !sl.isOpened()) {
             drawText("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);

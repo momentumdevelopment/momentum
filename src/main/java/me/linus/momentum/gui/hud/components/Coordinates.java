@@ -3,8 +3,6 @@ package me.linus.momentum.gui.hud.components;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.module.modules.hud.CoordinatesModule;
-import me.linus.momentum.module.modules.hud.FPSModule;
 import me.linus.momentum.util.render.FontUtil;
 
 import java.awt.*;
@@ -40,10 +38,6 @@ public class Coordinates extends HUDComponent {
     }
 
     public boolean isMouseOnComponent(int x, int y) {
-        if (x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height) {
-            return true;
-        }
-
-        return false;
+        return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
     }
 }

@@ -15,8 +15,8 @@ public class FastPlace extends Module {
         super("FastPlace", Category.PLAYER, "Allows you to place blocks & crystals faster");
     }
 
-    private static Checkbox blocks = new Checkbox("Blocks", false);
-    private static Checkbox crystal = new Checkbox("Crystals", true);
+    private static final Checkbox blocks = new Checkbox("Blocks", false);
+    private static final Checkbox crystal = new Checkbox("Crystals", true);
 
     @Override
     public void setup() {

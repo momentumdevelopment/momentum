@@ -137,10 +137,8 @@ public class Refill extends Module {
             }
         } if (!stack1.getDisplayName().equals(stack2.getDisplayName())) {
             return false;
-        } if (stack1.getItemDamage() != stack2.getItemDamage()) {
-            return false;
         }
-        return true;
+        return stack1.getItemDamage() == stack2.getItemDamage();
     }
 }
 

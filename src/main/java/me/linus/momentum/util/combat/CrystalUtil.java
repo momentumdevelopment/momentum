@@ -1,7 +1,6 @@
 package me.linus.momentum.util.combat;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.module.modules.combat.AutoCrystal;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +14,10 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.*;
+import net.minecraft.util.CombatRules;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.*;
 import net.minecraft.world.Explosion;
 
@@ -31,7 +33,7 @@ public class CrystalUtil implements MixinInterface {
     private static boolean isSpoofingAngles;
     private static double yaw;
     private static double pitch;
-    private static int oldSlot = -1;
+    private static final int oldSlot = -1;
     private static int newSlot;
 
     public static float calculateDamage(final double posX, final double posY, final double posZ, final Entity entity) {
@@ -43,7 +45,7 @@ public class CrystalUtil implements MixinInterface {
         final float damage = (float) (int) ((v * v + v) / 2.0 * 7.0 * doubleExplosionSize + 1.0);
         double finald = 1.0;
         if (entity instanceof EntityLivingBase) {
-            finald = getBlastReduction((EntityLivingBase) entity, getDamageMultiplied(damage), new Explosion(mc.world, (Entity) null, posX, posY, posZ, 6.0f, false, true));
+            finald = getBlastReduction((EntityLivingBase) entity, getDamageMultiplied(damage), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
         }
         return (float) finald;
     }
@@ -75,7 +77,7 @@ public class CrystalUtil implements MixinInterface {
     }
 
     public static boolean canBlockBeSeen(final BlockPos blockPos) {
-        return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d((double) blockPos.getX(), (double) blockPos.getY(), (double) blockPos.getZ()), false, true, false) == null;
+        return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
     }
 
     public static BlockPos getPlayerPos() {

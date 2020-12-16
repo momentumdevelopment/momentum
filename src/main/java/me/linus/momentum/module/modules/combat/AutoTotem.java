@@ -21,7 +21,7 @@ public class AutoTotem extends Module {
     }
 
     public static Slider health = new Slider("Health", 0.0D, 20.0D, 36.0D, 0);
-    private static Checkbox soft = new Checkbox("Soft", true);
+    private static final Checkbox soft = new Checkbox("Soft", true);
 
     @Override
     public void setup() {

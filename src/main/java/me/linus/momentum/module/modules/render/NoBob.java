@@ -13,7 +13,7 @@ public class NoBob extends Module {
         super("NoBob", Category.RENDER, "Prevents the bobbing animation");
     }
 
-    private static Mode mode = new Mode("Mode", "Vanilla", "Settings");
+    private static final Mode mode = new Mode("Mode", "Vanilla", "Settings");
 
     @Override
     public void setup() {

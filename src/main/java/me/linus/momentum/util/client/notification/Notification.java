@@ -9,8 +9,8 @@ import me.linus.momentum.util.client.Timer;
 
 public class Notification {
 
-    private String message;
-    private long completionTime;
+    private final String message;
+    private final long completionTime;
     public float remainingAnimation = -1.0f;
 
     Timer beginTimer = new Timer();

@@ -1,13 +1,13 @@
 package me.linus.momentum.gui.main;
 
-import java.io.IOException;
-
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.util.GuiUtil;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.HudEditor;
 import net.minecraft.client.gui.GuiScreen;
+
+import java.io.IOException;
 
 public class HUD extends GuiScreen {
 	

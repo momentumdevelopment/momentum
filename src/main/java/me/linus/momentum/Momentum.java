@@ -3,23 +3,23 @@ package me.linus.momentum;
 import me.linus.momentum.command.CommandManager;
 import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.main.Window;
+import me.linus.momentum.gui.theme.Theme;
+import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.util.client.CapeAPI;
 import me.linus.momentum.util.client.CustomFont;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.config.ConfigManager;
 import me.linus.momentum.util.config.ShutdownHook;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.lwjgl.opengl.Display;
-import me.linus.momentum.gui.theme.Theme;
-import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.module.ModuleManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.Display;
 
 /**
  * @author bon & linustouchtips

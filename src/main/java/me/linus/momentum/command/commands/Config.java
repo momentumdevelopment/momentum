@@ -1,7 +1,8 @@
 package me.linus.momentum.command.commands;
 
 import me.linus.momentum.command.Command;
-import java.awt.Desktop;
+
+import java.awt.*;
 import java.io.File;
 
 public class Config extends Command {

@@ -21,7 +21,7 @@ public class NoSlow extends Module {
         super("NoSlow", Category.MOVEMENT, "Allows you to move at normal speeds when using an item");
     }
 
-    private static Mode mode = new Mode("Mode", "Normal", "2b2t");
+    private static final Mode mode = new Mode("Mode", "Normal", "2b2t");
 
     @Override
     public void setup() {

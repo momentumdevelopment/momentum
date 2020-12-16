@@ -27,10 +27,10 @@ public class HoleFill extends Module {
         super("HoleFill", Category.COMBAT, "Automatically fills in nearby holes");
     }
 
-    private static Mode mode = new Mode("Mode", "Obsidian", "Ender Chest", "Web");
+    private static final Mode mode = new Mode("Mode", "Obsidian", "Ender Chest", "Web");
     public static Slider range = new Slider("Range", 0.0D, 2.0D, 10.0D, 0);
-    private static Checkbox rotate = new Checkbox("Rotate", true);
-    private static Checkbox disable = new Checkbox("Disables", false);
+    private static final Checkbox rotate = new Checkbox("Rotate", true);
+    private static final Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 250.0D, 255.0D, 0);

@@ -34,10 +34,7 @@ public class EntityUtil implements MixinInterface {
         if (e instanceof EntityAnimal || e instanceof EntityAgeable || e instanceof EntityTameable || e instanceof EntityAmbientCreature || e instanceof EntitySquid)
             return true;
 
-        if (e instanceof EntityIronGolem && ((EntityIronGolem) e).getRevengeTarget() == null)
-            return true;
-
-        return false;
+        return e instanceof EntityIronGolem && ((EntityIronGolem) e).getRevengeTarget() == null;
     }
 
     public static boolean isHostileMob(Entity entity) {

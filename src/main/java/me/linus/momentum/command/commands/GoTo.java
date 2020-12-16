@@ -2,7 +2,6 @@ package me.linus.momentum.command.commands;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalXZ;
-import baritone.api.pathing.goals.GoalYLevel;
 import me.linus.momentum.command.Command;
 
 public class GoTo extends Command {

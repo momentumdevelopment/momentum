@@ -15,9 +15,9 @@ public class FreeCam extends Module {
     }
 
     public static Slider speed = new Slider("Speed", 0.0D, 0.5D, 3.0D, 1);
-    private static Checkbox playerModel = new Checkbox("Player Model", true);
-    private static Checkbox cancelPackets = new Checkbox("Cancel Packets", true);
-    private static Checkbox noClip = new Checkbox("NoClip", true);
+    private static final Checkbox playerModel = new Checkbox("Player Model", true);
+    private static final Checkbox cancelPackets = new Checkbox("Cancel Packets", true);
+    private static final Checkbox noClip = new Checkbox("NoClip", true);
 
     @Override
     public void setup() {

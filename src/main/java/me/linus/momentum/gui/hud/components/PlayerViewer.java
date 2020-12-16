@@ -1,12 +1,10 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
-import me.linus.momentum.module.modules.hud.FPSModule;
-import me.linus.momentum.module.modules.hud.PlayerViewerModule;
+import me.linus.momentum.gui.hud.HUDComponent;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import me.linus.momentum.gui.hud.HUDComponent;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 
@@ -52,7 +50,7 @@ public class PlayerViewer extends HUDComponent {
         GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-((float)Math.atan((double)(mouseY / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(-((float)Math.atan(mouseY / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
         GlStateManager.translate(0.0F, 0.0F, 0.0F);
         RenderManager rendermanager = mc.getRenderManager();
         rendermanager.setPlayerViewY(180.0F);
@@ -74,9 +72,6 @@ public class PlayerViewer extends HUDComponent {
     }
 
     public boolean isMouseOnComponent(int x, int y) {
-        if (x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height) {
-            return true;
-        }
-        return false;
+        return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
     }
 }

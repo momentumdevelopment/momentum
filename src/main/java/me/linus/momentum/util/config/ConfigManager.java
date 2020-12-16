@@ -109,7 +109,7 @@ public class ConfigManager {
                 bw.write(m.getName() + ":");
                 for (Setting s : m.getSettings()) {
                     if (s instanceof Checkbox) {
-                        bw.write(Boolean.toString(((Checkbox) s).getValue()) + ":");
+                        bw.write(((Checkbox) s).getValue() + ":");
                     }
 
                     if (s instanceof Slider) {

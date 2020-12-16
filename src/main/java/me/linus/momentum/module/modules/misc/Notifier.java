@@ -8,6 +8,7 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.client.notification.Notification;
 import me.linus.momentum.util.client.notification.NotificationManager;
 import me.linus.momentum.util.world.PlayerUtil;
@@ -28,14 +29,14 @@ public class Notifier extends Module {
         super("Notifier", Category.MISC, "Notifies you for various things");
     }
 
-    private static Checkbox events = new Checkbox("Events", true);
-    private static SubCheckbox totem = new SubCheckbox(events,"Totem Pop", true);
-    private static SubCheckbox armor = new SubCheckbox(events,"Armor", true);
-    private static SubCheckbox visualRange = new SubCheckbox(events,"Visual Range", false);
+    private static final Checkbox events = new Checkbox("Events", true);
+    private static final SubCheckbox totem = new SubCheckbox(events,"Totem Pop", true);
+    private static final SubCheckbox armor = new SubCheckbox(events,"Armor", true);
+    private static final SubCheckbox visualRange = new SubCheckbox(events,"Visual Range", false);
 
-    private static Checkbox delays = new Checkbox("Delays", true);
-    private static SubSlider armorDelay = new SubSlider(delays, "Armor Delay", 5000, 8000, 10000, 0);
-    private static SubSlider visualRangeDelay = new SubSlider(delays, "VisualRng Delay", 5000, 8000, 10000, 0);
+    private static final Checkbox delays = new Checkbox("Delays", true);
+    private static final SubSlider armorDelay = new SubSlider(delays, "Armor Delay", 5000, 8000, 10000, 0);
+    private static final SubSlider visualRangeDelay = new SubSlider(delays, "VisualRng Delay", 5000, 8000, 10000, 0);
 
     @Override
     public void setup() {
@@ -43,7 +44,7 @@ public class Notifier extends Module {
         addSetting(delays);
     }
 
-    private HashMap<String, Integer> totemPopContainer = new HashMap<>();
+    private final HashMap<String, Integer> totemPopContainer = new HashMap<>();
 
     Timer visualRangeTimer = new Timer();
     Timer armorTimer = new Timer();

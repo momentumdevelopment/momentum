@@ -23,9 +23,9 @@ public class Trigger extends Module {
     Timer timer = new Timer();
 
     public static Slider attackSpeed = new Slider("Attack Delay", 0.0D, 0.0D, 10.0D, 0);
-    private static Checkbox players = new Checkbox("Players", true);
-    private static Checkbox animals = new Checkbox("Animals", false);
-    private static Checkbox mobs = new Checkbox("Mobs", false);
+    private static final Checkbox players = new Checkbox("Players", true);
+    private static final Checkbox animals = new Checkbox("Animals", false);
+    private static final Checkbox mobs = new Checkbox("Mobs", false);
 
     @Override
     public void setup() {

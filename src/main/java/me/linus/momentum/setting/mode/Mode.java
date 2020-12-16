@@ -1,10 +1,10 @@
 package me.linus.momentum.setting.mode;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author bon
@@ -13,12 +13,12 @@ import me.linus.momentum.setting.SubSetting;
 
 public class Mode extends Setting {
 	
-	private String name;
-	private String[] modes;
+	private final String name;
+	private final String[] modes;
 	private int mode;
 	private boolean opened;
 	
-	private List<SubSetting> subs = new ArrayList<>();
+	private final List<SubSetting> subs = new ArrayList<>();
 	
 	public Mode(String name, String... modes) {
 		this.name = name;

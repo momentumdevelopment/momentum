@@ -1,11 +1,7 @@
 package me.linus.momentum.gui.theme.themes;
 
-import java.util.List;
-
-import me.linus.momentum.gui.hud.HUDComponent;
-import org.lwjgl.input.Keyboard;
-
 import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.Color;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.gui.util.GuiUtil;
@@ -20,11 +16,14 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.color.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.color.ColorUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.math.MathHelper;
+import org.lwjgl.input.Keyboard;
+
+import java.util.List;
 
 /**
  * @author bon
@@ -46,7 +45,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		super(name, width, height);
 	}
 	
-	private static FontRenderer font = mc.fontRenderer;
+	private static final FontRenderer font = mc.fontRenderer;
 	
 	@Override
 	public void updateColors() {

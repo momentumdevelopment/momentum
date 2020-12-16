@@ -2,7 +2,6 @@ package me.linus.momentum.gui.hud;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
-import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 

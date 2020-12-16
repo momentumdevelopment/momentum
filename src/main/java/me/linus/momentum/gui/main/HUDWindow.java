@@ -1,7 +1,5 @@
 package me.linus.momentum.gui.main;
 
-import java.util.List;
-
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.Theme;
@@ -10,11 +8,13 @@ import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.module.modules.client.ClickGui;
 
+import java.util.List;
+
 public class HUDWindow implements MixinInterface {
 	
 	private int x;
 	private int y;
-	private String name;
+	private final String name;
 	private boolean dragging;
 	int currentTheme;
 	private int lastmX;
@@ -22,7 +22,7 @@ public class HUDWindow implements MixinInterface {
 	private boolean ldown;
 	private boolean rdown;
 	
-	private List<HUDComponent> modules;
+	private final List<HUDComponent> modules;
 	
 	public HUDWindow(String name, int x, int y) {
 		this.name = name;

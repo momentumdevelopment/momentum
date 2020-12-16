@@ -7,7 +7,6 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.Timer;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAppleGold;
@@ -28,7 +27,7 @@ public class PacketEat extends Module {
         super("PacketEat", Category.PLAYER, "Allows you to eat instantly");
     }
 
-    private static Mode mode = new Mode("Mode", "Packet", "DeSync", "Auto");
+    private static final Mode mode = new Mode("Mode", "Packet", "DeSync", "Auto");
     public static SubSlider health = new SubSlider(mode, "Health", 0.0D, 28.0D, 36.0D, 0);
     public static Slider delay = new Slider("Delay", 0.0D, 6.0D, 10.0D, 0);
 

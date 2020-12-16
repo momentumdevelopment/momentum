@@ -1,20 +1,18 @@
 package me.linus.momentum.command;
 
 import com.google.common.collect.Lists;
+import me.linus.momentum.Momentum;
 import me.linus.momentum.command.commands.*;
-import me.linus.momentum.gui.hud.HUDComponent;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import me.linus.momentum.Momentum;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
 import java.util.List;
 
 public class CommandManager {
-    private List<Command> commands;
+    private final List<Command> commands;
 
     public CommandManager() {
         commands = Lists.newArrayList(

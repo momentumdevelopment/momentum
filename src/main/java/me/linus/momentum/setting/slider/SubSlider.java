@@ -12,12 +12,12 @@ import me.linus.momentum.setting.mode.Mode;
 
 public class SubSlider extends SubSetting {
 	
-	private Setting parent;
-	private String name;
-	private double min;
+	private final Setting parent;
+	private final String name;
+	private final double min;
 	private double value;
-	private double max;
-	private int scale;
+	private final double max;
+	private final int scale;
 
 	public SubSlider(Setting parent, String name, double min, double value, double max, int scale) {
 		this.parent = parent;

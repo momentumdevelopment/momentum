@@ -19,19 +19,19 @@ public class BoatFlight extends Module {
         super("BoatFlight", Category.MOVEMENT, "Allows you to fly on rideable entities");
     }
 
-    private static Mode mode = new Mode("Mode", "Control", "Row");
+    private static final Mode mode = new Mode("Mode", "Control", "Row");
     public static Slider hSpeed = new Slider("Glide Speed", 0.0D, 2.1D, 3.0D, 1);
     public static Slider ySpeed = new Slider("Vertical Speed", 0.0D, 1.0D, 3.0D, 1);
     public static Slider fallSpeed = new Slider("Fall Speed", 0.0D, 0.0D, 0.1D, 3);
 
-    private static Checkbox useTimer = new Checkbox("Use Timer", false);
-    private static SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.1D, 1.1D, 2.0D, 2);
+    private static final Checkbox useTimer = new Checkbox("Use Timer", false);
+    private static final SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.1D, 1.1D, 2.0D, 2);
 
-    private static Checkbox disable = new Checkbox("Disable", true);
-    private static SubCheckbox waterCancel = new SubCheckbox(disable, "Disable in Liquid", true);
-    private static SubCheckbox onUpward = new SubCheckbox(disable, "Disable on Upward Motion", false);
-    private static SubCheckbox onCollision = new SubCheckbox(disable, "Disable on Collision", false);
-    private static SubSlider lowestY = new SubSlider(disable, "Disable Below Y-Level", 0.0D, 65.0D, 256.0D, 0);
+    private static final Checkbox disable = new Checkbox("Disable", true);
+    private static final SubCheckbox waterCancel = new SubCheckbox(disable, "Disable in Liquid", true);
+    private static final SubCheckbox onUpward = new SubCheckbox(disable, "Disable on Upward Motion", false);
+    private static final SubCheckbox onCollision = new SubCheckbox(disable, "Disable on Collision", false);
+    private static final SubSlider lowestY = new SubSlider(disable, "Disable Below Y-Level", 0.0D, 65.0D, 256.0D, 0);
 
     @Override
     public void setup() {

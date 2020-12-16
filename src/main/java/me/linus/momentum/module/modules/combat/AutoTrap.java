@@ -30,12 +30,12 @@ public class AutoTrap extends Module {
         super("AutoTrap", Category.COMBAT, "Automatically traps nearby players");
     }
 
-    private static Mode mode = new Mode("Mode", "Full", "Feet");
+    private static final Mode mode = new Mode("Mode", "Full", "Feet");
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
-    private static Checkbox rotate = new Checkbox("Rotate", true);
-    private static Checkbox disable = new Checkbox("Disables", true);
+    private static final Checkbox rotate = new Checkbox("Rotate", true);
+    private static final Checkbox disable = new Checkbox("Disables", true);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 255.0D, 255.0D, 0);

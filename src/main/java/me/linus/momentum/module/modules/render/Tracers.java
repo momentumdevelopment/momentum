@@ -20,12 +20,12 @@ public class Tracers extends Module {
         super("Tracers", Category.RENDER, "Draws a line to entities");
     }
 
-    private static Checkbox players = new Checkbox("Players", true);
-    private static Checkbox animals = new Checkbox("Animals", true);
-    private static Checkbox mobs = new Checkbox("Mobs", true);
-    private static Checkbox items = new Checkbox("Items", false);
+    private static final Checkbox players = new Checkbox("Players", true);
+    private static final Checkbox animals = new Checkbox("Animals", true);
+    private static final Checkbox mobs = new Checkbox("Mobs", true);
+    private static final Checkbox items = new Checkbox("Items", false);
 
-    private static Slider lineWidth = new Slider("Line Width", 0.0D, 0.75D, 5.0D, 2);
+    private static final Slider lineWidth = new Slider("Line Width", 0.0D, 0.75D, 5.0D, 2);
 
     @Override
     public void setup() {

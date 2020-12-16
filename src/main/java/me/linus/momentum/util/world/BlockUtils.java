@@ -67,10 +67,7 @@ public class BlockUtils implements MixinInterface {
         if (blockPos.getY() != 0)
             return false;
 
-        if (mc.world.getBlockState(blockPos).getBlock() != Blocks.AIR)
-            return false;
-
-        return true;
+        return mc.world.getBlockState(blockPos).getBlock() == Blocks.AIR;
     }
 
     public static List<BlockPos> getSphere(BlockPos loc, float r, int h, boolean hollow, boolean sphere, int plus_y) {

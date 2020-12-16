@@ -1,8 +1,8 @@
 package me.linus.momentum.gui.hud;
 
 import com.google.common.collect.Lists;
-import me.linus.momentum.gui.hud.components.*;
 import me.linus.momentum.gui.hud.components.System;
+import me.linus.momentum.gui.hud.components.*;
 import me.linus.momentum.gui.main.GUI;
 import me.linus.momentum.gui.main.HUD;
 import me.linus.momentum.mixin.MixinInterface;
@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class HUDComponentManager implements MixinInterface {
-    private List<HUDComponent> components;
+    private final List<HUDComponent> components;
 
     public HUDComponentManager() {
         components = Lists.newArrayList(

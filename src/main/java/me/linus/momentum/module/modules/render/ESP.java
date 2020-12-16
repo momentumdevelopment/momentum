@@ -37,10 +37,10 @@ public class ESP extends Module {
     }
 
     public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "Wire-Frame", "CS:GO");
-    private static SubCheckbox players = new SubCheckbox(mode, "Players", true);
-    private static SubCheckbox animals = new SubCheckbox(mode, "Animals", true);
-    private static SubCheckbox mobs = new SubCheckbox(mode, "Mobs", true);
-    private static SubCheckbox vehicles = new SubCheckbox(mode, "Vehicles", true);
+    private static final SubCheckbox players = new SubCheckbox(mode, "Players", true);
+    private static final SubCheckbox animals = new SubCheckbox(mode, "Animals", true);
+    private static final SubCheckbox mobs = new SubCheckbox(mode, "Mobs", true);
+    private static final SubCheckbox vehicles = new SubCheckbox(mode, "Vehicles", true);
     public static SubCheckbox crystals = new SubCheckbox(mode, "Crystals", true);
 
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 2.5D, 5.0D, 1);

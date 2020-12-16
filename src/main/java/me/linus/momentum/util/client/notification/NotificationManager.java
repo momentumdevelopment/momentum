@@ -25,6 +25,6 @@ public class NotificationManager implements MixinInterface {
         int y = new ScaledResolution(mc).getScaledHeight();
 
         FontUtil.drawStringWithShadow(message, x - width - 10, y - 20, new Color(255, 255, 255).getRGB());
-        GuiScreen.drawRect((int) (x - width - 12), y - 19 + mc.fontRenderer.FONT_HEIGHT, (int) (x - 10), y - 19, new Color(0, 0, 0, 70).getRGB());
+        GuiScreen.drawRect((int) (x - width - 12), y - 19 + mc.fontRenderer.FONT_HEIGHT, x - 10, y - 19, new Color(0, 0, 0, 70).getRGB());
     }
 }

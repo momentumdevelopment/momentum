@@ -1,7 +1,17 @@
 package me.linus.momentum.util.client;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
+import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.util.client.color.ChatColor;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.StringUtils;
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,18 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import me.linus.momentum.util.client.color.ChatColor;
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
-
-import me.linus.momentum.mixin.MixinInterface;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.StringUtils;
 
 public class CustomFont implements MixinInterface {
 	private static final Pattern COLOR_CODE_PATTERN = Pattern.compile(ChatColor.COLOR_CHAR+"[0123456789abcdefklmnor]");
@@ -30,8 +28,8 @@ public class CustomFont implements MixinInterface {
 	private float antiAliasingFactor;
 	private UnicodeFont unicodeFont;
 	private int prevScaleFactor = new ScaledResolution(Minecraft.getMinecraft()).getScaleFactor();
-	private String name;
-	private float size;
+	private final String name;
+	private final float size;
 
 	public CustomFont(String fontName, float fontSize) {
 		name = fontName;

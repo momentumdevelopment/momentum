@@ -3,21 +3,21 @@ package me.linus.momentum.util.world;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.Timer;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketPlayer.Rotation;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayer.Rotation;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -34,11 +34,11 @@ import java.text.DecimalFormat;
  */
 
 public class PlayerUtil implements MixinInterface {
-    private static float roundedForward = getRoundedMovementInput(mc.player.movementInput.moveForward);
-    private static float roundedStrafing = getRoundedMovementInput(mc.player.movementInput.moveStrafe);
+    private static final float roundedForward = getRoundedMovementInput(mc.player.movementInput.moveForward);
+    private static final float roundedStrafing = getRoundedMovementInput(mc.player.movementInput.moveStrafe);
     private static double prevPosX;
     private static double prevPosZ;
-    private static Timer timer = new Timer();
+    private static final Timer timer = new Timer();
     final static DecimalFormat Formatter = new DecimalFormat("#.#");
 
     public static double getHealth() {
@@ -69,10 +69,7 @@ public class PlayerUtil implements MixinInterface {
                 validHorizontalBlocks++;
         }
 
-        if (validHorizontalBlocks < 4)
-            return false;
-
-        return true;
+        return validHorizontalBlocks >= 4;
     }
 
     public static BlockPos getLocalPlayerPosFloored() {

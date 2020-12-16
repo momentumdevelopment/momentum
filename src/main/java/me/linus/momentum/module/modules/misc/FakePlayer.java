@@ -18,7 +18,7 @@ public class FakePlayer extends Module {
         super("FakePlayer", Category.MISC, "Creates a fake motionless player");
     }
 
-    private static Mode name = new Mode("Name", "linustouchtips24", "popbob", "Fit", "GrandOlive", "S8N", "Papa_Quill");
+    private static final Mode name = new Mode("Name", "linustouchtips24", "popbob", "Fit", "GrandOlive", "S8N", "Papa_Quill");
     public static Checkbox inventory = new Checkbox("Copy Inventory", true);
 
     @Override

@@ -22,15 +22,15 @@ public class Offhand extends Module {
         super("Offhand", Category.COMBAT, "Switches items in the offhand to a totem when low on health");
     }
 
-    private static Mode mode = new Mode("Mode", "Gapple", "Crystal", "Bed", "Chorus", "Pearl", "Potion", "Creeper", "Totem");
-    private static Mode fallback = new Mode("Fall-Back", "Totem", "Pearl");
+    private static final Mode mode = new Mode("Mode", "Gapple", "Crystal", "Bed", "Chorus", "Pearl", "Potion", "Creeper", "Totem");
+    private static final Mode fallback = new Mode("Fall-Back", "Totem", "Pearl");
     public static Slider health = new Slider("Health", 0.0D, 16.0D, 36.0D, 0);
-    private static Checkbox swordGap = new Checkbox("Sword Gapple", true);
-    private static Checkbox chorusTrap = new Checkbox("Chorus on Trap", true);
-    private static Checkbox caFunction = new Checkbox("Switch Only when Crystalling", false);
-    private static Checkbox holeFunction = new Checkbox("Switch Only In Hole", false);
+    private static final Checkbox swordGap = new Checkbox("Sword Gapple", true);
+    private static final Checkbox chorusTrap = new Checkbox("Chorus on Trap", true);
+    private static final Checkbox caFunction = new Checkbox("Switch Only when Crystalling", false);
+    private static final Checkbox holeFunction = new Checkbox("Switch Only In Hole", false);
     public static SubSlider holeHealth = new SubSlider(holeFunction, "Hole Health", 0.0D, 10.0D, 36.0D, 0);
-    private static Checkbox hotbar = new Checkbox("Search Hotbar", false);
+    private static final Checkbox hotbar = new Checkbox("Search Hotbar", false);
 
     @Override
     public void setup() {

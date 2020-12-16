@@ -3,8 +3,6 @@ package me.linus.momentum.gui.hud.components;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.module.modules.client.Colors;
-import me.linus.momentum.module.modules.hud.FPSModule;
-import me.linus.momentum.module.modules.hud.WaterMarkModule;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.util.text.TextFormatting;
 
@@ -28,10 +26,6 @@ public class WaterMark extends HUDComponent {
 	}
 
 	public boolean isMouseOnComponent(int x, int y) {
-		if (x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height) {
-			return true;
-		}
-
-		return false;
+		return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
 	}
 }

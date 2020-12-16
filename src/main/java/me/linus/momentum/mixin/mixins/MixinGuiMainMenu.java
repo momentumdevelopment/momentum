@@ -1,15 +1,14 @@
 package me.linus.momentum.mixin.mixins;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.util.render.FontUtil;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.text.TextFormatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import me.linus.momentum.Momentum;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
 
 /**
  * @author bon

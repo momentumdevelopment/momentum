@@ -1,13 +1,12 @@
 package me.linus.momentum.mixin;
 
-import java.util.Map;
-
+import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
 
-import net.minecraftforge.common.ForgeVersion;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import java.util.Map;
 
 /**
  * @author bon

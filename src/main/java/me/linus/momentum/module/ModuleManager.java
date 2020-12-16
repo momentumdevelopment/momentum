@@ -1,27 +1,26 @@
 package me.linus.momentum.module;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.gui.theme.Color;
+import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.module.modules.bot.Milo;
+import me.linus.momentum.module.modules.client.*;
 import me.linus.momentum.module.modules.combat.*;
 import me.linus.momentum.module.modules.misc.*;
+import me.linus.momentum.module.modules.movement.*;
 import me.linus.momentum.module.modules.player.*;
 import me.linus.momentum.module.modules.render.*;
-import me.linus.momentum.module.modules.client.*;
-import me.linus.momentum.module.modules.movement.*;
 import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import org.lwjgl.input.Keyboard;
-
-import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.module.Module.Category;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.lwjgl.input.Keyboard;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author bon & linustouchtips

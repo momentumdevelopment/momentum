@@ -8,8 +8,8 @@ public class AntiAFK extends Module {
         super("AntiAFK", Category.MISC, "Prevents you from getting kicked for being AFK");
     }
 
-    private static Checkbox jump = new Checkbox("Jump", true);
-    private static Checkbox chat = new Checkbox("Chat", false);
+    private static final Checkbox jump = new Checkbox("Jump", true);
+    private static final Checkbox chat = new Checkbox("Chat", false);
 
     @Override
     public void setup() {

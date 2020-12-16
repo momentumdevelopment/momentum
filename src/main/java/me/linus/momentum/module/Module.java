@@ -1,25 +1,22 @@
 package me.linus.momentum.module;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.event.events.render.Render3DEvent;
-import me.linus.momentum.module.modules.misc.EnableMessage;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Keyboard;
-
-import com.mojang.realmsclient.gui.ChatFormatting;
-
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.module.modules.misc.EnableMessage;
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author bon
@@ -31,7 +28,7 @@ public abstract class Module implements MixinInterface {
 	private final String name;
 	private final Category category;
 	private final String description;
-	private KeyBinding key;
+	private final KeyBinding key;
 	
 	private boolean enabled;
 	private boolean opened;
@@ -212,7 +209,7 @@ public abstract class Module implements MixinInterface {
 		
 		private final String name;
 
-		private Category(final String name) {
+		Category(final String name) {
 			this.name = name;
 		}
 		

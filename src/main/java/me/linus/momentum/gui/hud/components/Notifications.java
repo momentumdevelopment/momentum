@@ -5,8 +5,6 @@ import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.HUD;
 import me.linus.momentum.module.modules.client.ClickGui;
 import me.linus.momentum.module.modules.client.Colors;
-import me.linus.momentum.module.modules.hud.FPSModule;
-import me.linus.momentum.module.modules.hud.NotificationModule;
 import me.linus.momentum.util.client.Animation2D;
 import me.linus.momentum.util.client.notification.Notification;
 import me.linus.momentum.util.client.notification.NotificationManager;

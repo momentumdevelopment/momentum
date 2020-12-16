@@ -32,7 +32,7 @@ public class Skeleton extends Module {
     public static SubSlider blue = new SubSlider(color, "Blue", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider alpha = new SubSlider(color, "Alpha", 0.0D, 255.0D, 255.0D, 0);
 
-    private static Slider lineWidth = new Slider("Line Width", 0.0D, 1.0D, 5.0D, 0);
+    private static final Slider lineWidth = new Slider("Line Width", 0.0D, 1.0D, 5.0D, 0);
 
     @Override
     public void setup() {
@@ -40,7 +40,7 @@ public class Skeleton extends Module {
         addSetting(lineWidth);
     }
 
-    private ICamera camera = new Frustum();
+    private final ICamera camera = new Frustum();
     private static final HashMap<EntityPlayer, float[][]> entities = new HashMap<>();
 
     private Vec3d getVec3(Render3DEvent event, EntityPlayer e) {
