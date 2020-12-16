@@ -56,6 +56,7 @@ public class FakePlayer extends Module {
         EntityOtherPlayerMP fakePlayer = new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("873e2766-9254-49bc-89d7-5d4d585ad29d"), fakeName));
         fakePlayer.copyLocationAndAnglesFrom(mc.player);
         mc.world.addEntityToWorld(69420, fakePlayer);
+        fakePlayer.setHealth(mc.player.getHealth() + mc.player.getAbsorptionAmount());
 
         if (inventory.getValue())
             fakePlayer.inventory.copyInventory(mc.player.inventory);

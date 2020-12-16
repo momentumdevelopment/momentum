@@ -8,6 +8,7 @@ import me.linus.momentum.module.modules.client.ClickGui;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.module.modules.hud.ArrayListModule;
 import me.linus.momentum.util.client.Animation2D;
+import me.linus.momentum.util.client.color.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.text.TextFormatting;
@@ -47,10 +48,15 @@ public class ActiveModules extends HUDComponent {
                     if (module.remainingAnimation > modWidth && module.isEnabled())
                         module.remainingAnimation = modWidth;
 
+                    int color = new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), 255).getRGB();
+
+                    if (Colors.rainbow.getValue())
+                        color = ColorUtil.rainbow(1);
+
                     if (Momentum.componentManager.getComponentByName("ActiveModules").getX() < (screenWidthScaled / 2))
-                        FontUtil.drawStringWithShadow(modText, Momentum.componentManager.getComponentByName("ActiveModules").getX() - 2 - modWidth + module.remainingAnimation, Momentum.componentManager.getComponentByName("ActiveModules").getY() + (10 * count), new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), 255).getRGB());
+                        FontUtil.drawStringWithShadow(modText, Momentum.componentManager.getComponentByName("ActiveModules").getX() - 2 - modWidth + module.remainingAnimation, Momentum.componentManager.getComponentByName("ActiveModules").getY() + (10 * count), color);
                     else
-                        FontUtil.drawStringWithShadow(modText, Momentum.componentManager.getComponentByName("ActiveModules").getX() - 2 - modWidth - module.remainingAnimation, Momentum.componentManager.getComponentByName("ActiveModules").getY() + (10 * count), new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), 255).getRGB());
+                        FontUtil.drawStringWithShadow(modText, Momentum.componentManager.getComponentByName("ActiveModules").getX() - 2 - modWidth - module.remainingAnimation, Momentum.componentManager.getComponentByName("ActiveModules").getY() + (10 * count), color);
 
                     count++;
                 });

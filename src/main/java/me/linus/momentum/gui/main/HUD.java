@@ -6,6 +6,7 @@ import me.linus.momentum.gui.util.GuiUtil;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.HudEditor;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 
 import java.io.IOException;
 
@@ -14,10 +15,13 @@ public class HUD extends GuiScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
+		GlStateManager.enableTexture2D();
 		HUDWindow.hw.drawHud(mouseX, mouseY);
 		GuiUtil.mouseListen(mouseX, mouseY);
 
 		for (HUDComponent c : Momentum.componentManager.getComponents()) {
+			GlStateManager.enableTexture2D();
+
 			if (c.isEnabled())
 			c.renderInGui(mouseX, mouseY);
 		}

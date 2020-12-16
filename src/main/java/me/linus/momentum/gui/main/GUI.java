@@ -3,6 +3,8 @@ package me.linus.momentum.gui.main;
 import me.linus.momentum.gui.util.GuiUtil;
 import me.linus.momentum.module.ModuleManager;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
@@ -18,6 +20,7 @@ public class GUI extends GuiScreen {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		for (Window w : Window.windows) {
 			w.mouseWheelListen();
+			GlStateManager.enableTexture2D();
 			w.drawGui(mouseX, mouseY);
 		}
 
