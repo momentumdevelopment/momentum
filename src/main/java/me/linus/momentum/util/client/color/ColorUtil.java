@@ -27,15 +27,13 @@ public abstract class ColorUtil implements MixinInterface {
 		return color;
 	}
 
-	public static int alphaStep(float seconds, float saturation, float brightness, int index) {
-		float hue = System.currentTimeMillis() + index % (int) (seconds * 1000) / (seconds * 1000);
-		int color = Color.HSBtoRGB(hue, saturation, brightness);
-		return color;
-	}
-
-	public static float alphaMove(float seconds) {
-		float hue = System.currentTimeMillis() % (int) (seconds * 1000) / (seconds * 1000);
-		return hue;
+	public static Color alphaStep(Color color, int index, int count) {
+		float[] hsb = new float[3];
+		Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb);
+		float brightness = Math.abs(((float)(System.currentTimeMillis() % 2000L) / 1000.0F + (float)index / (float)count * 2.0F) % 2.0F - 1.0F);
+		brightness = 0.5F + 0.5F * brightness;
+		hsb[2] = brightness % 2.0F;
+		return new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
 	}
 	
 	public static int toRGBA(int r, int g, int b, int a) {
