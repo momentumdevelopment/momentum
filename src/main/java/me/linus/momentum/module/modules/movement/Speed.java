@@ -19,7 +19,7 @@ public class Speed extends Module {
     }
 
     private static final Mode mode = new Mode("Mode", "SmoothHop", "MomentumHop", "StrictHop", "Y-Port");
-    private static final SubCheckbox strict = new SubCheckbox(mode, "Strict", false);
+    private static final SubCheckbox strict = new SubCheckbox(mode, "Strict Jump", false);
 
     public static Slider multiplier = new Slider("Multiplier", 0.0D, 0.03D, 0.3D, 3);
 

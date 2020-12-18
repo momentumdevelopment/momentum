@@ -19,7 +19,8 @@
       "MixinNetworkManager",
       "MixinPlayerControllerMP",
       "MixinRenderEnderCrystal",
-      "MixinRenderLivingBase"
+      "MixinRenderLivingBase",
+      "MixinGuiScreen"
     ],
 
     "client": [

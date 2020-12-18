@@ -135,6 +135,7 @@ public class ModuleManager implements MixinInterface {
 			new ESP(),
 			new FullBright(),
 			new HoleESP(),
+			new ItemPreview(),
 			new NoBob(),
 			new NoRender(),
 			new NoWeather(),
