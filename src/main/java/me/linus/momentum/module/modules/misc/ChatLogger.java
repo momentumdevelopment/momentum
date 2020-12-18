@@ -1,11 +1,9 @@
 package me.linus.momentum.module.modules.misc;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.util.config.ConfigManager;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -15,18 +13,23 @@ import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author max
+ * @since 12/17/2020
+ */
+
 public class ChatLogger extends Module {
-    public File txt;
-    File folder;
-    BufferedWriter out;
-    public static final Checkbox numbers = new Checkbox("OnlyNumbers", false);
     public ChatLogger() {
         super("ChatLogger", Category.MISC, "Logs chat to a file");
     }
 
+    public File txt;
+    File folder;
+    BufferedWriter out;
+    public static final Checkbox numbers = new Checkbox("OnlyNumbers", false);
+
     @Override
     public void onEnable() {
-        super.onEnable();
         super.onEnable();
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy-HH-mm");

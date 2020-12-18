@@ -17,6 +17,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 @Mixin(value = EntityPlayerSP.class/*, priority = 634756347*/)
 public class MixinEntityPlayerSP extends AbstractClientPlayer {
     public MixinEntityPlayerSP(final World worldIn, final GameProfile playerProfile) {

@@ -14,6 +14,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 @Mixin(AbstractClientPlayer.class)
 public abstract class MixinAbstractClientPlayer {
 

@@ -7,6 +7,11 @@ import me.linus.momentum.util.render.FontUtil;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Server extends HUDComponent {
     public Server() {
         super("Server", 2, 46, FPSModule.INSTANCE);

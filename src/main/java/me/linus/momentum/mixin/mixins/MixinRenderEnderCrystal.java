@@ -16,13 +16,20 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 @Mixin(RenderEnderCrystal.class)
 public abstract class MixinRenderEnderCrystal implements MixinInterface {
 
     @Shadow
     public ModelBase modelEnderCrystal;
+
     @Shadow
     public ModelBase modelEnderCrystalNoBase;
+
     @Final
     @Shadow
     private static ResourceLocation ENDER_CRYSTAL_TEXTURES;
@@ -34,6 +41,7 @@ public abstract class MixinRenderEnderCrystal implements MixinInterface {
     private void render1(final ModelBase modelBase, final Entity entityIn, final float limbSwing, final float limbSwingAmount, final float ageInTicks, final float netHeadYaw, final float headPitch, final float scale) {
         if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue() && (ESP.mode.getValue() == 3 || ESP.mode.getValue() == 4))
             return;
+
         else
             modelBase.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
     }
@@ -42,14 +50,14 @@ public abstract class MixinRenderEnderCrystal implements MixinInterface {
     private void render2(final ModelBase modelBase, final Entity entityIn, final float limbSwing, final float limbSwingAmount, final float ageInTicks, final float netHeadYaw, final float headPitch, final float scale) {
         if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue() && (ESP.mode.getValue() == 3 || ESP.mode.getValue() == 4))
             return;
+
         else
             modelBase.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
     }
 
     @Inject(method = { "doRender(Lnet/minecraft/entity/item/EntityEnderCrystal;DDDFF)V" }, at = { @At("RETURN") }, cancellable = true)
     public void IdoRender(final EntityEnderCrystal entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks, final CallbackInfo callback) {
-        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue()) {
+        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue())
             ESP.renderCrystal(modelEnderCrystal, modelEnderCrystalNoBase, entity, x, y,z, entityYaw, partialTicks, callback, ENDER_CRYSTAL_TEXTURES);
-        }
     }
 }

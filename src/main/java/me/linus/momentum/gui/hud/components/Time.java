@@ -8,6 +8,11 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Time extends HUDComponent {
     public Time() {
         super("Time", 2, 35, null);

@@ -497,28 +497,36 @@ public class Scaffold extends Module {
         if (!invalid.contains(mc.world.getBlockState(pos13.add(0, 0, 1)).getBlock())) {
             return new BlockData(pos13.add(0, 0, 1), EnumFacing.NORTH);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos13.add(0, 0, -1)).getBlock())) {
             return new BlockData(pos13.add(0, 0, -1), EnumFacing.SOUTH);
         }
+
         final BlockPos pos14 = pos10.add(0, 0, -1);
         if (!invalid.contains(mc.world.getBlockState(pos14.add(0, -1, 0)).getBlock())) {
             return new BlockData(pos14.add(0, -1, 0), EnumFacing.UP);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos14.add(0, 1, 0)).getBlock())) {
             return new BlockData(pos14.add(0, 1, 0), EnumFacing.DOWN);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos14.add(-1, 0, 0)).getBlock())) {
             return new BlockData(pos14.add(-1, 0, 0), EnumFacing.EAST);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos14.add(1, 0, 0)).getBlock())) {
             return new BlockData(pos14.add(1, 0, 0), EnumFacing.WEST);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos14.add(0, 0, 1)).getBlock())) {
             return new BlockData(pos14.add(0, 0, 1), EnumFacing.NORTH);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos14.add(0, 0, -1)).getBlock())) {
             return new BlockData(pos14.add(0, 0, -1), EnumFacing.SOUTH);
         }
+
         return null;
     }
 

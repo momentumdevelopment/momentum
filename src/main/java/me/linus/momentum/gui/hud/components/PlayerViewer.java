@@ -10,6 +10,11 @@ import net.minecraft.entity.EntityLivingBase;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class PlayerViewer extends HUDComponent {
     public PlayerViewer() {
         super("PlayerViewer", 400, 70, null);

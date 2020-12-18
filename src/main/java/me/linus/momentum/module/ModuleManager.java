@@ -83,6 +83,7 @@ public class ModuleManager implements MixinInterface {
 			new AutoDisconnect(),
 			new AutoFish(),
 			new BuildHeight(),
+			new ChatLogger(),
 			new ChatSuffix(),
 			new ColoredText(),
 			new DiscordRPC(),
@@ -98,7 +99,6 @@ public class ModuleManager implements MixinInterface {
 			new SkinBlinker(),
 			new StashFinder(),
 			new Timer(),
-			new ChatLogger(),
 
 			//Movement
 			new Anchor(),

@@ -10,6 +10,11 @@ import net.minecraft.entity.passive.EntityLlama;
 import net.minecraft.entity.passive.EntityMule;
 import net.minecraft.init.SoundEvents;
 
+/**
+ * @author olliem5
+ * @since 12/17/2020
+ */
+
 public class EntityAlert extends Module {
     public EntityAlert() {
         super("EntityAlert", Category.MISC, "Logs positions of nearby entities");

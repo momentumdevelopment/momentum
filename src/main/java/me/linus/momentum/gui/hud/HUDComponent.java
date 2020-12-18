@@ -7,6 +7,11 @@ import net.minecraft.client.gui.ScaledResolution;
 
 import javax.annotation.Nullable;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class HUDComponent implements MixinInterface {
 
     private final String name;

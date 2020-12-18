@@ -7,7 +7,4 @@ package me.linus.momentum.setting;
 
 public class Setting {
 
-
-
-
 }

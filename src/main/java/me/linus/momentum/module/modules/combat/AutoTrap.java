@@ -5,6 +5,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.InventoryUtil;
@@ -85,6 +86,7 @@ public class AutoTrap extends Module {
                     int oldInventorySlot = mc.player.inventory.currentItem;
                     mc.player.inventory.currentItem = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
                     PlayerUtil.placeBlock(blockPos, rotate.getValue());
+                    MessageUtil.sendClientMessage("Trapping " + target.getName() + "!");
                     renderBlocks.add(blockPos);
                     mc.player.inventory.currentItem = oldInventorySlot;
                     blocksPlaced++;

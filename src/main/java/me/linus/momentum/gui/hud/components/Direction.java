@@ -7,6 +7,11 @@ import me.linus.momentum.util.world.PlayerUtil;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Direction extends HUDComponent {
     public Direction() {
         super("Direction", 2, 68, null);

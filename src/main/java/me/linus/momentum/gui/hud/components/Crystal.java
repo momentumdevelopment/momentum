@@ -8,6 +8,11 @@ import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Crystal extends HUDComponent {
     public Crystal() {
         super("Crystal", 2, 57, null);

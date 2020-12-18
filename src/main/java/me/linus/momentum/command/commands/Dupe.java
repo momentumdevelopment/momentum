@@ -3,6 +3,11 @@ package me.linus.momentum.command.commands;
 import me.linus.momentum.command.Command;
 import me.linus.momentum.util.client.MessageUtil;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Dupe extends Command {
     public Dupe() {
         super("Dupe", new String[]{"dupe"});

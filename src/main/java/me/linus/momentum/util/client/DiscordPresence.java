@@ -8,6 +8,11 @@ import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiWorldSelection;
 
+/**
+ * @author olliem5
+ * @since 12/17/2020
+ */
+
 public class DiscordPresence implements MixinInterface {
     private static final DiscordRPC rpc = DiscordRPC.INSTANCE;
     public static DiscordRichPresence rp = new DiscordRichPresence();

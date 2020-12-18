@@ -7,6 +7,11 @@ import me.linus.momentum.util.world.TickUtil;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class TPS extends HUDComponent {
     public TPS() {
         super("TPS", 2, 57, null);

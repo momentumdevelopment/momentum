@@ -11,6 +11,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 
+/**
+ * @author max & linustouchtips
+ * @since 11/26/2020
+ */
+
 public class InventoryUtil implements MixinInterface {
 
     public static int getHotbarItemSlot(Item item) {

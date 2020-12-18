@@ -9,6 +9,11 @@ import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Inventory extends HUDComponent {
     public Inventory() {
         super("Inventory", 400, 2, null);

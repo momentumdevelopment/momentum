@@ -10,15 +10,23 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 @Mixin(C00Handshake.class)
 public class MixinC00Handshake {
 
     @Shadow
     int protocolVersion;
+
     @Shadow
     String ip;
+
     @Shadow
     int port;
+
     @Shadow
     EnumConnectionState requestedState;
 

@@ -38,23 +38,23 @@ public class BurrowESP extends Module {
         addSetting(range);
     }
 
-    private final List<BlockPos> posList = new ArrayList<>();
+    private final List<BlockPos> burrowList = new ArrayList<>();
 
     @Override
     public void onUpdate() {
-        posList.clear();
+        burrowList.clear();
 
         for (EntityPlayer player : mc.world.playerEntities) {
             BlockPos blockPos = new BlockPos(player.posX, player.posY, player.posZ);
-            if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) && mc.player.getDistanceSq(blockPos) <= range.getValue()) {
-                posList.add(blockPos);
-            }
+            
+            if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) && mc.player.getDistanceSq(blockPos) <= range.getValue()) 
+                burrowList.add(blockPos);
         }
     }
 
     @SubscribeEvent
     public void onRender3D(RenderWorldLastEvent eventRender) {
-        for (BlockPos burrowPos : posList) {
+        for (BlockPos burrowPos : burrowList) {
             RenderUtil.drawVanillaBoxFromBlockPos(burrowPos, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
         }
     }

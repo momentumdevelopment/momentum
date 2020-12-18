@@ -174,6 +174,42 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         tessellator.draw();
     }
 
+    public static void drawGradientBoxFromBlockPos(BlockPos blockPos, Color startColor, Color endColor, int sides) {
+        drawGradientBox(blockPos.getX(), blockPos.getY(), blockPos.getZ(), 1, 1, 1, startColor, endColor, sides);
+    }
+
+    public static void drawGradientBox(double x, double y, double z, double w, double h, double d, Color startColor, Color endColor, int sides) {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION);
+        if ((sides & GeometryMasks.Quad.DOWN) != 0)
+        if ((sides & GeometryMasks.Quad.UP) != 0)
+
+        if ((sides & GeometryMasks.Quad.NORTH) != 0) {
+            vertexColor(x + w, y, z, bufferbuilder, startColor);
+            vertexColor(x, y, z, bufferbuilder, startColor);
+            vertexColor(x,y + h, z, bufferbuilder, endColor);
+            vertexColor(x + w, y + h, z, bufferbuilder, endColor);
+        } if ((sides & GeometryMasks.Quad.SOUTH) != 0) {
+            vertexColor(x, y,z + d, bufferbuilder, startColor);
+            vertexColor(x + w, y,z + d, bufferbuilder, startColor);
+            vertexColor(x + w,y + h, z + d, bufferbuilder, endColor);
+            vertexColor(x,y + h,z + d, bufferbuilder, endColor);
+        } if ((sides & GeometryMasks.Quad.WEST) != 0) {
+            vertexColor(x, y, z, bufferbuilder, startColor);
+            vertexColor(x, y,z + d, bufferbuilder, startColor);
+            vertexColor(x,y + h,z + d, bufferbuilder, endColor);
+            vertexColor(x,y + h, z, bufferbuilder, endColor);
+        } if ((sides & GeometryMasks.Quad.EAST) != 0) {
+            vertexColor(x + w, y,z + d, bufferbuilder, startColor);
+            vertexColor(x + w, y, z, bufferbuilder, startColor);
+            vertexColor(x + w,y + h,z, bufferbuilder, endColor);
+            vertexColor(x + w,y + h,z + d, bufferbuilder, endColor);
+        }
+
+        tessellator.draw();
+    }
+
     public static void drawGlowBox(final BlockPos pos, final Color startColor, final Color midColor, final Color endColor) {
         final float red = startColor.getRed() / 255.0f;
         final float green = startColor.getGreen() / 255.0f;

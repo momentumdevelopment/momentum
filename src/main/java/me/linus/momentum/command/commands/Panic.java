@@ -8,6 +8,11 @@ import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.util.text.TextFormatting;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Panic extends Command {
     public Panic () {
         super("Panic", new String[]{"panic"});

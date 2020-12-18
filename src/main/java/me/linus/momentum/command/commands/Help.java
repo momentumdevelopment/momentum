@@ -5,6 +5,11 @@ import me.linus.momentum.command.Command;
 import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.util.text.TextFormatting;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Help extends Command {
     public Help() {
         super("Help", new String[] {"help", "command", "commands"});

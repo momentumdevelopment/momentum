@@ -16,6 +16,11 @@ import net.minecraft.util.text.TextFormatting;
 import java.awt.*;
 import java.util.Comparator;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class ActiveModules extends HUDComponent {
     public ActiveModules() {
         super("ActiveModules", 200, 2, ArrayListModule.INSTANCE);

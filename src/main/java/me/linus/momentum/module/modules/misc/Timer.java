@@ -3,6 +3,11 @@ package me.linus.momentum.module.modules.misc;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.slider.Slider;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Timer extends Module {
     public Timer() {
         super("Timer", Category.MISC, "Modifies client-side ticks");

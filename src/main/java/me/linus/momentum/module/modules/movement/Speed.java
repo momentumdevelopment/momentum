@@ -13,6 +13,12 @@ import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
+
 public class Speed extends Module {
     public Speed() {
         super("Speed", Category.MOVEMENT, "Allows you to go faster");

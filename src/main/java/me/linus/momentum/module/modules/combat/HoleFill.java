@@ -22,6 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author yoink
+ * @since 12/17/2020
+ */
+
+// TODO: rewrite thise
+
 public class HoleFill extends Module {
     public HoleFill() {
         super("HoleFill", Category.COMBAT, "Automatically fills in nearby holes");

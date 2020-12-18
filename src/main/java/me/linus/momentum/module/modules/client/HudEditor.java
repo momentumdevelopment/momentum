@@ -5,6 +5,11 @@ import me.linus.momentum.module.Module;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * @author bon
+ * @since 12/01/202
+ */
+
 public class HudEditor extends Module {
 	public HudEditor() {
 		super("HUD", Category.CLIENT, "The in-game hud editor");
@@ -27,5 +32,6 @@ public class HudEditor extends Module {
 	public void onRender(RenderGameOverlayEvent.Text event) {
 		//boost = 0;
 	}
-	
 }
+	
+

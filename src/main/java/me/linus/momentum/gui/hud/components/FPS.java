@@ -7,6 +7,11 @@ import net.minecraft.client.Minecraft;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class FPS extends HUDComponent {
     public FPS() {
         super("FPS", 2, 13, null);

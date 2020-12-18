@@ -8,6 +8,11 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class System extends HUDComponent {
     public System() {
         super("System", 2, 500, null);

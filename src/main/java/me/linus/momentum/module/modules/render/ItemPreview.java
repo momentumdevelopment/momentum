@@ -19,6 +19,11 @@ import java.awt.*;
 
 import static net.minecraft.client.renderer.ItemRenderer.RES_MAP_BACKGROUND;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class ItemPreview extends Module {
     public ItemPreview() {
         super("ItemPreview", Category.RENDER, "Renders better tooltips");

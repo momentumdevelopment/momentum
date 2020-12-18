@@ -1,6 +1,7 @@
 package me.linus.momentum.module.modules.misc;
 
 import me.linus.momentum.module.Module;
+import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.world.GameType;
 
 /**
@@ -18,6 +19,7 @@ public class FakeCreative extends Module {
         if (nullCheck())
             return;
 
+        MessageUtil.sendClientMessage("Changing gamemode!");
         mc.playerController.setGameType(GameType.CREATIVE);
     }
 

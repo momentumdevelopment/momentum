@@ -10,6 +10,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 @Mixin(LayerBipedArmor.class)
 public class MixinLayerBipedArmor {
     @Inject(method = "setModelSlotVisible", at = @At(value = "HEAD"), cancellable = true)

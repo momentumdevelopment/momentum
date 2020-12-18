@@ -8,6 +8,11 @@ import me.linus.momentum.setting.slider.SubSlider;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Baritone extends Module {
     public Baritone() {
         super("Baritone", Category.CLIENT, "Settings for Baritone");

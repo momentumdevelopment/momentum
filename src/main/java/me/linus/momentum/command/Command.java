@@ -1,5 +1,10 @@
 package me.linus.momentum.command;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Command {
     private final String command;
     private final String[] usage;

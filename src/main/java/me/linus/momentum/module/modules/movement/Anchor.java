@@ -7,7 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * @author linustouchtips
+ * @author linustouchtips & Hoosiers
  * @since 12/03/2020
  */
 

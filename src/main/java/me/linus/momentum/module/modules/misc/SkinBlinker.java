@@ -3,6 +3,11 @@ package me.linus.momentum.module.modules.misc;
 import me.linus.momentum.module.Module;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class SkinBlinker extends Module {
     public SkinBlinker() {
         super("SkinBlinker", Category.MISC, "Switches skin model parts");

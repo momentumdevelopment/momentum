@@ -13,11 +13,8 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Mouse;
 
 /**
- * @author linustouchtips
+ * @author linustouchtips & olliem5
  * @since 11/30/2020
- *
- * @author [Rewrite] olliem5
- * @since 10/12/20
  */
 
 public class MiddleClickFriend extends Module {

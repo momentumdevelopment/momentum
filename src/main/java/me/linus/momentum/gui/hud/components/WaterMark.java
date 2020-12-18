@@ -8,6 +8,11 @@ import net.minecraft.util.text.TextFormatting;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class WaterMark extends HUDComponent {
 	public WaterMark() {
 		super("WaterMark", 2, 2, null);

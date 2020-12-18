@@ -6,6 +6,11 @@ import me.linus.momentum.command.Command;
 import me.linus.momentum.util.client.MessageUtil;
 import org.lwjgl.input.Keyboard;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Prefix extends Command {
     public Prefix() {
         super("Prefix", new String[]{"prefix"});

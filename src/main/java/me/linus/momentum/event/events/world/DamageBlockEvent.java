@@ -5,6 +5,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 @Cancelable
 public class DamageBlockEvent extends MomentumEvent {
     private BlockPos pos;

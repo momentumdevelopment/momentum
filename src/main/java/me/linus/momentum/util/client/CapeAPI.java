@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class CapeAPI implements MixinInterface {
     List<UUID> uuids = new ArrayList<>();
 

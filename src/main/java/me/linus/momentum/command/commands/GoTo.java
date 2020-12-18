@@ -4,6 +4,11 @@ import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalXZ;
 import me.linus.momentum.command.Command;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class GoTo extends Command {
     public GoTo() {
         super("GoTo", new String[] {"goto"});

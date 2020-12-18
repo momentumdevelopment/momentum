@@ -17,6 +17,11 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 import java.util.Iterator;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Notifications extends HUDComponent {
     public Notifications() {
         super("Notifications", 400, 400, null);

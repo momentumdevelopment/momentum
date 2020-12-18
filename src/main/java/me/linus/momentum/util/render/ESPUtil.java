@@ -13,12 +13,12 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-public class ESPUtil implements MixinInterface {
+/**
+ * @author unknown, but many other clients use this for outline
+ * @since 11/26/2020
+ */
 
-    /**
-     * @author unknown, but many other clients use this for outline
-     * @since 11/26/2020
-     */
+public class ESPUtil implements MixinInterface {
 
     public static void renderOne(float width) {
         checkSetupFBO();

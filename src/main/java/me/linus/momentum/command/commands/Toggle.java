@@ -7,6 +7,11 @@ import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.util.text.TextFormatting;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Toggle extends Command {
     public Toggle() {
         super("Toggle", new String[]{"toggle", "t"});

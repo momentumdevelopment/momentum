@@ -1,6 +1,7 @@
 package me.linus.momentum.module.modules.movement;
 
 import me.linus.momentum.module.Module;
+import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.potion.Potion;
 
 import java.util.Objects;
@@ -20,7 +21,9 @@ public class AntiLevitation extends Module {
         if (nullCheck())
             return;
 
-        if (mc.player.isPotionActive(Objects.requireNonNull(Potion.getPotionFromResourceLocation("levitation"))))
+        if (mc.player.isPotionActive(Objects.requireNonNull(Potion.getPotionFromResourceLocation("levitation")))) {
+            MessageUtil.sendClientMessage("Removing levitation effect!");
             mc.player.removeActivePotionEffect(Potion.getPotionFromResourceLocation("levitation"));
+        }
     }
 }

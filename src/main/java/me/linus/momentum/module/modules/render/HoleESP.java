@@ -73,14 +73,14 @@ public class HoleESP extends Module {
         List<BlockPos> obbyHoles = findObbyHoles();
         BlockPos shouldRender = null;
         Iterator<BlockPos> iterator = bRockHoles.iterator();
-        while (iterator.hasNext()) {
+
+        while (iterator.hasNext())
             shouldRender = iterator.next();
-        }
 
         iterator = obbyHoles.iterator();
-        while (iterator.hasNext()) {
+
+        while (iterator.hasNext())
             shouldRender = iterator.next();
-        }
 
         render = shouldRender;
     }
@@ -89,7 +89,6 @@ public class HoleESP extends Module {
     public void onRender3D(Render3DEvent renderEvent) {
         if (render != null) {
             for (BlockPos hole : findObbyHoles()) {
-
                 switch (mode.getValue()) {
                     case 0: {
                         RenderUtil.drawBoundingBoxBottomBlockPos(hole, (float) lineWidth.getValue(), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 144));
@@ -161,7 +160,7 @@ public class HoleESP extends Module {
                         RenderUtil.drawBoundingBoxBottomBlockPos(hole, (float) lineWidth.getValue(), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 144));
 
                         RenderUtil.enableGLGlow();
-                        RenderUtil.drawGlowBox(hole, new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 8), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 0), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 125));
+                        RenderUtil.drawGradientBoxFromBlockPos(hole, new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 144), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 8), GeometryMasks.Quad.ALL);
                         RenderUtil.disableGLGlow();
                         break;
                     }
@@ -201,40 +200,14 @@ public class HoleESP extends Module {
 
     private List<BlockPos> findObbyHoles() {
         NonNullList positions = NonNullList.create();
-        positions.addAll(BlockUtils.getSphere(CrystalUtil.getPlayerPos(), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(this::IsObbyHole).collect(Collectors.toList()));
+        positions.addAll(BlockUtils.getSphere(CrystalUtil.getPlayerPos(), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(BlockUtils::IsObbyHole).collect(Collectors.toList()));
         return positions;
     }
 
     private List<BlockPos> findBRockHoles() {
         NonNullList positions = NonNullList.create();
-        positions.addAll(BlockUtils.getSphere(CrystalUtil.getPlayerPos(), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(this::IsBRockHole).collect(Collectors.toList()));
+        positions.addAll(BlockUtils.getSphere(CrystalUtil.getPlayerPos(), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(BlockUtils::IsBRockHole).collect(Collectors.toList()));
         return positions;
-    }
-
-    private boolean IsObbyHole(BlockPos blockPos) {
-        BlockPos boost = blockPos.add(0, 1, 0);
-        BlockPos boost2 = blockPos.add(0, 0, 0);
-        BlockPos boost3 = blockPos.add(0, 0, -1);
-        BlockPos boost4 = blockPos.add(1, 0, 0);
-        BlockPos boost5 = blockPos.add(-1, 0, 0);
-        BlockPos boost6 = blockPos.add(0, 0, 1);
-        BlockPos boost7 = blockPos.add(0, 2, 0);
-        BlockPos boost8 = blockPos.add(0.5, 0.5, 0.5);
-        BlockPos boost9 = blockPos.add(0, -1, 0);
-        return !(HoleESP.mc.world.getBlockState(boost).getBlock() != Blocks.AIR || IsBRockHole(blockPos) || HoleESP.mc.world.getBlockState(boost2).getBlock() != Blocks.AIR || HoleESP.mc.world.getBlockState(boost7).getBlock() != Blocks.AIR || HoleESP.mc.world.getBlockState(boost3).getBlock() != Blocks.OBSIDIAN && HoleESP.mc.world.getBlockState(boost3).getBlock() != Blocks.BEDROCK || HoleESP.mc.world.getBlockState(boost4).getBlock() != Blocks.OBSIDIAN && HoleESP.mc.world.getBlockState(boost4).getBlock() != Blocks.BEDROCK || HoleESP.mc.world.getBlockState(boost5).getBlock() != Blocks.OBSIDIAN && HoleESP.mc.world.getBlockState(boost5).getBlock() != Blocks.BEDROCK || HoleESP.mc.world.getBlockState(boost6).getBlock() != Blocks.OBSIDIAN && HoleESP.mc.world.getBlockState(boost6).getBlock() != Blocks.BEDROCK || HoleESP.mc.world.getBlockState(boost8).getBlock() != Blocks.AIR || HoleESP.mc.world.getBlockState(boost9).getBlock() != Blocks.OBSIDIAN && HoleESP.mc.world.getBlockState(boost9).getBlock() != Blocks.BEDROCK);
-    }
-
-    private boolean IsBRockHole(BlockPos blockPos) {
-        BlockPos boost = blockPos.add(0, 1, 0);
-        BlockPos boost2 = blockPos.add(0, 0, 0);
-        BlockPos boost3 = blockPos.add(0, 0, -1);
-        BlockPos boost4 = blockPos.add(1, 0, 0);
-        BlockPos boost5 = blockPos.add(-1, 0, 0);
-        BlockPos boost6 = blockPos.add(0, 0, 1);
-        BlockPos boost7 = blockPos.add(0, 2, 0);
-        BlockPos boost8 = blockPos.add(0.5, 0.5, 0.5);
-        BlockPos boost9 = blockPos.add(0, -1, 0);
-        return HoleESP.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && HoleESP.mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && HoleESP.mc.world.getBlockState(boost7).getBlock() == Blocks.AIR && HoleESP.mc.world.getBlockState(boost3).getBlock() == Blocks.BEDROCK && HoleESP.mc.world.getBlockState(boost4).getBlock() == Blocks.BEDROCK && HoleESP.mc.world.getBlockState(boost5).getBlock() == Blocks.BEDROCK && HoleESP.mc.world.getBlockState(boost6).getBlock() == Blocks.BEDROCK && HoleESP.mc.world.getBlockState(boost8).getBlock() == Blocks.AIR && HoleESP.mc.world.getBlockState(boost9).getBlock() == Blocks.BEDROCK;
     }
 
     @Override

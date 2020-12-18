@@ -6,6 +6,11 @@ import net.minecraft.network.play.server.SPacketTimeUpdate;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
+/**
+ * @author linustouchtips
+ * @since 11/26/2020
+ */
+
 public class TickUtil {
     public static float TPS = 20.0f;
 

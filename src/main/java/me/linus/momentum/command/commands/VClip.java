@@ -7,6 +7,11 @@ import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class VClip extends Command implements MixinInterface {
     public VClip() {
         super("VClip", new String[] {"vclip"});

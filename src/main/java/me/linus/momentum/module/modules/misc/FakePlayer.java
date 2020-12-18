@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
+import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 
 import java.util.UUID;
@@ -55,6 +56,7 @@ public class FakePlayer extends Module {
 
         EntityOtherPlayerMP fakePlayer = new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("873e2766-9254-49bc-89d7-5d4d585ad29d"), fakeName));
         fakePlayer.copyLocationAndAnglesFrom(mc.player);
+        MessageUtil.sendClientMessage("Spawning fake player!");
         mc.world.addEntityToWorld(69420, fakePlayer);
         fakePlayer.setHealth(mc.player.getHealth() + mc.player.getAbsorptionAmount());
 

@@ -10,6 +10,11 @@ import me.linus.momentum.module.modules.client.ClickGui;
 
 import java.util.List;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class HUDWindow implements MixinInterface {
 	
 	private int x;

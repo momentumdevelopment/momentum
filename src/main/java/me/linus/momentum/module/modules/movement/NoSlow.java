@@ -32,7 +32,8 @@ public class NoSlow extends Module {
 
     @Override
     public void onUpdate() {
-        if (nullCheck()) return;
+        if (nullCheck())
+            return;
 
         if (mode.getValue() == 1) {
             Item item = mc.player.getActiveItemStack().getItem();

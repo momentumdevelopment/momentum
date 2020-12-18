@@ -13,6 +13,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import javax.annotation.Nullable;
 import java.util.List;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class HUDComponentManager implements MixinInterface {
     private final List<HUDComponent> components;
 

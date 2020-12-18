@@ -7,6 +7,11 @@ import me.linus.momentum.util.world.PlayerUtil;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Speed extends HUDComponent {
     public Speed() {
         super("Speed", 2, 46, null);

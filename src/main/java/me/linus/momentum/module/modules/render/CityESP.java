@@ -52,9 +52,8 @@ public class CityESP extends Module {
             if (FriendManager.isFriend(enemy.getName()) && FriendManager.isFriendModuleEnabled())
                 continue;
 
-            for (BlockPos blocks : EnemyUtil.getCityBlocks(enemy, false)) {
+            for (BlockPos blocks : EnemyUtil.getCityBlocks(enemy, false))
                 cityBlocks.add(blocks);
-            }
         }
     }
 

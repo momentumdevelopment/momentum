@@ -1,5 +1,10 @@
 package me.linus.momentum.util.client;
 
+/**
+ * @author memessz
+ * @since 12/17/2020
+ */
+
 public class Animation2D {
 
     public static float moveTowards(float current, float end, float minSpeed) {

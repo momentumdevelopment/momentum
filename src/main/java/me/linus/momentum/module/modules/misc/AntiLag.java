@@ -9,6 +9,11 @@ import net.minecraft.network.play.server.SPacketParticles;
 import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class AntiLag extends Module {
     public AntiLag() {
         super("AntiLag", Category.MISC, "Prevents particles from lagging your game");

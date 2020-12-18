@@ -1,11 +1,16 @@
 package me.linus.momentum.event.events.player;
 
+import me.linus.momentum.event.MomentumEvent;
 import net.minecraft.entity.MoverType;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
 
 @Cancelable
-public class MoveEvent extends Event {
+public class MoveEvent extends MomentumEvent {
     private MoverType type;
     private double x;
     private double y;

@@ -6,6 +6,11 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 
+/**
+ * @author bon & linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Colors extends Module {
 	public Colors() {
 		super("Colors", Category.CLIENT, "The client-wide color scheme.");

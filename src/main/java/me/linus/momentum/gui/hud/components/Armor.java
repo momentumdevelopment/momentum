@@ -8,6 +8,11 @@ import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Armor extends HUDComponent {
     public Armor() {
         super("Armor", 200, 200, null);

@@ -12,6 +12,11 @@ import net.minecraft.util.text.TextFormatting;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class NameTags extends Module {
     public NameTags() {
         super("NameTags", Category.RENDER, "Draws useful information at player's heads");

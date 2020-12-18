@@ -7,6 +7,11 @@ import me.linus.momentum.util.render.FontUtil;
 
 import java.awt.*;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class Coordinates extends HUDComponent {
     public Coordinates() {
         super("Coordinates", 2, 350, null);

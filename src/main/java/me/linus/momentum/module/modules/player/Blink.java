@@ -12,7 +12,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * @author linustouchtips
+ * @author linustouchtips & hoosiers
  * @since 11/30/2020
  */
 

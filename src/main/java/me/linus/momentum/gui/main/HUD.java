@@ -10,6 +10,11 @@ import net.minecraft.client.renderer.GlStateManager;
 
 import java.io.IOException;
 
+/**
+ * @author linustouchtips
+ * @since 12/17/2020
+ */
+
 public class HUD extends GuiScreen {
 	
 	@Override
