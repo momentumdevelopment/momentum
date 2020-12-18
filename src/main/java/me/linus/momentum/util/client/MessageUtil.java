@@ -12,13 +12,16 @@ import net.minecraft.util.text.TextFormatting;
 public class MessageUtil implements MixinInterface {
 	
 	public static void sendClientMessage(String message) {
-		mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(TextFormatting.DARK_PURPLE + "[Momentum] " + TextFormatting.RESET + message));
+		mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(TextFormatting.DARK_PURPLE + "[Momentum] " + TextFormatting.RESET + message), 69);
 	}
 	
 	public static void sendPublicMessage(String message) {
 		mc.player.sendChatMessage(message);
 	}
-	
+
+
+
+	/// WTF U CAN PASTE THESE INTO DISCORD AND IT TURNS FUNNY HAHAHAHAH
 	public static String toUnicode(String s){
 		return s.toLowerCase()
 				.replace("a", "\u1d00")
