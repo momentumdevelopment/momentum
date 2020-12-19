@@ -51,4 +51,9 @@ public class AntiHunger extends Module {
                 event.setCanceled(true);
         }
     }
+
+    @Override
+    public String getHUDData() {
+        return " " + mode.getMode(mode.getValue());
+    }
 }

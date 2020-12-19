@@ -19,10 +19,8 @@ public class MessageUtil implements MixinInterface {
 		mc.player.sendChatMessage(message);
 	}
 
-
-
 	/// WTF U CAN PASTE THESE INTO DISCORD AND IT TURNS FUNNY HAHAHAHAH
-	public static String toUnicode(String s){
+	public static String toUnicode(String s) {
 		return s.toLowerCase()
 				.replace("a", "\u1d00")
 				.replace("b", "\u0299")

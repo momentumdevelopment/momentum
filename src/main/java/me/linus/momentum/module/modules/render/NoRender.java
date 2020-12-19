@@ -35,7 +35,7 @@ public class NoRender extends Module {
     }
 
     @SubscribeEvent
-    public void onRenderBlockOverlay (RenderBlockOverlayEvent event) {
+    public void onRenderBlockOverlay(RenderBlockOverlayEvent event) {
         if (fire.getValue() && event.getOverlayType() == RenderBlockOverlayEvent.OverlayType.FIRE)
             event.setCanceled(true);
     }

@@ -4,6 +4,7 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +35,7 @@ public class AimBot extends Module {
         if (this.mc.player.getHeldItemMainhand().getItem() instanceof ItemBow && this.mc.player.isHandActive() && this.mc.player.getItemInUseMaxCount() >= 3) {
             EntityPlayer target = EntityUtil.getClosestPlayer(range.getValue());
 
-            if (target != null) {
+            if (target != null && !FriendManager.isFriend(target.getName())) {
                 Vec3d pos = EntityUtil.interpolateEntityTime(target, this.mc.getRenderPartialTicks());
                 float[] angles = MathUtil.calcAngle(EntityUtil.interpolateEntityTime(this.mc.player, this.mc.getRenderPartialTicks()), pos);
 

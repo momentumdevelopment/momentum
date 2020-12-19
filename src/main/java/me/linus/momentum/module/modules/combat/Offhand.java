@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.combat;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
@@ -26,10 +27,17 @@ public class Offhand extends Module {
     private static final Mode fallback = new Mode("Fall-Back", "Totem", "Pearl");
     public static Slider health = new Slider("Health", 0.0D, 16.0D, 36.0D, 0);
     private static final Checkbox swordGap = new Checkbox("Sword Gapple", true);
-    private static final Checkbox chorusTrap = new Checkbox("Chorus on Trap", true);
-    private static final Checkbox caFunction = new Checkbox("Switch Only when Crystalling", false);
-    private static final Checkbox holeFunction = new Checkbox("Switch Only In Hole", false);
+    private static final Checkbox chorusTrap = new Checkbox("Trap Chorus", true);
+
+    private static final Checkbox checks = new Checkbox("Switch Check", true);
+    private static final SubCheckbox caFunction = new SubCheckbox(checks, "AutoCrystal Switch", false);
+    private static final SubCheckbox elytraCheck = new SubCheckbox(checks, "Elytra Switch", false);
+    private static final SubCheckbox fallCheck = new SubCheckbox(checks, "Fall Switch", false);
+    private static final SubCheckbox crystalSwitch = new SubCheckbox(checks, "Crystal Switch", false);
+
+    private static final Checkbox holeFunction = new Checkbox("Hole Switch", false);
     public static SubSlider holeHealth = new SubSlider(holeFunction, "Hole Health", 0.0D, 10.0D, 36.0D, 0);
+
     private static final Checkbox hotbar = new Checkbox("Search Hotbar", false);
 
     @Override
@@ -39,7 +47,7 @@ public class Offhand extends Module {
         addSetting(health);
         addSetting(swordGap);
         addSetting(chorusTrap);
-        addSetting(caFunction);
+        addSetting(checks);
         addSetting(holeFunction);
         addSetting(hotbar);
     }
@@ -65,6 +73,12 @@ public class Offhand extends Module {
           toSwitch = Items.TOTEM_OF_UNDYING;
         if (fallback.getValue() == 1)
             toSwitch = Items.ENDER_PEARL;
+
+        if (mc.player.isElytraFlying() && elytraCheck.getValue())
+            return findFirstItemSlot(toSwitch);
+
+        if (mc.player.fallDistance > 8 && fallCheck.getValue())
+            return findFirstItemSlot(toSwitch);
 
         if (!PlayerUtil.isInHole() && holeFunction.getValue())
             return findFirstItemSlot(toSwitch);

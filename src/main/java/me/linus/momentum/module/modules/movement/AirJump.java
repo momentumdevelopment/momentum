@@ -9,9 +9,9 @@ import net.minecraft.network.play.client.CPacketPlayer;
  * @since 11/26/2020
  */
 
-public class Boost extends Module {
-    public Boost() {
-        super("Boost", Category.MOVEMENT, "Allows you to jump infinitely");
+public class AirJump extends Module {
+    public AirJump() {
+        super("AirJump", Category.MOVEMENT, "Allows you to jump infinitely");
     }
 
     private static final Checkbox packet = new Checkbox("Packet", true);

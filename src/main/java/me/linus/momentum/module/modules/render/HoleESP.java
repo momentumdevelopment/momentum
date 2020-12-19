@@ -11,7 +11,6 @@ import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.render.GeometryMasks;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtils;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
@@ -31,7 +30,7 @@ public class HoleESP extends Module {
         super("HoleESP", Category.RENDER, "Highlights safe holes to stand in while crystalling");
     }
 
-    private static final Mode mode = new Mode("Mode", "Highlight", "Glow", "Box", "Flat", "Wire-Frame", "Wire-Frame Flat");
+    private static final Mode mode = new Mode("Mode", "Highlight", "Glow", "Box", "Flat", "WireFrame", "WireFrame-Flat");
     private static final SubCheckbox doubles = new SubCheckbox(mode, "Doubles", false);
 
     public static Checkbox obsidianColor = new Checkbox("Obsidian Color", true);
@@ -60,7 +59,7 @@ public class HoleESP extends Module {
         addSetting(height);
     }
 
-    private BlockPos render;
+    BlockPos render;
 
     @Override
     public void onDisable() {

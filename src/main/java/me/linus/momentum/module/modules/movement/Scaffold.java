@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.movement;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.Timer;
 import me.linus.momentum.util.combat.CrystalUtil;
@@ -30,8 +31,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Scaffold from DestroyerClient originally written by some Russian dude I don't remember the name of for a 1.8.8 client that I was a part of.
- *
  * @author ZimTheDestroyer
  * @since 12/8/20 @ 12:35 PM CST
  */
@@ -41,8 +40,8 @@ public class Scaffold extends Module {
         super("Scaffold", Category.MOVEMENT, "Rapidly places blocks underneath you");
     }
 
-    private static final Checkbox tower = new Checkbox("Tower", true);
-    private static final Checkbox swing = new Checkbox("SwingArm", false);
+    private static final Mode mode = new Mode("Mode", "Tower", "Static");
+    private static final Checkbox swing = new Checkbox("Swing Arm", false);
     private static final Checkbox bSwitch = new Checkbox("Switch", false);
     private static final Checkbox center = new Checkbox("Center", false);
     private static final Checkbox keepY = new Checkbox("KeepYLevel", false);
@@ -53,7 +52,7 @@ public class Scaffold extends Module {
 
     @Override
     public void setup() {
-        addSetting(tower);
+        addSetting(mode);
         addSetting(swing);
         addSetting(bSwitch);
         addSetting(center);
@@ -124,14 +123,17 @@ public class Scaffold extends Module {
             x = coords[0];
             z = coords[1];
         }
+
         if (canPlace(mc.world.getBlockState(new BlockPos(mc.player.posX, mc.player.posY - (mc.gameSettings.keyBindSneak.isKeyDown() && down.getValue() ? 2 : 1), mc.player.posZ)).getBlock())) {
             x = mc.player.posX;
             z = mc.player.posZ;
         }
+
         BlockPos blockBelow = new BlockPos(x, y-1, z);
         if (mc.gameSettings.keyBindSneak.isKeyDown() && down.getValue()) {
             blockBelow = new BlockPos(x, y - 2, z);
         }
+
         pos = blockBelow;
         if (mc.world.getBlockState(blockBelow).getBlock() == Blocks.AIR) {
             blockData = getBlockData2(blockBelow);
@@ -139,10 +141,12 @@ public class Scaffold extends Module {
                 CrystalUtil.lookAtPacket(blockData.position.getX(), blockData.position.getY(), blockData.position.getZ(), mc.player);
             }
         }
+
         if (blockData != null) {
             if (getBlockCountHotbar() <= 0 || !bSwitch.getValue() && !(mc.player.getHeldItemMainhand().getItem() instanceof ItemBlock)) {
                 return;
             }
+
             final int heldItem = mc.player.inventory.currentItem;
             if (bSwitch.getValue()) {
                 for (int j = 0; j < 9; ++j) {
@@ -153,15 +157,18 @@ public class Scaffold extends Module {
                     }
                 }
             }
-            if (tower.getValue()) {
-                if (mc.gameSettings.keyBindJump.isKeyDown() && mc.player.moveForward == 0.0f && mc.player.moveStrafing == 0.0f && tower.getValue() && !mc.player.isPotionActive(MobEffects.JUMP_BOOST)) {
+
+            if (mode.getValue() == 0) {
+                if (mc.gameSettings.keyBindJump.isKeyDown() && mc.player.moveForward == 0.0f && mc.player.moveStrafing == 0.0f && !mc.player.isPotionActive(MobEffects.JUMP_BOOST)) {
                     if (!teleported && center.getValue()) {
                         teleported = true;
                         BlockPos pos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
                         mc.player.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
                     }
+
                     if (center.getValue() && !teleported)
                         return;
+
                     mc.player.motionY = 0.42f;
                     mc.player.motionZ = 0;
                     mc.player.motionX = 0;
@@ -178,8 +185,10 @@ public class Scaffold extends Module {
             }
 
             if (mc.playerController.processRightClickBlock(mc.player, mc.world, blockData.position, blockData.face, new Vec3d(blockData.position.getX() + Math.random(), blockData.position.getY() + Math.random(), blockData.position.getZ() + Math.random()), EnumHand.MAIN_HAND) != EnumActionResult.FAIL) {
-                if (swing.getValue()) mc.player.swingArm(EnumHand.MAIN_HAND);
-                else  mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
+                if (swing.getValue())
+                    mc.player.swingArm(EnumHand.MAIN_HAND);
+                else
+                    mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
             }
 
             mc.player.inventory.currentItem = heldItem;
@@ -253,6 +262,7 @@ public class Scaffold extends Module {
         return blockCount;
     }
 
+    // the second most spaghetti code shit i've seen - linus
     private BlockData getBlockData2(final BlockPos pos) {
         if (!invalid.contains(mc.world.getBlockState(pos.add(0, -1, 0)).getBlock())) {
             return new BlockData(pos.add(0, -1, 0), EnumFacing.UP);
@@ -418,82 +428,107 @@ public class Scaffold extends Module {
         if (!invalid.contains(mc.world.getBlockState(pos5.add(1, 0, 0)).getBlock())) {
             return new BlockData(pos5.add(1, 0, 0), EnumFacing.WEST);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos5.add(0, 0, 1)).getBlock())) {
             return new BlockData(pos5.add(0, 0, 1), EnumFacing.NORTH);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos5.add(0, 0, -1)).getBlock())) {
             return new BlockData(pos5.add(0, 0, -1), EnumFacing.SOUTH);
         }
+
         final BlockPos pos10 = pos.add(0, -1, 0);
         if (!invalid.contains(mc.world.getBlockState(pos10.add(0, -1, 0)).getBlock())) {
             return new BlockData(pos10.add(0, -1, 0), EnumFacing.UP);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos10.add(0, 1, 0)).getBlock())) {
             return new BlockData(pos10.add(0, 1, 0), EnumFacing.DOWN);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos10.add(-1, 0, 0)).getBlock())) {
             return new BlockData(pos10.add(-1, 0, 0), EnumFacing.EAST);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos10.add(1, 0, 0)).getBlock())) {
             return new BlockData(pos10.add(1, 0, 0), EnumFacing.WEST);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos10.add(0, 0, 1)).getBlock())) {
             return new BlockData(pos10.add(0, 0, 1), EnumFacing.NORTH);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos10.add(0, 0, -1)).getBlock())) {
             return new BlockData(pos10.add(0, 0, -1), EnumFacing.SOUTH);
         }
+
         final BlockPos pos11 = pos10.add(1, 0, 0);
         if (!invalid.contains(mc.world.getBlockState(pos11.add(0, -1, 0)).getBlock())) {
             return new BlockData(pos11.add(0, -1, 0), EnumFacing.UP);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos11.add(0, 1, 0)).getBlock())) {
             return new BlockData(pos11.add(0, 1, 0), EnumFacing.DOWN);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos11.add(-1, 0, 0)).getBlock())) {
             return new BlockData(pos11.add(-1, 0, 0), EnumFacing.EAST);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos11.add(1, 0, 0)).getBlock())) {
             return new BlockData(pos11.add(1, 0, 0), EnumFacing.WEST);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos11.add(0, 0, 1)).getBlock())) {
             return new BlockData(pos11.add(0, 0, 1), EnumFacing.NORTH);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos11.add(0, 0, -1)).getBlock())) {
             return new BlockData(pos11.add(0, 0, -1), EnumFacing.SOUTH);
         }
+
         final BlockPos pos12 = pos10.add(-1, 0, 0);
         if (!invalid.contains(mc.world.getBlockState(pos12.add(0, -1, 0)).getBlock())) {
             return new BlockData(pos12.add(0, -1, 0), EnumFacing.UP);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos12.add(0, 1, 0)).getBlock())) {
             return new BlockData(pos12.add(0, 1, 0), EnumFacing.DOWN);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos12.add(-1, 0, 0)).getBlock())) {
             return new BlockData(pos12.add(-1, 0, 0), EnumFacing.EAST);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos12.add(1, 0, 0)).getBlock())) {
             return new BlockData(pos12.add(1, 0, 0), EnumFacing.WEST);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos12.add(0, 0, 1)).getBlock())) {
             return new BlockData(pos12.add(0, 0, 1), EnumFacing.NORTH);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos12.add(0, 0, -1)).getBlock())) {
             return new BlockData(pos12.add(0, 0, -1), EnumFacing.SOUTH);
         }
+
         final BlockPos pos13 = pos10.add(0, 0, 1);
         if (!invalid.contains(mc.world.getBlockState(pos13.add(0, -1, 0)).getBlock())) {
             return new BlockData(pos13.add(0, -1, 0), EnumFacing.UP);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos13.add(-1, 0, 0)).getBlock())) {
             return new BlockData(pos13.add(-1, 0, 0), EnumFacing.EAST);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos13.add(0, 1, 0)).getBlock())) {
             return new BlockData(pos13.add(0, 1, 0), EnumFacing.DOWN);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos13.add(1, 0, 0)).getBlock())) {
             return new BlockData(pos13.add(1, 0, 0), EnumFacing.WEST);
         }
+
         if (!invalid.contains(mc.world.getBlockState(pos13.add(0, 0, 1)).getBlock())) {
             return new BlockData(pos13.add(0, 0, 1), EnumFacing.NORTH);
         }

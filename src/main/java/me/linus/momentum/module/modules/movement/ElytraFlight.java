@@ -8,9 +8,13 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
+import net.minecraft.init.Items;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
@@ -24,8 +28,10 @@ public class ElytraFlight extends Module {
     }
 
     private static final Mode mode = new Mode("Mode", "Control", "Pitch", "NCP-Pitch", "Highway");
-    private static final SubSlider rotationNCP = new SubSlider(mode, "NCP Rotation", 0.0D, 30.0D, 90.0D, 1);
+    public static final SubSlider rotationNCP = new SubSlider(mode, "NCP Rotation", 0.0D, 30.0D, 90.0D, 1);
     private static final SubCheckbox pitchReset = new SubCheckbox(mode, "Pitch Reset", false);
+
+    private static final Mode boost = new Mode("Boost", "None", "Firework", "Infinite");
 
     public static Slider hSpeed = new Slider("Glide Speed", 0.0D, 2.1D, 3.0D, 1);
     public static Slider ySpeed = new Slider("Vertical Speed", 0.0D, 1.0D, 3.0D, 1);
@@ -42,14 +48,15 @@ public class ElytraFlight extends Module {
     private static final Checkbox autoTakeoff = new Checkbox("Auto-Takeoff", false);
 
     private static final Checkbox disable = new Checkbox("Disable", true);
-    private static final SubCheckbox waterCancel = new SubCheckbox(disable, "Disable in Liquid", true);
-    private static final SubCheckbox onUpward = new SubCheckbox(disable, "Disable on Upward Motion", false);
-    private static final SubCheckbox onCollision = new SubCheckbox(disable, "Disable on Collision", false);
-    private static final SubSlider lowestY = new SubSlider(disable, "Disable Below Y-Level", 0.0D, 65.0D, 256.0D, 0);
+    private static final SubCheckbox waterCancel = new SubCheckbox(disable, "In Liquid", true);
+    private static final SubCheckbox onUpward = new SubCheckbox(disable, "On Upward Motion", false);
+    private static final SubCheckbox onCollision = new SubCheckbox(disable, "On Collision", false);
+    private static final SubSlider lowestY = new SubSlider(disable, "Below Y-Level", 0.0D, 8.0D, 20.0D, 0);
 
     @Override
     public void setup() {
         addSetting(mode);
+        addSetting(boost);
         addSetting(hSpeed);
         addSetting(ySpeed);
         addSetting(yOffset);
@@ -72,7 +79,7 @@ public class ElytraFlight extends Module {
 
     @Override
     public void onDisable() {
-        mc.timer.tickLength = 50;
+        mc.timer.tickLength = 50f;
     }
 
     @Override
@@ -82,6 +89,9 @@ public class ElytraFlight extends Module {
 
         disableCheck();
         flyTick();
+
+        if (boost.getValue() == 1)
+            fireworkElytra();
 
         mc.player.fallDistance = 0;
         switch (mode.getValue()) {
@@ -112,7 +122,7 @@ public class ElytraFlight extends Module {
             }
 
             if (pitchReset.getValue())
-                PlayerUtil.resetPitch();
+                PlayerUtil.resetPitch(rotationNCP.getValue());
 
             accelerateElytra();
         }
@@ -123,8 +133,8 @@ public class ElytraFlight extends Module {
             if (!PlayerUtil.isMoving())
                 PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
 
-            PlayerUtil.resetPitch();
-            PlayerUtil.resetYaw();
+            PlayerUtil.resetPitch(rotationNCP.getValue());
+            PlayerUtil.resetYaw(rotationNCP.getValue());
 
             accelerateElytra();
         }
@@ -138,7 +148,7 @@ public class ElytraFlight extends Module {
             mc.player.motionY = (-MathUtil.degToRad(mc.player.rotationPitch)) * mc.player.movementInput.moveForward;
 
             if (pitchReset.getValue())
-                PlayerUtil.resetPitch();
+                PlayerUtil.resetPitch(rotationNCP.getValue());
 
             accelerateElytra();
         }
@@ -149,7 +159,7 @@ public class ElytraFlight extends Module {
             if (!PlayerUtil.isMoving())
                 PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
 
-            PlayerUtil.resetPitch();
+            PlayerUtil.resetPitch(rotationNCP.getValue());
 
             if (mc.gameSettings.keyBindJump.isKeyDown()) {
                 mc.player.rotationPitch = (float) -rotationNCP.getValue();
@@ -197,6 +207,13 @@ public class ElytraFlight extends Module {
         }
     }
 
+    public void fireworkElytra() {
+        if (mc.gameSettings.keyBindJump.isKeyDown() || mc.player.rotationPitch >= rotationNCP.getValue()) {
+            InventoryUtil.switchToSlot(Items.FIREWORKS);
+            mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
+        }
+    }
+
     public void disableCheck() {
         if (mc.player.posY <= lowestY.getValue() && disable.getValue()) {
             this.disable();
@@ -208,7 +225,7 @@ public class ElytraFlight extends Module {
             return;
         }
 
-        if (mc.player.rotationPitch >= 40 && onUpward.getValue()) {
+        if (mc.player.rotationPitch >= rotationNCP.getValue() && onUpward.getValue()) {
             this.disable();
             return;
         }
@@ -236,9 +253,8 @@ public class ElytraFlight extends Module {
                 event.setCanceled(true);
             }
 
-            else if (event.getPacket() instanceof CPacketPlayer.Rotation && pitchSpoof.getValue()) {
+            else if (event.getPacket() instanceof CPacketPlayer.Rotation && pitchSpoof.getValue())
                 event.setCanceled(true);
-            }
         }
     }
 

@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.render;
 
+import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
@@ -8,8 +9,6 @@ import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +51,8 @@ public class BurrowESP extends Module {
         }
     }
 
-    @SubscribeEvent
-    public void onRender3D(RenderWorldLastEvent eventRender) {
+    @Override
+    public void onRender3D(Render3DEvent eventRender) {
         for (BlockPos burrowPos : burrowList) {
             RenderUtil.drawVanillaBoxFromBlockPos(burrowPos, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
         }

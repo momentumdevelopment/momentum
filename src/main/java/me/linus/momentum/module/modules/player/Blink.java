@@ -2,6 +2,7 @@ package me.linus.momentum.module.modules.player;
 
 import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.Module;
+import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.Packet;
@@ -21,6 +22,13 @@ public class Blink extends Module {
         super("Blink", Category.PLAYER, "Cancels all player packets");
     }
 
+    public static Checkbox playerModel = new Checkbox("Player Model", true);
+
+    @Override
+    public void setup() {
+        addSetting(playerModel);
+    }
+
     EntityOtherPlayerMP entity;
     private final Queue<Packet> packets = new ConcurrentLinkedQueue();
 
@@ -29,7 +37,7 @@ public class Blink extends Module {
         if (nullCheck())
             return;
 
-        if (mc.player != null) {
+        if (mc.player != null && playerModel.getValue()) {
             entity = new EntityOtherPlayerMP(mc.world, mc.getSession().getProfile());
             entity.copyLocationAndAnglesFrom(mc.player);
             entity.inventory.copyInventory(mc.player.inventory);
@@ -62,11 +70,10 @@ public class Blink extends Module {
     public void onPacketSend(PacketSendEvent event) {
         Packet packet = event.getPacket();
 
-        if (packet instanceof CPacketChatMessage || packet instanceof CPacketConfirmTeleport || packet instanceof CPacketKeepAlive || packet instanceof CPacketTabComplete || packet instanceof CPacketClientStatus) {
+        if (packet instanceof CPacketChatMessage || packet instanceof CPacketConfirmTeleport || packet instanceof CPacketKeepAlive || packet instanceof CPacketTabComplete || packet instanceof CPacketClientStatus)
             return;
-        }
 
-        if (mc.player == null || mc.player.isDead) {
+        if (nullCheck()) {
             packets.add(packet);
             event.setCanceled(true);
         }

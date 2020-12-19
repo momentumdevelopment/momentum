@@ -1,6 +1,7 @@
 package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
+import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.GuiScreen;
@@ -61,7 +62,7 @@ public class ItemPreview extends Module {
                 int width = (int) Math.max(144, FontUtil.getStringWidth(itemStack.getDisplayName())+3);
 
                 itemRender.zLevel = 300.0F;
-                GuiScreen.drawRect(x1 - 4, y1 - 9, x1 + width + 1, y1 + 5, new Color(54, 54, 54, 164).getRGB());
+                GuiScreen.drawRect(x1 - 4, y1 - 9, x1 + width + 1, y1 + 5, new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), 164).getRGB());
                 GuiScreen.drawRect(x1 - 4, y1 + 5, x1 + width + 1, y1 + height + 3, new Color(0, 0, 0, 144).getRGB());
                 FontUtil.drawString(itemStack.getDisplayName(), x1 - 2, y1 - 8, new Color(255, 255, 255).getRGB());
 

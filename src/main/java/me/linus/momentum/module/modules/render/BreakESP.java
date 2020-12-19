@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.render;
 
+import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
@@ -33,8 +34,8 @@ public class BreakESP extends Module {
         addSetting(range);
     }
 
-    @SubscribeEvent
-    public void onRender3D(RenderWorldLastEvent eventRender) {
+    @Override
+    public void onRender3D(Render3DEvent eventRender) {
         mc.renderGlobal.damagedBlocks.forEach((integer, destroyBlockProgress) -> {
             if (destroyBlockProgress != null && destroyBlockProgress.getPosition().getDistance((int) mc.player.posX,(int)  mc.player.posY,(int)  mc.player.posZ) <= range.getValue()) {
                 RenderUtil.drawVanillaBoxFromBlockPos(destroyBlockProgress.getPosition(), (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);

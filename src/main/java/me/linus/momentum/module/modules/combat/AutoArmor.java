@@ -28,6 +28,9 @@ public class AutoArmor extends Module {
 
     @Override
     public void onUpdate() {
+        if (nullCheck())
+            return;
+
         if (mc.player.ticksExisted % 2 == 0)
             return;
 

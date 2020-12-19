@@ -59,6 +59,7 @@ public class ModuleManager implements MixinInterface {
 			new Web(),
 
 			//Player
+			new AntiAim(),
 			new AntiHunger(),
 			new AutoMine(),
 			new Blink(),
@@ -101,13 +102,13 @@ public class ModuleManager implements MixinInterface {
 			new Timer(),
 
 			//Movement
+			new AirJump(),
 			new Anchor(),
 			new AntiLevitation(),
 			new AntiVoid(),
 			new AutoJump(),
 			new AutoWalk(),
 			new BoatFlight(),
-			new Boost(),
 			new ElytraFlight(),
 			new Flight(),
 			new HighJump(),
@@ -188,27 +189,29 @@ public class ModuleManager implements MixinInterface {
 	public void onFastTick(TickEvent event) {
 		ModuleManager.onFastUpdate();
 	}
+
+	// TODO: add null checks to every override so the try catch in this is unneccesary
 	
 	public static void onUpdate() {
-		for(Module m : modules) {
+		for (Module m : modules) {
 			try {
 				if (m.isEnabled()) {
 					m.onUpdate();
 				}
-			} catch(Exception e) {
-				e.printStackTrace();
+			} catch (Exception exception) {
+				exception.printStackTrace();
 			}
 		}
 	}
 	
 	public static void onFastUpdate() {
-		for(Module m : modules) {
+		for (Module m : modules) {
 			try {
 				if (m.isEnabled()) {
 					m.onFastUpdate();
 				}
-			} catch(Exception e) {
-				e.printStackTrace();
+			} catch (Exception exception) {
+				exception.printStackTrace();
 			}
 		}
 	}
@@ -236,20 +239,20 @@ public class ModuleManager implements MixinInterface {
 	@SubscribeEvent
 	public static void onRender3D(RenderWorldLastEvent event) {
 		HudEditor.boost = 0;
-		Minecraft.getMinecraft().mcProfiler.startSection("velocity");
+		Minecraft.getMinecraft().mcProfiler.startSection("momentum");
 		Minecraft.getMinecraft().mcProfiler.startSection("setup");
 		RenderUtil.prepareProfiler();
-		Render3DEvent e = new Render3DEvent(event.getPartialTicks());
+		Render3DEvent render3DEvent = new Render3DEvent(event.getPartialTicks());
 		Minecraft.getMinecraft().mcProfiler.endSection();
 
 		modules.stream().filter(module -> module.isEnabled()).forEach(module -> {
 			Minecraft.getMinecraft().mcProfiler.startSection(module.getName());
-			module.onRender3D(e);
+			module.onRender3D(render3DEvent);
 			Minecraft.getMinecraft().mcProfiler.endSection();
 		});
 
 		Minecraft.getMinecraft().mcProfiler.startSection("release");
-		RenderUtil.releaseRender();
+		RenderUtil.releaseProfiler();
 		Minecraft.getMinecraft().mcProfiler.endSection();
 		Minecraft.getMinecraft().mcProfiler.endSection();
 	}

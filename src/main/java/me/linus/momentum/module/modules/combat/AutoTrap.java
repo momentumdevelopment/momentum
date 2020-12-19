@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
@@ -14,8 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +34,7 @@ public class AutoTrap extends Module {
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
+    private static final Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
     private static final Checkbox rotate = new Checkbox("Rotate", true);
     private static final Checkbox disable = new Checkbox("Disables", true);
 
@@ -49,6 +49,7 @@ public class AutoTrap extends Module {
         addSetting(mode);
         addSetting(delay);
         addSetting(range);
+        addSetting(autoSwitch);
         addSetting(blocksPerTick);
         addSetting(rotate);
         addSetting(disable);
@@ -84,11 +85,17 @@ public class AutoTrap extends Module {
 
                 if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)) {
                     int oldInventorySlot = mc.player.inventory.currentItem;
-                    mc.player.inventory.currentItem = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+
+                    if (autoSwitch.getValue())
+                        mc.player.inventory.currentItem = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+
                     PlayerUtil.placeBlock(blockPos, rotate.getValue());
                     MessageUtil.sendClientMessage("Trapping " + target.getName() + "!");
                     renderBlocks.add(blockPos);
-                    mc.player.inventory.currentItem = oldInventorySlot;
+
+                    if (autoSwitch.getValue())
+                        mc.player.inventory.currentItem = oldInventorySlot;
+
                     blocksPlaced++;
 
                     if (blocksPlaced == blocksPerTick.getValue())
@@ -101,8 +108,8 @@ public class AutoTrap extends Module {
             hasPlaced = true;
     }
 
-    @SubscribeEvent
-    public void onRender3D(RenderWorldLastEvent renderEvent) {
+    @Override
+    public void onRender3D(Render3DEvent eventRender) {
         for (BlockPos renderBlock : renderBlocks) {
             RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
         }
