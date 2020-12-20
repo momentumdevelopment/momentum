@@ -111,56 +111,6 @@ public class PlayerUtil implements MixinInterface {
         }
     }
 
-    public static boolean placeBlock(BlockPos pos, int slot, boolean rotate, boolean rotateBack) {
-        if (BlockUtils.isBlockNotEmpty(pos) || mc.player.inventory.getStackInSlot(slot).getItem() == Item.getItemFromBlock(Blocks.WEB)) {
-            for (Entity entity : mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos))) {
-                if (!(entity instanceof EntityItem) && !(entity instanceof EntityXPOrb)) {
-                    return false;
-                }
-            }
-
-            if (slot != mc.player.inventory.currentItem) {
-                mc.player.inventory.currentItem = slot;
-            }
-
-            EnumFacing[] enumFacings = EnumFacing.values();
-
-            for (EnumFacing enumFacing : enumFacings) {
-                Block neighborBlock = mc.world.getBlockState(pos.offset(enumFacing)).getBlock();
-                Vec3d vec = new Vec3d(pos.getX() + 0.5D + (double) enumFacing.getFrontOffsetX() * 0.5D, pos.getY() + 0.5D + (double) enumFacing.getFrontOffsetY() * 0.5D, pos.getZ() + 0.5D + (double) enumFacing.getFrontOffsetZ() * 0.5D);
-                if (!BlockUtils.emptyBlocks.contains(neighborBlock) && mc.player.getPositionEyes(mc.getRenderPartialTicks()).distanceTo(vec) <= 4.25D) {
-
-                    float[] rot = new float[]{
-                            mc.player.rotationYaw,
-                            mc.player.rotationPitch
-                    };
-
-                    if (rotate) {
-                        rotateToPos(vec.x, vec.y, vec.z);
-                    }
-
-                    if (BlockUtils.rightClickableBlocks.contains(neighborBlock)) {
-                        mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
-                    }
-
-                    mc.playerController.processRightClickBlock(mc.player, mc.world, pos.offset(enumFacing), enumFacing.getOpposite(), new Vec3d(pos), EnumHand.MAIN_HAND);
-
-                    if (BlockUtils.rightClickableBlocks.contains(neighborBlock)) {
-                        mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
-                    }
-
-                    if (rotateBack) {
-                        mc.player.connection.sendPacket(new Rotation(rot[0], rot[1], mc.player.onGround));
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     public static void faceVectorPacketInstant(Vec3d vec) {
         final float[] rotations = getNeededRotations2(vec);
         mc.player.connection.sendPacket(new CPacketPlayer.Rotation(rotations[0], rotations[1], mc.player.onGround));
@@ -306,19 +256,19 @@ public class PlayerUtil implements MixinInterface {
         mc.player.setPosition(mc.player.posX, mc.player.posY - fallSpeed + yOffset, mc.player.posZ);
     }
 
-    public static void resetYaw() {
-        if (mc.player.rotationYaw >= 40)
+    public static void resetYaw(double rotation) {
+        if (mc.player.rotationYaw >= rotation)
             mc.player.rotationYaw = 0;
 
-        if (mc.player.rotationYaw <= 40)
+        if (mc.player.rotationYaw <= rotation)
             mc.player.rotationYaw = 0;
     }
 
-    public static void resetPitch() {
-        if (mc.player.rotationPitch >= 40)
+    public static void resetPitch(double rotation) {
+        if (mc.player.rotationPitch >= rotation)
             mc.player.rotationPitch = 0;
 
-        if (mc.player.rotationPitch <= 40)
+        if (mc.player.rotationPitch <= rotation)
             mc.player.rotationPitch = 0;
     }
 

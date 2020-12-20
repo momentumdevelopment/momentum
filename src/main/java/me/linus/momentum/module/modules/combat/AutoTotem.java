@@ -9,6 +9,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 
 /**
  * @author linustouchtips
@@ -22,11 +23,13 @@ public class AutoTotem extends Module {
 
     public static Slider health = new Slider("Health", 0.0D, 20.0D, 36.0D, 0);
     private static final Checkbox soft = new Checkbox("Soft", true);
+    private static final Checkbox swordGap = new Checkbox("Sword Gapple", true);
 
     @Override
     public void setup() {
         addSetting(health);
         addSetting(soft);
+        addSetting(swordGap);
     }
 
     int totems;
@@ -77,8 +80,10 @@ public class AutoTotem extends Module {
                 return;
             }
 
-            if (mc.player.inventory.getItemStack().isEmpty()){
-                if (totems == 0) return;
+            if (mc.player.inventory.getItemStack().isEmpty()) {
+                if (totems == 0)
+                    return;
+
                 int t = -1;
                 for (int i = 0; i < 45; i++)
                     if (mc.player.inventory.getStackInSlot(i).getItem() == item) {
@@ -98,10 +103,12 @@ public class AutoTotem extends Module {
                     if (mc.player.inventory.getStackInSlot(i).isEmpty()) {
                         t = i;
                         break;
-                    } if (t == -1)
-                        return;
+                    }
 
-                    mc.playerController.windowClick(0, t < 9 ? t + 36 : t, 0, ClickType.PICKUP, mc.player);
+                if (t == -1)
+                    return;
+
+                mc.playerController.windowClick(0, t < 9 ? t + 36 : t, 0, ClickType.PICKUP, mc.player);
             }
         }
     }
@@ -109,8 +116,10 @@ public class AutoTotem extends Module {
     public Item getItem() {
         if (PlayerUtil.getHealth() <= health.getValue())
             return Items.TOTEM_OF_UNDYING;
-
-        else return Items.AIR;
+        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordGap.getValue())
+            return Items.GOLDEN_APPLE;
+        else
+            return Items.AIR;
     }
 
     @Override

@@ -4,6 +4,7 @@ import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.module.modules.movement.ElytraFlight;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.SubSlider;
@@ -94,7 +95,7 @@ public class StashFinder extends Module {
 
             timer.reset();
 
-            PlayerUtil.resetYaw();
+            PlayerUtil.resetYaw(ElytraFlight.rotationNCP.getValue());
 
             if (mc.player.posY <= 120) {
                 KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.getKeyCode(), true);

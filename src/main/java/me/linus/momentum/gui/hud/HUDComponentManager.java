@@ -1,7 +1,6 @@
 package me.linus.momentum.gui.hud;
 
 import com.google.common.collect.Lists;
-import me.linus.momentum.gui.hud.components.System;
 import me.linus.momentum.gui.hud.components.*;
 import me.linus.momentum.gui.main.GUI;
 import me.linus.momentum.gui.main.HUD;
@@ -40,7 +39,6 @@ public class HUDComponentManager implements MixinInterface {
             new TPS(),
             new Speed(),
             new Direction(),
-            new System(),
             new Notifications()
         );
 
@@ -52,7 +50,7 @@ public class HUDComponentManager implements MixinInterface {
     }
 
     @Nullable
-    public HUDComponent getComponentByName(String name){
+    public HUDComponent getComponentByName(String name) {
         for (HUDComponent component : components) {
             if (component.getName().equalsIgnoreCase(name))
                 return component;
@@ -62,7 +60,7 @@ public class HUDComponentManager implements MixinInterface {
     }
 
     @SubscribeEvent
-    public void onRender2D(RenderGameOverlayEvent.Text event){
+    public void onRender2D(RenderGameOverlayEvent.Text event) {
         if (!(mc.currentScreen instanceof HUD) && !(mc.currentScreen instanceof GUI)) {
             for (HUDComponent comp : components) {
                 if (comp.isEnabled()) {

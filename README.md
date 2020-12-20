@@ -6,7 +6,6 @@ todo:
 
 fix:
 - mixin priority
-- hud editor
 
 ideas:
 - bot (cpvp? elytra?)

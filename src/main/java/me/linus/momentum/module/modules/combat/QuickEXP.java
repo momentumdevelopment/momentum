@@ -34,6 +34,9 @@ public class QuickEXP extends Module {
 
     @Override
     public void onUpdate() {
+        if (nullCheck())
+            return;
+
         Item itemMainHand = mc.player.getHeldItemMainhand().getItem();
         Item itemONotMainHand = mc.player.getHeldItemOffhand().getItem();
         boolean expInMainHand = itemMainHand instanceof ItemExpBottle;

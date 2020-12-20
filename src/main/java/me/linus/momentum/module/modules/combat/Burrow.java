@@ -40,9 +40,8 @@ public class Burrow extends Module {
 
         originalPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
 
-        if (BlockUtils.isCollidedBlocks(originalPos)) {
+        if (BlockUtils.isCollidedBlocks(originalPos))
             this.disable();
-        }
 
         MessageUtil.sendClientMessage("Attempting to trigger a rubberband!");
         mc.player.jump();

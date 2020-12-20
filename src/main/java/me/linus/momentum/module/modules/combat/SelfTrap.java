@@ -1,18 +1,17 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,10 +28,11 @@ public class SelfTrap extends Module {
         super("SelfTrap", Category.COMBAT, "Automatically traps yourself");
     }
 
+    private static final Mode mode = new Mode("Mode", "Head", "Full");
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
     private static final Checkbox rotate = new Checkbox("Rotate", true);
-    private static final Checkbox disable = new Checkbox("Disables", true);
+    private static final Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 255.0D, 255.0D, 0);
@@ -42,6 +42,7 @@ public class SelfTrap extends Module {
 
     @Override
     public void setup() {
+        addSetting(mode);
         addSetting(delay);
         addSetting(blocksPerTick);
         addSetting(rotate);
@@ -61,6 +62,11 @@ public class SelfTrap extends Module {
     }
 
     @Override
+    public void onDisable() {
+        renderBlocks.clear();
+    }
+
+    @Override
     public void onUpdate() {
         if (nullCheck())
             return;
@@ -70,10 +76,7 @@ public class SelfTrap extends Module {
 
         int blocksPlaced = 0;
 
-        for (Vec3d autoTrapBox : fullTrap) {
-            final EntityPlayer target = mc.player;
-
-
+        for (Vec3d autoTrapBox : getTrap()) {
             BlockPos blockPos = new BlockPos(autoTrapBox.add(mc.player.getPositionVector()));
 
             if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)) {
@@ -93,12 +96,27 @@ public class SelfTrap extends Module {
             hasPlaced = true;
     }
 
-    @SubscribeEvent
-    public void onRender3D(RenderWorldLastEvent renderEvent) {
+    @Override
+    public void onRender3D(Render3DEvent eventRender) {
         for (BlockPos renderBlock : renderBlocks) {
             RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
         }
     }
+
+    public List<Vec3d> getTrap() {
+        switch (mode.getValue()) {
+            case 0:
+                return headTrap;
+            case 1:
+                return fullTrap;
+        }
+
+        return headTrap;
+    }
+
+    private final List<Vec3d> headTrap = new ArrayList<>(Arrays.asList(
+            new Vec3d(0, 2, 0)
+    ));
 
     private final List<Vec3d> fullTrap = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, -1),

@@ -20,7 +20,7 @@ public class BoatFlight extends Module {
     }
 
     private static final Mode mode = new Mode("Mode", "Control", "Row");
-    public static Slider hSpeed = new Slider("Glide Speed", 0.0D, 2.1D, 3.0D, 1);
+    public static Slider hSpeed = new Slider("Horizontal Speed", 0.0D, 2.9D, 4.0D, 1);
     public static Slider ySpeed = new Slider("Vertical Speed", 0.0D, 1.0D, 3.0D, 1);
     public static Slider fallSpeed = new Slider("Fall Speed", 0.0D, 0.0D, 0.1D, 3);
 
@@ -28,10 +28,10 @@ public class BoatFlight extends Module {
     private static final SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.1D, 1.1D, 2.0D, 2);
 
     private static final Checkbox disable = new Checkbox("Disable", true);
-    private static final SubCheckbox waterCancel = new SubCheckbox(disable, "Disable in Liquid", true);
-    private static final SubCheckbox onUpward = new SubCheckbox(disable, "Disable on Upward Motion", false);
-    private static final SubCheckbox onCollision = new SubCheckbox(disable, "Disable on Collision", false);
-    private static final SubSlider lowestY = new SubSlider(disable, "Disable Below Y-Level", 0.0D, 65.0D, 256.0D, 0);
+    private static final SubCheckbox waterCancel = new SubCheckbox(disable, "In Liquid", true);
+    private static final SubCheckbox onUpward = new SubCheckbox(disable, "On Upward Motion", false);
+    private static final SubCheckbox onCollision = new SubCheckbox(disable, "On Collision", false);
+    private static final SubSlider lowestY = new SubSlider(disable, "Below Y-Level", 0.0D, 8.0D, 20.0D, 0);
 
     @Override
     public void setup() {

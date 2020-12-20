@@ -1,19 +1,19 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +42,12 @@ public class Surround extends Module {
     private static final Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
     private static final Checkbox chorusSave = new Checkbox("Chorus Save", false);
 
+    public static Checkbox color = new Checkbox("Color", true);
+    public static SubSlider r = new SubSlider(color, "Red", 0.0D, 0.0D, 255.0D, 0);
+    public static SubSlider g = new SubSlider(color, "Green", 0.0D, 255.0D, 255.0D, 0);
+    public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
+    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 30.0D, 255.0D, 0);
+
     @Override
     public void setup() {
         addSetting(mode);
@@ -53,13 +59,16 @@ public class Surround extends Module {
         addSetting(onlyObsidian);
         addSetting(antiChainPop);
         addSetting(chorusSave);
+        addSetting(color);
     }
 
-    private final List<BlockPos> renderBlocks = new ArrayList<>();
-    private boolean hasPlaced;
-    private Vec3d center = Vec3d.ZERO;
+    boolean hasPlaced;
+    Vec3d center = Vec3d.ZERO;
     int blocksPlaced = 0;
-    int holeBlocks;
+    BlockPos northBlockPos;
+    BlockPos southBlockPos;
+    BlockPos eastBlockPos;
+    BlockPos westBlockPos;
 
     @Override
     public void onEnable() {
@@ -77,6 +86,12 @@ public class Surround extends Module {
     public void onUpdate() {
         if (nullCheck())
             return;
+
+        final Vec3d vec3d = EntityUtil.getInterpolatedPos(mc.player, 0);
+        northBlockPos = new BlockPos(vec3d).north();
+        southBlockPos = new BlockPos(vec3d).south();
+        eastBlockPos = new BlockPos(vec3d).east();
+        westBlockPos = new BlockPos(vec3d).west();
 
         switch (disable.getValue()) {
             case 0:
@@ -100,9 +115,8 @@ public class Surround extends Module {
 
         surroundPlayer();
 
-        if (blocksPlaced == 0) {
+        if (blocksPlaced == 0)
             hasPlaced = true;
-        }
     }
 
     public void surroundPlayer() {
@@ -118,7 +132,6 @@ public class Surround extends Module {
                     mc.player.inventory.currentItem = InventoryUtil.getAnyBlockInHotbar();
 
                 PlayerUtil.placeBlock(blockPos, rotate.getValue());
-                renderBlocks.add(blockPos);
                 mc.player.inventory.currentItem = oldInventorySlot;
                 blocksPlaced++;
 
@@ -128,33 +141,20 @@ public class Surround extends Module {
         }
     }
 
-    @SubscribeEvent
-    public void onRender3D(RenderWorldLastEvent renderEvent) {
-        for (BlockPos renderBlock : renderBlocks) {
-            RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, 0.0f, 1.0f, 0.0f, 0.15f);
-        }
+    @Override
+    public void onRender3D(Render3DEvent eventRender) {
+        if (northBlockPos != null)
+            RenderUtil.drawVanillaBoxFromBlockPos(northBlockPos, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
+
+        if (westBlockPos != null)
+            RenderUtil.drawVanillaBoxFromBlockPos(westBlockPos, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
+
+        if (southBlockPos != null)
+            RenderUtil.drawVanillaBoxFromBlockPos(southBlockPos, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
+
+        if (eastBlockPos != null)
+            RenderUtil.drawVanillaBoxFromBlockPos(eastBlockPos, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
     }
-
-    /*
-    @SubscribeEvent
-    public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketPlayerTryUseItem && mc.player.getHeldItemMainhand().getItem() instanceof ItemChorusFruit) {
-            holeBlocks = 0;
-
-            for (Vec3d vec3d : holeOffset) {
-                BlockPos offset = new BlockPos(vec3d.x, vec3d.y, vec3d.z);
-                if (mc.world.getBlockState(offset).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(offset).getBlock() == Blocks.BEDROCK)
-                    ++holeBlocks;
-
-                if (holeBlocks != 5) {
-                    if (this.isEnabled()) {
-                        surroundPlayer();
-                    }
-                }
-            }
-        }
-    }
-     */
 
     public List<Vec3d> getSurround() {
         switch (mode.getValue()) {
@@ -204,14 +204,4 @@ public class Surround extends Module {
             new Vec3d(0, 0, 3),
             new Vec3d(0, 0, -3)
     ));
-
-    /*
-    Vec3d[] holeOffset = {
-            mc.player.getPositionVector().addVector(1.0D, 0.0D, 0.0D),
-            mc.player.getPositionVector().addVector(-1.0D, 0.0D, 0.0D),
-            mc.player.getPositionVector().addVector(0.0D, 0.0D, 1.0D),
-            mc.player.getPositionVector().addVector(0.0D, 0.0D, -1.0D),
-            mc.player.getPositionVector().addVector(0.0D, -1.0D, 0.0D)
-    };
-     */
 }

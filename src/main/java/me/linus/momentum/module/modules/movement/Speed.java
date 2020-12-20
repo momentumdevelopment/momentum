@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.movement;
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.event.events.player.MoveEvent;
 import me.linus.momentum.module.Module;
+import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
@@ -26,6 +27,7 @@ public class Speed extends Module {
 
     private static final Mode mode = new Mode("Mode", "SmoothHop", "MomentumHop", "StrictHop", "Y-Port");
     private static final SubCheckbox strict = new SubCheckbox(mode, "Strict Jump", false);
+    private static final SubCheckbox enableStep = new SubCheckbox(mode, "Use Step", false);
 
     public static Slider multiplier = new Slider("Multiplier", 0.0D, 0.03D, 0.3D, 3);
 
@@ -61,10 +63,11 @@ public class Speed extends Module {
         if (nullCheck())
             return;
 
-        if ((mc.player.isInWater() || mc.player.isInLava() && inWater.getValue())) {
-            disable();
+        if ((mc.player.isInWater() || mc.player.isInLava() && inWater.getValue()))
             return;
-        }
+
+        if (enableStep.getValue())
+            ModuleManager.getModuleByName("Step").enable();
 
         double xDist = mc.player.posX - mc.player.prevPosX;
         double zDist = mc.player.posZ - mc.player.prevPosZ;
@@ -80,6 +83,7 @@ public class Speed extends Module {
     @Override
     public void onDisable() {
         mc.timer.tickLength = 50;
+        ModuleManager.getModuleByName("Step").disable();
     }
 
     @SubscribeEvent

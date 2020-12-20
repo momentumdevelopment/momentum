@@ -1,11 +1,11 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.render.GeometryMasks;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtils;
 import me.linus.momentum.util.world.InventoryUtil;
@@ -13,11 +13,7 @@ import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +23,7 @@ import java.util.stream.Collectors;
  * @since 12/17/2020
  */
 
-// TODO: rewrite thise
+// TODO: rewrite this
 
 public class HoleFill extends Module {
     public HoleFill() {
@@ -36,6 +32,7 @@ public class HoleFill extends Module {
 
     private static final Mode mode = new Mode("Mode", "Obsidian", "Ender Chest", "Web");
     public static Slider range = new Slider("Range", 0.0D, 2.0D, 10.0D, 0);
+    private static final Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
     private static final Checkbox rotate = new Checkbox("Rotate", true);
     private static final Checkbox disable = new Checkbox("Disables", false);
 
@@ -49,6 +46,7 @@ public class HoleFill extends Module {
     public void setup() {
         addSetting(mode);
         addSetting(range);
+        addSetting(autoSwitch);
         addSetting(rotate);
         addSetting(disable);
         addSetting(color);
@@ -102,6 +100,10 @@ public class HoleFill extends Module {
         }
 
         renderBlock = blocks.get(0);
+
+        if (autoSwitch.getValue())
+            mc.player.inventory.currentItem = getItem();
+
         PlayerUtil.placeBlock(blocks.get(0), rotate.getValue());
     }
 
@@ -118,12 +120,10 @@ public class HoleFill extends Module {
         return InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
     }
 
-    @SubscribeEvent
-    public void onRender3D(RenderWorldLastEvent eventRender) {
+    @Override
+    public void onRender3D(Render3DEvent eventRender) {
         if (renderBlock != null) {
-            RenderUtil.prepareRender(GL11.GL_QUADS);
-            RenderUtil.drawBoxFromBlockPos(renderBlock, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()), GeometryMasks.Quad.ALL);
-            RenderUtil.releaseRender();
+            RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
         }
     }
 

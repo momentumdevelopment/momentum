@@ -39,7 +39,6 @@ public class ActiveModules extends HUDComponent {
                 .forEach(module -> {
                     int screenWidthScaled = new ScaledResolution(mc).getScaledWidth();
                     float modWidth = FontUtil.getStringWidth(module.getName() + TextFormatting.WHITE + module.getHUDData());
-                    float dataWidth = FontUtil.getStringWidth(module.getHUDData());
                     String modText = module.getName() + TextFormatting.WHITE + module.getHUDData();
 
                     if (module.remainingAnimation < modWidth && module.isEnabled())
@@ -57,7 +56,7 @@ public class ActiveModules extends HUDComponent {
                     if (Momentum.componentManager.getComponentByName("ActiveModules").getX() < (screenWidthScaled / 2))
                         FontUtil.drawStringWithShadow(modText, Momentum.componentManager.getComponentByName("ActiveModules").getX() - 2 - modWidth + module.remainingAnimation, Momentum.componentManager.getComponentByName("ActiveModules").getY() + (10 * count), ColorUtil.alphaStep(new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue()), 50, (count * 2) + 10).getRGB());
                     else
-                        FontUtil.drawStringWithShadow(modText, Momentum.componentManager.getComponentByName("ActiveModules").getX() + 2 + dataWidth - modWidth - module.remainingAnimation, Momentum.componentManager.getComponentByName("ActiveModules").getY() + (10 * count), ColorUtil.alphaStep(new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue()), 50, (count * 2) + 10).getRGB());
+                        FontUtil.drawStringWithShadow(modText, Momentum.componentManager.getComponentByName("ActiveModules").getX() - module.remainingAnimation, Momentum.componentManager.getComponentByName("ActiveModules").getY() + (10 * count), ColorUtil.alphaStep(new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue()), 50, (count * 2) + 10).getRGB());
 
                     count++;
                 });

@@ -4,7 +4,6 @@ import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.HUD;
 import me.linus.momentum.module.modules.client.ClickGui;
-import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.util.client.Animation2D;
 import me.linus.momentum.util.client.notification.Notification;
 import me.linus.momentum.util.client.notification.NotificationManager;
@@ -24,7 +23,7 @@ import java.util.Iterator;
 
 public class Notifications extends HUDComponent {
     public Notifications() {
-        super("Notifications", 400, 400, null);
+        super("Notifications", 450, 400, null);
         this.toggle();
     }
 
@@ -42,7 +41,7 @@ public class Notifications extends HUDComponent {
 
                 GlStateManager.enableAlpha();
                 mc.getTextureManager().bindTexture(widget);
-                GlStateManager.color((float) Colors.r.getValue(), (float) Colors.g.getValue(), (float) Colors.b.getValue(), 1);
+                GlStateManager.color(1, 1, 1, 1);
                 GL11.glPushMatrix();
                 GuiScreen.drawScaledCustomSizeModalRect(Momentum.componentManager.getComponentByName("Notifications").getX() - 20, Momentum.componentManager.getComponentByName("Notifications").getY() - 4, 0,0,512,512,16,16,512,512);
                 GL11.glPopMatrix();
@@ -82,7 +81,7 @@ public class Notifications extends HUDComponent {
 
             GlStateManager.enableAlpha();
             mc.getTextureManager().bindTexture(widget);
-            GlStateManager.color((float) Colors.r.getValue(), (float) Colors.g.getValue(), (float) Colors.b.getValue(), 1);
+            GlStateManager.color(1, 1, 1, 1);
             GL11.glPushMatrix();
             GuiScreen.drawScaledCustomSizeModalRect((int) (Momentum.componentManager.getComponentByName("Notifications").getX() - continuedNotification.remainingAnimation) + 65, Momentum.componentManager.getComponentByName("Notifications").getY() - 4 - (13 * NotificationManager.notifications.size()), 0,0,512,512,16,16,512,512);
             GL11.glPopMatrix();
