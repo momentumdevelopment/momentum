@@ -15,7 +15,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +45,7 @@ public class AutoTrap extends Module {
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 30.0D, 255.0D, 0);
+    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 5.0D, 255.0D, 0);
 
     @Override
     public void setup() {
@@ -111,7 +114,7 @@ public class AutoTrap extends Module {
     @Override
     public void onRender3D(Render3DEvent eventRender) {
         for (BlockPos renderBlock : renderBlocks) {
-            RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
+            RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
         }
     }
 

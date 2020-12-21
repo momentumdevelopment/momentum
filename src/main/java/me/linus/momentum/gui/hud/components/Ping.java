@@ -18,8 +18,15 @@ public class Ping extends HUDComponent {
 
     @Override
     public void render() {
-        FontUtil.drawStringWithShadow( "Ping " + mc.getConnection().getPlayerInfo(mc.player.getUniqueID()).getResponseTime() + " ms", Momentum.componentManager.getComponentByName("Ping").getX(), Momentum.componentManager.getComponentByName("Ping").getY(), new Color(255, 255, 255).getRGB());
-        width = (int) FontUtil.getStringWidth("Ping " + mc.getConnection().getPlayerInfo(mc.player.getUniqueID()).getResponseTime() + " ms") + 2;
+        int ping;
+
+        if (!mc.isSingleplayer())
+            ping = mc.getConnection().getPlayerInfo(mc.player.getUniqueID()).getResponseTime();
+        else
+            ping = -1;
+
+        FontUtil.drawStringWithShadow( "Ping " + ping + " ms", Momentum.componentManager.getComponentByName("Ping").getX(), Momentum.componentManager.getComponentByName("Ping").getY(), new Color(255, 255, 255).getRGB());
+        width = (int) FontUtil.getStringWidth("Ping " + ping + " ms") + 2;
     }
 
     @Override

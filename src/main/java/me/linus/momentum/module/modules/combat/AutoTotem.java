@@ -116,8 +116,10 @@ public class AutoTotem extends Module {
     public Item getItem() {
         if (PlayerUtil.getHealth() <= health.getValue())
             return Items.TOTEM_OF_UNDYING;
+
         if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordGap.getValue())
             return Items.GOLDEN_APPLE;
+
         else
             return Items.AIR;
     }

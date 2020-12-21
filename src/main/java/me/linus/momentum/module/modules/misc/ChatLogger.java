@@ -23,10 +23,16 @@ public class ChatLogger extends Module {
         super("ChatLogger", Category.MISC, "Logs chat to a file");
     }
 
-    public File txt;
+    public static final Checkbox numbers = new Checkbox("Only Numbers", false);
+
+    @Override
+    public void setup() {
+        addSetting(numbers);
+    }
+
+    File txt;
     File folder;
     BufferedWriter out;
-    public static final Checkbox numbers = new Checkbox("OnlyNumbers", false);
 
     @Override
     public void onEnable() {
@@ -35,17 +41,17 @@ public class ChatLogger extends Module {
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy-HH-mm");
             Date date = new Date();
             folder = new File(ConfigManager.config + File.separator + "logs");
-            if (!folder.exists()){
+            if (!folder.exists()) {
                 folder.mkdirs();
             }
-            String fileName = (formatter.format(date)) + "-chatlogs.txt";
 
+            String fileName = (formatter.format(date)) + "-chatlogs.txt";
 
             txt = new File(folder + File.separator + fileName);
 
             txt.createNewFile();
             out = new BufferedWriter(new FileWriter(txt));
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -53,10 +59,10 @@ public class ChatLogger extends Module {
     @Override
     public void onDisable() {
         super.onDisable();
-        if (out != null){
+        if (out != null) {
             try {
                 out.close();
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -78,12 +84,12 @@ public class ChatLogger extends Module {
                 out.write(endLine());
                 out.flush();
             }
-        } catch (Exception e){ e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public static String endLine(){
         return "\r\n";
     }
-
 }

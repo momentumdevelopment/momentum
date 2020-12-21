@@ -1,6 +1,5 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
@@ -8,6 +7,8 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.awt.*;
 
 /**
  * @author linustouchtips
@@ -34,11 +35,11 @@ public class BreakESP extends Module {
         addSetting(range);
     }
 
-    @Override
-    public void onRender3D(Render3DEvent eventRender) {
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent eventRender) {
         mc.renderGlobal.damagedBlocks.forEach((integer, destroyBlockProgress) -> {
             if (destroyBlockProgress != null && destroyBlockProgress.getPosition().getDistance((int) mc.player.posX,(int)  mc.player.posY,(int)  mc.player.posZ) <= range.getValue()) {
-                RenderUtil.drawVanillaBoxFromBlockPos(destroyBlockProgress.getPosition(), (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
+                RenderUtil.drawVanillaBoxFromBlockPos(destroyBlockProgress.getPosition(), new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
 
                 if (showDamage.getValue())
                     RenderUtil.drawNametagFromBlockPos(destroyBlockProgress.getPosition(), mc.world.getEntityByID(integer).getName() + " " + (destroyBlockProgress.getPartialBlockDamage() * 10) + "%");

@@ -24,7 +24,7 @@ public class Offhand extends Module {
     }
 
     private static final Mode mode = new Mode("Mode", "Gapple", "Crystal", "Bed", "Chorus", "Pearl", "Potion", "Creeper", "Totem");
-    private static final Mode fallback = new Mode("Fall-Back", "Totem", "Pearl");
+    private static final Mode fallback = new Mode("Fallback", "Totem", "Pearl");
     public static Slider health = new Slider("Health", 0.0D, 16.0D, 36.0D, 0);
     private static final Checkbox swordGap = new Checkbox("Sword Gapple", true);
     private static final Checkbox chorusTrap = new Checkbox("Trap Chorus", true);
@@ -69,8 +69,10 @@ public class Offhand extends Module {
 
     private int getItem() {
         Item toSwitch = Items.AIR;
+
         if (fallback.getValue() == 0)
           toSwitch = Items.TOTEM_OF_UNDYING;
+
         if (fallback.getValue() == 1)
             toSwitch = Items.ENDER_PEARL;
 

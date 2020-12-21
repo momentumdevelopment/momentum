@@ -6,7 +6,6 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.world.BlockUtils;
 import me.linus.momentum.util.world.PlayerUtil;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
@@ -51,7 +50,7 @@ public class Burrow extends Module {
     public void onUpdate() {
         if (mc.player.posY > originalPos.getY() + 1.2) {
             final int oldSlot = mc.player.inventory.currentItem;
-            mc.player.inventory.currentItem = PlayerUtil.getHotbarSlot(getBlock());
+            mc.player.inventory.currentItem = PlayerUtil.getHotbarSlot(Blocks.OBSIDIAN);
 
             PlayerUtil.placeBlock(originalPos, rotate.getValue());
             mc.player.inventory.currentItem = oldSlot;
@@ -63,10 +62,6 @@ public class Burrow extends Module {
 
             this.disable();
         }
-    }
-
-    public Block getBlock() {
-        return Blocks.OBSIDIAN;
     }
 
     @Override
