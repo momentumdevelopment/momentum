@@ -10,7 +10,7 @@ import me.linus.momentum.util.client.Timer;
  * @since 12/19/2020
  */
 
-// TODO: spoof rotations
+// TODO: spoof rotation system, this is actually so retarded rn
 public class AntiAim extends Module {
     public AntiAim() {
         super("AntiAim", Category.PLAYER, "Makes you a harder target");

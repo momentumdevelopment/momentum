@@ -44,6 +44,7 @@ public class ModuleManager implements MixinInterface {
 			new Aura(),
 			new AutoArmor(),
 			new AutoBed(),
+			new AutoCity(),
 			new AutoCrystal(),
 			new AutoTotem(),
 			new AutoTrap(),

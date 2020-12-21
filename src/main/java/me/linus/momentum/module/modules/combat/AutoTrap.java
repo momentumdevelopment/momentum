@@ -111,9 +111,8 @@ public class AutoTrap extends Module {
 
     @Override
     public void onRender3D(Render3DEvent eventRender) {
-        for (BlockPos renderBlock : renderBlocks) {
+        for (BlockPos renderBlock : renderBlocks)
             RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
-        }
     }
 
     public List<Vec3d> getTrap() {

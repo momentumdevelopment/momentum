@@ -10,17 +10,21 @@ import me.linus.momentum.util.client.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.BedUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
+import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBed;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -44,6 +48,7 @@ public class AutoBed extends Module {
     public static SubSlider placeDelay = new SubSlider(place, "Place Delay", 0.0D, 40.0D, 600.0D, 0);
     public static SubSlider placeRange = new SubSlider(place, "Place Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider enemyRange = new SubSlider(place, "Enemy Range", 0.0D, 5.0D, 15.0D, 1);
+    public static SubCheckbox airPlace = new SubCheckbox(place, "Air Place", true);
     public static SubCheckbox autoSwitch = new SubCheckbox(place, "Auto-Switch", false);
     public static SubCheckbox rotate = new SubCheckbox(place, "Rotate", true);
 
@@ -54,12 +59,19 @@ public class AutoBed extends Module {
     public static Checkbox logic = new Checkbox("Logic", true);
     public static SubMode logicMode = new SubMode(logic, "Logic", "Break -> Place", "Place -> Break");
 
+    public static Checkbox renderBed = new Checkbox("Render", true);
+    public static SubSlider r = new SubSlider(renderBed, "Red", 0.0D, 250.0D, 255.0D, 0);
+    public static SubSlider g = new SubSlider(renderBed, "Green", 0.0D, 0.0D, 255.0D, 0);
+    public static SubSlider b = new SubSlider(renderBed, "Blue", 0.0D, 250.0D, 255.0D, 0);
+    public static SubSlider a = new SubSlider(renderBed, "Alpha", 0.0D, 50.0D, 255.0D, 0);
+
     @Override
     public void setup() {
         addSetting(explode);
         addSetting(place);
         addSetting(pause);
         addSetting(logic);
+        addSetting(renderBed);
     }
 
     Timer breakTimer = new Timer();
@@ -114,7 +126,7 @@ public class AutoBed extends Module {
             return;
 
         if (autoSwitch.getValue())
-            mc.player.inventory.currentItem = InventoryUtil.getBlockInHotbar(Blocks.BED);
+            mc.player.inventory.currentItem = InventoryUtil.getHotbarItemSlot(Items.BED);
 
         Entity entity = null;
         List<Entity> entities = new ArrayList<>();
@@ -140,5 +152,19 @@ public class AutoBed extends Module {
 
         if (place.getValue() && placeTimer.passed((long) placeDelay.getValue()))
             BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, nowTop, rotate.getValue());
+    }
+
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent eventRender) {
+        if (currentBlock != null && renderBed.getValue())
+            RenderUtil.drawVanillaBoxFromBlockPos(currentBlock, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+    }
+
+    @Override
+    public String getHUDData() {
+        if (currentTarget != null)
+            return " " + currentTarget.getName();
+        else
+            return " None";
     }
 }

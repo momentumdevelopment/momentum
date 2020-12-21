@@ -25,18 +25,19 @@ public class VoidESP extends Module {
         super("VoidESP", Category.RENDER, "Highlights void holes");
     }
 
+    public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
+
     public static Checkbox color = new Checkbox("Color", true);
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 30.0D, 255.0D, 0);
 
-    public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
 
     @Override
     public void setup() {
-        addSetting(color);
         addSetting(range);
+        addSetting(color);
     }
 
     public final List<BlockPos> voidBlocks = new ArrayList<>();

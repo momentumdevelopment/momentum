@@ -20,19 +20,20 @@ public class BreakESP extends Module {
         super("BreakESP", Category.RENDER, "Highlights blocks being broken");
     }
 
+    public static Checkbox showDamage = new Checkbox("Show Damage", true);
+    public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
+
     public static Checkbox color = new Checkbox("Color", true);
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 250.0D, 255.0D, 0);
     public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 30.0D, 255.0D, 0);
 
-    public static Checkbox showDamage = new Checkbox("Show Damage", true);
-    public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
-
     @Override
     public void setup() {
-        addSetting(color);
         addSetting(range);
+        addSetting(showDamage);
+        addSetting(color);
     }
 
     @SubscribeEvent

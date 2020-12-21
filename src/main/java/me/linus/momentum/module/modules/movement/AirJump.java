@@ -28,9 +28,7 @@ public class AirJump extends Module {
 
         mc.player.onGround = true;
 
-        if (packet.getValue()) {
+        if (packet.getValue())
             mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, true));
-            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX + mc.player.motionX, 0.0, mc.player.posZ + mc.player.motionZ, true));
-        }
     }
 }
