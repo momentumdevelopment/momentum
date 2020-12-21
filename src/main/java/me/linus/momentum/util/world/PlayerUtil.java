@@ -1,14 +1,13 @@
 package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.client.system.MathUtil;
+import me.linus.momentum.util.client.system.Timer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -399,5 +398,23 @@ public class PlayerUtil implements MixinInterface {
         double z = Math.floor(posZ) + 0.5D;
 
         return new Vec3d(x, y, z);
+    }
+
+    public static void createFakePlayer(EntityOtherPlayerMP entity, boolean copyInventory, boolean copyAngles, boolean health) {
+        entity = new EntityOtherPlayerMP(mc.world, mc.getSession().getProfile());
+        entity.copyLocationAndAnglesFrom(mc.player);
+
+        if (copyInventory)
+            entity.inventory.copyInventory(mc.player.inventory);
+
+        if (copyAngles) {
+            entity.rotationYaw = mc.player.rotationYaw;
+            entity.rotationYawHead = mc.player.rotationYawHead;
+        }
+
+        if (health)
+            entity.setHealth(mc.player.getHealth() + mc.player.getAbsorptionAmount());
+
+        mc.world.addEntityToWorld(69420, entity);
     }
 }

@@ -7,11 +7,10 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.client.system.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
-import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
+import me.linus.momentum.util.combat.RotationUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
@@ -102,15 +101,12 @@ public class Aura extends Module {
 
         if (rotate.getValue()) {
             Vec3d pos = EntityUtil.interpolateEntityTime(currentTarget, this.mc.getRenderPartialTicks());
-            float[] angles = MathUtil.calcAngle(EntityUtil.interpolateEntityTime(this.mc.player, this.mc.getRenderPartialTicks()), pos);
 
-            if (!spoof.getValue()) {
-                mc.player.rotationYaw = angles[0];
-                mc.player.rotationPitch = angles[1];
-            }
+            if (rotate.getValue())
+                RotationUtil.lookAtLegit(currentTarget);
 
             if (spoof.getValue())
-                CrystalUtil.lookAtPacket(pos.x, pos.y, pos.z, mc.player);
+                RotationUtil.lookAtPacket(pos.x, pos.y, pos.z, mc.player);
         }
 
         killAura();

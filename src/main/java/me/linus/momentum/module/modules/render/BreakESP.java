@@ -20,8 +20,8 @@ public class BreakESP extends Module {
         super("BreakESP", Category.RENDER, "Highlights blocks being broken");
     }
 
-    public static Checkbox showDamage = new Checkbox("Show Damage", true);
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
+    public static Checkbox showDamage = new Checkbox("Show Damage", true);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 250.0D, 255.0D, 0);
@@ -40,7 +40,7 @@ public class BreakESP extends Module {
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         mc.renderGlobal.damagedBlocks.forEach((integer, destroyBlockProgress) -> {
             if (destroyBlockProgress != null && destroyBlockProgress.getPosition().getDistance((int) mc.player.posX,(int)  mc.player.posY,(int)  mc.player.posZ) <= range.getValue()) {
-                RenderUtil.drawVanillaBoxFromBlockPos(destroyBlockProgress.getPosition(), new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
 
                 if (showDamage.getValue())
                     RenderUtil.drawNametagFromBlockPos(destroyBlockProgress.getPosition(), mc.world.getEntityByID(integer).getName() + " " + (destroyBlockProgress.getPartialBlockDamage() * 10) + "%");

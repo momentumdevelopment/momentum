@@ -4,7 +4,8 @@ import com.mojang.authlib.GameProfile;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.external.MessageUtil;
+import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 
 import java.util.UUID;
@@ -21,11 +22,13 @@ public class FakePlayer extends Module {
 
     private static final Mode name = new Mode("Name", "linustouchtips24", "popbob", "Fit", "GrandOlive", "S8N", "Papa_Quill");
     public static Checkbox inventory = new Checkbox("Copy Inventory", true);
+    public static Checkbox angles = new Checkbox("Copy Angles", true);
 
     @Override
     public void setup() {
         addSetting(name);
         addSetting(inventory);
+        addSetting(angles);
     }
 
     public void onEnable() {
@@ -55,13 +58,8 @@ public class FakePlayer extends Module {
         }
 
         EntityOtherPlayerMP fakePlayer = new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("873e2766-9254-49bc-89d7-5d4d585ad29d"), fakeName));
-        fakePlayer.copyLocationAndAnglesFrom(mc.player);
+        PlayerUtil.createFakePlayer(fakePlayer, inventory.getValue(), angles.getValue(), true);
         MessageUtil.sendClientMessage("Spawning fake player!");
-        mc.world.addEntityToWorld(69420, fakePlayer);
-        fakePlayer.setHealth(mc.player.getHealth() + mc.player.getAbsorptionAmount());
-
-        if (inventory.getValue())
-            fakePlayer.inventory.copyInventory(mc.player.inventory);
     }
 
     @Override

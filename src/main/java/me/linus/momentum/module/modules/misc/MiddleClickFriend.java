@@ -3,13 +3,9 @@ package me.linus.momentum.module.modules.misc;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.module.Module;
-import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.client.friend.FriendManager;
-import net.minecraft.entity.Entity;
+import me.linus.momentum.util.client.external.MessageUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Mouse;
 
 /**
@@ -38,7 +34,8 @@ public class MiddleClickFriend extends Module {
 
             final RayTraceResult result = mc.objectMouseOver;
 
-            if (result == null || result.typeOfHit != RayTraceResult.Type.ENTITY || !(result.entityHit instanceof EntityPlayer)) return;
+            if (result == null || result.typeOfHit != RayTraceResult.Type.ENTITY || !(result.entityHit instanceof EntityPlayer))
+                return;
 
             if (Momentum.friendManager.isFriend(mc.objectMouseOver.entityHit.getName())) {
                 Momentum.friendManager.removeFriend(mc.objectMouseOver.entityHit.getName());

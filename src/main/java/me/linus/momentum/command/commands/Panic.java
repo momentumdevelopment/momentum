@@ -4,8 +4,7 @@ import me.linus.momentum.Momentum;
 import me.linus.momentum.command.Command;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.module.Module;
-import me.linus.momentum.module.ModuleManager;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.external.MessageUtil;
 import net.minecraft.util.text.TextFormatting;
 
 /**

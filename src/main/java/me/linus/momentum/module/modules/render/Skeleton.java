@@ -52,7 +52,7 @@ public class Skeleton extends Module {
     }
 
     @Override
-    public void onRender3D(Render3DEvent event){
+    public void onRender3D(Render3DEvent event) {
         if (mc.getRenderManager() == null || mc.getRenderManager().options == null)
             return;
 
@@ -68,11 +68,11 @@ public class Skeleton extends Module {
     }
 
     private void drawSkeleton(Render3DEvent event, EntityPlayer e) {
-        double d3 = mc.player.lastTickPosX + (mc.player.posX - mc.player.lastTickPosX) * (double)event.getPartialTicks();
-        double d4 = mc.player.lastTickPosY + (mc.player.posY - mc.player.lastTickPosY) * (double)event.getPartialTicks();
-        double d5 = mc.player.lastTickPosZ + (mc.player.posZ - mc.player.lastTickPosZ) * (double)event.getPartialTicks();
+        double d3 = mc.player.lastTickPosX + (mc.player.posX - mc.player.lastTickPosX) * (double) event.getPartialTicks();
+        double d4 = mc.player.lastTickPosY + (mc.player.posY - mc.player.lastTickPosY) * (double )event.getPartialTicks();
+        double d5 = mc.player.lastTickPosZ + (mc.player.posZ - mc.player.lastTickPosZ) * (double) event.getPartialTicks();
 
-        camera.setPosition(d3,  d4,  d5);
+        camera.setPosition(d3, d4, d5);
 
         float[][] entPos = entities.get(e);
         if (entPos != null && e.isEntityAlive() && camera.isBoundingBoxInFrustum(e.getEntityBoundingBox()) && !e.isDead && e != mc.player && !e.isPlayerSleeping()) {
@@ -92,12 +92,16 @@ public class Skeleton extends Module {
             GL11.glPushMatrix();
             GlStateManager.color((float) red.getValue() / 255.0F, (float) green.getValue() / 255.0F, (float) blue.getValue() / 255.0F, (float) alpha.getValue() / 255.0F);
             GL11.glTranslated(-0.125D, yOff, 0.0D);
+
             if (entPos[3][0] != 0.0F)
                 GL11.glRotatef(entPos[3][0] * 57.295776F, 1.0F, 0.0F, 0.0F);
+
             if (entPos[3][1] != 0.0F)
                 GL11.glRotatef(entPos[3][1] * 57.295776F, 0.0F, 1.0F, 0.0F);
+
             if (entPos[3][2] != 0.0F)
                 GL11.glRotatef(entPos[3][2] * 57.295776F, 0.0F, 0.0F, 1.0F);
+
             GL11.glBegin(3);
             GL11.glVertex3d(0.0D, 0.0D, 0.0D);
             GL11.glVertex3d(0.0D, -yOff, 0.0D);
@@ -106,12 +110,16 @@ public class Skeleton extends Module {
             GL11.glPushMatrix();
             GlStateManager.color((float) red.getValue() / 255.0F, (float) green.getValue() / 255.0F, (float) blue.getValue() / 255.0F, (float) alpha.getValue() / 255.0F);
             GL11.glTranslated(0.125D, yOff, 0.0D);
+
             if (entPos[4][0] != 0.0F)
                 GL11.glRotatef(entPos[4][0] * 57.295776F, 1.0F, 0.0F, 0.0F);
+
             if (entPos[4][1] != 0.0F)
                 GL11.glRotatef(entPos[4][1] * 57.295776F, 0.0F, 1.0F, 0.0F);
+
             if (entPos[4][2] != 0.0F)
                 GL11.glRotatef(entPos[4][2] * 57.295776F, 0.0F, 0.0F, 1.0F);
+
             GL11.glBegin(3);
             GL11.glVertex3d(0.0D, 0.0D, 0.0D);
             GL11.glVertex3d(0.0D, -yOff, 0.0D);
@@ -124,12 +132,16 @@ public class Skeleton extends Module {
             GL11.glPushMatrix();
             GlStateManager.color((float) red.getValue() / 255.0F, (float) green.getValue() / 255.0F, (float) blue.getValue() / 255.0F, (float) alpha.getValue() / 255.0F);
             GL11.glTranslated(-0.375D, yOff + 0.55D, 0.0D);
+
             if (entPos[1][0] != 0.0F)
                 GL11.glRotatef(entPos[1][0] * 57.295776F, 1.0F, 0.0F, 0.0F);
+
             if (entPos[1][1] != 0.0F)
                 GL11.glRotatef(entPos[1][1] * 57.295776F, 0.0F, 1.0F, 0.0F);
+
             if (entPos[1][2] != 0.0F)
                 GL11.glRotatef(-entPos[1][2] * 57.295776F, 0.0F, 0.0F, 1.0F);
+
             GL11.glBegin(3);
             GL11.glVertex3d(0.0D, 0.0D, 0.0D);
             GL11.glVertex3d(0.0D, -0.5D, 0.0D);
@@ -137,12 +149,16 @@ public class Skeleton extends Module {
             GL11.glPopMatrix();
             GL11.glPushMatrix();
             GL11.glTranslated(0.375D, yOff + 0.55D, 0.0D);
+
             if (entPos[2][0] != 0.0F)
                 GL11.glRotatef(entPos[2][0] * 57.295776F, 1.0F, 0.0F, 0.0F);
+
             if (entPos[2][1] != 0.0F)
                 GL11.glRotatef(entPos[2][1] * 57.295776F, 0.0F, 1.0F, 0.0F);
+
             if (entPos[2][2] != 0.0F)
                 GL11.glRotatef(-entPos[2][2] * 57.295776F, 0.0F, 0.0F, 1.0F);
+
             GL11.glBegin(3);
             GL11.glVertex3d(0.0D, 0.0D, 0.0D);
             GL11.glVertex3d(0.0D, -0.5D, 0.0D);
@@ -152,8 +168,10 @@ public class Skeleton extends Module {
             GL11.glPushMatrix();
             GlStateManager.color((float) red.getValue() / 255.0F, (float) green.getValue() / 255.0F, (float) blue.getValue() / 255.0F, (float) alpha.getValue() / 255.0F);
             GL11.glTranslated(0.0D, yOff + 0.55D, 0.0D);
+
             if (entPos[0][0] != 0.0F)
                 GL11.glRotatef(entPos[0][0] * 57.295776F, 1.0F, 0.0F, 0.0F);
+
             GL11.glBegin(3);
             GL11.glVertex3d(0.0D, 0.0D, 0.0D);
             GL11.glVertex3d(0.0D, 0.3D, 0.0D);
@@ -196,20 +214,26 @@ public class Skeleton extends Module {
             GlStateManager.disableDepth();
             GlStateManager.disableTexture2D();
             GL11.glHint(3154, 4354);
-        } else {
+        }
+
+        else {
             GlStateManager.disableBlend();
             GlStateManager.enableTexture2D();
             GL11.glDisable(2848);
             GlStateManager.enableDepth();
             GlStateManager.popMatrix();
-        } GlStateManager.depthMask(!revert);
+        }
+
+        GlStateManager.depthMask(!revert);
     }
 
     public static void addEntity(EntityPlayer e, ModelPlayer model) {
-        entities.put(e, new float[][] { { model.bipedHead.rotateAngleX, model.bipedHead.rotateAngleY, model.bipedHead.rotateAngleZ }, { model.bipedRightArm.rotateAngleX, model.bipedRightArm.rotateAngleY, model.bipedRightArm.rotateAngleZ }, { model.bipedLeftLeg.rotateAngleX, model.bipedLeftLeg.rotateAngleY, model.bipedLeftLeg.rotateAngleZ }, { model.bipedRightLeg.rotateAngleX, model.bipedRightLeg.rotateAngleY, model.bipedRightLeg.rotateAngleZ }, { model.bipedLeftLeg.rotateAngleX, model.bipedLeftLeg.rotateAngleY, model.bipedLeftLeg.rotateAngleZ } });
+        entities.put(e, new float[][] { {
+            model.bipedHead.rotateAngleX, model.bipedHead.rotateAngleY, model.bipedHead.rotateAngleZ }, { model.bipedRightArm.rotateAngleX, model.bipedRightArm.rotateAngleY, model.bipedRightArm.rotateAngleZ }, { model.bipedLeftLeg.rotateAngleX, model.bipedLeftLeg.rotateAngleY, model.bipedLeftLeg.rotateAngleZ }, { model.bipedRightLeg.rotateAngleX, model.bipedRightLeg.rotateAngleY, model.bipedRightLeg.rotateAngleZ }, { model.bipedLeftLeg.rotateAngleX, model.bipedLeftLeg.rotateAngleY, model.bipedLeftLeg.rotateAngleZ
+        } });
     }
 
-    private boolean doesNotContain(EntityPlayer var0) {
-        return !mc.world.playerEntities.contains(var0);
+    private boolean doesNotContain(EntityPlayer player) {
+        return !mc.world.playerEntities.contains(player);
     }
 }

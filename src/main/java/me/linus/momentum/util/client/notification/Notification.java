@@ -1,6 +1,6 @@
 package me.linus.momentum.util.client.notification;
 
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.client.system.Timer;
 
 /**
  * @author linustouchtips

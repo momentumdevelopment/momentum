@@ -58,7 +58,6 @@ public class Offhand extends Module {
             return;
 
         int itemToSwitch = getItem();
-
         if (itemToSwitch < 0)
             return;
 

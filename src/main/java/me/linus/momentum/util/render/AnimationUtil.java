@@ -1,11 +1,11 @@
-package me.linus.momentum.util.client;
+package me.linus.momentum.util.render;
 
 /**
  * @author memessz
  * @since 12/17/2020
  */
 
-public class Animation2D {
+public class AnimationUtil {
 
     public static float moveTowards(float current, float end, float minSpeed) {
         float defaultSpeed = 0.125f;

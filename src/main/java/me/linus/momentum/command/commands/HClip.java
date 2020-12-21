@@ -2,7 +2,7 @@ package me.linus.momentum.command.commands;
 
 import me.linus.momentum.command.Command;
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.external.MessageUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;

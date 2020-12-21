@@ -2,7 +2,7 @@ package me.linus.momentum.module.modules.misc;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.module.Module;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.external.MessageUtil;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityDonkey;

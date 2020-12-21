@@ -3,10 +3,8 @@ package me.linus.momentum.module.modules.misc;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.util.config.ConfigManager;
-
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

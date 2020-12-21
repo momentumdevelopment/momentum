@@ -57,7 +57,7 @@ public class QuickEXP extends Module {
             }
 
             if (footEXP.getValue())
-                    mc.player.connection.sendPacket(new CPacketPlayer.Rotation(0, 90, true));
+                mc.player.connection.sendPacket(new CPacketPlayer.Rotation(0, 90, true));
 
             mc.rightClickMouse();
         }
@@ -76,12 +76,12 @@ public class QuickEXP extends Module {
     }
 
     private int getArmorDurability() {
-        int TotalDurability = 0;
+        int totalDurability = 0;
 
-        for (ItemStack itemStack : mc.player.inventory.armorInventory) {
-            TotalDurability = TotalDurability + itemStack.getItemDamage();
-        }
-        return TotalDurability;
+        for (ItemStack itemStack : mc.player.inventory.armorInventory)
+            totalDurability = totalDurability + itemStack.getItemDamage();
+
+        return totalDurability;
     }
 
     @Override

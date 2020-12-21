@@ -1,4 +1,4 @@
-package me.linus.momentum.util.client;
+package me.linus.momentum.util.client.system;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.color.ChatColor;

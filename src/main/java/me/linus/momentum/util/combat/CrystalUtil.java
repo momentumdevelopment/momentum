@@ -30,9 +30,6 @@ import java.util.ArrayList;
 
 public class CrystalUtil implements MixinInterface {
 
-    private static boolean isSpoofingAngles;
-    private static double yaw;
-    private static double pitch;
     private static final int oldSlot = -1;
     private static int newSlot;
 
@@ -84,43 +81,6 @@ public class CrystalUtil implements MixinInterface {
         return new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
     }
 
-    public static void lookAtPacket(double px, double py, double pz, EntityPlayer self) {
-        double[] v = calculateLookAt(px, py, pz, self);
-        setYawAndPitch((float) v[0], (float) v[1]);
-    }
-
-    public static void setYawAndPitch(float yaw1, float pitch1) {
-        yaw = yaw1;
-        pitch = pitch1;
-        isSpoofingAngles = true;
-    }
-
-    public static double[] calculateLookAt(double px, double py, double pz, EntityPlayer self) {
-        double dirx = self.posX - px;
-        double diry = self.posY - py;
-        double dirz = self.posZ - pz;
-
-        double len = Math.sqrt(dirx*dirx + diry*diry + dirz*dirz);
-
-        dirx /= len;
-        diry /= len;
-        dirz /= len;
-
-        double pitch = Math.asin(diry);
-        double yaw = Math.atan2(dirz, dirx);
-
-        pitch = pitch * 180.0d / Math.PI;
-        yaw = yaw * 180.0d / Math.PI;
-        yaw += 90f;
-
-        return new double[]{yaw,pitch};
-    }
-
-    public static void resetRotation() {
-        yaw = mc.player.rotationYaw;
-        pitch = mc.player.rotationPitch;
-    }
-
     public static void attackCrystal(EntityEnderCrystal crystal, boolean packet) {
         if (packet) {
             mc.player.connection.sendPacket(new CPacketUseEntity(crystal));
@@ -159,7 +119,7 @@ public class CrystalUtil implements MixinInterface {
     }
 
     public static void placeCrystal(BlockPos pos, double delay, boolean offhand) {
-        lookAtPacket(pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5, mc.player);
+        RotationUtil.lookAtPacket(pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5, mc.player);
         final RayTraceResult result = mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5));
 
         EnumFacing f;
@@ -209,10 +169,12 @@ public class CrystalUtil implements MixinInterface {
             if (stack == ItemStack.EMPTY) {
                 continue;
             }
+
             if ((stack.getItem() instanceof ItemSword)) {
                 newSlot = i;
                 break;
             }
+
             if ((stack.getItem() instanceof ItemTool)) {
                 newSlot = i;
                 break;
@@ -232,7 +194,7 @@ public class CrystalUtil implements MixinInterface {
         if (rayTrace) {
             if (result == null || result.sideHit == null) {
                 render = null;
-                CrystalUtil.resetRotation();
+                RotationUtil.resetRotation();
                 return null;
             } else {
                 enumFacing = result.sideHit;

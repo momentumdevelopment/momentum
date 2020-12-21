@@ -2,7 +2,7 @@ package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.external.MessageUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;

@@ -2,6 +2,7 @@ package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.slider.Slider;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.init.Items;
@@ -19,10 +20,14 @@ public class AutoArmor extends Module {
         super("AutoArmor", Category.COMBAT, "Automatically replaces armor");
     }
 
+    private static final Slider delay = new Slider("Delay", 0.0D, 2.0D, 10.0D, 0);
+    public static Checkbox curse = new Checkbox("Ignore Curse", false);
     public static Checkbox elytra = new Checkbox("Prefer Elytra", false);
 
     @Override
     public void setup() {
+        addSetting(delay);
+        addSetting(curse);
         addSetting(elytra);
     }
 
@@ -31,7 +36,7 @@ public class AutoArmor extends Module {
         if (nullCheck())
             return;
 
-        if (mc.player.ticksExisted % 2 == 0)
+        if (mc.player.ticksExisted % delay.getValue() == 0)
             return;
 
         if (mc.currentScreen instanceof GuiContainer && !(mc.currentScreen instanceof InventoryEffectRenderer))

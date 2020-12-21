@@ -62,6 +62,6 @@ public class CityESP extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         for (BlockPos cityPos : cityBlocks)
-            RenderUtil.drawVanillaBoxFromBlockPos(cityPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+            RenderUtil.drawBoxBlockPos(cityPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
     }
 }

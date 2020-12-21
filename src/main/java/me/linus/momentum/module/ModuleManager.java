@@ -141,13 +141,13 @@ public class ModuleManager implements MixinInterface {
 			new ItemPreview(),
 			new NoBob(),
 			new NoRender(),
-			new NoWeather(),
 			new Skeleton(),
 			new SkyColor(),
 		 	new Tracers(),
 			new Trajectories(),
 			new ViewModel(),
 			new VoidESP(),
+			new Weather(),
 
 			//Bot
 			new Milo()

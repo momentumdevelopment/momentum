@@ -3,7 +3,7 @@ package me.linus.momentum.module.modules.combat;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.external.MessageUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
@@ -36,7 +36,7 @@ public class AutoCity extends Module {
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
     public static Slider enemyRange = new Slider("Enemy Range", 0.0D, 7.0D, 10.0D, 0);
     public static Checkbox autoSwitch = new Checkbox("Auto Switch", true);
-    public static Checkbox packet = new Checkbox("Packet Mine", false);
+    public static Checkbox packet = new Checkbox("Packet", false);
     public static Checkbox disable = new Checkbox("Disable", true);
 
     @Override
@@ -53,6 +53,17 @@ public class AutoCity extends Module {
     List<BlockPos> cityBlocks = new ArrayList<>();
 
     @Override
+    public void onEnable() {
+        if (nullCheck())
+            return;
+
+        for (BlockPos cityBlock : EnemyUtil.getCityBlocks(currentTarget, false))
+            cityBlocks.add(cityBlock);
+
+        breakTarget = cityBlocks.stream().filter(blockPos -> mc.player.getDistanceSq(blockPos) > range.getValue()).min(Comparator.comparing(blockPos -> mc.player.getDistanceSq(blockPos))).orElse(null);
+    }
+
+    @Override
     public void onUpdate() {
         if (nullCheck())
             return;
@@ -64,11 +75,6 @@ public class AutoCity extends Module {
 
         cityBlocks.clear();
         currentTarget = EntityUtil.getClosestPlayer(enemyRange.getValue());
-
-        for (BlockPos cityBlock : EnemyUtil.getCityBlocks(currentTarget, false))
-            cityBlocks.add(cityBlock);
-
-        breakTarget = cityBlocks.stream().filter(blockPos -> mc.player.getDistanceSq(blockPos) > range.getValue()).min(Comparator.comparing(blockPos -> mc.player.getDistanceSq(blockPos))).orElse(null);
 
         if (autoSwitch.getValue())
            mc.player.inventory.currentItem = InventoryUtil.getHotbarItemSlot(Items.DIAMOND_PICKAXE);
@@ -89,6 +95,14 @@ public class AutoCity extends Module {
     @SubscribeEvent
     public void onWorldRender(RenderWorldLastEvent eventRender) {
         if (breakTarget != null)
-            RenderUtil.drawVanillaBoxFromBlockPos(breakTarget, new Color(0, 255, 0, 50));
+            RenderUtil.drawBoxBlockPos(breakTarget, new Color(0, 255, 0, 50));
+    }
+
+    @Override
+    public String getHUDData() {
+        if (currentTarget != null)
+            return " " + currentTarget.getName();
+        else
+            return " None";
     }
 }

@@ -6,11 +6,12 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.client.system.MathUtil;
+import me.linus.momentum.util.client.system.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
+import me.linus.momentum.util.combat.RotationUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtils;
 import me.linus.momentum.util.world.EntityUtil;
@@ -175,7 +176,7 @@ public class AutoCrystal extends Module {
 
     public void breakCrystal() {
         EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> CrystalUtil.attackCheck(entity, breakMode.getValue(), breakRange.getValue(), placedCrystals)).min(Comparator.comparing(c -> mc.player.getDistance(c))).orElse(null);
-        float[] angles = MathUtil.calcAngle(EntityUtil.interpolateEntityTime(this.mc.player, this.mc.getRenderPartialTicks()), EntityUtil.interpolateEntityTime(crystal, this.mc.getRenderPartialTicks()));
+
         if (crystal != null && mc.player.getDistance(crystal) <= breakRange.getValue() && breakTimer.passed((long) breakDelay.getValue())) {
             if (pause.getValue() && PlayerUtil.getHealth() <= pauseHealth.getValue() && pauseMode.getValue() == 0 && (pauseMode.getValue() == 1 || pauseMode.getValue() == 2))
                 return;
@@ -189,17 +190,18 @@ public class AutoCrystal extends Module {
             if (antiWeakness.getValue() && mc.player.isPotionActive(MobEffects.WEAKNESS))
                 CrystalUtil.doAntiWeakness(switchCooldown);
 
-            if (rotate.getValue() == 0)
-                CrystalUtil.lookAtPacket(crystal.posX, crystal.posY, crystal.posZ, mc.player);
-            else {
-                mc.player.rotationYaw = angles[0];
-                mc.player.rotationPitch = angles[1];
+            switch (rotate.getValue()) {
+                case 0:
+                    RotationUtil.lookAtPacket(crystal.posX, crystal.posY, crystal.posZ, mc.player);
+                    break;
+                case 1:
+                    RotationUtil.lookAtLegit(crystal);
+                    break;
             }
 
-            if (explode.getValue()) {
+            if (explode.getValue())
                 for (int i = 0; i < breakAttempts.getValue(); i++)
                     CrystalUtil.attackCrystal(crystal, packetBreak.getValue());
-            }
 
             CrystalUtil.getSwingArm(breakHand.getValue());
             if (syncBreak.getValue())
@@ -304,7 +306,7 @@ public class AutoCrystal extends Module {
         if (damage == 0.5) {
             render = null;
             renderEnt = null;
-            CrystalUtil.resetRotation();
+            RotationUtil.resetRotation();
             return;
         }
 
@@ -316,14 +318,16 @@ public class AutoCrystal extends Module {
                 if (autoSwitch.getValue())
                     mc.player.inventory.currentItem = crystalSlot;
 
-                CrystalUtil.resetRotation();
+                RotationUtil.resetRotation();
                 switchCooldown = true;
                 return;
             }
         }
 
         if (place.getValue()) {
-            CrystalUtil.lookAtPacket(finalPos.getX() + 0.5, finalPos.getY() - 0.5, finalPos.getZ() + 0.5, mc.player);
+            if (rotate.getValue() == 0)
+                RotationUtil.lookAtPacket(finalPos.getX() + 0.5, finalPos.getY() - 0.5, finalPos.getZ() + 0.5, mc.player);
+
             EnumFacing enumFacing = CrystalUtil.getEnumFacing(rayTrace.getValue(), render, finalPos);
 
             if (placeTimer.passed((long) placeDelay.getValue())) {
@@ -342,13 +346,13 @@ public class AutoCrystal extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (renderCrystal.getValue() && render != null) {
-            RenderUtil.drawVanillaBoxFromBlockPos(render, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+            RenderUtil.drawBoxBlockPos(render, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
 
             double damage = CrystalUtil.calculateDamage(render.getX() + .5, render.getY() + 1, render.getZ() + .5, renderEnt);
             double damageRounded = MathUtil.roundAvoid(damage, 1);
 
             if (outline.getValue())
-                RenderUtil.drawBoundingBoxBlockPos(render, 1.0f, new Color((int) r.getValue(), (int) g.getValue(),  (int)b.getValue(), 144));
+                RenderUtil.drawBoundingBoxBlockPos(render, 1.0, new Color((int) r.getValue(), (int) g.getValue(),  (int)b.getValue(), 144));
 
             if (renderDamage.getValue())
                 RenderUtil.drawNametagFromBlockPos(render, String.valueOf(damageRounded));

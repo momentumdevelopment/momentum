@@ -17,8 +17,7 @@ public class PortalGodMode extends Module {
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketConfirmTeleport) {
+        if (event.getPacket() instanceof CPacketConfirmTeleport)
             event.setCanceled(true);
-        }
     }
 }

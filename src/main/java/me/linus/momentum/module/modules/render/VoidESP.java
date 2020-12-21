@@ -64,8 +64,7 @@ public class VoidESP extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        for (BlockPos voidPos : voidBlocks) {
-            RenderUtil.drawVanillaBoxFromBlockPos(voidPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
-        }
+        for (BlockPos voidPos : voidBlocks)
+            RenderUtil.drawBoxBlockPos(voidPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
     }
 }

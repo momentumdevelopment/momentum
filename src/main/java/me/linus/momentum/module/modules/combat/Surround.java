@@ -47,7 +47,7 @@ public class Surround extends Module {
     public static SubSlider r = new SubSlider(renderSurround, "Red", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider g = new SubSlider(renderSurround, "Green", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(renderSurround, "Blue", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(renderSurround, "Alpha", 0.0D, 5.0D, 255.0D, 0);
+    public static SubSlider a = new SubSlider(renderSurround, "Alpha", 0.0D, 25.0D, 255.0D, 0);
 
     @Override
     public void setup() {
@@ -146,24 +146,24 @@ public class Surround extends Module {
     public void onRender3D(Render3DEvent eventRender) {
         if (renderSurround.getValue()) {
             if (northBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawVanillaBoxFromBlockPos(northBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(northBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
             else
-                RenderUtil.drawVanillaBoxFromBlockPos(northBlockPos, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(northBlockPos, new Color(255, 0, 0, (int) a.getValue()));
 
             if (westBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawVanillaBoxFromBlockPos(westBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(westBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
             else
-                RenderUtil.drawVanillaBoxFromBlockPos(westBlockPos, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(westBlockPos, new Color(255, 0, 0, (int) a.getValue()));
 
             if (southBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawVanillaBoxFromBlockPos(southBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(southBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
             else
-                RenderUtil.drawVanillaBoxFromBlockPos(southBlockPos, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(southBlockPos, new Color(255, 0, 0, (int) a.getValue()));
 
             if (eastBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawVanillaBoxFromBlockPos(eastBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(eastBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
             else
-                RenderUtil.drawVanillaBoxFromBlockPos(eastBlockPos, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(eastBlockPos, new Color(255, 0, 0, (int) a.getValue()));
         }
     }
 

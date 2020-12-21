@@ -3,7 +3,8 @@ package me.linus.momentum.module.modules.player;
 import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.external.MessageUtil;
+import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
@@ -13,7 +14,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * @author linustouchtips & hoosiers
+ * @author linustouchtips & Hoosiers
  * @since 11/30/2020
  */
 
@@ -30,21 +31,15 @@ public class Blink extends Module {
     }
 
     EntityOtherPlayerMP entity;
-    private final Queue<Packet> packets = new ConcurrentLinkedQueue();
+    Queue<Packet> packets = new ConcurrentLinkedQueue();
 
     @Override
     public void onEnable() {
         if (nullCheck())
             return;
 
-        if (mc.player != null && playerModel.getValue()) {
-            entity = new EntityOtherPlayerMP(mc.world, mc.getSession().getProfile());
-            entity.copyLocationAndAnglesFrom(mc.player);
-            entity.inventory.copyInventory(mc.player.inventory);
-            entity.rotationYaw = mc.player.rotationYaw;
-            entity.rotationYawHead = mc.player.rotationYawHead;
-            mc.world.addEntityToWorld(667, entity);
-        }
+        if (playerModel.getValue())
+            PlayerUtil.createFakePlayer(entity, true, true, true);
 
         MessageUtil.sendClientMessage("Cancelling all player packets!");
     }
@@ -57,10 +52,9 @@ public class Blink extends Module {
         if (entity != null)
             mc.world.removeEntity(entity);
 
-        if (packets.size() > 0 && mc.player != null) {
-            for (Packet packet : packets) {
+        if (packets.size() > 0) {
+            for (Packet packet : packets)
                 mc.player.connection.sendPacket(packet);
-            }
 
             packets.clear();
         }
@@ -68,13 +62,11 @@ public class Blink extends Module {
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        Packet packet = event.getPacket();
-
-        if (packet instanceof CPacketChatMessage || packet instanceof CPacketConfirmTeleport || packet instanceof CPacketKeepAlive || packet instanceof CPacketTabComplete || packet instanceof CPacketClientStatus)
+        if (event.getPacket() instanceof CPacketChatMessage || event.getPacket() instanceof CPacketConfirmTeleport || event.getPacket() instanceof CPacketKeepAlive || event.getPacket() instanceof CPacketTabComplete || event.getPacket() instanceof CPacketClientStatus)
             return;
 
         if (nullCheck()) {
-            packets.add(packet);
+            packets.add(event.getPacket());
             event.setCanceled(true);
         }
     }

@@ -55,8 +55,7 @@ public class BurrowESP extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        for (BlockPos burrowPos : burrowList) {
-            RenderUtil.drawVanillaBoxFromBlockPos(burrowPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
-        }
+        for (BlockPos burrowPos : burrowList)
+            RenderUtil.drawBoxBlockPos(burrowPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
     }
 }

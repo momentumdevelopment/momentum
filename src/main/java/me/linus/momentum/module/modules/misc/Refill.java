@@ -1,7 +1,7 @@
 package me.linus.momentum.module.modules.misc;
 
 import me.linus.momentum.module.Module;
-import me.linus.momentum.util.client.Pair;
+import me.linus.momentum.util.client.system.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Items;

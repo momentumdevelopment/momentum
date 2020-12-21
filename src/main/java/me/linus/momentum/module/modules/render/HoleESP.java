@@ -1,19 +1,17 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.combat.CrystalUtil;
-import me.linus.momentum.util.render.GeometryMasks;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -30,8 +28,11 @@ public class HoleESP extends Module {
         super("HoleESP", Category.RENDER, "Highlights safe holes to stand in while crystalling");
     }
 
-    private static final Mode mode = new Mode("Mode", "Highlight", "Glow", "Box", "Flat", "WireFrame", "WireFrame-Flat");
-    private static final SubCheckbox doubles = new SubCheckbox(mode, "Doubles", false);
+    private static final Mode fill = new Mode("Fill", "Full", "Glow", "None");
+    private static final SubSlider fillHeight = new SubSlider(fill, "Height", -1.0D, 0.0D, 2.0D, 1);
+
+    private static final Mode outline = new Mode("Outline", "WireFrame", "None");
+    private static final SubSlider outlineHeight = new SubSlider(outline, "Height", -1.0D, 0.0D, 2.0D, 1);
 
     public static Checkbox obsidianColor = new Checkbox("Obsidian Color", true);
     public static SubSlider obbyRed = new SubSlider(obsidianColor, "Red", 0.0D, 93.0D, 255.0D, 0);
@@ -45,18 +46,17 @@ public class HoleESP extends Module {
     public static SubSlider bRockBlue = new SubSlider(bedrockColor, "Blue", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider bRockAlpha = new SubSlider(bedrockColor, "Alpha", 0.0D, 191.0D, 255.0D, 0);
 
+    public static Slider lineAlpha = new Slider("Line Alpha", 0.0D, 144.0D, 255.0D, 0);
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
-    private static final Slider lineWidth = new Slider("Line Width", 0.0D, 1.3D, 5.0D, 1);
-    private static final Slider height = new Slider("Height", 0.0D, 1.0D, 3.0D, 1);
 
     @Override
     public void setup() {
-        addSetting(mode);
+        addSetting(fill);
+        addSetting(outline);
         addSetting(obsidianColor);
         addSetting(bedrockColor);
+        addSetting(lineAlpha);
         addSetting(range);
-        addSetting(lineWidth);
-        addSetting(height);
     }
 
     BlockPos render;
@@ -84,114 +84,57 @@ public class HoleESP extends Module {
         render = shouldRender;
     }
 
-    @Override
-    public void onRender3D(Render3DEvent renderEvent) {
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent renderEvent) {
+        renderFilled(new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), (int) obbyAlpha.getValue()), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), (int) bRockAlpha.getValue()));
+        renderOutline(new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), (int) lineAlpha.getValue()), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), (int) lineAlpha.getValue()));
+    }
+
+    public void renderFilled(Color obbyColor, Color bRockColor) {
         if (render != null) {
             for (BlockPos hole : findObbyHoles()) {
-                switch (mode.getValue()) {
-                    case 0: {
-                        RenderUtil.drawBoundingBoxBottomBlockPos(hole, (float) lineWidth.getValue(), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 144));
-
-                        if (CrystalUtil.getPlayerPos().getDistance(hole.x, hole.y, hole.z) <= 0.5) {
-                            RenderUtil.enableGLGlow();
-                            RenderUtil.drawGlowBoxBlockPos(hole, 1, 1, 1, new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 125), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 0));
-                            RenderUtil.disableGLGlow();
-                        }
-
+                switch (fill.getValue()) {
+                    case 0:
+                        RenderUtil.drawPrismBlockPos(hole, fillHeight.getValue(), obbyColor);
                         break;
-                    }
-
-                    case 1: {
-                        RenderUtil.drawBoundingBoxBottomBlockPos(hole, (float) lineWidth.getValue(), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 144));
-
-                        RenderUtil.enableGLGlow();
-                        RenderUtil.drawGlowBoxBlockPos(hole, 1, 1, 1, new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 125), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 8));
-                        RenderUtil.disableGLGlow();
+                    case 1:
+                        // TODO: get seasnail to do this cause i'm dumb
                         break;
-                    }
-
-                    case 2: {
-                        RenderUtil.drawVanillaBoxFromBlockPos(hole, (int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), (int) obbyAlpha.getValue());
-                        RenderUtil.prepareRender(GL11.GL_QUADS);
-                        RenderUtil.drawBoundingBoxBlockPos(hole, (float) lineWidth.getValue(), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 144));
-                        RenderUtil.releaseRender();
-                        break;
-                    }
-
-                    case 3: {
-                        RenderUtil.prepareRender(GL11.GL_QUADS);
-                        RenderUtil.drawBoxFromBlockPos(hole, new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), (int) obbyAlpha.getValue()), GeometryMasks.Quad.DOWN);
-                        RenderUtil.releaseRender();
-                        break;
-                    }
-
-                    case 4: {
-                        RenderUtil.prepareRender(GL11.GL_QUADS);
-                        RenderUtil.drawBoundingBoxBlockPos(hole, (float) lineWidth.getValue(), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 144));
-                        RenderUtil.releaseRender();
-                        break;
-                    }
-
-                    case 5: {
-                        RenderUtil.prepareRender(GL11.GL_QUADS);
-                        RenderUtil.drawBoundingBoxBottomBlockPos(hole, (float) lineWidth.getValue(), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 144));
-                        RenderUtil.releaseRender();
-                        break;
-                    }
                 }
             }
 
             for (BlockPos hole : findBRockHoles()) {
-                switch (mode.getValue()) {
-                    case 0: {
-                        RenderUtil.drawBoundingBoxBottomBlockPos(hole, (float) lineWidth.getValue(), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 144));
-
-                        if (CrystalUtil.getPlayerPos().getDistance(hole.x, hole.y, hole.z) <= 0.5) {
-                            RenderUtil.enableGLGlow();
-                            RenderUtil.drawGlowBoxBlockPos(hole, 1, 1, 1, new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 125), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 8));
-                            RenderUtil.disableGLGlow();
-                        }
-
+                switch (fill.getValue()) {
+                    case 0:
+                        RenderUtil.drawPrismBlockPos(hole, fillHeight.getValue(), bRockColor);
                         break;
-                    }
-
-                    case 1: {
-                        RenderUtil.drawBoundingBoxBottomBlockPos(hole, (float) lineWidth.getValue(), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 144));
-
-                        RenderUtil.enableGLGlow();
-                        RenderUtil.drawGlowBoxBlockPos(hole, 1, 1, 1, new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 125), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 8));
-                        RenderUtil.disableGLGlow();
+                    case 1:
+                        // TODO: get seasnail to do this cause i'm dumb
                         break;
-                    }
+                }
+            }
+        }
+    }
 
-                    case 2: {
-                        RenderUtil.drawVanillaBoxFromBlockPos(hole, (int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), (int) bRockAlpha.getValue());
-                        RenderUtil.prepareRender(GL11.GL_QUADS);
-                        RenderUtil.drawBoundingBoxBlockPos(hole, (float) lineWidth.getValue(), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 144));
-                        RenderUtil.releaseRender();
+    public void renderOutline(Color obbyColor, Color bRockColor) {
+        if (render != null) {
+            for (BlockPos hole : findObbyHoles()) {
+                switch (outline.getValue()) {
+                    case 0:
+                        RenderUtil.drawBoundingBoxBlockPos(hole, outlineHeight.getValue(), obbyColor);
                         break;
-                    }
+                    case 1:
+                        break;
+                }
+            }
 
-                    case 3: {
-                        RenderUtil.prepareRender(GL11.GL_QUADS);
-                        RenderUtil.drawBoxFromBlockPos(hole, new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), (int) bRockAlpha.getValue()), GeometryMasks.Quad.DOWN);
-                        RenderUtil.releaseRender();
+            for (BlockPos hole : findBRockHoles()) {
+                switch (outline.getValue()) {
+                    case 0:
+                        RenderUtil.drawBoundingBoxBlockPos(hole, outlineHeight.getValue(), bRockColor);
                         break;
-                    }
-
-                    case 4: {
-                        RenderUtil.prepareRender(GL11.GL_QUADS);
-                        RenderUtil.drawBoundingBoxBlockPos(hole, (float) lineWidth.getValue(), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 144));
-                        RenderUtil.releaseRender();
+                    case 1:
                         break;
-                    }
-
-                    case 5: {
-                        RenderUtil.prepareRender(GL11.GL_QUADS);
-                        RenderUtil.drawBoundingBoxBottomBlockPos(hole, (float) lineWidth.getValue(), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 144));
-                        RenderUtil.releaseRender();
-                        break;
-                    }
                 }
             }
         }
@@ -211,23 +154,6 @@ public class HoleESP extends Module {
 
     @Override
     public String getHUDData() {
-        String subText = "";
-        String postText = "";
-        if (mode.getValue() == 1 || mode.getValue() == 2 || mode.getValue() == 4)
-            subText = "Filled";
-
-        if (mode.getValue() == 0 || mode.getValue() == 3 || mode.getValue() == 5)
-            subText = "WireFrame";
-
-        if (mode.getValue() == 0 || mode.getValue() == 1)
-            postText = "Glow";
-
-        if (mode.getValue() == 3 || mode.getValue() == 5)
-            postText = "Flat";
-
-        if (mode.getValue() == 2 || mode.getValue() == 4)
-            postText = "Box";
-
-        return " " + subText + ", " + postText;
+        return " " + fill.getMode(fill.getValue()) + ", " + outline.getMode(outline.getValue()) ;
     }
 }

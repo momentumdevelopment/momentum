@@ -4,9 +4,8 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.friend.FriendManager;
-import me.linus.momentum.util.combat.CrystalUtil;
+import me.linus.momentum.util.combat.RotationUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBow;
@@ -44,15 +43,12 @@ public class AimBot extends Module {
 
         if (target != null && (!FriendManager.isFriend(target.getName()) && FriendManager.isFriendModuleEnabled())) {
             Vec3d pos = EntityUtil.interpolateEntityTime(target, mc.getRenderPartialTicks());
-            float[] angles = MathUtil.calcAngle(EntityUtil.interpolateEntityTime(mc.player, mc.getRenderPartialTicks()), pos);
 
-            if (mode.getValue() == 0) {
-                mc.player.rotationYaw = angles[0];
-                mc.player.rotationPitch = angles[1];
-            }
+            if (mode.getValue() == 0)
+                RotationUtil.lookAtLegit(target);
 
             if (mode.getValue() == 1)
-                CrystalUtil.lookAtPacket(pos.x, pos.y, pos.z, mc.player);
+                RotationUtil.lookAtPacket(pos.x, pos.y, pos.z, mc.player);
         }
     }
 

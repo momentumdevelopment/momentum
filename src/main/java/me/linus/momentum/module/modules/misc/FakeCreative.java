@@ -1,7 +1,7 @@
 package me.linus.momentum.module.modules.misc;
 
 import me.linus.momentum.module.Module;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.external.MessageUtil;
 import net.minecraft.world.GameType;
 
 /**

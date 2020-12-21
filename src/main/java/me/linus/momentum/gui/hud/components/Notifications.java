@@ -4,7 +4,7 @@ import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.HUD;
 import me.linus.momentum.module.modules.client.ClickGui;
-import me.linus.momentum.util.client.Animation2D;
+import me.linus.momentum.util.render.AnimationUtil;
 import me.linus.momentum.util.client.notification.Notification;
 import me.linus.momentum.util.client.notification.NotificationManager;
 import me.linus.momentum.util.render.FontUtil;
@@ -66,10 +66,10 @@ public class Notifications extends HUDComponent {
             int currY = Momentum.componentManager.getComponentByName("Notifications").getY();
 
             if (continuedNotification.remainingAnimation < width && !continuedNotification.isComplete())
-                continuedNotification.remainingAnimation = Animation2D.moveTowards(continuedNotification.remainingAnimation, width + 1, (float) (0.01f + ClickGui.speed.getValue() / 30), 0.1f);
+                continuedNotification.remainingAnimation = AnimationUtil.moveTowards(continuedNotification.remainingAnimation, width + 1, (float) (0.01f + ClickGui.speed.getValue() / 30), 0.1f);
 
             else if (continuedNotification.remainingAnimation > 1.5f && continuedNotification.isComplete())
-                continuedNotification.remainingAnimation = Animation2D.moveTowards(continuedNotification.remainingAnimation, -1.5f, (float) (0.01f + ClickGui.speed.getValue() / 30), 0.1f);
+                continuedNotification.remainingAnimation = AnimationUtil.moveTowards(continuedNotification.remainingAnimation, -1.5f, (float) (0.01f + ClickGui.speed.getValue() / 30), 0.1f);
 
             else if (continuedNotification.remainingAnimation <= 1.5f && continuedNotification.isComplete())
                 continuedNotification.remainingAnimation = -1f;

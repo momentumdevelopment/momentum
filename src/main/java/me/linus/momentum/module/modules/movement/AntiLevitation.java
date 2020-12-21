@@ -1,7 +1,7 @@
 package me.linus.momentum.module.modules.movement;
 
 import me.linus.momentum.module.Module;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.external.MessageUtil;
 import net.minecraft.potion.Potion;
 
 import java.util.Objects;

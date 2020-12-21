@@ -16,7 +16,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.system.MathUtil;
 import me.linus.momentum.util.client.color.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.FontRenderer;

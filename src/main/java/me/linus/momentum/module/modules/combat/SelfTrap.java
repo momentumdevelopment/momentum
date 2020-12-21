@@ -39,7 +39,7 @@ public class SelfTrap extends Module {
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider g = new SubSlider(color, "Green", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 255.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 5.0D, 255.0D, 0);
+    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 25.0D, 255.0D, 0);
 
     @Override
     public void setup() {
@@ -100,7 +100,7 @@ public class SelfTrap extends Module {
     @Override
     public void onRender3D(Render3DEvent eventRender) {
         for (BlockPos renderBlock : renderBlocks)
-            RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+            RenderUtil.drawBoxBlockPos(renderBlock, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
     }
 
     public List<Vec3d> getTrap() {

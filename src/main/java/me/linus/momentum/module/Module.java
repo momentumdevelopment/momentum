@@ -6,7 +6,7 @@ import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.misc.EnableMessage;
 import me.linus.momentum.setting.Setting;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.external.MessageUtil;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;

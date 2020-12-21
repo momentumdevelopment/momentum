@@ -22,7 +22,7 @@ public class FullBright extends Module {
         addSetting(mode);
     }
 
-    private float oldBright;
+    float oldBright;
 
     @Override
     public void onUpdate() {

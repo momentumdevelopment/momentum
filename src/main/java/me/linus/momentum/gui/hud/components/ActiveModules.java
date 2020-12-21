@@ -7,7 +7,7 @@ import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGui;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.module.modules.hud.ArrayListModule;
-import me.linus.momentum.util.client.Animation2D;
+import me.linus.momentum.util.render.AnimationUtil;
 import me.linus.momentum.util.client.color.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.ScaledResolution;
@@ -42,10 +42,10 @@ public class ActiveModules extends HUDComponent {
                     String modText = module.getName() + TextFormatting.WHITE + module.getHUDData();
 
                     if (module.remainingAnimation < modWidth && module.isEnabled())
-                        module.remainingAnimation = Animation2D.moveTowards(module.remainingAnimation, modWidth + 1, (float) (0.01f + ClickGui.speed.getValue() / 30), 0.1f);
+                        module.remainingAnimation = AnimationUtil.moveTowards(module.remainingAnimation, modWidth + 1, (float) (0.01f + ClickGui.speed.getValue() / 30), 0.1f);
 
                     else if (module.remainingAnimation > 1.5f && !module.isEnabled())
-                        module.remainingAnimation = Animation2D.moveTowards(module.remainingAnimation, -1.5f, (float) (0.01f + ClickGui.speed.getValue() / 30), 0.1f);
+                        module.remainingAnimation = AnimationUtil.moveTowards(module.remainingAnimation, -1.5f, (float) (0.01f + ClickGui.speed.getValue() / 30), 0.1f);
 
                     else if (module.remainingAnimation <= 1.5f && !module.isEnabled())
                         module.remainingAnimation = -1f;

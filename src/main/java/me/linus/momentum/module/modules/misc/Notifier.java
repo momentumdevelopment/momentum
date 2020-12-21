@@ -6,9 +6,8 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.client.Timer;
-import me.linus.momentum.util.client.friend.FriendManager;
+import me.linus.momentum.util.client.external.MessageUtil;
+import me.linus.momentum.util.client.system.Timer;
 import me.linus.momentum.util.client.notification.Notification;
 import me.linus.momentum.util.client.notification.NotificationManager;
 import me.linus.momentum.util.world.PlayerUtil;
@@ -64,7 +63,8 @@ public class Notifier extends Module {
 
         for (EntityPlayer player : mc.world.playerEntities) {
             if (totem.getValue()) {
-                if (!totemPopContainer.containsKey(player.getName())) continue;
+                if (!totemPopContainer.containsKey(player.getName()))
+                    continue;
 
                 if (player.isDead || player.getHealth() <= 0.0f) {
                     int count = totemPopContainer.get(player.getName()).intValue();

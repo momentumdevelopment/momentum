@@ -1,4 +1,4 @@
-package me.linus.momentum.util.client;
+package me.linus.momentum.util.client.external;
 
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.util.text.TextComponentString;
