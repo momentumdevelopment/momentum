@@ -43,6 +43,7 @@ public class ModuleManager implements MixinInterface {
 			new AimBot(),
 			new Aura(),
 			new AutoArmor(),
+			new AutoBed(),
 			new AutoCrystal(),
 			new AutoTotem(),
 			new AutoTrap(),
@@ -75,7 +76,6 @@ public class ModuleManager implements MixinInterface {
 			new QuickMine(),
 			new Reach(),
 			new Swing(),
-			new SwingPrevent(),
 
 			//Misc
 			new AntiAFK(),

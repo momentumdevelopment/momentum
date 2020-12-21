@@ -1,7 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
-import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
@@ -247,9 +246,9 @@ public class AutoCrystal extends Module {
         else
             entities.addAll(mc.world.playerEntities.stream().filter(entityPlayer -> EnemyUtil.getHealth(entityPlayer) >= minDamage.getValue()).collect(Collectors.toList()));
         double damage = 0.5;
-        for (final Entity entityTarget : entities) {
+        for (Entity entityTarget : entities) {
             if (entityTarget != mc.player) {
-                if (((EntityLivingBase) entityTarget).getHealth() <= 0.0f && !(damageCalc.getValue() == 1))
+                if (EnemyUtil.getHealth((EntityPlayer) entityTarget) <= 0 && !(damageCalc.getValue() == 1))
                     continue;
 
                 if (mc.player.getDistanceSq(entityTarget) > enemyRange.getValue() * enemyRange.getValue())
@@ -258,7 +257,7 @@ public class AutoCrystal extends Module {
                 if (FriendManager.isFriend(entityTarget.getName()) && FriendManager.isFriendModuleEnabled())
                     continue;
 
-                for (final BlockPos blockPos : blocks) {
+                for (BlockPos blockPos : blocks) {
                     if (!CrystalUtil.canBlockBeSeen(blockPos) && mc.player.getDistanceSq(blockPos) > wallRange.getValue() * wallRange.getValue())
                         continue;
 

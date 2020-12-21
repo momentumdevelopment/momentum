@@ -1,7 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.module.Module;
-import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
@@ -43,7 +42,7 @@ public class AimBot extends Module {
 
         EntityPlayer target = EntityUtil.getClosestPlayer(range.getValue());
 
-        if (target != null && (!FriendManager.isFriend(target.getName()) && ModuleManager.getModuleByName("Friends").isEnabled())) {
+        if (target != null && (!FriendManager.isFriend(target.getName()) && FriendManager.isFriendModuleEnabled())) {
             Vec3d pos = EntityUtil.interpolateEntityTime(target, mc.getRenderPartialTicks());
             float[] angles = MathUtil.calcAngle(EntityUtil.interpolateEntityTime(mc.player, mc.getRenderPartialTicks()), pos);
 
