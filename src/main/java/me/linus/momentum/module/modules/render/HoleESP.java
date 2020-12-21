@@ -94,7 +94,7 @@ public class HoleESP extends Module {
 
                         if (CrystalUtil.getPlayerPos().getDistance(hole.x, hole.y, hole.z) <= 0.5) {
                             RenderUtil.enableGLGlow();
-                            RenderUtil.drawGlowBox(hole, new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 8), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 0), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 125));
+                            RenderUtil.drawGlowBoxBlockPos(hole, 1, 1, 1, new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 125), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 0));
                             RenderUtil.disableGLGlow();
                         }
 
@@ -105,7 +105,7 @@ public class HoleESP extends Module {
                         RenderUtil.drawBoundingBoxBottomBlockPos(hole, (float) lineWidth.getValue(), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 144));
 
                         RenderUtil.enableGLGlow();
-                        RenderUtil.drawBetterGlowBox(hole, new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 125), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 0));
+                        RenderUtil.drawGlowBoxBlockPos(hole, 1, 1, 1, new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 125), new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), 8));
                         RenderUtil.disableGLGlow();
                         break;
                     }
@@ -148,7 +148,7 @@ public class HoleESP extends Module {
 
                         if (CrystalUtil.getPlayerPos().getDistance(hole.x, hole.y, hole.z) <= 0.5) {
                             RenderUtil.enableGLGlow();
-                            RenderUtil.drawBetterGlowBox(hole, new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 125), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 0));
+                            RenderUtil.drawGlowBoxBlockPos(hole, 1, 1, 1, new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 125), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 8));
                             RenderUtil.disableGLGlow();
                         }
 
@@ -159,7 +159,7 @@ public class HoleESP extends Module {
                         RenderUtil.drawBoundingBoxBottomBlockPos(hole, (float) lineWidth.getValue(), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 144));
 
                         RenderUtil.enableGLGlow();
-                        RenderUtil.drawGradientBoxFromBlockPos(hole, new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 144), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 8), GeometryMasks.Quad.ALL);
+                        RenderUtil.drawGlowBoxBlockPos(hole, 1, 1, 1, new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 125), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), 8));
                         RenderUtil.disableGLGlow();
                         break;
                     }

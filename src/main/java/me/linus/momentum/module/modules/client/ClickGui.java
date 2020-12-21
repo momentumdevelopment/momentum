@@ -19,7 +19,7 @@ public class ClickGui extends Module {
 	}
 
 	public static Slider scrollSpeed = new Slider("Scroll Speed", 0.0D, 10.0D, 20.0D, 0);
-	public static Slider speed = new Slider("Animation Speed", 0.0D, 2.5D, 5.0D, 1);
+	public static Slider speed = new Slider("Animation Speed", 0.0D, 3.5D, 5.0D, 1);
 
 	public static Checkbox blurEffect = new Checkbox("Blur Effect", true);
 
