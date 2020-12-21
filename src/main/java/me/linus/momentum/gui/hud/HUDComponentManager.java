@@ -64,7 +64,13 @@ public class HUDComponentManager implements MixinInterface {
         if (!(mc.currentScreen instanceof HUD) && !(mc.currentScreen instanceof GUI)) {
             for (HUDComponent comp : components) {
                 if (comp.isEnabled()) {
-                    comp.render();
+                    // TODO: figure out why some of these get npe's
+
+                    try {
+                        comp.render();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

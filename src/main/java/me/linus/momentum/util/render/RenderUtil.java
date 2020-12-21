@@ -75,35 +75,45 @@ public class RenderUtil extends Tessellator implements MixinInterface {
     }
 
     public static void prepareProfiler() {
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
-        GlStateManager.tryBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ZERO, GL11.GL_ONE);
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        GlStateManager.depthMask(false);
-        GlStateManager.enableBlend();
-        GlStateManager.disableDepth();
         GlStateManager.disableTexture2D();
-        GlStateManager.disableLighting();
-        GlStateManager.disableCull();
-        GlStateManager.enableAlpha();
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glEnable(GL32.GL_DEPTH_CLAMP);
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.shadeModel(7425);
+        GlStateManager.disableDepth();
     }
 
     public static void releaseProfiler() {
-        GL11.glDisable(GL32.GL_DEPTH_CLAMP);
-        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GlStateManager.shadeModel(7424);
+        GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
-        GlStateManager.enableCull();
-        GlStateManager.enableLighting();
         GlStateManager.enableTexture2D();
         GlStateManager.enableDepth();
-        GlStateManager.disableBlend();
+        GlStateManager.enableCull();
+        GlStateManager.enableCull();
         GlStateManager.depthMask(true);
-        GlStateManager.glLineWidth(1.0f);
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_DONT_CARE);
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.enableDepth();
     }
 
+    public static void glSetup() {
+        GL11.glPushMatrix();
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(3042);
+        GL11.glDisable(3553);
+        GL11.glDisable(2929);
+        GL11.glDepthMask(false);
+        GL11.glLineWidth(1.0f);
+    }
+
+    public static void glRelease() {
+        GL11.glEnable(3553);
+        GL11.glEnable(2929);
+        GL11.glDepthMask(true);
+        GL11.glDisable(3042);
+        GL11.glPopMatrix();
+    }
 
     /**
      * 3D Rendering
@@ -112,13 +122,14 @@ public class RenderUtil extends Tessellator implements MixinInterface {
     // box rendering
 
     public static void drawVanillaBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
-        try {
-            glSetup();
-            RenderGlobal.renderFilledBox(box, red, green, blue, alpha);
-            glCleanup();
-        } catch (Exception ignored) {
+        glSetup();
+        RenderGlobal.renderFilledBox(box, red, green, blue, alpha);
+        glRelease();
+    }
 
-        }
+    public static void drawVanillaBoxFromBlockPos(BlockPos blockPos, Color color) {
+        AxisAlignedBB axisAlignedBB = new AxisAlignedBB(blockPos.getX() - mc.getRenderManager().viewerPosX, blockPos.getY() - mc.getRenderManager().viewerPosY, blockPos.getZ() - mc.getRenderManager().viewerPosZ, blockPos.getX() + 1 - mc.getRenderManager().viewerPosX, blockPos.getY() + 1 - mc.getRenderManager().viewerPosY, blockPos.getZ() + 1 - mc.getRenderManager().viewerPosZ);
+        drawVanillaBox(axisAlignedBB, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
     }
 
     public static void drawVanillaBoxFromBlockPos(BlockPos blockPos, float red, float green, float blue, float alpha) {
@@ -582,27 +593,6 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GlStateManager.enableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.enableDepth();
-    }
-
-    public static void glSetup() {
-        GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
-        GlStateManager.disableDepth();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1);
-        GlStateManager.disableTexture2D();
-        GlStateManager.depthMask(false);
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
-        GL11.glLineWidth(1.5f);
-    }
-
-    public static void glCleanup() {
-        GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GlStateManager.depthMask(true);
-        GlStateManager.enableDepth();
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
     }
 
     // vertices

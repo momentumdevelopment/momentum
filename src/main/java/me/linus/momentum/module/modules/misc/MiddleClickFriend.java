@@ -25,7 +25,8 @@ public class MiddleClickFriend extends Module {
     private boolean hasClicked = false;
 
     public void onUpdate() {
-        if (nullCheck()) return;
+        if (nullCheck())
+            return;
 
         if (!Mouse.isButtonDown(2)) {
             hasClicked = false;

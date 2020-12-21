@@ -10,7 +10,10 @@ import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,10 +59,9 @@ public class CityESP extends Module {
         }
     }
 
-    @Override
-    public void onRender3D(Render3DEvent eventRender) {
-        for (BlockPos cityPos : cityBlocks) {
-            RenderUtil.drawVanillaBoxFromBlockPos(cityPos, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
-        }
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent eventRender) {
+        for (BlockPos cityPos : cityBlocks)
+            RenderUtil.drawVanillaBoxFromBlockPos(cityPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
     }
 }

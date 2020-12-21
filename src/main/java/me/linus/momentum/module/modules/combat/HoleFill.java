@@ -14,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class HoleFill extends Module {
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 250.0D, 255.0D, 0);
     public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 30.0D, 255.0D, 0);
+    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 10.0D, 255.0D, 0);
 
     @Override
     public void setup() {
@@ -123,7 +124,7 @@ public class HoleFill extends Module {
     @Override
     public void onRender3D(Render3DEvent eventRender) {
         if (renderBlock != null) {
-            RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
+            RenderUtil.drawVanillaBoxFromBlockPos(renderBlock, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
         }
     }
 

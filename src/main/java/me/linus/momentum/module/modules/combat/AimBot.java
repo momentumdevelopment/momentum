@@ -1,6 +1,7 @@
 package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.module.Module;
+import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.MathUtil;
@@ -23,6 +24,7 @@ public class AimBot extends Module {
 
     private static final Mode mode = new Mode("Mode", "Rotate", "Spoof");
     public static Slider range = new Slider("Range", 0.0D, 8.0D, 20.0D, 0);
+    public static Checkbox onlyBow = new Checkbox("Only Bow", true);
 
     @Override
     public void setup() {
@@ -32,21 +34,25 @@ public class AimBot extends Module {
 
     @Override
     public void onUpdate() {
-        if (this.mc.player.getHeldItemMainhand().getItem() instanceof ItemBow && this.mc.player.isHandActive() && this.mc.player.getItemInUseMaxCount() >= 3) {
-            EntityPlayer target = EntityUtil.getClosestPlayer(range.getValue());
+        if (nullCheck())
+            return;
 
-            if (target != null && !FriendManager.isFriend(target.getName())) {
-                Vec3d pos = EntityUtil.interpolateEntityTime(target, this.mc.getRenderPartialTicks());
-                float[] angles = MathUtil.calcAngle(EntityUtil.interpolateEntityTime(this.mc.player, this.mc.getRenderPartialTicks()), pos);
+        if (!(mc.player.getHeldItemMainhand().getItem() instanceof ItemBow) && !mc.player.isHandActive() && !(mc.player.getItemInUseMaxCount() >= 3) && onlyBow.getValue())
+            return;
 
-                if (mode.getValue() == 0) {
-                    mc.player.rotationYaw = angles[0];
-                    mc.player.rotationPitch = angles[1];
-                }
+        EntityPlayer target = EntityUtil.getClosestPlayer(range.getValue());
 
-                if (mode.getValue() == 1)
-                    CrystalUtil.lookAtPacket(pos.x, pos.y, pos.z, mc.player);
+        if (target != null && (!FriendManager.isFriend(target.getName()) && FriendManager.isFriendModuleEnabled())) {
+            Vec3d pos = EntityUtil.interpolateEntityTime(target, mc.getRenderPartialTicks());
+            float[] angles = MathUtil.calcAngle(EntityUtil.interpolateEntityTime(mc.player, mc.getRenderPartialTicks()), pos);
+
+            if (mode.getValue() == 0) {
+                mc.player.rotationYaw = angles[0];
+                mc.player.rotationPitch = angles[1];
             }
+
+            if (mode.getValue() == 1)
+                CrystalUtil.lookAtPacket(pos.x, pos.y, pos.z, mc.player);
         }
     }
 

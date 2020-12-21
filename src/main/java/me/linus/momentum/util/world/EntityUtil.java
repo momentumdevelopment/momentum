@@ -1,6 +1,7 @@
 package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -16,6 +17,7 @@ import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 /**
@@ -79,7 +81,7 @@ public class EntityUtil implements MixinInterface {
     public static float getRotations(EntityLivingBase ent) {
         double x = ent.posX - mc.player.posX;
         double z = ent.posZ - mc.player.posZ;
-        return (float)-(Math.atan2(x, z) * 57.29577951308232D);
+        return (float) -(Math.atan2(x, z) * 57.29577951308232D);
     }
 
     public static Vec3d interpolateEntity(final Entity entity, final float n) {
@@ -87,7 +89,7 @@ public class EntityUtil implements MixinInterface {
     }
 
     public static Vec3d interpolateEntityTime(Entity entity, float time) {
-        return new Vec3d(entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)time, entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) time, entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double)time);
+        return new Vec3d(entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) time, entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) time, entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) time);
     }
 
     public static Vec3d getInterpolatedPos(final Entity entity, final float ticks) {
@@ -132,5 +134,21 @@ public class EntityUtil implements MixinInterface {
 
     public static boolean isVehicle(Entity entity) {
         return entity instanceof EntityBoat || entity instanceof EntityMinecart;
+    }
+
+    public static boolean isInWater(Entity entity) {
+        if (entity == null)
+            return false;
+
+        final double y = entity.posY + 0.01;
+        for (int x = MathHelper.floor(entity.posX); x < MathHelper.ceil(entity.posX); ++x) {
+            for (int z = MathHelper.floor(entity.posZ); z < MathHelper.ceil(entity.posZ); ++z) {
+                final BlockPos pos = new BlockPos(x, (int) y, z);
+                if (mc.world.getBlockState(pos).getBlock() instanceof BlockLiquid)
+                    return true;
+            }
+        }
+
+        return false;
     }
 }

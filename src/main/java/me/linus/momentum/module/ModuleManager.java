@@ -43,6 +43,7 @@ public class ModuleManager implements MixinInterface {
 			new AimBot(),
 			new Aura(),
 			new AutoArmor(),
+			new AutoBed(),
 			new AutoCrystal(),
 			new AutoTotem(),
 			new AutoTrap(),
@@ -75,7 +76,6 @@ public class ModuleManager implements MixinInterface {
 			new QuickMine(),
 			new Reach(),
 			new Swing(),
-			new SwingPrevent(),
 
 			//Misc
 			new AntiAFK(),
@@ -113,6 +113,7 @@ public class ModuleManager implements MixinInterface {
 			new Flight(),
 			new HighJump(),
 			new IceSpeed(),
+			new Jesus(),
 			new LongJump(),
 			new NoSlow(),
 			new PacketFlight(),
@@ -239,21 +240,17 @@ public class ModuleManager implements MixinInterface {
 	@SubscribeEvent
 	public static void onRender3D(RenderWorldLastEvent event) {
 		HudEditor.boost = 0;
-		Minecraft.getMinecraft().mcProfiler.startSection("momentum");
-		Minecraft.getMinecraft().mcProfiler.startSection("setup");
+		mc.mcProfiler.startSection("momentum");
 		RenderUtil.prepareProfiler();
 		Render3DEvent render3DEvent = new Render3DEvent(event.getPartialTicks());
-		Minecraft.getMinecraft().mcProfiler.endSection();
 
 		modules.stream().filter(module -> module.isEnabled()).forEach(module -> {
-			Minecraft.getMinecraft().mcProfiler.startSection(module.getName());
+			mc.mcProfiler.startSection(module.getName());
 			module.onRender3D(render3DEvent);
-			Minecraft.getMinecraft().mcProfiler.endSection();
+			mc.mcProfiler.endSection();
 		});
 
-		Minecraft.getMinecraft().mcProfiler.startSection("release");
 		RenderUtil.releaseProfiler();
-		Minecraft.getMinecraft().mcProfiler.endSection();
-		Minecraft.getMinecraft().mcProfiler.endSection();
+		mc.mcProfiler.endSection();
 	}
 }

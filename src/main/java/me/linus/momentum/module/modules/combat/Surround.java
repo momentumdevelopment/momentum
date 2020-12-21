@@ -15,6 +15,7 @@ import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +47,7 @@ public class Surround extends Module {
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider g = new SubSlider(color, "Green", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 30.0D, 255.0D, 0);
+    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 5.0D, 255.0D, 0);
 
     @Override
     public void setup() {
@@ -144,16 +145,16 @@ public class Surround extends Module {
     @Override
     public void onRender3D(Render3DEvent eventRender) {
         if (northBlockPos != null)
-            RenderUtil.drawVanillaBoxFromBlockPos(northBlockPos, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
+            RenderUtil.drawVanillaBoxFromBlockPos(northBlockPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
 
         if (westBlockPos != null)
-            RenderUtil.drawVanillaBoxFromBlockPos(westBlockPos, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
+            RenderUtil.drawVanillaBoxFromBlockPos(westBlockPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
 
         if (southBlockPos != null)
-            RenderUtil.drawVanillaBoxFromBlockPos(southBlockPos, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
+            RenderUtil.drawVanillaBoxFromBlockPos(southBlockPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
 
         if (eastBlockPos != null)
-            RenderUtil.drawVanillaBoxFromBlockPos(eastBlockPos, (float) r.getValue() / 255f, (float) g.getValue() / 255f, (float) b.getValue() / 255f, (float) a.getValue() / 255f);
+            RenderUtil.drawVanillaBoxFromBlockPos(eastBlockPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
     }
 
     public List<Vec3d> getSurround() {

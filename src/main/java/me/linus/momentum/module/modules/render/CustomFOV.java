@@ -26,5 +26,4 @@ public class CustomFOV extends Module {
     public void eventFOV(EntityViewRenderEvent.FOVModifier FOV) {
         FOV.setFOV((float) customFOV.getValue());
     }
-
 }

@@ -30,7 +30,7 @@ public class HudEditor extends Module {
 	
 	@SubscribeEvent
 	public void onRender(RenderGameOverlayEvent.Text event) {
-		//boost = 0;
+		// boost = 0;
 	}
 }
 	
