@@ -77,35 +77,23 @@ public class InventoryUtil implements MixinInterface {
     public static void moveItemToOffhand(int slot) {
         boolean moving = false;
         boolean returning = false;
-        int returnSlot = 0;
+        int returnSlot = -1;
 
         if (slot == -1)
             return;
 
-        if (!moving) {
-            mc.playerController.windowClick(0, slot < 9 ? slot + 36 : slot, 0, ClickType.PICKUP, mc.player);
-            moving = true;
+        mc.playerController.windowClick(0, slot < 9 ? slot + 36 : slot, 0, ClickType.PICKUP, mc.player);
+        mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
+
+        for (int i = 0; i < 45; i++) {
+            if (mc.player.inventory.getStackInSlot(i).isEmpty()) {
+                returnSlot = i;
+                break;
+            }
         }
 
-        if (moving) {
-            mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
-            moving = false;
-            returning = true;
-        }
-
-        if (returning) {
-            for (int i = 0; i < 45; i++) {
-                if (mc.player.inventory.getStackInSlot(i).isEmpty()) {
-                    returnSlot = i;
-                    break;
-                }
-            }
-
-            if (returnSlot != -1) {
-                mc.playerController.windowClick(0, returnSlot < 9 ? returnSlot + 36 : returnSlot, 0, ClickType.PICKUP, mc.player);
-            }
-
-            returning = false;
+        if (returnSlot != -1) {
+            mc.playerController.windowClick(0, returnSlot < 9 ? returnSlot + 36 : returnSlot, 0, ClickType.PICKUP, mc.player);
         }
     }
 
