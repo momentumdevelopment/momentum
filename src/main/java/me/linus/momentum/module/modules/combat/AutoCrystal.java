@@ -352,7 +352,7 @@ public class AutoCrystal extends Module {
             double damageRounded = MathUtil.roundAvoid(damage, 1);
 
             if (outline.getValue())
-                RenderUtil.drawBoundingBoxBlockPos(render, 1.0, new Color((int) r.getValue(), (int) g.getValue(),  (int)b.getValue(), 144));
+                RenderUtil.drawBoundingBoxBlockPos(render, 0, new Color((int) r.getValue(), (int) g.getValue(),  (int)b.getValue(), 144));
 
             if (renderDamage.getValue())
                 RenderUtil.drawNametagFromBlockPos(render, String.valueOf(damageRounded));

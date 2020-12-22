@@ -4,13 +4,13 @@ import me.linus.momentum.command.Command;
 
 /**
  * @author linustouchtips
- * @since 12/17/2020
+ * @since 12/01/2020
  */
 
 public class Scale extends Command {
 
     public Scale() {
-        super("Scale", new String[] {"gui"});
+        super("scale");
     }
 
     public float scale = 1.0f;
@@ -24,5 +24,10 @@ public class Scale extends Command {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "Allows you to change gui scale";
     }
 }

@@ -8,24 +8,25 @@ import org.lwjgl.input.Keyboard;
 
 /**
  * @author linustouchtips
- * @since 12/17/2020
+ * @since 12/01/2020
  */
 
 public class Prefix extends Command {
     public Prefix() {
-        super("Prefix", new String[]{"prefix"});
+        super("prefix");
     }
 
     @Override
     public void onCommand(String[] args) {
         if (args.length > 1) {
-            try {
-                Momentum.PREFIX = args[1];
-                MessageUtil.sendClientMessage(ChatFormatting.LIGHT_PURPLE + "Default Prefix" + ChatFormatting.WHITE + " is now" + ChatFormatting.RED + args[2].toUpperCase() + ChatFormatting.GRAY + " (" + ChatFormatting.WHITE + Keyboard.getKeyIndex(args[2].toUpperCase() + "") + ChatFormatting.GRAY + ")");
-            } catch (Exception e) {
-
-            }
+            Momentum.PREFIX = args[1];
+            MessageUtil.sendClientMessage(ChatFormatting.LIGHT_PURPLE + "Prefix" + ChatFormatting.WHITE + " is now " + ChatFormatting.RED + args[1].toUpperCase() + ChatFormatting.GRAY + " (" + ChatFormatting.WHITE + Keyboard.getKeyIndex(args[1].toUpperCase() + "") + ChatFormatting.GRAY + ")");
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "Changes the command prefix";
     }
 }
 

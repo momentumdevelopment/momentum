@@ -1,26 +1,26 @@
 package me.linus.momentum.command;
 
+import me.linus.momentum.mixin.MixinInterface;
+
 /**
  * @author linustouchtips
- * @since 12/17/2020
+ * @since 12/01/2020
  */
 
-public class Command {
-    private final String command;
-    private final String[] usage;
+public class Command implements MixinInterface {
+    String usage;
 
-    public Command(String name, String[] usage){
-        this.command = name;
+    public Command(String usage) {
         this.usage = usage;
     }
 
-    public void onCommand(String[] args){}
+    public void onCommand(String[] args) {}
 
-    public String getCommand() {
-        return command;
+    public String getUsage() {
+        return usage;
     }
 
-    public String[] getUsage() {
-        return usage;
+    public String getDescription() {
+        return "";
     }
 }

@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @since 11/30/2020
  */
 
+// TODO: rewrite this
 public class LongJump extends Module {
     public LongJump() {
         super("LongJump", Category.MOVEMENT, "Increases player jump distance");

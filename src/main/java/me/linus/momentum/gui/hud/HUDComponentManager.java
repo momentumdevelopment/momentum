@@ -9,7 +9,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -49,7 +48,6 @@ public class HUDComponentManager implements MixinInterface {
         return components;
     }
 
-    @Nullable
     public HUDComponent getComponentByName(String name) {
         for (HUDComponent component : components) {
             if (component.getName().equalsIgnoreCase(name))

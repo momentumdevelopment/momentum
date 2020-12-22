@@ -418,15 +418,6 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GlStateManager.enableDepth();
     }
 
-    // vertices
-    private static void vertexStatic(double x, double y, double z, BufferBuilder bufferbuilder) {
-        bufferbuilder.pos(x - mc.getRenderManager().viewerPosX,y - mc.getRenderManager().viewerPosY,z - mc.getRenderManager().viewerPosZ).endVertex();
-    }
-
-    private static void vertexColor(double x, double y, double z, BufferBuilder bufferbuilder, Color color) {
-        bufferbuilder.pos(x - mc.getRenderManager().viewerPosX,y - mc.getRenderManager().viewerPosY,z - mc.getRenderManager().viewerPosZ).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
-    }
-
     // lines
 
     public static void drawLine3D(float x, float y, float z, float x1, float y1, float z1, float thickness, int hex) {
@@ -587,5 +578,4 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GlStateManager.enableTexture2D();
         GlStateManager.popMatrix();
     }
-
 }

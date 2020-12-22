@@ -45,6 +45,9 @@ public class QuickMine extends Module {
         if (nullCheck())
             return;
 
+        if (!this.isEnabled())
+            return;
+
         if (BlockUtils.canBreak(event.getPos())) {
             switch (mode.getValue()) {
                 case 0:

@@ -6,16 +6,16 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSword;
+import org.lwjgl.input.Mouse;
 
 /**
- * @author linustouchtips
- * @since 11/28/2020
+ * @author reap & linustouchtips
+ * @since 12/22/2020
  */
 
 public class Offhand extends Module {
@@ -23,33 +23,26 @@ public class Offhand extends Module {
         super("Offhand", Category.COMBAT, "Switches items in the offhand to a totem when low on health");
     }
 
-    private static final Mode mode = new Mode("Mode", "Gapple", "Crystal", "Bed", "Chorus", "Pearl", "Potion", "Creeper", "Totem");
-    private static final Mode fallback = new Mode("Fallback", "Totem", "Pearl");
-    public static Slider health = new Slider("Health", 0.0D, 16.0D, 36.0D, 0);
-    private static final Checkbox swordGap = new Checkbox("Sword Gapple", true);
-    private static final Checkbox chorusTrap = new Checkbox("Trap Chorus", true);
+    public static final Mode mode = new Mode("Mode", "Crystal", "Gapple", "Bed", "Chorus", "Totem");
+    public static final Mode fallbackMode = new Mode("Fallback", "Crystal", "Gapple", "Bed", "Chorus", "Totem");
+    public static final Slider health = new Slider("Health", 0.1, 16.0, 36.0, 1);
 
-    private static final Checkbox checks = new Checkbox("Switch Check", true);
-    private static final SubCheckbox caFunction = new SubCheckbox(checks, "AutoCrystal Switch", false);
-    private static final SubCheckbox elytraCheck = new SubCheckbox(checks, "Elytra Switch", false);
-    private static final SubCheckbox fallCheck = new SubCheckbox(checks, "Fall Switch", false);
-    private static final SubCheckbox crystalSwitch = new SubCheckbox(checks, "Crystal Switch", false);
+    private static final Checkbox checks = new Checkbox("Checks", true);
+    private static final SubCheckbox caFunction = new SubCheckbox(checks, "AutoCrystal", false);
+    private static final SubCheckbox elytraCheck = new SubCheckbox(checks, "Elytra", false);
+    private static final SubCheckbox fallCheck = new SubCheckbox(checks, "Falling", false);
 
-    private static final Checkbox holeFunction = new Checkbox("Hole Switch", false);
-    public static SubSlider holeHealth = new SubSlider(holeFunction, "Hole Health", 0.0D, 10.0D, 36.0D, 0);
-
-    private static final Checkbox hotbar = new Checkbox("Search Hotbar", false);
+    public static final Checkbox swordGap = new Checkbox("Sword Gapple", true);
+    public static final Checkbox forceGap = new Checkbox("Force Gapple", true);
 
     @Override
     public void setup() {
         addSetting(mode);
-        addSetting(fallback);
+        addSetting(fallbackMode);
         addSetting(health);
-        addSetting(swordGap);
-        addSetting(chorusTrap);
         addSetting(checks);
-        addSetting(holeFunction);
-        addSetting(hotbar);
+        addSetting(swordGap);
+        addSetting(forceGap);
     }
 
     @Override
@@ -57,138 +50,74 @@ public class Offhand extends Module {
         if (nullCheck())
             return;
 
-        int itemToSwitch = getItem();
-        if (itemToSwitch < 0)
+        Item searching = Items.TOTEM_OF_UNDYING;
+
+        if (mc.player.isElytraFlying() & elytraCheck.getValue())
             return;
 
-        mc.playerController.windowClick(mc.player.inventoryContainer.windowId, itemToSwitch, 0, ClickType.PICKUP, mc.player);
-        mc.playerController.windowClick(mc.player.inventoryContainer.windowId, 45, 0, ClickType.PICKUP, mc.player);
-        mc.playerController.windowClick(mc.player.inventoryContainer.windowId, itemToSwitch, 0, ClickType.PICKUP, mc.player);
-    }
-
-    private int getItem() {
-        Item toSwitch = Items.AIR;
-
-        if (fallback.getValue() == 0)
-          toSwitch = Items.TOTEM_OF_UNDYING;
-
-        if (fallback.getValue() == 1)
-            toSwitch = Items.ENDER_PEARL;
-
-        if (mc.player.isElytraFlying() && elytraCheck.getValue())
-            return findFirstItemSlot(toSwitch);
-
-        if (mc.player.fallDistance > 8 && fallCheck.getValue())
-            return findFirstItemSlot(toSwitch);
-
-        if (!PlayerUtil.isInHole() && holeFunction.getValue())
-            return findFirstItemSlot(toSwitch);
+        if (mc.player.fallDistance > 10 && fallCheck.getValue())
+            return;
 
         if (!ModuleManager.getModuleByName("AutoCrystal").isEnabled() && caFunction.getValue())
-            return findFirstItemSlot(toSwitch);
+            return;
 
-        if (!(PlayerUtil.getHealth() <= health.getValue())) {
-            if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordGap.getValue())
-                toSwitch = Items.GOLDEN_APPLE;
-
-            else if (PlayerUtil.isPlayerTrapped() && chorusTrap.getValue())
-                toSwitch = Items.CHORUS_FRUIT;
-
-            else {
-                switch (mode.getValue()) {
-                    case 0:
-                        toSwitch = Items.GOLDEN_APPLE;
-                        break;
-                    case 1:
-                        toSwitch = Items.END_CRYSTAL;
-                        break;
-                    case 2:
-                        toSwitch = Items.BED;
-                        break;
-                    case 3:
-                        toSwitch = Items.CHORUS_FRUIT;
-                        break;
-                    case 4:
-                        toSwitch = Items.ENDER_PEARL;
-                        break;
-                    case 5:
-                        toSwitch = Items.POTIONITEM;
-                        break;
-                    case 6:
-                        toSwitch = Items.SPAWN_EGG;
-                        break;
-                }
-            }
-
-        } else if (PlayerUtil.isInHole() && holeFunction.getValue() && !(PlayerUtil.getHealth() <= holeHealth.getValue())) {
-            if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordGap.getValue())
-                toSwitch = Items.GOLDEN_APPLE;
-
-            else if (PlayerUtil.isPlayerTrapped() && chorusTrap.getValue())
-                toSwitch = Items.CHORUS_FRUIT;
-
-            else if (!PlayerUtil.isInHole() && holeFunction.getValue())
-                return findFirstItemSlot(toSwitch);
-
-            else {
-                switch (mode.getValue()) {
-                    case 0:
-                        toSwitch = Items.GOLDEN_APPLE;
-                        break;
-                    case 1:
-                        toSwitch = Items.END_CRYSTAL;
-                        break;
-                    case 2:
-                        toSwitch = Items.BED;
-                        break;
-                    case 3:
-                        toSwitch = Items.CHORUS_FRUIT;
-                        break;
-                    case 4:
-                        toSwitch = Items.ENDER_PEARL;
-                        break;
-                    case 5:
-                        toSwitch = Items.POTIONITEM;
-                        break;
-                    case 6:
-                        toSwitch = Items.SPAWN_EGG;
-                        break;
-                }
-            }
+        switch (mode.getValue()) {
+            case 0:
+                searching = Items.END_CRYSTAL;
+                break;
+            case 1:
+                searching = Items.GOLDEN_APPLE;
+                break;
+            case 2:
+                searching = Items.BED;
+                break;
+            case 3:
+                searching = Items.CHORUS_FRUIT;
+                break;
         }
 
-        if (mc.player.getHeldItemOffhand().getItem() == toSwitch)
-            return -2;
+        if (health.getValue() > PlayerUtil.getHealth())
+            searching = Items.TOTEM_OF_UNDYING;
 
-        return findFirstItemSlot(toSwitch);
-    }
+        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordGap.getValue())
+            searching = Items.GOLDEN_APPLE;
 
-    private int findFirstItemSlot(Item item) {
-        if (hotbar.getValue()) {
-            for (int i = 0; i < 45; i++)
-                if (mc.player.inventory.getStackInSlot(i).getItem() == item)
-                    return i < 9 ? i + 36 : i;
-        } else {
-            for (int i = 9; i < 45; i++)
-                if (mc.player.inventory.getStackInSlot(i).getItem() == item)
-                    return i < 9 ? i + 36 : i;
+        if (forceGap.getValue() && Mouse.isButtonDown(1))
+            searching = Items.GOLDEN_APPLE;
+
+        if (mc.player.getHeldItemOffhand().getItem() == searching)
+            return;
+
+        int slot = InventoryUtil.getInventoryItemSlot(searching);
+        if (slot != -1) {
+            InventoryUtil.moveItemToOffhand(slot);
+            return;
         }
 
-        if (hotbar.getValue()) {
-            for (int i = 0; i < 45; i++)
-                if (mc.player.inventory.getStackInSlot(i).getItem() == Items.TOTEM_OF_UNDYING)
-                    return i < 9 ? i + 36 : i;
-        } else {
-            for (int i = 9; i < 45; i++)
-                if (mc.player.inventory.getStackInSlot(i).getItem() == Items.TOTEM_OF_UNDYING)
-                    return i < 9 ? i + 36 : i;
+        switch (fallbackMode.getValue()) {
+            case 0:
+                searching = Items.END_CRYSTAL;
+                break;
+            case 1:
+                searching = Items.GOLDEN_APPLE;
+                break;
+            case 2:
+                searching = Items.BED;
+                break;
+            case 3:
+                searching = Items.CHORUS_FRUIT;
+                break;
+            case 4:
+                searching = Items.TOTEM_OF_UNDYING;
+                break;
         }
 
-        return -1;
-    }
+        if (mc.player.getHeldItemOffhand().getItem() == searching)
+            return;
 
-    @Override
-    public String getHUDData() {
-        return " " + mode.getMode(mode.getValue());
+        slot = InventoryUtil.getInventoryItemSlot(searching);
+
+        if (slot != -1)
+            InventoryUtil.moveItemToOffhand(slot);
     }
 }

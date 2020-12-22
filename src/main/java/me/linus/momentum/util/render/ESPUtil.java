@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 /**
- * @author unknown, but many other clients use this for outline
+ * @author linustouchtips
  * @since 11/26/2020
  */
 

@@ -22,6 +22,7 @@ public class BoatFlight extends Module {
     private static final Mode mode = new Mode("Mode", "Control", "Row");
     public static Slider hSpeed = new Slider("Horizontal Speed", 0.0D, 2.9D, 4.0D, 1);
     public static Slider ySpeed = new Slider("Vertical Speed", 0.0D, 1.0D, 3.0D, 1);
+    public static Slider yOffset = new Slider("Y-Offset", 0.0D, 0.009D, 0.1D, 3);
     public static Slider fallSpeed = new Slider("Fall Speed", 0.0D, 0.0D, 0.1D, 3);
 
     private static final Checkbox useTimer = new Checkbox("Use Timer", false);
@@ -38,6 +39,7 @@ public class BoatFlight extends Module {
         addSetting(mode);
         addSetting(hSpeed);
         addSetting(ySpeed);
+        addSetting(yOffset);
         addSetting(fallSpeed);
         addSetting(useTimer);
         addSetting(disable);
@@ -70,6 +72,9 @@ public class BoatFlight extends Module {
         if (mc.player.isRiding()) {
             Entity ridingEntity = mc.player.ridingEntity;
 
+            if (!PlayerUtil.isMoving())
+                PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
+
             ridingEntity.setVelocity(0, -fallSpeed.getValue(), 0);
 
             if (mc.gameSettings.keyBindJump.isKeyDown()) {
@@ -85,6 +90,9 @@ public class BoatFlight extends Module {
     public void flySwim() {
         if (mc.player.isRiding()) {
             Entity ridingEntity = mc.player.ridingEntity;
+
+            if (!PlayerUtil.isMoving())
+                PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
 
             ridingEntity.setVelocity(0, -fallSpeed.getValue(), 0);
 

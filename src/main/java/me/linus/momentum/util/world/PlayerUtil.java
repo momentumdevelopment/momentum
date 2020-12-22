@@ -4,6 +4,8 @@ import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.system.MathUtil;
 import me.linus.momentum.util.client.system.Timer;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
@@ -248,11 +250,21 @@ public class PlayerUtil implements MixinInterface {
     }
 
     public static void freezePlayer(double fallSpeed, double yOffset) {
-        mc.player.motionX = 0.0;
-        mc.player.motionY = 0.0;
-        mc.player.motionZ = 0.0;
-        mc.player.setVelocity(0f, 0f, 0f);
-        mc.player.setPosition(mc.player.posX, mc.player.posY - fallSpeed + yOffset, mc.player.posZ);
+        if (mc.player.ridingEntity == null) {
+            mc.player.motionX = 0.0;
+            mc.player.motionY = 0.0;
+            mc.player.motionZ = 0.0;
+            mc.player.setVelocity(0f, 0f, 0f);
+            mc.player.setPosition(mc.player.posX, mc.player.posY - fallSpeed + yOffset, mc.player.posZ);
+        }
+
+        else {
+            mc.player.ridingEntity.motionX = 0.0;
+            mc.player.ridingEntity.motionY = 0.0;
+            mc.player.ridingEntity.motionZ = 0.0;
+            mc.player.ridingEntity.setVelocity(0f, 0f, 0f);
+            mc.player.ridingEntity.setPosition(mc.player.posX, mc.player.posY - fallSpeed + yOffset, mc.player.posZ);
+        }
     }
 
     public static void resetYaw(double rotation) {
@@ -416,5 +428,60 @@ public class PlayerUtil implements MixinInterface {
             entity.setHealth(mc.player.getHealth() + mc.player.getAbsorptionAmount());
 
         mc.world.addEntityToWorld(69420, entity);
+    }
+
+    public static boolean isInLiquid() {
+        if (mc.player.fallDistance >= 3.0f)
+            return false;
+
+        if (mc.player != null) {
+            boolean inLiquid = false;
+            final AxisAlignedBB bb = mc.player.getRidingEntity() != null ? mc.player.getRidingEntity().getEntityBoundingBox() : mc.player.getEntityBoundingBox();
+            int y = (int) bb.minY;
+
+            for (int x = MathHelper.floor(bb.minX); x < MathHelper.floor(bb.maxX) + 1; x++) {
+                for (int z = MathHelper.floor(bb.minZ); z < MathHelper.floor(bb.maxZ) + 1; z++) {
+                    final Block block = mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
+
+                    if (!(block instanceof BlockAir)) {
+                        if (!(block instanceof BlockLiquid))
+                            return false;
+
+                        inLiquid = true;
+                    }
+                }
+            }
+
+            return inLiquid;
+        }
+
+        return false;
+    }
+
+    public static boolean isOnLiquid(double offset) {
+        if (mc.player.fallDistance >= 3.0f)
+            return false;
+
+        if (mc.player != null) {
+            final AxisAlignedBB bb = mc.player.getRidingEntity() != null ? mc.player.getRidingEntity().getEntityBoundingBox().contract(0.0d, 0.0d, 0.0d).offset(0.0d, -offset, 0.0d) : mc.player.getEntityBoundingBox().contract(0.0d, 0.0d, 0.0d).offset(0.0d, -offset, 0.0d);
+            boolean onLiquid = false;
+            int y = (int) bb.minY;
+
+            for (int x = MathHelper.floor(bb.minX); x < MathHelper.floor(bb.maxX + 1.0D); x++) {
+                for (int z = MathHelper.floor(bb.minZ); z < MathHelper.floor(bb.maxZ + 1.0D); z++) {
+                    final Block block = mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
+                    if (block != Blocks.AIR) {
+                        if (!(block instanceof BlockLiquid))
+                            return false;
+
+                        onLiquid = true;
+                    }
+                }
+            }
+
+            return onLiquid;
+        }
+
+        return false;
     }
 }

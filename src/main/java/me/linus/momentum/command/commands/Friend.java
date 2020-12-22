@@ -8,12 +8,12 @@ import net.minecraft.util.text.TextFormatting;
 
 /**
  * @author linustouchtips
- * @since 12/17/2020
+ * @since 12/01/2020
  */
 
 public class Friend extends Command {
     public Friend() {
-        super("Friend", new String[] {"friend"});
+        super("friend");
     }
 
     @Override
@@ -48,5 +48,10 @@ public class Friend extends Command {
         } catch(ArrayIndexOutOfBoundsException e) {
             MessageUtil.sendClientMessage(Momentum.PREFIX + "friend [add/del] [playername]");
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "Adds player to friends list";
     }
 }

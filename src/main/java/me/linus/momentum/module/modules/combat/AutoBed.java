@@ -23,6 +23,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -176,7 +177,8 @@ public class AutoBed extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (currentBlock != null && renderBed.getValue())
-            RenderUtil.drawBoxBlockPos(currentBlock, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+            GL11.glLineWidth(1.5f);
+            RenderUtil.drawBoundingBoxBlockPos(currentBlock, -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
     }
 
     @Override

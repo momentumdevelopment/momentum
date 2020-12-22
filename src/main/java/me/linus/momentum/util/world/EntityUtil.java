@@ -1,6 +1,7 @@
 package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.entity.Entity;
@@ -15,6 +16,7 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -134,21 +136,5 @@ public class EntityUtil implements MixinInterface {
 
     public static boolean isVehicle(Entity entity) {
         return entity instanceof EntityBoat || entity instanceof EntityMinecart;
-    }
-
-    public static boolean isInWater(Entity entity) {
-        if (entity == null)
-            return false;
-
-        final double y = entity.posY + 0.01;
-        for (int x = MathHelper.floor(entity.posX); x < MathHelper.ceil(entity.posX); ++x) {
-            for (int z = MathHelper.floor(entity.posZ); z < MathHelper.ceil(entity.posZ); ++z) {
-                final BlockPos pos = new BlockPos(x, (int) y, z);
-                if (mc.world.getBlockState(pos).getBlock() instanceof BlockLiquid)
-                    return true;
-            }
-        }
-
-        return false;
     }
 }

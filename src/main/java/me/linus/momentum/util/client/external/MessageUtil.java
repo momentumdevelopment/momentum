@@ -5,7 +5,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
 /**
- * @author bon
+ * @author bon & linustouchtips
  * @since 11/12/20
  */
 
@@ -13,6 +13,10 @@ public class MessageUtil implements MixinInterface {
 	
 	public static void sendClientMessage(String message) {
 		mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(TextFormatting.DARK_PURPLE + "[Momentum] " + TextFormatting.RESET + message), 69);
+	}
+
+	public static void sendRawClientMessage(String message) {
+		mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(message), 69);
 	}
 	
 	public static void sendPublicMessage(String message) {

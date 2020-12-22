@@ -48,7 +48,6 @@ public class ModuleManager implements MixinInterface {
 			new AutoCrystal(),
 			new AutoTotem(),
 			new AutoTrap(),
-			new BetterOffhand(),
 			new Burrow(),
 			new Criticals(),
 			new HoleFill(),
@@ -77,6 +76,7 @@ public class ModuleManager implements MixinInterface {
 			new PortalGodMode(),
 			new QuickMine(),
 			new Reach(),
+			new Rubberband(),
 			new Swing(),
 
 			//Misc

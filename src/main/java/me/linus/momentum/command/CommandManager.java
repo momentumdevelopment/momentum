@@ -8,19 +8,19 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
  * @author linustouchtips
- * @since 12/17/2020
+ * @since 12/01/2020
  */
 
 public class CommandManager {
-    private final List<Command> commands;
-
     public CommandManager() {
-        commands = Lists.newArrayList(
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    private static final List<Command> commands = Lists.newArrayList(
             new Toggle(),
             new Prefix(),
             new Help(),
@@ -31,10 +31,12 @@ public class CommandManager {
             new GoTo(),
             new Panic(),
             new Config(),
-            new Cancel()
-        );
+            new Cancel(),
+            new Peek()
+    );
 
-        MinecraftForge.EVENT_BUS.register(this);
+    public static List<Command> getCommands() {
+        return commands;
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -42,21 +44,9 @@ public class CommandManager {
         String[] args = event.getMessage().split(" ");
         if (event.getMessage().startsWith(Momentum.PREFIX)) {
             event.setCanceled(true);
-            for (Command c: commands){
-                if (args[0].equalsIgnoreCase(Momentum.PREFIX + c.getCommand())){
+            for (Command c: commands)
+                if (args[0].equalsIgnoreCase(Momentum.PREFIX + c.getUsage()))
                     c.onCommand(args);
-                }
-            }
         }
-    }
-
-    @Nullable
-    public Command getCommandByName(String name){
-        for (Command command : commands) {
-            if (command.getCommand().equalsIgnoreCase(name))
-                return command;
-        }
-
-        return null;
     }
 }

@@ -31,24 +31,25 @@ public class CrossHairs extends Module {
         addSetting(color);
     }
 
-    private int increment = 30;
+    int increment = 30;
 
     @Override
     public void onUpdate() {
+        if (nullCheck())
+            return;
+
         increment++;
     }
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketUseEntity && ((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK) {
+        if (event.getPacket() instanceof CPacketUseEntity && ((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK)
             increment = 0;
-        }
     }
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
-        if (increment < 25) {
-            RenderUtil.drawHitMarkers(new Color((int) r.getValue(),(int)  g.getValue(),(int)  b.getValue()));
-        }
+        if (increment < 25)
+            RenderUtil.drawHitMarkers(new Color((int) r.getValue(),(int) g.getValue(),(int)  b.getValue()));
     }
 }
