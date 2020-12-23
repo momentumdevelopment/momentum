@@ -183,8 +183,10 @@ public class AutoBed extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (currentBlock != null && currentTarget != null && renderBed.getValue())
-            GL11.glLineWidth(2.5f);
-            RenderUtil.drawBoundingBoxBlockPos(currentBlock, -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+            GL11.glLineWidth(3.5f);
+
+            if (currentBlock != null)
+                RenderUtil.drawBoundingBoxBlockPos(currentBlock, -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
 
             switch ((int) rotVar) {
                 case -90:

@@ -59,10 +59,8 @@ public class StorageESP extends Module {
             if (tileEntity instanceof TileEntityChest && chests.getValue() || (tileEntity instanceof TileEntityEnderChest && enderChests.getValue()) || (tileEntity instanceof TileEntityHopper && hoppers.getValue()) || (tileEntity instanceof TileEntityFurnace && furnaces.getValue()) || (tileEntity instanceof TileEntityBed && beds.getValue() || (tileEntity instanceof TileEntityDropper && droppers.getValue()) || (tileEntity instanceof TileEntityShulkerBox && shulkers.getValue()))) {
                 switch (mode.getValue()) {
                     case 0:
-                        RenderUtil.glSetup();
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
                         RenderUtil.drawBoundingBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity, 144));
-                        RenderUtil.glRelease();
                         break;
                     case 1:
                         RenderUtil.drawBoxBlockPos(tileEntity.getPos(), ColorUtil.getStorageColor(tileEntity, (int) alpha.getValue()));

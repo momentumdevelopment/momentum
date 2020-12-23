@@ -250,7 +250,17 @@ public class ESP extends Module {
         float viewerYaw = (mc.getRenderManager()).playerViewY;
 
         mc.world.loadedEntityList.stream().filter(entity -> (mc.player != entity)).forEach(entitylivingbaseIn -> {
-            RenderUtil.prepareGL();
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+            GlStateManager.glLineWidth(1.5F);
+            GlStateManager.disableTexture2D();
+            GlStateManager.depthMask(false);
+            GlStateManager.enableBlend();
+            GlStateManager.disableDepth();
+            GlStateManager.disableLighting();
+            GlStateManager.disableCull();
+            GlStateManager.enableAlpha();
+            GlStateManager.color(1, 1, 1);
             GlStateManager.pushMatrix();
             Vec3d pos = EntityUtil.getInterpolatedPos(entitylivingbaseIn, mc.getRenderPartialTicks());
             GlStateManager.translate(pos.x - (mc.getRenderManager()).renderPosX, pos.y - (mc.getRenderManager()).renderPosY, pos.z - (mc.getRenderManager()).renderPosZ);
@@ -267,7 +277,13 @@ public class ESP extends Module {
                 ESPUtil.draw2D(entitylivingbaseIn);
             }
 
-            RenderUtil.releaseGL();
+            GlStateManager.enableCull();
+            GlStateManager.depthMask(true);
+            GlStateManager.enableTexture2D();
+            GlStateManager.enableBlend();
+            GlStateManager.enableDepth();
+            GlStateManager.color(1, 1, 1);
+            GL11.glColor4f(1, 1, 1, 1);
             GlStateManager.popMatrix();
             ESPUtil.setColor(new Color(255, 255, 255, 255));
         });

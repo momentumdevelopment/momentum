@@ -41,37 +41,9 @@ public class RenderUtil extends Tessellator implements MixinInterface {
     public static RenderUtil INSTANCE = new RenderUtil();
     public static ICamera camera = new Frustum();
 
-    public static void prepareRender(int mode) {
-        prepareGL();
-    }
-
-    public static void releaseRender() {
-        releaseGL();
-    }
-
-    public static void prepareGL() {
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.glLineWidth(1.5F);
-        GlStateManager.disableTexture2D();
-        GlStateManager.depthMask(false);
-        GlStateManager.enableBlend();
-        GlStateManager.disableDepth();
-        GlStateManager.disableLighting();
-        GlStateManager.disableCull();
-        GlStateManager.enableAlpha();
-        GlStateManager.color(1, 1, 1);
-    }
-
-    public static void releaseGL() {
-        GlStateManager.enableCull();
-        GlStateManager.depthMask(true);
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.enableDepth();
-        GlStateManager.color(1, 1, 1);
-        GL11.glColor4f(1, 1, 1, 1);
-    }
+    /**
+     * setup
+     */
 
     public static void prepareProfiler() {
         GlStateManager.disableTexture2D();
@@ -240,10 +212,6 @@ public class RenderUtil extends Tessellator implements MixinInterface {
     }
 
     // nametags
-    public static void drawNametag (Entity entity, String[] text, Color color, int type) {
-        Vec3d pos = EntityUtil.getInterpolatedPos(entity, mc.getRenderPartialTicks());
-        drawNametag(pos.x, pos.y + entity.height, pos.z, text, color, type);
-    }
 
     public static void drawNametag (double x, double y, double z, String[] text, Color color, int type) {
         double dist = mc.player.getDistance(x, y, z);
@@ -371,53 +339,6 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GL11.glHint(3155, 4352);
     }
 
-    public static void enableGLGlow() {
-        GL11.glDisable(3008);
-        GL11.glEnable(3042);
-        GL11.glBlendFunc(770, 771);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
-        GL11.glDepthMask(false);
-        GL11.glEnable(2884);
-        mc.entityRenderer.disableLightmap();
-        GL11.glEnable(2848);
-        GL11.glEnable(GL_CULL_FACE);
-        GL11.glHint(3154, 4354);
-        GL11.glHint(3155, 4354);
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlpha();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.shadeModel(7425);
-        GlStateManager.disableDepth();
-        GlStateManager.glLineWidth(1.0f);
-    }
-
-    public static void disableGLGlow() {
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
-        GL11.glDisable(3042);
-        GL11.glEnable(3008);
-        GL11.glDepthMask(true);
-        GL11.glDisable(GL_CULL_FACE);
-        GL11.glCullFace(1029);
-        GL11.glDisable(2848);
-        GL11.glHint(3154, 4352);
-        GL11.glHint(3155, 4352);
-        GlStateManager.glLineWidth(1.0f);
-        GlStateManager.shadeModel(7424);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableDepth();
-        GlStateManager.enableCull();
-        GlStateManager.enableCull();
-        GlStateManager.depthMask(true);
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.enableDepth();
-    }
-
     // lines
 
     public static void drawLine3D(float x, float y, float z, float x1, float y1, float z1, float thickness, int hex) {
@@ -477,78 +398,12 @@ public class RenderUtil extends Tessellator implements MixinInterface {
      * 2D Rendering
      */
 
-    private static final FloatBuffer screenCoords = BufferUtils.createFloatBuffer(3);
-    private static final IntBuffer viewport = BufferUtils.createIntBuffer(16);
-    private static final FloatBuffer modelView = BufferUtils.createFloatBuffer(16);
-    private static final FloatBuffer projection = BufferUtils.createFloatBuffer(16);
-
-    public static Vec3d to2D(double x, double y, double z) {
-        GL11.glGetFloat(2982);
-        GL11.glGetFloat(2983);
-        GL11.glGetInteger(2978);
-        boolean result = GLU.gluProject((float)x, (float)y, (float)z, modelView, projection, viewport, screenCoords);
-        if (result)
-            return new Vec3d(screenCoords.get(0), (Display.getHeight() - screenCoords.get(1)), screenCoords.get(2));
-        return null;
-    }
-
-    public static boolean isOnScreen(Vec3d pos) {
-        if (pos.x > -1.0D && pos.y < 1.0D) {
-            final boolean b = (pos.x / (mc.gameSettings.guiScale) >= 0.0D && pos.x / (mc.gameSettings.guiScale) <= Display.getWidth() && pos.y / (mc.gameSettings.guiScale) >= 0.0D && pos.y / (mc.gameSettings.guiScale) <= Display.getHeight());
-            return b;
-        }
-        return false;
-    }
-
-    public static boolean is2DValid(EntityPlayer entity) {
-        return (entity != mc.player && (!entity.isInvisible() && entity.isEntityAlive()));
-    }
-
     public static void drawHitMarkers(Color color) {
         ScaledResolution resolution = new ScaledResolution(mc);
         drawLine(resolution.getScaledWidth() / 2.0F - 4.0F, resolution.getScaledHeight() / 2.0F - 4.0F, resolution.getScaledWidth() / 2.0F - 8.0F, resolution.getScaledHeight() / 2.0F - 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
         drawLine(resolution.getScaledWidth() / 2.0F + 4.0F, resolution.getScaledHeight() / 2.0F - 4.0F, resolution.getScaledWidth() / 2.0F + 8.0F, resolution.getScaledHeight() / 2.0F - 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
         drawLine(resolution.getScaledWidth() / 2.0F - 4.0F, resolution.getScaledHeight() / 2.0F + 4.0F, resolution.getScaledWidth() / 2.0F - 8.0F, resolution.getScaledHeight() / 2.0F + 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
         drawLine(resolution.getScaledWidth() / 2.0F + 4.0F, resolution.getScaledHeight() / 2.0F + 4.0F, resolution.getScaledWidth() / 2.0F + 8.0F, resolution.getScaledHeight() / 2.0F + 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
-    }
-
-    public static void drawTracerPointer(float x, float y, float size, float widthDiv, float heightDiv, boolean outline, float outlineWidth, int color) {
-        boolean blend = GL11.glIsEnabled(3042);
-        float alpha = (color >> 24 & 0xFF) / 255.0F;
-
-        GL11.glEnable(3042);
-        GL11.glDisable(3553);
-        GL11.glBlendFunc(770, 771);
-        GL11.glEnable(2848);
-        GL11.glPushMatrix();
-        ColorUtil.hexColor(color);
-        GL11.glBegin(7);
-        GL11.glVertex2d(x, y);
-        GL11.glVertex2d((x - size / widthDiv), (y + size));
-        GL11.glVertex2d(x, (y + size / heightDiv));
-        GL11.glVertex2d((x + size / widthDiv), (y + size));
-        GL11.glVertex2d(x, y);
-        GL11.glEnd();
-
-        if (outline) {
-            GL11.glLineWidth(outlineWidth);
-            GL11.glColor4f(0.0F, 0.0F, 0.0F, alpha);
-            GL11.glBegin(2);
-            GL11.glVertex2d(x, y);
-            GL11.glVertex2d((x - size / widthDiv), (y + size));
-            GL11.glVertex2d(x, (y + size / heightDiv));
-            GL11.glVertex2d((x + size / widthDiv), (y + size));
-            GL11.glVertex2d(x, y);
-            GL11.glEnd();
-        }
-
-        GL11.glPopMatrix();
-        GL11.glEnable(3553);
-
-        if (!blend)
-            GL11.glDisable(3042);
-
-        GL11.glDisable(2848);
     }
 
     public static void drawLine(float x, float y, float x1, float y1, float thickness, int hex) {
