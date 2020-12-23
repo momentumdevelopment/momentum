@@ -38,6 +38,9 @@ public class Tracers extends Module {
 
     @Override
     public void onRender3D(Render3DEvent event) {
+        if (nullCheck())
+            return;
+
         if (mc.getRenderManager() == null || mc.getRenderManager().options == null)
             return;
 

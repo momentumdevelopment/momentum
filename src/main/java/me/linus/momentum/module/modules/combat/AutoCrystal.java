@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
  * @since 11/24/2020
  */
 
-// TODO: better place calc, the basic ones are pretty terrible
+// TODO: better place calc, the basic ones are pretty terrible & proper rotations
 public class AutoCrystal extends Module {
     public AutoCrystal() {
         super("AutoCrystal", Category.COMBAT, "Automatically places and explodes crystals");
@@ -128,6 +128,7 @@ public class AutoCrystal extends Module {
     Timer breakTimer = new Timer();
     Timer placeTimer = new Timer();
     static EntityPlayer currentTarget;
+    EntityEnderCrystal crystal;
     boolean switchCooldown = false;
     BlockPos render;
     Entity renderEnt;
@@ -175,7 +176,7 @@ public class AutoCrystal extends Module {
     }
 
     public void breakCrystal() {
-        EntityEnderCrystal crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> CrystalUtil.attackCheck(entity, breakMode.getValue(), breakRange.getValue(), placedCrystals)).min(Comparator.comparing(c -> mc.player.getDistance(c))).orElse(null);
+        crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> CrystalUtil.attackCheck(entity, breakMode.getValue(), breakRange.getValue(), placedCrystals)).min(Comparator.comparing(c -> mc.player.getDistance(c))).orElse(null);
 
         if (crystal != null && mc.player.getDistance(crystal) <= breakRange.getValue() && breakTimer.passed((long) breakDelay.getValue())) {
             if (pause.getValue() && PlayerUtil.getHealth() <= pauseHealth.getValue() && pauseMode.getValue() == 0 && (pauseMode.getValue() == 1 || pauseMode.getValue() == 2))
@@ -212,8 +213,10 @@ public class AutoCrystal extends Module {
                 mc.world.getLoadedEntityList();
             }
 
-            if (damageSync.getValue())
-                currentTarget.attackEntityFrom(DamageSource.causeExplosionDamage(new Explosion(mc.world, crystal, crystal.posX, crystal.posY, crystal.posZ, 6.0f, false, true)), 8);
+            for (Entity e : mc.world.loadedEntityList) {
+                if (e.getDistance(crystal) <= 6 && damageSync.getValue())
+                    e.attackEntityFrom(DamageSource.causeExplosionDamage(new Explosion(mc.world, crystal, crystal.posX, crystal.posY, crystal.posZ, 6.0f, false, true)), 8);
+            }
         }
 
         breakTimer.reset();

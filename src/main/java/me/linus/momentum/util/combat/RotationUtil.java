@@ -8,12 +8,33 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
 
-// TODO: make a proper rotation spoofing system
 public class RotationUtil implements MixinInterface {
 
     private static boolean isSpoofingAngles;
     private static double yaw;
     private static double pitch;
+
+
+
+    /**
+     * client-side rotations
+     */
+
+    public static void resetYaw(double rotation) {
+        if (mc.player.rotationYaw >= rotation)
+            mc.player.rotationYaw = 0;
+
+        if (mc.player.rotationYaw <= rotation)
+            mc.player.rotationYaw = 0;
+    }
+
+    public static void resetPitch(double rotation) {
+        if (mc.player.rotationPitch >= rotation)
+            mc.player.rotationPitch = 0;
+
+        if (mc.player.rotationPitch <= rotation)
+            mc.player.rotationPitch = 0;
+    }
 
     public static void lookAtLegitTile(TileEntity tileEntity) {
         float[] angles = MathUtil.calcAngle(new Vec3d(tileEntity.getPos().x, tileEntity.getPos().y, tileEntity.getPos().z), new Vec3d(tileEntity.getPos().x, tileEntity.getPos().y, tileEntity.getPos().z));
@@ -57,7 +78,7 @@ public class RotationUtil implements MixinInterface {
         yaw += 90f;
 
         return new double[] {
-                yaw,pitch
+              yaw,pitch
         };
     }
     

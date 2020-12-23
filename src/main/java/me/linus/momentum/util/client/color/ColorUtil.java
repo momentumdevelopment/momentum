@@ -6,6 +6,7 @@ import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.tileentity.*;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -49,12 +50,18 @@ public abstract class ColorUtil implements MixinInterface {
 	}
 
 	public static int getColorByCategory(Module mod) {
-		if (mod.getCategory().equals(Module.Category.PLAYER)) return new Color(37, 205, 84).getRGB();
-		if (mod.getCategory().equals(Module.Category.RENDER)) return new Color(231, 164, 73).getRGB();
-		if (mod.getCategory().equals(Module.Category.MOVEMENT)) return new Color(217, 49, 103).getRGB();
-		if (mod.getCategory().equals(Module.Category.COMBAT)) return new Color(56, 103, 224).getRGB();
-		if (mod.getCategory().equals(Module.Category.CLIENT)) return new Color(234, 71, 71).getRGB();
-		if (mod.getCategory().equals(Module.Category.MISC)) return new Color(122, 61, 217).getRGB();
+		if (mod.getCategory().equals(Module.Category.PLAYER))
+			return new Color(37, 205, 84).getRGB();
+		if (mod.getCategory().equals(Module.Category.RENDER))
+			return new Color(231, 164, 73).getRGB();
+		if (mod.getCategory().equals(Module.Category.MOVEMENT))
+			return new Color(217, 49, 103).getRGB();
+		if (mod.getCategory().equals(Module.Category.COMBAT))
+			return new Color(56, 103, 224).getRGB();
+		if (mod.getCategory().equals(Module.Category.CLIENT))
+			return new Color(234, 71, 71).getRGB();
+		if (mod.getCategory().equals(Module.Category.MISC))
+			return new Color(122, 61, 217).getRGB();
 		else return 0;
 	}
 
@@ -80,5 +87,24 @@ public abstract class ColorUtil implements MixinInterface {
 			return new Color(117, 231, 85);
 		else
 			return new Color(44, 186, 19);
+	}
+
+	public static Color getStorageColor(TileEntity tileEntity, int alpha) {
+		if (tileEntity instanceof TileEntityChest)
+			return new Color(0, 207, 244, alpha);
+		if (tileEntity instanceof TileEntityEnderChest)
+			return new Color(150, 0, 244, alpha);
+		if (tileEntity instanceof TileEntityHopper)
+			return new Color(217, 132, 71, alpha);
+		if (tileEntity instanceof TileEntityDropper)
+			return new Color(102, 102, 102, alpha);
+		if (tileEntity instanceof TileEntityFurnace)
+			return new Color(102, 102, 102, alpha);
+		if (tileEntity instanceof TileEntityBed)
+			return new Color(215, 37, 37, alpha);
+		if (tileEntity instanceof TileEntityShulkerBox)
+			return new Color(195, 73, 227, alpha);
+		else
+			return new Color(255, 255, 255, alpha);
 	}
 }

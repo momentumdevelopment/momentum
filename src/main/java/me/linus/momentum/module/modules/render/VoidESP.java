@@ -44,7 +44,8 @@ public class VoidESP extends Module {
 
     @Override
     public void onUpdate() {
-        if (mc.player == null) return;
+        if (nullCheck())
+            return;
 
         voidBlocks.clear();
 

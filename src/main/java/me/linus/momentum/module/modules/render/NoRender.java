@@ -22,7 +22,7 @@ public class NoRender extends Module {
     public static Checkbox armor = new Checkbox("Armor", false);
     private static final Checkbox bossBar = new Checkbox("Boss Bars", true);
     private static final Checkbox blockOverlay = new Checkbox("Block Overlay", true);
-    private static final Checkbox noCluster = new Checkbox("Cluster", true);
+    public static final Checkbox noCluster = new Checkbox("Cluster", true);
 
     @Override
     public void setup() {

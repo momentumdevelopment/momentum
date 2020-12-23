@@ -1,6 +1,5 @@
 package me.linus.momentum.module.modules.combat;
 
-import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
@@ -15,6 +14,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class AutoTrap extends Module {
         super("AutoTrap", Category.COMBAT, "Automatically traps nearby players");
     }
 
-    private static final Mode mode = new Mode("Mode", "Full", "Feet");
+    private static final Mode mode = new Mode("Mode", "Full", "Feet", "Bed");
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
@@ -109,8 +110,8 @@ public class AutoTrap extends Module {
             hasPlaced = true;
     }
 
-    @Override
-    public void onRender3D(Render3DEvent eventRender) {
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent eventRender) {
         for (BlockPos renderBlock : renderBlocks)
             RenderUtil.drawBoxBlockPos(renderBlock, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
     }
@@ -121,6 +122,8 @@ public class AutoTrap extends Module {
                 return fullTrap;
             case 1:
                 return feetTrap;
+            case 2:
+                return bedTrap;
         }
 
         return fullTrap;
@@ -145,15 +148,30 @@ public class AutoTrap extends Module {
     ));
 
     private final List<Vec3d> feetTrap = new ArrayList<>(Arrays.asList(
-            new Vec3d(0, -1, -1),
-            new Vec3d(1, -1, 0),
             new Vec3d(0, -1, 1),
-            new Vec3d(-1, -1, 0),
             new Vec3d(0, 0, 1),
+            new Vec3d(1, 0, 0),
+            new Vec3d(0, 0, -1),
+            new Vec3d(-1, 0, 0),
             new Vec3d(0, 1, -1),
             new Vec3d(1, 1, 0),
             new Vec3d(0, 1, 1),
             new Vec3d(-1, 1, 0),
+            new Vec3d(0, 2, -1),
+            new Vec3d(0, 2, 1),
+            new Vec3d(0, 2, 0)
+    ));
+
+    private final List<Vec3d> bedTrap = new ArrayList<>(Arrays.asList(
+            new Vec3d(0, -1, -1),
+            new Vec3d(1, -1, 0),
+            new Vec3d(0, -1, 1),
+            new Vec3d(-1, -1, 0),
+            new Vec3d(0, 0, -1),
+            new Vec3d(1, 0, 0),
+            new Vec3d(0, 0, 1),
+            new Vec3d(-1, 0, 0),
+            new Vec3d(0, 1, -1),
             new Vec3d(0, 2, -1),
             new Vec3d(0, 2, 1),
             new Vec3d(0, 2, 0)

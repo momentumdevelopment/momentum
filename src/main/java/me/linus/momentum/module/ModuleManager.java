@@ -61,7 +61,6 @@ public class ModuleManager implements MixinInterface {
 			new Web(),
 
 			//Player
-			new AntiAim(),
 			new AntiHunger(),
 			new AutoMine(),
 			new Blink(),
@@ -144,6 +143,7 @@ public class ModuleManager implements MixinInterface {
 			new NoRender(),
 			new Skeleton(),
 			new SkyColor(),
+		 	new StorageESP(),
 		 	new Tracers(),
 			new Trajectories(),
 			new ViewModel(),

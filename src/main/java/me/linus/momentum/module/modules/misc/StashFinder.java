@@ -10,9 +10,9 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.external.MessageUtil;
 import me.linus.momentum.util.client.system.Timer;
+import me.linus.momentum.util.combat.RotationUtil;
 import me.linus.momentum.util.config.ConfigManager;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.init.SoundEvents;
@@ -95,7 +95,7 @@ public class StashFinder extends Module {
 
             timer.reset();
 
-            PlayerUtil.resetYaw(ElytraFlight.rotationNCP.getValue());
+            RotationUtil.resetYaw(ElytraFlight.rotationNCP.getValue());
 
             if (mc.player.posY <= 120) {
                 KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.getKeyCode(), true);

@@ -62,7 +62,6 @@ public class ESP extends Module {
     public void onDisable() {
         for (Entity entity : mc.world.loadedEntityList) {
             if (entity.isGlowing())
-                GL11.glColor4f(ColorUtil.getEntityColor(entity).getRed(), ColorUtil.getEntityColor(entity).getGreen(), ColorUtil.getEntityColor(entity).getBlue(), 255f);
                 entity.setGlowing(false);
         }
     }
@@ -73,7 +72,7 @@ public class ESP extends Module {
     }
 
     @SubscribeEvent
-    public void onRender3D(RenderWorldLastEvent eventRender) {
+    public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (mode.getValue() == 2)
             render2D();
     }

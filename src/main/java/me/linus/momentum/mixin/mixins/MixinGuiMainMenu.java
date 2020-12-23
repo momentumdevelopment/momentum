@@ -15,9 +15,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * @since 11/12/20
  */
 
-//TODO: Figure out how to properly do mixin priority for good compatibility
+// TODO: Figure out how to properly do mixin priority for good compatibility
 @Mixin(value = GuiMainMenu.class/*, priority = 1006*/)
 public class MixinGuiMainMenu extends GuiScreen {
+
 	@Inject(method = "drawScreen", at = @At("TAIL"), cancellable = true)
 	public void drawText(int mouseX, int mouseY, float partialTicks, CallbackInfo callbackInfo) {
 		FontUtil.drawStringWithShadow(TextFormatting.DARK_PURPLE + Momentum.NAME + TextFormatting.WHITE + " " + Momentum.VERSION, 2, 2, -1);

@@ -34,7 +34,6 @@ public class ChatLogger extends Module {
 
     @Override
     public void onEnable() {
-        super.onEnable();
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy-HH-mm");
             Date date = new Date();
@@ -56,7 +55,6 @@ public class ChatLogger extends Module {
 
     @Override
     public void onDisable() {
-        super.onDisable();
         if (out != null) {
             try {
                 out.close();
@@ -68,11 +66,11 @@ public class ChatLogger extends Module {
 
 
     @SubscribeEvent
-    public void onChatRecieved(ClientChatReceivedEvent event){
+    public void onChatRecieved(ClientChatReceivedEvent event) {
         try {
             String message = event.getMessage().getUnformattedText();
-            if (numbers.getValue()){
-                if (message.matches(".*\\d.*")){
+            if (numbers.getValue()) {
+                if (message.matches(".*\\d.*")) {
                     out.write(message);
                     out.write(endLine());
                     out.flush();

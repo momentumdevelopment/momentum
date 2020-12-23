@@ -18,6 +18,7 @@ import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemBed;
 import net.minecraft.tileentity.TileEntityBed;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -49,7 +50,7 @@ public class AutoBed extends Module {
     public static SubMode rotate = new SubMode(explode, "Rotate", "Spoof", "Legit", "None");
 
     public static Checkbox place = new Checkbox("Place", true);
-    public static SubSlider placeDelay = new SubSlider(place, "Place Delay", 0.0D, 40.0D, 600.0D, 0);
+    public static SubSlider placeDelay = new SubSlider(place, "Place Delay", 0.0D, 1000.0D, 2000.0D, 0);
     public static SubSlider placeRange = new SubSlider(place, "Place Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider enemyRange = new SubSlider(place, "Enemy Range", 0.0D, 5.0D, 15.0D, 1);
     public static SubCheckbox airPlace = new SubCheckbox(place, "Air Place", true);
@@ -82,8 +83,8 @@ public class AutoBed extends Module {
 
     Timer breakTimer = new Timer();
     Timer placeTimer = new Timer();
-    Entity currentTarget;
-    BlockPos currentBlock;
+    Entity currentTarget = null;
+    BlockPos currentBlock = null;
     double diffXZ;
     float rotVar;
     boolean nowTop = false;
@@ -142,11 +143,14 @@ public class AutoBed extends Module {
     }
 
     public void placeBed() {
+        if (autoSwitch.getValue())
+            mc.player.inventory.currentItem = InventoryUtil.getHotbarItemSlot(Items.BED);
+
         if (diffXZ >= placeRange.getValue())
             return;
 
-        if (autoSwitch.getValue())
-            mc.player.inventory.currentItem = InventoryUtil.getHotbarItemSlot(Items.BED);
+        if (!(mc.player.getHeldItemMainhand().getItem() instanceof ItemBed))
+            return;
 
         Entity entity = null;
         List<Entity> entities = new ArrayList<>();
@@ -168,7 +172,9 @@ public class AutoBed extends Module {
         }
 
         currentTarget = entity;
-        currentBlock = BedUtil.getBedPosition((EntityPlayer) currentTarget, nowTop, rotVar);
+
+        if (currentTarget != null)
+            currentBlock = BedUtil.getBedPosition((EntityPlayer) currentTarget, nowTop, rotVar);
 
         if (place.getValue() && placeTimer.passed((long) (800 + placeDelay.getValue())))
             BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, nowTop, spoofAngles.getValue());
@@ -176,9 +182,24 @@ public class AutoBed extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        if (currentBlock != null && renderBed.getValue())
-            GL11.glLineWidth(1.5f);
+        if (currentBlock != null && currentTarget != null && renderBed.getValue())
+            GL11.glLineWidth(2.5f);
             RenderUtil.drawBoundingBoxBlockPos(currentBlock, -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+
+            switch ((int) rotVar) {
+                case -90:
+                    RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x + 1, currentBlock.y, currentBlock.z), -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+                    break;
+                case 0:
+                    RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x, currentBlock.y, currentBlock.z + 1), -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+                    break;
+                case 90:
+                    RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x - 1, currentBlock.y, currentBlock.z), -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+                    break;
+                case 180:
+                    RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x, currentBlock.y, currentBlock.z - 1), -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+                    break;
+            }
     }
 
     @Override

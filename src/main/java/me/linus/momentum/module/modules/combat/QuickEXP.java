@@ -5,6 +5,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.world.InventoryUtil;
+import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemExpBottle;
@@ -41,18 +42,17 @@ public class QuickEXP extends Module {
         Item itemONotMainHand = mc.player.getHeldItemOffhand().getItem();
         boolean expInMainHand = itemMainHand instanceof ItemExpBottle;
         boolean expNotInMainHand = itemONotMainHand instanceof ItemExpBottle;
-        int armorDurability = getArmorDurability();
 
         if (expInMainHand || expNotInMainHand)
             mc.rightClickDelayTimer = (int) delay.getValue();
 
-        if (mc.player.isSneaking() && 0 < armorDurability && (mode.getValue() == 0 || mode.getValue() == 1)) {
+        if (mc.player.isSneaking() && 0 < PlayerUtil.getArmorDurability() && (mode.getValue() == 0 || mode.getValue() == 1)) {
             switch (mode.getValue()) {
                 case 1:
-                    mc.player.inventory.currentItem = findEXPInHotbar();
+                    mc.player.inventory.currentItem = InventoryUtil.getHotbarItemSlot(Items.EXPERIENCE_BOTTLE);
                     break;
                 case 0:
-                    InventoryUtil.switchToSlotGhost(findEXPInHotbar());
+                    InventoryUtil.switchToSlotGhost(InventoryUtil.getHotbarItemSlot(Items.EXPERIENCE_BOTTLE));
                     break;
             }
 
@@ -61,27 +61,6 @@ public class QuickEXP extends Module {
 
             mc.rightClickMouse();
         }
-    }
-
-    private int findEXPInHotbar() {
-        int slot = 0;
-        for (int i = 0; i < 9; i++) {
-            if (mc.player.inventory.getStackInSlot(i).getItem() == Items.EXPERIENCE_BOTTLE) {
-                slot = i;
-                break;
-            }
-        }
-
-        return slot;
-    }
-
-    private int getArmorDurability() {
-        int totalDurability = 0;
-
-        for (ItemStack itemStack : mc.player.inventory.armorInventory)
-            totalDurability = totalDurability + itemStack.getItemDamage();
-
-        return totalDurability;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.movement;
 
+import me.linus.momentum.event.events.player.MoveEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
@@ -8,6 +9,7 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author linustouchtips
@@ -72,9 +74,7 @@ public class BoatFlight extends Module {
         if (mc.player.isRiding()) {
             Entity ridingEntity = mc.player.ridingEntity;
 
-            if (!PlayerUtil.isMoving())
-                PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
-
+            ridingEntity.motionY += yOffset.getValue();
             ridingEntity.setVelocity(0, -fallSpeed.getValue(), 0);
 
             if (mc.gameSettings.keyBindJump.isKeyDown()) {
@@ -91,9 +91,7 @@ public class BoatFlight extends Module {
         if (mc.player.isRiding()) {
             Entity ridingEntity = mc.player.ridingEntity;
 
-            if (!PlayerUtil.isMoving())
-                PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
-
+            ridingEntity.motionY += yOffset.getValue();
             ridingEntity.setVelocity(0, -fallSpeed.getValue(), 0);
 
             if (mc.gameSettings.keyBindJump.isKeyDown()) {
@@ -139,7 +137,10 @@ public class BoatFlight extends Module {
     }
 
     public void disableCheck() {
-        if (mc.player.posY <= lowestY.getValue() && disable.getValue()) {
+        if (!disable.getValue())
+            return;
+
+        if (mc.player.posY <= lowestY.getValue()) {
             this.disable();
             return;
         }
@@ -154,7 +155,7 @@ public class BoatFlight extends Module {
             return;
         }
 
-        if (mc.player.isElytraFlying() && mc.gameSettings.keyBindJump.isKeyDown() && onUpward.getValue()) {
+        if (mc.player.isRowingBoat() && mc.gameSettings.keyBindJump.isKeyDown() && onUpward.getValue()) {
             this.disable();
             return;
         }
@@ -163,6 +164,12 @@ public class BoatFlight extends Module {
             this.disable();
             return;
         }
+    }
+
+    @SubscribeEvent
+    public void onMove(MoveEvent event) {
+        if (!PlayerUtil.isMoving())
+            event.setY(0);
     }
 
     @Override

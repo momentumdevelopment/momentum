@@ -7,6 +7,7 @@ import me.linus.momentum.module.Module;
  * @since 12/11/2020
  */
 
+// TODO: fix this
 public class SafeWalk extends Module {
     public SafeWalk() {
         super("SafeWalk", Category.MOVEMENT, "Prevents you from walking off edges");

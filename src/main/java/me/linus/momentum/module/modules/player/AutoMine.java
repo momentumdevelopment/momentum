@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.player;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.combat.RotationUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.client.settings.KeyBinding;
 
@@ -33,8 +34,8 @@ public class AutoMine extends Module {
     }
 
     public void autoTunnel() {
-        PlayerUtil.resetYaw(30);
-        PlayerUtil.resetPitch(30);
+        RotationUtil.resetYaw(30);
+        RotationUtil.resetPitch(30);
 
         int angle = 360 / 4;
         float yaw = mc.player.rotationYaw;

@@ -33,7 +33,7 @@ public class ColoredText extends Module {
             if (s.length() > 255)
                 ok = longs - 255;
 
-            s = s.substring(0, s.length()-ok);
+            s = s.substring(0, s.length() - ok);
             ((CPacketChatMessage) event.getPacket()).message = s;
         }
     }

@@ -65,7 +65,9 @@ public class Quiver extends Module {
                         mc.player.stopActiveHand();
                         mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
                         mc.player.setActiveHand(EnumHand.MAIN_HAND);
-                    } else if (mc.player.getItemInUseMaxCount() == 0) {
+                    }
+
+                    else if (mc.player.getItemInUseMaxCount() == 0) {
                         mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
                         mc.player.setActiveHand(EnumHand.MAIN_HAND);
                     }
@@ -79,7 +81,9 @@ public class Quiver extends Module {
                         mc.player.stopActiveHand();
                         mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
                         mc.player.setActiveHand(EnumHand.MAIN_HAND);
-                    } else if (mc.player.getItemInUseMaxCount() == 0) {
+                    }
+
+                    else if (mc.player.getItemInUseMaxCount() == 0) {
                         mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
                         mc.player.setActiveHand(EnumHand.MAIN_HAND);
                     }
@@ -112,9 +116,8 @@ public class Quiver extends Module {
         int bowSlot = mc.player.inventory.currentItem;
         int placeSlot = bowSlot +1;
 
-        if (placeSlot > 8) {
+        if (placeSlot > 8)
             placeSlot = 1;
-        }
 
         if (placeSlot != oldSlot) {
             if (mc.currentScreen instanceof GuiContainer)

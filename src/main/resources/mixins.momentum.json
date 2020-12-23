@@ -20,7 +20,8 @@
       "MixinPlayerControllerMP",
       "MixinRenderEnderCrystal",
       "MixinRenderLivingBase",
-      "MixinGuiScreen"
+      "MixinGuiScreen",
+      "MixinMovementInputFromOptions"
     ],
 
     "client": [

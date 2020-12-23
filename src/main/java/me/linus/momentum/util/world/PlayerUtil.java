@@ -165,6 +165,15 @@ public class PlayerUtil implements MixinInterface {
         return Math.toRadians(yaw);
     }
 
+    public static int getArmorDurability() {
+        int totalDurability = 0;
+
+        for (ItemStack itemStack : mc.player.inventory.armorInventory)
+            totalDurability = totalDurability + itemStack.getItemDamage();
+
+        return totalDurability;
+    }
+
     private static float getRoundedMovementInput(Float input) {
         if (input > 0) {
             input = 1f;
@@ -265,22 +274,6 @@ public class PlayerUtil implements MixinInterface {
             mc.player.ridingEntity.setVelocity(0f, 0f, 0f);
             mc.player.ridingEntity.setPosition(mc.player.posX, mc.player.posY - fallSpeed + yOffset, mc.player.posZ);
         }
-    }
-
-    public static void resetYaw(double rotation) {
-        if (mc.player.rotationYaw >= rotation)
-            mc.player.rotationYaw = 0;
-
-        if (mc.player.rotationYaw <= rotation)
-            mc.player.rotationYaw = 0;
-    }
-
-    public static void resetPitch(double rotation) {
-        if (mc.player.rotationPitch >= rotation)
-            mc.player.rotationPitch = 0;
-
-        if (mc.player.rotationPitch <= rotation)
-            mc.player.rotationPitch = 0;
     }
 
     public static String getSpeed() {

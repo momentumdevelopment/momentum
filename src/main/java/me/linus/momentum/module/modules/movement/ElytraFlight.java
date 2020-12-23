@@ -8,6 +8,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.system.MathUtil;
+import me.linus.momentum.util.combat.RotationUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Items;
@@ -122,7 +123,7 @@ public class ElytraFlight extends Module {
             }
 
             if (pitchReset.getValue())
-                PlayerUtil.resetPitch(rotationNCP.getValue());
+                RotationUtil.resetPitch(rotationNCP.getValue());
 
             accelerateElytra();
         }
@@ -133,8 +134,8 @@ public class ElytraFlight extends Module {
             if (!PlayerUtil.isMoving())
                 PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
 
-            PlayerUtil.resetPitch(rotationNCP.getValue());
-            PlayerUtil.resetYaw(rotationNCP.getValue());
+            RotationUtil.resetPitch(rotationNCP.getValue());
+            RotationUtil.resetYaw(rotationNCP.getValue());
 
             accelerateElytra();
         }
@@ -148,7 +149,7 @@ public class ElytraFlight extends Module {
             mc.player.motionY = (-MathUtil.degToRad(mc.player.rotationPitch)) * mc.player.movementInput.moveForward;
 
             if (pitchReset.getValue())
-                PlayerUtil.resetPitch(rotationNCP.getValue());
+                RotationUtil.resetPitch(rotationNCP.getValue());
 
             accelerateElytra();
         }
@@ -159,7 +160,7 @@ public class ElytraFlight extends Module {
             if (!PlayerUtil.isMoving())
                 PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
 
-            PlayerUtil.resetPitch(rotationNCP.getValue());
+            RotationUtil.resetPitch(rotationNCP.getValue());
 
             if (mc.gameSettings.keyBindJump.isKeyDown()) {
                 mc.player.rotationPitch = (float) -rotationNCP.getValue();
@@ -215,7 +216,10 @@ public class ElytraFlight extends Module {
     }
 
     public void disableCheck() {
-        if (mc.player.posY <= lowestY.getValue() && disable.getValue()) {
+        if (!disable.getValue())
+            return;
+
+        if (mc.player.posY <= lowestY.getValue()) {
             this.disable();
             return;
         }
