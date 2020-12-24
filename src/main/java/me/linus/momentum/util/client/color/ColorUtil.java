@@ -19,7 +19,7 @@ import java.awt.*;
 public abstract class ColorUtil implements MixinInterface {
 	
 	public static int rainbow(long offset) {
-		float hue = (float) ((((System.currentTimeMillis()*(Colors.speed.getValue() / 10)) + (offset * 500)) % (30000L / (Colors.difference.getValue()/100))) / (30000.0f / (Colors.difference.getValue()/20)));
+		float hue = (float) ((((System.currentTimeMillis() * (Colors.speed.getValue() / 10)) + (offset * 500)) % (30000L / (Colors.difference.getValue() / 100))) / (30000.0f / (Colors.difference.getValue() / 20)));
 		int rgb = Color.HSBtoRGB(hue, (float) Colors.saturation.getValue(), (float) Colors.brightness.getValue());
 		int red = rgb >> 16 & 255;
         int green = rgb >> 8 & 255;

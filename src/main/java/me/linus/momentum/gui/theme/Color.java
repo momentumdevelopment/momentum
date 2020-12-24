@@ -14,14 +14,16 @@ public class Color {
 
 	public static void updateColors() {
 		if (Colors.rainbow.getValue()) {
-			if (Colors.gradient.getValue()) {
+			if (Colors.gradient.getValue())
 				GRADIENT = true;
-			} else {
+
+			else {
 				GRADIENT = false;
 				COLOR = ColorUtil.rainbow(1);
 			}
-		} else if (!Colors.rainbow.getValue()) {
-			COLOR = ColorUtil.toRGBA((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), (int) Colors.a.getValue());
 		}
+
+		else if (!Colors.rainbow.getValue())
+			COLOR = ColorUtil.toRGBA((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), (int) Colors.a.getValue());
 	}
 }

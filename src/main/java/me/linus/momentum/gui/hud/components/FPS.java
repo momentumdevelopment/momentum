@@ -1,9 +1,10 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextFormatting;
 
 import java.awt.*;
 
@@ -14,12 +15,12 @@ import java.awt.*;
 
 public class FPS extends HUDComponent {
     public FPS() {
-        super("FPS", 2, 13, null);
+        super("FPS", 2, 13);
     }
 
     @Override
-    public void render() {
-        FontUtil.drawStringWithShadow(Minecraft.getDebugFPS() + " FPS", Momentum.componentManager.getComponentByName("FPS").getX(), Momentum.componentManager.getComponentByName("FPS").getY(), new Color(255, 255, 255).getRGB());
+    public void renderComponent() {
+        FontUtil.drawStringWithShadow(Minecraft.getDebugFPS() + " " + TextFormatting.GRAY + "FPS", HUDComponentManager.getComponentByName("FPS").getX(), HUDComponentManager.getComponentByName("FPS").getY(), new Color(255, 255, 255).getRGB());
         width = (int) FontUtil.getStringWidth(Minecraft.getDebugFPS() + " FPS") + 2;
     }
 

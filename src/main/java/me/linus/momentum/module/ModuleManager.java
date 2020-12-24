@@ -12,7 +12,6 @@ import me.linus.momentum.module.modules.movement.*;
 import me.linus.momentum.module.modules.player.*;
 import me.linus.momentum.module.modules.render.*;
 import me.linus.momentum.util.render.RenderUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -32,9 +31,9 @@ public class ModuleManager implements MixinInterface {
 	private static final List<Module> modules = Arrays.asList
 		(
 			//Client
-			new ClickGui(),
+			new ClickGUI(),
 			new Colors(),
-			new HudEditor(),
+			new HUDEditor(),
 			new Baritone(),
 			new Friends(),
 			new Capes(),
@@ -241,7 +240,7 @@ public class ModuleManager implements MixinInterface {
 
 	@SubscribeEvent
 	public static void onRender3D(RenderWorldLastEvent event) {
-		HudEditor.boost = 0;
+		HUDEditor.boost = 0;
 		mc.mcProfiler.startSection("momentum");
 		RenderUtil.prepareProfiler();
 		Render3DEvent render3DEvent = new Render3DEvent(event.getPartialTicks());

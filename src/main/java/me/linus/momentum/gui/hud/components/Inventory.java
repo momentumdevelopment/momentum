@@ -1,6 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -16,18 +16,18 @@ import java.awt.*;
 
 public class Inventory extends HUDComponent {
     public Inventory() {
-        super("Inventory", 400, 2, null);
+        super("Inventory", 400, 2);
         width = 146;
         height = 50;
     }
 
     @Override
-    public void render() {
+    public void renderComponent() {
         if (mc.player == null || mc.player.inventory == null)
             return;
 
         GlStateManager.enableAlpha();
-        GuiScreen.drawRect(Momentum.componentManager.getComponentByName("Inventory").getX(), Momentum.componentManager.getComponentByName("Inventory").getY(), Momentum.componentManager.getComponentByName("Inventory").getX() + 145, Momentum.componentManager.getComponentByName("Inventory").getY() + 48, new Color(0, 0, 0, 125).getRGB());
+        GuiScreen.drawRect(HUDComponentManager.getComponentByName("Inventory").getX(), HUDComponentManager.getComponentByName("Inventory").getY(), HUDComponentManager.getComponentByName("Inventory").getX() + 145, HUDComponentManager.getComponentByName("Inventory").getY() + 48, new Color(0, 0, 0, 125).getRGB());
         GlStateManager.disableAlpha();
 
         int slotX = 0;
@@ -36,8 +36,8 @@ public class Inventory extends HUDComponent {
         RenderHelper.enableGUIStandardItemLighting();
         for (ItemStack stack : mc.player.inventory.mainInventory) {
             if (mc.player.inventory.mainInventory.indexOf(stack) < 9) continue; // hotbar
-            mc.getRenderItem().renderItemAndEffectIntoGUI(stack, Momentum.componentManager.getComponentByName("Inventory").getX() + slotX, Momentum.componentManager.getComponentByName("Inventory").getY() + slotY);
-            mc.getRenderItem().renderItemOverlays(mc.fontRenderer, stack, Momentum.componentManager.getComponentByName("Inventory").getX() + slotX, Momentum.componentManager.getComponentByName("Inventory").getY() + slotY);
+            mc.getRenderItem().renderItemAndEffectIntoGUI(stack, HUDComponentManager.getComponentByName("Inventory").getX() + slotX, HUDComponentManager.getComponentByName("Inventory").getY() + slotY);
+            mc.getRenderItem().renderItemOverlays(mc.fontRenderer, stack, HUDComponentManager.getComponentByName("Inventory").getX() + slotX, HUDComponentManager.getComponentByName("Inventory").getY() + slotY);
             if (slotX < (8 * 16))
                 slotX += 16;
             else {
@@ -47,15 +47,5 @@ public class Inventory extends HUDComponent {
         }
 
         RenderHelper.disableStandardItemLighting();
-    }
-
-    @Override
-    public void mouseHovered(int mouseX, int mouseY) {
-        if (isMouseOnComponent(mouseX, mouseY)) colors = new Color(82, 81, 77, 125).getRGB();
-        else colors = new Color(117, 116, 110, 125).getRGB();
-    }
-
-    public boolean isMouseOnComponent(int x, int y) {
-        return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
     }
 }

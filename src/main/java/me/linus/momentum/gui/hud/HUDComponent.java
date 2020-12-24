@@ -1,11 +1,14 @@
 package me.linus.momentum.gui.hud;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.module.Module;
+import me.linus.momentum.setting.Setting;
+import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 
-import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author linustouchtips
@@ -15,41 +18,49 @@ import javax.annotation.Nullable;
 public class HUDComponent implements MixinInterface {
 
     private final String name;
+
     protected int x;
     protected int y;
-    protected int width = 10;
-    protected int height = mc.fontRenderer.FONT_HEIGHT + 3;
-    protected final Module module;
-    private boolean opened;
-
-    private boolean dragging = false;
     private int dragX = 0;
     private int dragY = 0;
-    private boolean enabled;
+    protected int width = 10;
+    protected int height = mc.fontRenderer.FONT_HEIGHT + 3;
     public int colors;
 
-    public HUDComponent(String name, int x, int y, @Nullable Module module) {
+    private boolean opened;
+    private boolean dragging = false;
+    private boolean enabled;
+
+    public List<Setting> settingsList = new ArrayList<>();
+
+    public HUDComponent(String name, int x, int y) {
         this.name = name;
         this.x = x;
         this.enabled = false;
         this.y = y;
-        this.module = module;
         this.opened = false;
+
+        this.setup();
     }
 
-    public void renderInGui(int mouseX, int mouseY) {
+    public void renderInGUI(int mouseX, int mouseY) {
         if (dragging) {
             x = dragX + mouseX;
             y = dragY + mouseY;
         }
 
-        mouseHovered(mouseX, mouseY);
+        if (GUIUtil.mouseOver(x - 1, y - 1, x + width, y + height))
+            colors = new Color(82, 81, 77, 125).getRGB();
+        else
+            colors = new Color(117, 116, 110, 125).getRGB();
 
-        GuiScreen.drawRect(x - 1, y - 1, x + width, y + height, colors);
-        render();
+        if (getBackground())
+            GuiScreen.drawRect(x - 1, y - 1, x + width, y + height, colors);
+
+        renderComponent();
     }
 
-    public void render() {
+    public void renderComponent() {
         if (mc != null) {
             int screenWidth = new ScaledResolution(mc).getScaledWidth();
             int screenHeight = new ScaledResolution(mc).getScaledHeight();
@@ -60,7 +71,9 @@ public class HUDComponent implements MixinInterface {
 
                 if (x + width < 0)
                     x = -width;
-            } else {
+            }
+
+            else {
                 if (x < 0)
                     x = 0;
 
@@ -74,6 +87,10 @@ public class HUDComponent implements MixinInterface {
             if (y + height > screenHeight)
                 y = screenHeight - height;
         }
+    }
+
+    public void setup() {
+
     }
 
     public void mouseClicked(int mouseX, int mouseY, int button) {
@@ -100,8 +117,12 @@ public class HUDComponent implements MixinInterface {
         dragging = false;
     }
 
-    public void mouseHovered(int mouseX, int mouseY){
+    public void mouseHovered(int mouseX, int mouseY) {
 
+    }
+
+    public void addSetting(Setting s) {
+        settingsList.add(s);
     }
 
     public void toggleState() {
@@ -116,10 +137,6 @@ public class HUDComponent implements MixinInterface {
         return name;
     }
 
-    public Module getModule() {
-        return module;
-    }
-
     public int getX() {
         return x;
     }
@@ -130,6 +147,18 @@ public class HUDComponent implements MixinInterface {
 
     public int getY() {
         return y;
+    }
+
+    public boolean hasSettings() {
+        return this.settingsList.size() > 0;
+    }
+
+    public List<Setting> getSettings(){
+        return this.settingsList;
+    }
+
+    public boolean getBackground() {
+        return true;
     }
 
     public void setY(int y) {

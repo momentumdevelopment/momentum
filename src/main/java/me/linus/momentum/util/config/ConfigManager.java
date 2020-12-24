@@ -2,7 +2,8 @@ package me.linus.momentum.util.config;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.gui.main.Window;
+import me.linus.momentum.gui.hud.HUDComponentManager;
+import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.Setting;
@@ -44,6 +45,7 @@ public class ConfigManager {
         saveGUI();
         saveHUDPositions();
         saveHUDComponents();
+        saveHUDSettings();
         savePrefix();
         saveBinds();
     }
@@ -57,6 +59,7 @@ public class ConfigManager {
         loadGUI();
         loadHUDPositions();
         loadHUDComponents();
+        loadHUDSettings();
         loadPrefix();
         loadBinds();
     }
@@ -454,6 +457,67 @@ public class ConfigManager {
                 if (regex[0].startsWith(component.getName())) {
                     component.setEnabled(Boolean.parseBoolean(regex[1]));
 
+                } lineIndex++;
+            } br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveHUDSettings() {
+        try {
+            File settings = new File(config.getAbsolutePath(), "HUDSettings.txt");
+            BufferedWriter bw = new BufferedWriter(new FileWriter(settings));
+            for (HUDComponent component : HUDComponentManager.getComponents()) {
+                bw.write(component.getName() + ":");
+                for (Setting s : component.getSettings()) {
+                    if (s instanceof Checkbox) {
+                        bw.write(((Checkbox) s).getValue() + ":");
+                    }
+
+                    if (s instanceof Slider) {
+                        bw.write(((Slider) s).getValue() + ":");
+                    }
+
+                    if (s instanceof Mode) {
+                        bw.write(((Mode) s).getValue() + ":");
+                    }
+                }
+
+                bw.write("\r\n");
+            } bw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadHUDSettings() {
+        try {
+            File settings = new File(config.getAbsolutePath(), "HUDSettings.txt");
+            BufferedReader br = new BufferedReader(new FileReader(settings));
+            List<String> linezz = Files.readAllLines(settings.toPath());
+            int lineIndex = 0;
+            for (String line : linezz) {
+                String[] regex = line.split(":");
+                HUDComponent component = HUDComponentManager.getComponents().get(lineIndex);
+                if (regex[0].startsWith(component.getName())) {
+                    int regexCount = 0;
+                    for (Setting s : component.getSettings()) {
+                        if (s instanceof Checkbox) {
+                            ((Checkbox) s).setChecked(Boolean.parseBoolean(regex[regexCount + 1]));
+                            regexCount++;
+                        }
+
+                        if (s instanceof Slider) {
+                            ((Slider) s).setValue(Double.parseDouble(regex[regexCount + 1]));
+                            regexCount++;
+                        }
+
+                        if (s instanceof Mode) {
+                            ((Mode) s).setMode(Integer.parseInt(regex[regexCount + 1]));
+                            regexCount++;
+                        }
+                    }
                 } lineIndex++;
             } br.close();
         } catch (Exception e) {

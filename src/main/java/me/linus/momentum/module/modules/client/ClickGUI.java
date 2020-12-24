@@ -1,6 +1,6 @@
 package me.linus.momentum.module.modules.client;
 
-import me.linus.momentum.gui.main.GUI;
+import me.linus.momentum.gui.main.gui.GUI;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
@@ -13,8 +13,8 @@ import net.minecraft.util.ResourceLocation;
  * @since 11/16/20
  */
 
-public class ClickGui extends Module {
-	public ClickGui() {
+public class ClickGUI extends Module {
+	public ClickGUI() {
 		super("ClickGUI", Category.CLIENT, "Opens the ClickGUI");
 	}
 

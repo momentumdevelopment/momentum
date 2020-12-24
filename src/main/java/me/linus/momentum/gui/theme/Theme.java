@@ -66,5 +66,4 @@ public abstract class Theme {
 	public static Theme getTheme(int themeIndex) {
 		return themes.get(themeIndex);
 	}
-
 }

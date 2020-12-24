@@ -1,6 +1,6 @@
 package me.linus.momentum.module.modules.client;
 
-import me.linus.momentum.gui.main.HUD;
+import me.linus.momentum.gui.main.hud.HUD;
 import me.linus.momentum.module.Module;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -10,8 +10,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @since 12/01/202
  */
 
-public class HudEditor extends Module {
-	public HudEditor() {
+public class HUDEditor extends Module {
+	public HUDEditor() {
 		super("HUD", Category.CLIENT, "The in-game hud editor");
 	}
 	

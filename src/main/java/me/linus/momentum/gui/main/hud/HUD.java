@@ -1,10 +1,9 @@
-package me.linus.momentum.gui.main;
+package me.linus.momentum.gui.main.hud;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.gui.util.GuiUtil;
 import me.linus.momentum.module.ModuleManager;
-import me.linus.momentum.module.modules.client.HudEditor;
+import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 
@@ -22,13 +21,13 @@ public class HUD extends GuiScreen {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		GlStateManager.enableTexture2D();
 		HUDWindow.hw.drawHud(mouseX, mouseY);
-		GuiUtil.mouseListen(mouseX, mouseY);
+		GUIUtil.mouseListen(mouseX, mouseY);
 
-		for (HUDComponent c : Momentum.componentManager.getComponents()) {
+		for (HUDComponent component : Momentum.componentManager.getComponents()) {
 			GlStateManager.enableTexture2D();
 
-			if (c.isEnabled())
-			c.renderInGui(mouseX, mouseY);
+			if (component.isEnabled())
+				component.renderInGUI(mouseX, mouseY);
 		}
 	}
 	
@@ -37,38 +36,36 @@ public class HUD extends GuiScreen {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		if (mouseButton == 0) {
 			HUDWindow.hw.lclickListen();
-			GuiUtil.lclickListen();
+			GUIUtil.lclickListen();
 		}
 
 		if (mouseButton == 1)
-			GuiUtil.rclickListen();
+			GUIUtil.rclickListen();
 
-		for (HUDComponent c : Momentum.componentManager.getComponents()) {
-			c.mouseClicked(mouseX, mouseY, mouseButton);
-		}
+		for (HUDComponent component : Momentum.componentManager.getComponents())
+			component.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 	
 	@Override
 	public void mouseReleased(int mouseX, int mouseY, int state) {
 		super.mouseReleased(mouseX, mouseY, state);
+
 		if (state == 0) {
 			HUDWindow.hw.releaseListen();
-			GuiUtil.releaseListen();
+			GUIUtil.releaseListen();
 		}
 
-		for (HUDComponent c : Momentum.componentManager.getComponents()) {
-			c.mouseReleased(mouseX, mouseY, state);
-		}
+		for (HUDComponent component : Momentum.componentManager.getComponents())
+			component.mouseReleased(mouseX, mouseY, state);
 	}
 	
 	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
-		ModuleManager.getModuleByClass(HudEditor.class).disable();
+		ModuleManager.getModuleByName("HUD").disable();
 
-		for (HUDComponent c : Momentum.componentManager.getComponents()) {
-			c.onGuiClosed();
-		}
+		for (HUDComponent component : Momentum.componentManager.getComponents())
+			component.onGuiClosed();
 	}
 	
 	@Override

@@ -2,8 +2,8 @@ package me.linus.momentum.gui.hud;
 
 import com.google.common.collect.Lists;
 import me.linus.momentum.gui.hud.components.*;
-import me.linus.momentum.gui.main.GUI;
-import me.linus.momentum.gui.main.HUD;
+import me.linus.momentum.gui.main.gui.GUI;
+import me.linus.momentum.gui.main.hud.HUD;
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,38 +17,36 @@ import java.util.List;
  */
 
 public class HUDComponentManager implements MixinInterface {
-    private final List<HUDComponent> components;
-
     public HUDComponentManager() {
-        components = Lists.newArrayList(
-            new WaterMark(),
-            new ActiveModules(),
-            new FPS(),
-            new Welcomer(),
-            new Inventory(),
-            new PlayerViewer(),
-            new Time(),
-            new Ping(),
-            new Armor(),
-            new Crystal(),
-            new Totem(),
-            new Server(),
-            new TargetHUD(),
-            new Coordinates(),
-            new TPS(),
-            new Speed(),
-            new Direction(),
-            new Notifications()
-        );
-
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public List<HUDComponent> getComponents(){
+    private static final List<HUDComponent> components = Lists.newArrayList(
+            new ActiveModules(),
+            new Armor(),
+            new Coordinates(),
+            new Crystal(),
+            new Direction(),
+            new FPS(),
+            new Inventory(),
+            new Notifications(),
+            new Ping(),
+            new PlayerViewer(),
+            new Server(),
+            new Speed(),
+            new TargetHUD(),
+            new Time(),
+            new Totem(),
+            new TPS(),
+            new WaterMark(),
+            new Welcomer()
+    );
+
+    public static List<HUDComponent> getComponents(){
         return components;
     }
 
-    public HUDComponent getComponentByName(String name) {
+    public static HUDComponent getComponentByName(String name) {
         for (HUDComponent component : components) {
             if (component.getName().equalsIgnoreCase(name))
                 return component;
@@ -60,12 +58,12 @@ public class HUDComponentManager implements MixinInterface {
     @SubscribeEvent
     public void onRender2D(RenderGameOverlayEvent.Text event) {
         if (!(mc.currentScreen instanceof HUD) && !(mc.currentScreen instanceof GUI)) {
-            for (HUDComponent comp : components) {
-                if (comp.isEnabled()) {
+            for (HUDComponent component : components) {
+                if (component.isEnabled()) {
                     // TODO: figure out why some of these get npe's
 
                     try {
-                        comp.render();
+                        component.renderComponent();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

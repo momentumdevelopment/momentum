@@ -26,6 +26,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextFormatting;
 
 import java.text.DecimalFormat;
 
@@ -135,15 +136,22 @@ public class PlayerUtil implements MixinInterface {
     public static double getDirection() {
         float rotationYaw = mc.player.rotationYaw;
 
-        if (mc.player.moveForward < 0f) rotationYaw += 180f;
+        if (mc.player.moveForward < 0f)
+            rotationYaw += 180f;
 
         float forward = 1f;
 
-        if (mc.player.moveForward < 0f) forward = -0.5f;
-        else if (mc.player.moveForward > 0f) forward = 0.5f;
+        if (mc.player.moveForward < 0f)
+            forward = -0.5f;
 
-        if (mc.player.moveStrafing > 0f) rotationYaw -= 90f * forward;
-        if (mc.player.moveStrafing < 0f) rotationYaw += 90f * forward;
+        else if (mc.player.moveForward > 0f)
+            forward = 0.5f;
+
+        if (mc.player.moveStrafing > 0f)
+            rotationYaw -= 90f * forward;
+
+        if (mc.player.moveStrafing < 0f)
+            rotationYaw += 90f * forward;
 
         return Math.toRadians(rotationYaw);
     }
@@ -294,7 +302,7 @@ public class PlayerUtil implements MixinInterface {
         if (!formatter.contains("."))
             formatter += ".0";
 
-        final String bps = "Speed " + formatter + "km/h";
+        final String bps = TextFormatting.GRAY + "Speed" + TextFormatting.WHITE + " " + formatter + "km/h";
 
         return bps;
     }

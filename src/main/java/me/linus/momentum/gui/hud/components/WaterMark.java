@@ -1,9 +1,12 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.module.modules.client.Colors;
+import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.render.FontUtil;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
 
 import java.awt.*;
@@ -15,22 +18,24 @@ import java.awt.*;
 
 public class WaterMark extends HUDComponent {
 	public WaterMark() {
-		super("WaterMark", 2, 2, null);
+		super("WaterMark", 2, 2);
+	}
+
+	public static Slider scale = new Slider("Scale", 0.0D, 1.0D, 10.0D, 1);
+
+	@Override
+	public void setup() {
+		addSetting(scale);
 	}
 
 	@Override
-	public void render() {
-		FontUtil.drawStringWithShadow("Momentum " + TextFormatting.WHITE + Momentum.VERSION, Momentum.componentManager.getComponentByName("WaterMark").getX(), Momentum.componentManager.getComponentByName("WaterMark").getY(), new Color((int) Colors.r.getValue(), (int)  Colors.g.getValue() ,(int)  Colors.b.getValue()).getRGB());
-		width = (int) (FontUtil.getStringWidth("Momentum " + TextFormatting.WHITE + Momentum.VERSION) + 2);
-	}
+	public void renderComponent() {
+		GlStateManager.pushMatrix();
+		GlStateManager.scale(scale.getValue(), scale.getValue(), scale.getValue());
+		FontUtil.drawStringWithShadow("Momentum " + TextFormatting.WHITE + Momentum.VERSION, HUDComponentManager.getComponentByName("WaterMark").getX(), HUDComponentManager.getComponentByName("WaterMark").getY(), new Color((int) Colors.r.getValue(), (int)  Colors.g.getValue() ,(int)  Colors.b.getValue()).getRGB());
+		GlStateManager.popMatrix();
 
-	@Override
-	public void mouseHovered(int mouseX, int mouseY) {
-		if (isMouseOnComponent(mouseX, mouseY)) colors = new Color(82, 81, 77, 125).getRGB();
-		else colors = new Color(117, 116, 110, 125).getRGB();
-	}
-
-	public boolean isMouseOnComponent(int x, int y) {
-		return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
+		width = (int) (scale.getValue() * FontUtil.getStringWidth("Momentum " + TextFormatting.WHITE + Momentum.VERSION) + 2);
+		height = (int) (scale.getValue() * (mc.fontRenderer.FONT_HEIGHT + 3));
 	}
 }

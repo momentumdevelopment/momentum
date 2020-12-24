@@ -1,11 +1,11 @@
-package me.linus.momentum.gui.util;
+package me.linus.momentum.util.render;
 
 /**
  * @author bon
  * @since 11/19/20
  */
 
-public class GuiUtil {
+public class GUIUtil {
 	
 	public static int mX;
 	public static int mY;

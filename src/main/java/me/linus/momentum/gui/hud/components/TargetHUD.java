@@ -1,6 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.client.system.MathUtil;
 import me.linus.momentum.util.render.FontUtil;
@@ -30,9 +30,10 @@ import java.util.Objects;
  * this is the most spaghetti code shit i've ever seen - linus from the future
  */
 
+// TODO: this desperately needs a rewrite
 public class TargetHUD extends HUDComponent {
         public TargetHUD() {
-            super("TargetHUD", 400, 160, null);
+            super("TargetHUD", 400, 160);
             width = 183;
             height = 90;
         }
@@ -46,9 +47,9 @@ public class TargetHUD extends HUDComponent {
         int newPopCounter;
 
         @Override
-        public void render() {
+        public void renderComponent() {
             if (mc.player != null && mc.world != null) {
-                GuiScreen.drawRect(Momentum.componentManager.getComponentByName("TargetHUD").getX(), Momentum.componentManager.getComponentByName("TargetHUD").getY(), Momentum.componentManager.getComponentByName("TargetHUD").getX() + 180, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 87, new Color(0, 0, 0, 100).getRGB());
+                GuiScreen.drawRect(HUDComponentManager.getComponentByName("TargetHUD").getX(), HUDComponentManager.getComponentByName("TargetHUD").getY(), HUDComponentManager.getComponentByName("TargetHUD").getX() + 180, HUDComponentManager.getComponentByName("TargetHUD").getY() + 87, new Color(0, 0, 0, 100).getRGB());
 
                 EntityPlayer e = (EntityPlayer) mc.world.loadedEntityList.stream()
                         .filter(entity -> IsValidEntity(entity))
@@ -64,7 +65,7 @@ public class TargetHUD extends HUDComponent {
                 GlStateManager.disableTexture2D();
                 GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
 
-                drawEntityOnScreen(Momentum.componentManager.getComponentByName("TargetHUD").getX() + 27, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 71, 30, Momentum.componentManager.getComponentByName("TargetHUD").getX() + 32,  Momentum.componentManager.getComponentByName("TargetHUD").getX() + 70, e);
+                drawEntityOnScreen(HUDComponentManager.getComponentByName("TargetHUD").getX() + 27, HUDComponentManager.getComponentByName("TargetHUD").getY() + 71, 30, HUDComponentManager.getComponentByName("TargetHUD").getX() + 32,  HUDComponentManager.getComponentByName("TargetHUD").getX() + 70, e);
 
                 GlStateManager.enableRescaleNormal();
                 GlStateManager.enableTexture2D();
@@ -144,44 +145,44 @@ public class TargetHUD extends HUDComponent {
                 if (e.getHealth() + e.getAbsorptionAmount() == 35) {healthright = 171;}
                 if (e.getHealth() + e.getAbsorptionAmount() == 36) {healthright = 174;}
 
-                FontUtil.drawStringWithShadow(e.getName(), Momentum.componentManager.getComponentByName("TargetHUD").getX() + 54, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 8, new Color(255, 255, 255).getRGB());
-                GuiScreen.drawRect(Momentum.componentManager.getComponentByName("TargetHUD").getX() + 54, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 18, Momentum.componentManager.getComponentByName("TargetHUD").getX() + healthright, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 30, healthcolor.getRGB());
-                FontUtil.drawStringWithShadow("Health: " + (Math.rint(e.getHealth() + e.getAbsorptionAmount())), Momentum.componentManager.getComponentByName("TargetHUD").getX() + 57, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 20, new Color(255, 255, 255).getRGB());
-                FontUtil.drawStringWithShadow(playercolor + playerinfo + TextFormatting.WHITE + " | " + "Ping: " + getPing(e) + " ms", Momentum.componentManager.getComponentByName("TargetHUD").getX() + 54, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 37, new Color(255, 255, 255).getRGB());
+                FontUtil.drawStringWithShadow(e.getName(), HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 8, new Color(255, 255, 255).getRGB());
+                GuiScreen.drawRect(HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 18, HUDComponentManager.getComponentByName("TargetHUD").getX() + healthright, HUDComponentManager.getComponentByName("TargetHUD").getY() + 30, healthcolor.getRGB());
+                FontUtil.drawStringWithShadow("Health: " + (Math.rint(e.getHealth() + e.getAbsorptionAmount())), HUDComponentManager.getComponentByName("TargetHUD").getX() + 57, HUDComponentManager.getComponentByName("TargetHUD").getY() + 20, new Color(255, 255, 255).getRGB());
+                FontUtil.drawStringWithShadow(playercolor + playerinfo + TextFormatting.WHITE + " | " + "Ping: " + getPing(e) + " ms", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 37, new Color(255, 255, 255).getRGB());
                 if (e.getHeldItemMainhand().item == Items.END_CRYSTAL) {
-                    FontUtil.drawStringWithShadow( "Target: Crystalling!", Momentum.componentManager.getComponentByName("TargetHUD").getX() + 54, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow( "Target: Crystalling!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().item == Items.GOLDEN_APPLE) {
-                    FontUtil.drawStringWithShadow( "Target: Eating Gapple!", Momentum.componentManager.getComponentByName("TargetHUD").getX() + 54, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow( "Target: Eating Gapple!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().item == Items.DIAMOND_SWORD) {
-                    FontUtil.drawStringWithShadow("Target: Swording!", Momentum.componentManager.getComponentByName("TargetHUD").getX() + 54, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow("Target: Swording!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().item == Items.POTIONITEM || e.getHeldItemOffhand().item == Items.POTIONITEM) {
-                    FontUtil.drawStringWithShadow("Target: Drinking Potion!", Momentum.componentManager.getComponentByName("TargetHUD").getX() + 54, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow("Target: Drinking Potion!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().item == Items.ENDER_PEARL) {
-                    FontUtil.drawStringWithShadow("Target: Using Pearl!", Momentum.componentManager.getComponentByName("TargetHUD").getX() + 54, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow("Target: Using Pearl!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().item == Items.DIAMOND_PICKAXE) {
-                    FontUtil.drawStringWithShadow("Target: Attempting to City!", Momentum.componentManager.getComponentByName("TargetHUD").getX() + 54, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow("Target: Attempting to City!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().canPlaceOn(Blocks.OBSIDIAN)) {
-                    FontUtil.drawStringWithShadow("Target: Surrounding!", Momentum.componentManager.getComponentByName("TargetHUD").getX() + 54, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow("Target: Surrounding!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
                 }
 
-                FontUtil.drawStringWithShadow("Totems Pops: " + newPopCounter, Momentum.componentManager.getComponentByName("TargetHUD").getX() + 54, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 77, new Color(255, 255, 255).getRGB());
+                FontUtil.drawStringWithShadow("Totems Pops: " + newPopCounter, HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 77, new Color(255, 255, 255).getRGB());
 
                 GlStateManager.enableTexture2D();
                 int iteration = 0;
                 for (ItemStack is : e.inventory.armorInventory) {
                     ++iteration;
                     if (is.isEmpty()) continue;
-                    int x = Momentum.componentManager.getComponentByName("TargetHUD").getX() + ((9 - iteration) * 14) - 17;
+                    int x = HUDComponentManager.getComponentByName("TargetHUD").getX() + ((9 - iteration) * 14) - 17;
                     itemRender.zLevel = 200.0f;
-                    itemRender.renderItemAndEffectIntoGUI(is, x, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 58);
-                    itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, is, x, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 58, "");
+                    itemRender.renderItemAndEffectIntoGUI(is, x, HUDComponentManager.getComponentByName("TargetHUD").getY() + 58);
+                    itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, is, x, HUDComponentManager.getComponentByName("TargetHUD").getY() + 58, "");
                     itemRender.zLevel = 0.0f;
                 }
 
                 ItemStack mainheld = e.itemStackMainHand;
                 ItemStack offheld = e.getHeldItemOffhand();
-                itemRender.renderItemAndEffectIntoGUI(mainheld, Momentum.componentManager.getComponentByName("TargetHUD").getX() + 114, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 58);
-                itemRender.renderItemAndEffectIntoGUI(offheld, Momentum.componentManager.getComponentByName("TargetHUD").getX() + 130, Momentum.componentManager.getComponentByName("TargetHUD").getY() + 58);
+                itemRender.renderItemAndEffectIntoGUI(mainheld, HUDComponentManager.getComponentByName("TargetHUD").getX() + 114, HUDComponentManager.getComponentByName("TargetHUD").getY() + 58);
+                itemRender.renderItemAndEffectIntoGUI(offheld, HUDComponentManager.getComponentByName("TargetHUD").getX() + 130, HUDComponentManager.getComponentByName("TargetHUD").getY() + 58);
             }
             GlStateManager.enableDepth();
             GlStateManager.disableLighting();
@@ -231,15 +232,5 @@ public class TargetHUD extends HUDComponent {
             GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GlStateManager.disableTexture2D();
             GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
-        }
-
-        @Override
-        public void mouseHovered(int mouseX, int mouseY) {
-            if (isMouseOnComponent(mouseX, mouseY)) colors = new Color(82, 81, 77, 125).getRGB();
-            else colors = new Color(117, 116, 110, 125).getRGB();
-        }
-
-        public boolean isMouseOnComponent(int x, int y) {
-            return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
         }
 }

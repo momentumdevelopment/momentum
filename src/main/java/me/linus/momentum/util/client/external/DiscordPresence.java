@@ -33,22 +33,26 @@ public class DiscordPresence implements MixinInterface {
                     details = "Main Menu";
                     state = mc.player.getName();
 
-                    if (mc.isIntegratedServerRunning()) {
+                    if (mc.isIntegratedServerRunning())
                         details = "Singleplayer | " + mc.getIntegratedServer().getWorldName();
-                    } else if (mc.currentScreen instanceof GuiMultiplayer) {
+
+                    else if (mc.currentScreen instanceof GuiMultiplayer)
                         details = "Multiplayer Menu";
-                    } else if (mc.getCurrentServerData() != null) {
+
+                    else if (mc.getCurrentServerData() != null)
                         details = mc.getCurrentServerData().serverIP.toLowerCase();
-                    } else if (mc.currentScreen instanceof GuiWorldSelection) {
+
+                    else if (mc.currentScreen instanceof GuiWorldSelection)
                         details = "Singleplayer Menu";
-                    }
 
                     rp.details = details;
                     rp.state = state;
                     rpc.Discord_UpdatePresence(rp);
                 } catch (Exception e1) {
                     e1.printStackTrace();
-                } try {
+                }
+
+                try {
                     Thread.sleep(5000L);
                 } catch (InterruptedException e2) {
                     e2.printStackTrace();

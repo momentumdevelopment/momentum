@@ -1,6 +1,6 @@
 package me.linus.momentum.module.modules.movement;
 
-import me.linus.momentum.gui.main.GUI;
+import me.linus.momentum.gui.main.gui.GUI;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;

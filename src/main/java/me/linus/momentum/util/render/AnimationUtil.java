@@ -7,11 +7,6 @@ package me.linus.momentum.util.render;
 
 public class AnimationUtil {
 
-    public static float moveTowards(float current, float end, float minSpeed) {
-        float defaultSpeed = 0.125f;
-        return moveTowards(current, end, defaultSpeed, minSpeed);
-    }
-
     public static float moveTowards(float current, float end, float smoothSpeed, float minSpeed) {
         float movement = (end - current) * smoothSpeed;
 

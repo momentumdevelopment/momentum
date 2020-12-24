@@ -1,10 +1,9 @@
-package me.linus.momentum.gui.main;
+package me.linus.momentum.gui.main.gui;
 
-import me.linus.momentum.gui.util.GuiUtil;
 import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
@@ -24,38 +23,38 @@ public class GUI extends GuiScreen {
 			w.drawGui(mouseX, mouseY);
 		}
 
-		GuiUtil.mouseListen(mouseX, mouseY);
+		GUIUtil.mouseListen(mouseX, mouseY);
 	}
 	
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
-		if(mouseButton == 0) {
-			for(Window w : Window.windows) {
+		if (mouseButton == 0) {
+			for (Window w : Window.windows)
 				w.lclickListen();
-			}
-			GuiUtil.lclickListen();
+
+			GUIUtil.lclickListen();
 		}
-		if(mouseButton == 1) {
-			GuiUtil.rclickListen();
-		}
+
+		if (mouseButton == 1)
+			GUIUtil.rclickListen();
 	}
 	
 	@Override
 	public void mouseReleased(int mouseX, int mouseY, int state) {
 		super.mouseReleased(mouseX, mouseY, state);
-		if(state == 0) {
-			for(Window w : Window.windows) {
+		if (state == 0) {
+			for (Window w : Window.windows)
 				w.releaseListen();
-			}
-			GuiUtil.releaseListen();
+
+			GUIUtil.releaseListen();
 		}
 	}
 	
 	@Override
 	public void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
-		GuiUtil.keyListen(keyCode);
+		GUIUtil.keyListen(keyCode);
 	}
 	
 	@Override
@@ -65,8 +64,8 @@ public class GUI extends GuiScreen {
 			ModuleManager.getModuleByName("ClickGui").disable();
 
 			mc.entityRenderer.getShaderGroup().deleteShaderGroup();
-		} catch (NullPointerException NPE) {
-
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	

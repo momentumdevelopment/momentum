@@ -1,12 +1,12 @@
-package me.linus.momentum.gui.main;
+package me.linus.momentum.gui.main.hud;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.Theme;
-import me.linus.momentum.gui.util.GuiUtil;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module.Category;
-import me.linus.momentum.module.modules.client.ClickGui;
+import me.linus.momentum.module.modules.client.ClickGUI;
+import me.linus.momentum.util.render.GUIUtil;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class HUDWindow implements MixinInterface {
 	public void drawHud(int mouseX, int mouseY) {
 		mouseListen();
 		
-		currentTheme = ClickGui.theme.getValue();
+		currentTheme = ClickGUI.theme.getValue();
 		Theme current = Theme.getTheme(currentTheme);
 		current.drawTitles(name, x, y);
 		current.drawHUDModules(modules, x, y);
@@ -50,12 +50,12 @@ public class HUDWindow implements MixinInterface {
 	
 	private void mouseListen() {
 		if (dragging) {
-			x = GuiUtil.mX - (lastmX - x);
-			y = GuiUtil.mY - (lastmY - y);
+			x = GUIUtil.mX - (lastmX - x);
+			y = GUIUtil.mY - (lastmY - y);
 		}
 
-		lastmX = GuiUtil.mX;
-		lastmY = GuiUtil.mY;
+		lastmX = GUIUtil.mX;
+		lastmY = GUIUtil.mY;
 	}
 	
 	private void reset() {
@@ -65,14 +65,13 @@ public class HUDWindow implements MixinInterface {
 	
 	public void lclickListen() {
 		Theme current = Theme.getTheme(currentTheme);
-		if (GuiUtil.mouseOver(x, y, x + current.getThemeWidth(), y + current.getThemeHeight())) {
+
+		if (GUIUtil.mouseOver(x, y, x + current.getThemeWidth(), y + current.getThemeHeight()))
 			dragging = true;
-		}
 	}
 	
 	public void releaseListen() {
 		ldown = false;
 		dragging = false;
 	}
-	
 }

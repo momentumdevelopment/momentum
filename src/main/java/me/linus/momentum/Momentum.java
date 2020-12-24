@@ -2,7 +2,7 @@ package me.linus.momentum;
 
 import me.linus.momentum.command.CommandManager;
 import me.linus.momentum.gui.hud.HUDComponentManager;
-import me.linus.momentum.gui.main.Window;
+import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.util.client.external.CapeAPI;
@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.Display;
@@ -36,7 +35,7 @@ public class Momentum {
 	
     public static final String MODID = "momentum";
     public static final String NAME = "Momentum";
-    public static final String VERSION = "1.1.4";
+    public static final String VERSION = "1.1.5";
     public static String PREFIX = "!";
     public static final Logger LOGGER;
 
@@ -57,11 +56,6 @@ public class Momentum {
 
     public Momentum() {
     	INSTANCE = this;
-    }
-    
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-    	Display.setTitle(NAME + " Utility Mod " + VERSION);
     }
 
     @EventHandler
@@ -90,6 +84,8 @@ public class Momentum {
         LOGGER.info("Cape API Initialized!");
         ConfigManager.loadConfig();
         LOGGER.info("Config System Loaded!");
+        Display.setTitle(NAME + " Utility Mod " + VERSION);
+        LOGGER.info("Changed Display Name!");
     }
     
     static {

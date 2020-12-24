@@ -1,12 +1,12 @@
-package me.linus.momentum.gui.main;
+package me.linus.momentum.gui.main.gui;
 
 import me.linus.momentum.gui.theme.Theme;
-import me.linus.momentum.gui.util.GuiUtil;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.module.ModuleManager;
-import me.linus.momentum.module.modules.client.ClickGui;
+import me.linus.momentum.module.modules.client.ClickGUI;
+import me.linus.momentum.util.render.GUIUtil;
 import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
@@ -21,9 +21,7 @@ public class Window implements MixinInterface {
 	
 	public int x;
 	public int y;
-	private int mX;
-	private int mY;
-	
+
 	private boolean ldown;
 	private boolean rdown;
 	private boolean dragging;
@@ -67,7 +65,7 @@ public class Window implements MixinInterface {
 	public void drawGui(int mouseX, int mouseY) {
 		mouseListen();
 		
-		currentTheme = ClickGui.theme.getValue();
+		currentTheme = ClickGUI.theme.getValue();
 		Theme current = Theme.getTheme(currentTheme);
 		current.drawTitles(name, x, y);
 		current.drawModules(modules, x, y);
@@ -80,12 +78,13 @@ public class Window implements MixinInterface {
 	 */
 	
 	private void mouseListen() {
-		if(dragging) {
-			x = GuiUtil.mX - (lastmX - x);
-			y = GuiUtil.mY - (lastmY - y);
+		if (dragging) {
+			x = GUIUtil.mX - (lastmX - x);
+			y = GUIUtil.mY - (lastmY - y);
 		}
-		lastmX = GuiUtil.mX;
-		lastmY = GuiUtil.mY;
+
+		lastmX = GUIUtil.mX;
+		lastmY = GUIUtil.mY;
 	}
 	
 	private void reset() {
@@ -95,19 +94,20 @@ public class Window implements MixinInterface {
 	
 	public void lclickListen() {
 		Theme current = Theme.getTheme(currentTheme);
-		if(GuiUtil.mouseOver(x, y, x + current.getThemeWidth(), y + current.getThemeHeight())) {
+
+		if (GUIUtil.mouseOver(x, y, x + current.getThemeWidth(), y + current.getThemeHeight()))
 			dragging = true;
-		}
 	}
 
 	public void mouseWheelListen() {
 		int scrollWheel = Mouse.getDWheel();
+
 		for (final Window windows : Window.windows) {
-			if (scrollWheel < 0) {
-				windows.setY((int) (windows.getY() - ClickGui.scrollSpeed.getValue()));
-			} else if (scrollWheel > 0) {
-				windows.setY((int) (windows.getY() + ClickGui.scrollSpeed.getValue()));
-			}
+			if (scrollWheel < 0)
+				windows.setY((int) (windows.getY() - ClickGUI.scrollSpeed.getValue()));
+
+			else if (scrollWheel > 0)
+				windows.setY((int) (windows.getY() + ClickGUI.scrollSpeed.getValue()));
 		}
 	}
 	
