@@ -20,6 +20,9 @@ public class NoEntityTrace extends Module {
 
     @Override
     public void onUpdate() {
+        if (nullCheck())
+            return;
+
         mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityLivingBase).filter(entity -> mc.player == entity).map(entity -> (EntityLivingBase) entity).filter(entity -> !(entity.isDead)).forEach(this::processHit);
         RayTraceResult normalResult = mc.objectMouseOver;
 

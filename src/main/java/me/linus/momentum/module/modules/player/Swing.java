@@ -50,4 +50,9 @@ public class Swing extends Module {
             event.setCanceled(true);
         }
     }
+
+    @Override
+    public String getHUDData() {
+        return " " + mode.getValue();
+    }
 }

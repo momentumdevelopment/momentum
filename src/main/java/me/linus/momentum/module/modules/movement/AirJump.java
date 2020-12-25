@@ -11,7 +11,7 @@ import net.minecraft.network.play.client.CPacketPlayer;
 
 public class AirJump extends Module {
     public AirJump() {
-        super("AirJump", Category.MOVEMENT, "Allows you to jump infinitely");
+        super("AirJump", Category.MOVEMENT, "Allows you to jump in the air");
     }
 
     private static final Checkbox packet = new Checkbox("Packet", true);

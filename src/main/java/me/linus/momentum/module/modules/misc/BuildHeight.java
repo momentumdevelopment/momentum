@@ -18,17 +18,15 @@ public class BuildHeight extends Module {
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (!(event.getPacket() instanceof CPacketPlayerTryUseItemOnBlock))
-            return;
+        if ((event.getPacket() instanceof CPacketPlayerTryUseItemOnBlock)) {
+            if (((CPacketPlayerTryUseItemOnBlock) event.getPacket()).getPos().getY() < 255)
+                return;
 
-        final CPacketPlayerTryUseItemOnBlock oldPacket = (CPacketPlayerTryUseItemOnBlock) event.getPacket();
-        if (oldPacket.getPos().getY() < 255)
-            return;
+            if (((CPacketPlayerTryUseItemOnBlock) event.getPacket()).getDirection() != EnumFacing.UP)
+                return;
 
-        if (oldPacket.getDirection() != EnumFacing.UP)
-            return;
-
-        mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(oldPacket.getPos(), EnumFacing.DOWN, oldPacket.getHand(), oldPacket.getFacingX(), oldPacket.getFacingY(), oldPacket.getFacingZ()));
-        event.setCanceled(true);
+            mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(((CPacketPlayerTryUseItemOnBlock) event.getPacket()).getPos(), EnumFacing.DOWN, ((CPacketPlayerTryUseItemOnBlock) event.getPacket()).getHand(), ((CPacketPlayerTryUseItemOnBlock) event.getPacket()).getFacingX(), ((CPacketPlayerTryUseItemOnBlock) event.getPacket()).getFacingY(), ((CPacketPlayerTryUseItemOnBlock) event.getPacket()).getFacingZ()));
+            event.setCanceled(true);
+        }
     }
 }

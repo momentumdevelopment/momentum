@@ -20,7 +20,7 @@ public class Velocity extends Module {
 	}
 
 	public static Slider horizontal = new Slider("Horizontal", 0.0D, 0.0D, 100.0D, 0);
-	public static Slider vertical = new Slider("Speed", 0.0D, 0.0D, 100.0D, 0);
+	public static Slider vertical = new Slider("Vertical", 0.0D, 0.0D, 100.0D, 0);
 	private static final Checkbox noPush = new Checkbox("No Push", true);
 
 	@Override
@@ -32,13 +32,11 @@ public class Velocity extends Module {
 
 	@SubscribeEvent
 	public void onPacketReceive(PacketReceiveEvent event) {
-		if (event.getPacket() instanceof SPacketEntityVelocity) {
+		if (event.getPacket() instanceof SPacketEntityVelocity)
 			event.setCanceled(true);
-		}
 		
-		if (event.getPacket() instanceof SPacketExplosion) {
+		if (event.getPacket() instanceof SPacketExplosion)
 			event.setCanceled(true);
-		}
 	}
 
 	@SubscribeEvent

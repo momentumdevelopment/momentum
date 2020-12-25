@@ -1,7 +1,9 @@
 package me.linus.momentum.module.modules.misc;
 
 import me.linus.momentum.module.Module;
+import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.world.TickUtil;
 
 /**
  * @author linustouchtips
@@ -14,10 +16,12 @@ public class Timer extends Module {
     }
 
     public static Slider ticks = new Slider("Ticks", 0.1D, 4.0D, 20.0D, 1);
+    private static final Checkbox sync = new Checkbox("TPS Sync", false);
 
     @Override
     public void setup() {
         addSetting(ticks);
+        addSetting(sync);
     }
 
     @Override
@@ -27,7 +31,11 @@ public class Timer extends Module {
 
     @Override
     public void onUpdate() {
-        mc.timer.tickLength = (float) (50.0f / ticks.getValue());
+        if (!sync.getValue())
+            mc.timer.tickLength = (float) (50.0f / ticks.getValue());
+
+        else
+            mc.timer.tickLength = 50.0f / TickUtil.TPS;
     }
 
     @Override

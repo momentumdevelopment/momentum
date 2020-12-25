@@ -21,27 +21,11 @@ public class ChatSuffix extends Module {
 	@SubscribeEvent
 	public void onPacketSend(PacketSendEvent event) {
 		if (event.getPacket() instanceof CPacketChatMessage) {
-			CPacketChatMessage packet = (CPacketChatMessage) event.getPacket();
-			if (packet.getMessage().startsWith("/"))
+			if (((CPacketChatMessage) event.getPacket()).getMessage().startsWith("/") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("!") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("$") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("?") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith(".") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith(","))
 				return;
 
-			if (packet.getMessage().startsWith("!"))
-				return;
-
-			if (packet.getMessage().startsWith("$"))
-				return;
-
-			if (packet.getMessage().startsWith("?"))
-				return;
-
-			if (packet.getMessage().startsWith("."))
-				return;
-
-			if (packet.getMessage().startsWith(","))
-				return;
-
-			String newMessage = packet.getMessage() + " \u23d0 " + MessageUtil.toUnicode(suffix);
-			packet.message = newMessage;
+			String newMessage = ((CPacketChatMessage) event.getPacket()).getMessage() + " \u23d0 " + MessageUtil.toUnicode(suffix);
+			((CPacketChatMessage) event.getPacket()).message = newMessage;
 		}
 	}
 }

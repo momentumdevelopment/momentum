@@ -63,19 +63,4 @@ public class Rotation extends Module {
         if (mc.player.isRiding())
             Objects.requireNonNull(mc.player.getRidingEntity()).rotationYaw = yaw;
     }
-
-    @Override
-    public void onRender3D(Render3DEvent eventRender) {
-        if (northBlockPos != null)
-            RenderUtil.drawLine3D(northBlockPos.x, northBlockPos.y, northBlockPos.z, northBlockPos.x, northBlockPos.y + 3, northBlockPos.z, 1.5f, new Color(255, 0, 0).getRGB());
-
-        if (westBlockPos != null)
-            RenderUtil.drawLine3D(westBlockPos.x, westBlockPos.y, westBlockPos.z, westBlockPos.x, westBlockPos.y + 3, westBlockPos.z, 1.5f, new Color(255, 0, 0).getRGB());
-
-        if (southBlockPos != null)
-            RenderUtil.drawLine3D(southBlockPos.x, southBlockPos.y, southBlockPos.z, westBlockPos.x, southBlockPos.y + 3, southBlockPos.z, 1.5f, new Color(255, 0, 0).getRGB());
-
-        if (eastBlockPos != null)
-            RenderUtil.drawLine3D(eastBlockPos.x, eastBlockPos.y, eastBlockPos.z, eastBlockPos.x, eastBlockPos.y + 3, eastBlockPos.z, 1.5f, new Color(255, 0, 0).getRGB());
-    }
 }

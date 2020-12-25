@@ -37,9 +37,7 @@ public class AntiLag extends Module {
         if ((event.getPacket() instanceof SPacketParticles || event.getPacket() instanceof SPacketEffect) && particles.getValue())
             event.setCanceled(true);
 
-        if (event.getPacket() instanceof SPacketSoundEffect && offhand.getValue()) {
-            if (((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ITEM_ARMOR_EQUIP_GENERIC)
-                event.setCanceled(true);
-        }
+        if (event.getPacket() instanceof SPacketSoundEffect && offhand.getValue() && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ITEM_ARMOR_EQUIP_GENERIC)
+            event.setCanceled(true);
     }
 }

@@ -83,14 +83,16 @@ public class Speed extends Module {
     @Override
     public void onDisable() {
         mc.timer.tickLength = 50;
-        ModuleManager.getModuleByName("Step").disable();
+
+        if (enableStep.getValue() && ModuleManager.getModuleByName("Step").isEnabled())
+            ModuleManager.getModuleByName("Step").disable();
     }
 
     @SubscribeEvent
     public void onPacketRecieve(PacketReceiveEvent event) {
         if (event.getPacket() instanceof SPacketPlayerPosLook) {
             if (rubberband.getValue()) {
-                disable();
+                this.disable();
                 return;
             }
 
@@ -124,9 +126,10 @@ public class Speed extends Module {
         timerDelay++;
         timerDelay %= 5;
 
-        if (timerDelay != 0) {
+        if (timerDelay != 0)
             mc.timer.tickLength = 50;
-        } else if (PlayerUtil.hasMotion()) {
+
+        else if (PlayerUtil.hasMotion()) {
             if (useTimer.getValue())
                 mc.timer.tickLength = (float) (50 / timerTicks.getValue());
 
@@ -134,9 +137,8 @@ public class Speed extends Module {
             mc.player.motionZ *= 1.02f;
         }
 
-        if (mc.player.onGround && PlayerUtil.hasMotion()) {
+        if (mc.player.onGround && PlayerUtil.hasMotion())
             level = 2;
-        }
 
         if (MathUtil.round(mc.player.posY - (double)((int)mc.player.posY)) == MathUtil.round(0.138)) {
             mc.player.motionY -= 0.08;
@@ -147,7 +149,9 @@ public class Speed extends Module {
         if (level == 1 && (mc.player.moveForward != 0.0f || mc.player.moveStrafing != 0.0f)) {
             level = 2;
             moveSpeed = 1.38 * speed.getValue() - 0.01;
-        } else if (level == 2) {
+        }
+
+        else if (level == 2) {
             level = 3;
 
             if (jump.getValue()) {
@@ -156,14 +160,18 @@ public class Speed extends Module {
             }
 
             moveSpeed *= 2.149;
-        } else if (level == 3) {
+        }
+
+        else if (level == 3) {
             level = 4;
             double difference = 0.66 * (lastDist - speed.getValue());
             moveSpeed = lastDist - difference;
-        } else {
-            if (mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, mc.player.motionY, 0.0)).size() > 0 || mc.player.collidedVertically) {
+        }
+
+        else {
+            if (mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, mc.player.motionY, 0.0)).size() > 0 || mc.player.collidedVertically)
                 level = 1;
-            }
+
             moveSpeed = lastDist - lastDist / 159.0;
         }
 
@@ -175,20 +183,24 @@ public class Speed extends Module {
         if (forward == 0.0f && strafe == 0.0f) {
             event.setX(0.0);
             event.setZ(0.0);
-        } else if (forward != 0.0f) {
+        }
+
+        else if (forward != 0.0f) {
             if (strafe >= 1.0f) {
                 yaw += (float)(forward > 0.0f ? -45 : 45);
                 strafe = 0.0f;
-            } else if (strafe <= -1.0f) {
+            }
+
+            else if (strafe <= -1.0f) {
                 yaw += (float)(forward > 0.0f ? 45 : -45);
                 strafe = 0.0f;
             }
 
-            if (forward > 0.0f) {
+            if (forward > 0.0f)
                 forward = 1.0f;
-            } else if (forward < 0.0f) {
+
+            else if (forward < 0.0f)
                 forward = -1.0f;
-            }
         }
 
         double mx = Math.cos(Math.toRadians(yaw + 90.0f));
@@ -207,17 +219,17 @@ public class Speed extends Module {
         ++timerDelay;
         timerDelay %= 5;
         
-        if (timerDelay != 0) {
+        if (timerDelay != 0)
             mc.timer.tickLength = 50f;
-        } else if (PlayerUtil.hasMotion()) {
+
+        else if (PlayerUtil.hasMotion()) {
             mc.timer.tickLength = 50f / 1.3f;
             mc.player.motionX *= 1.02f;
             mc.player.motionZ *= 1.02f;
         }
         
-        if (mc.player.onGround && PlayerUtil.hasMotion()) {
+        if (mc.player.onGround && PlayerUtil.hasMotion())
             level = 2;
-        }
         
         if (MathUtil.round(mc.player.posY - (double)((int)mc.player.posY)) == MathUtil.round(0.138)) {
             mc.player.motionY -= 0.08;
@@ -228,48 +240,63 @@ public class Speed extends Module {
         if (level == 1 && (mc.player.moveForward != 0.0f || mc.player.moveStrafing != 0.0f)) {
             level = 2;
             moveSpeed = 1.38 * speed.getValue() - 0.01;
-        } else if (level == 2) {
+        }
+
+        else if (level == 2) {
             level = 3;
             mc.player.motionY = 0.3994f;
             event.setY(0.3994f);
             moveSpeed *= 2.149;
-        } else if (level == 3) {
+        }
+
+        else if (level == 3) {
             level = 4;
             double difference = 0.66 * (lastDist - speed.getValue());
             moveSpeed = lastDist - difference;
-        } else {
-            if (mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, mc.player.motionY, 0.0)).size() > 0 || mc.player.collidedVertically) {
+        }
+
+        else {
+            if (mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, mc.player.motionY, 0.0)).size() > 0 || mc.player.collidedVertically)
                 level = 1;
-            }
+
             moveSpeed = lastDist - lastDist / 159.0;
         }
+
         moveSpeed = Math.max(moveSpeed, speed.getValue());
         moveSpeed = Math.min(moveSpeed, 0.551);
         float forward = mc.player.movementInput.moveForward;
         float strafe = mc.player.movementInput.moveStrafe;
         float yaw = mc.player.rotationYaw;
+
         if (forward == 0.0f && strafe == 0.0f) {
             event.setX(0.0);
             event.setZ(0.0);
-        } else if (forward != 0.0f) {
+        }
+
+        else if (forward != 0.0f) {
             if (strafe >= 1.0f) {
                 yaw += (float)(forward > 0.0f ? -45 : 45);
                 strafe = 0.0f;
-            } else if (strafe <= -1.0f) {
+            }
+
+            else if (strafe <= -1.0f) {
                 yaw += (float)(forward > 0.0f ? 45 : -45);
                 strafe = 0.0f;
             }
-            if (forward > 0.0f) {
+
+            if (forward > 0.0f)
                 forward = 1.0f;
-            } else if (forward < 0.0f) {
+
+            else if (forward < 0.0f)
                 forward = -1.0f;
-            }
         }
+
         double mx = Math.cos(Math.toRadians(yaw + 90.0f));
         double mz = Math.sin(Math.toRadians(yaw + 90.0f));
-        event.setX((double)forward * moveSpeed * mx + (double)strafe * moveSpeed * mz);
-        event.setZ((double)forward * moveSpeed * mz - (double)strafe * moveSpeed * mx);
+        event.setX((double) forward * moveSpeed * mx + (double)strafe * moveSpeed * mz);
+        event.setZ((double) forward * moveSpeed * mz - (double)strafe * moveSpeed * mx);
         mc.player.stepHeight = 0.6f;
+
         if (forward == 0.0f && strafe == 0.0f) {
             event.setX(0.0);
             event.setZ(0.0);
@@ -279,6 +306,7 @@ public class Speed extends Module {
     public void speedStrict(MoveEvent event) {
         ++timerDelay;
         timerDelay %= 5;
+
         if (timerDelay != 0)
             mc.timer.tickLength = 50f;
 
@@ -335,26 +363,34 @@ public class Speed extends Module {
         if (forward == 0.0f && strafe == 0.0f) {
             event.setX(0.0);
             event.setZ(0.0);
-        } else if (forward != 0.0f) {
+        }
+
+        else if (forward != 0.0f) {
             if (strafe >= 1.0f) {
                 yaw += (float)(forward > 0.0f ? -45 : 45);
                 strafe = 0.0f;
-            } else if (strafe <= -1.0f) {
+            }
+
+            else if (strafe <= -1.0f) {
                 yaw += (float)(forward > 0.0f ? 45 : -45);
                 strafe = 0.0f;
             }
-            if (forward > 0.0f) {
+
+            if (forward > 0.0f)
                 forward = 1.0f;
-            } else if (forward < 0.0f) {
+
+
+            else if (forward < 0.0f)
                 forward = -1.0f;
-            }
+
         }
         
         double mx = Math.cos(Math.toRadians(yaw + 90.0f));
         double mz = Math.sin(Math.toRadians(yaw + 90.0f));
-        event.setX((double)forward * moveSpeed * mx + (double)strafe * moveSpeed * mz);
-        event.setZ((double)forward * moveSpeed * mz - (double)strafe * moveSpeed * mx);
+        event.setX((double) forward * moveSpeed * mx + (double)strafe * moveSpeed * mz);
+        event.setZ((double) forward * moveSpeed * mz - (double)strafe * moveSpeed * mx);
         mc.player.stepHeight = 0.6f;
+
         if (forward == 0.0f && strafe == 0.0f) {
             event.setX(0.0);
             event.setZ(0.0);
@@ -363,7 +399,9 @@ public class Speed extends Module {
 
     public void speedYPort() {
         if (mc.player.onGround) {
-            mc.timer.tickLength = 50f / 1.15f;
+            if (useTimer.getValue())
+                mc.timer.tickLength = 50f / 1.15f;
+
             mc.player.jump();
             PlayerUtil.setSpeed(mc.player, PlayerUtil.getBaseMoveSpeed() + speed.getValue());
         }

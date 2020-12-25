@@ -38,9 +38,8 @@ public class ChatLogger extends Module {
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy-HH-mm");
             Date date = new Date();
             folder = new File(ConfigManager.config + File.separator + "logs");
-            if (!folder.exists()) {
+            if (!folder.exists())
                 folder.mkdirs();
-            }
 
             String fileName = (formatter.format(date)) + "-chatlogs.txt";
 
@@ -69,13 +68,16 @@ public class ChatLogger extends Module {
     public void onChatRecieved(ClientChatReceivedEvent event) {
         try {
             String message = event.getMessage().getUnformattedText();
+
             if (numbers.getValue()) {
                 if (message.matches(".*\\d.*")) {
                     out.write(message);
                     out.write(endLine());
                     out.flush();
                 }
-            } else {
+            }
+
+            else {
                 out.write(message);
                 out.write(endLine());
                 out.flush();
@@ -85,7 +87,7 @@ public class ChatLogger extends Module {
         }
     }
 
-    public static String endLine(){
+    public static String endLine() {
         return "\r\n";
     }
 }

@@ -134,6 +134,7 @@ public class StashFinder extends Module {
 
                 if (id.equals("minecraft:chest") && chests.getValue())
                     chest++;
+
                 else if (id.equals("minecraft:shulker_box") && shulkers.getValue())
                     shulker++;
             }
@@ -144,15 +145,15 @@ public class StashFinder extends Module {
 
     public void notifyPlayer(int x, int y, int chest, int shulker) {
         if (mode.getValue() == 0)
-        stop = true;
+            stop = true;
 
         mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
 
         if (chest > 0)
-        MessageUtil.sendClientMessage("Found " + chest + " chests at " + x + " " + y + "!");
+            MessageUtil.sendClientMessage("Found " + chest + " chests at " + x + " " + y + "!");
 
         if (shulker > 0)
-        MessageUtil.sendClientMessage("Found " + shulker + " shulkers at " + x + " " + y + "!");
+            MessageUtil.sendClientMessage("Found " + shulker + " shulkers at " + x + " " + y + "!");
 
         if (mode.getValue() == 1 || mode.getValue() == 2) {
             try {

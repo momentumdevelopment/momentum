@@ -19,4 +19,9 @@ public class Reach extends Module {
     public void setup() {
         addSetting(distance);
     }
+
+    @Override
+    public String getHUDData() {
+        return " " + distance.getValue();
+    }
 }

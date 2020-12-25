@@ -50,7 +50,8 @@ public class Notifier extends Module {
 
     @Override
     public void onUpdate() {
-        if (nullCheck()) return;
+        if (nullCheck())
+            return;
 
         if (armor.getValue() && PlayerUtil.getArmor(mc.player, 15)) {
             if (armorTimer.passed((long) armorDelay.getValue())) {
@@ -82,7 +83,9 @@ public class Notifier extends Module {
                 if (Momentum.friendManager.isFriend(player.getName())) {
                     NotificationManager.notifications.add(new Notification("Your friend, " + player.getName() + ", has entered your visual range!"));
                     MessageUtil.sendClientMessage("Your friend, " + player.getName() + ", has entered your visual range!");
-                } else {
+                }
+
+                else {
                     NotificationManager.notifications.add(new Notification(player.getName() + "has entered your visual range!"));
                     MessageUtil.sendClientMessage(player.getName() + "has entered your visual range!");
                 }
@@ -97,21 +100,26 @@ public class Notifier extends Module {
             if (packet.getOpCode() == 35) {
                 Entity entity = packet.getEntity(mc.world);
 
-                if (entity == null) return;
+                if (entity == null)
+                    return;
 
                 int count = 1;
 
                 if (totemPopContainer.containsKey(entity.getName())) {
                     count = totemPopContainer.get(entity.getName()).intValue();
                     totemPopContainer.put(entity.getName(), count++);
-                } else {
+                }
+
+                else {
                     totemPopContainer.put(entity.getName(), count);
                 }
 
                 if (Momentum.friendManager.isFriend(entity.getName())) {
                     NotificationManager.notifications.add(new Notification("Your friend, " + entity.getName() + ", popped " + count + " totems!"));
                     MessageUtil.sendClientMessage("Your friend, " + entity.getName() + ", popped " + count + " totems!");
-                } else {
+                }
+
+                else {
                     NotificationManager.notifications.add(new Notification(entity.getName() + " popped " + count + " totems!"));
                     MessageUtil.sendClientMessage(entity.getName() + " popped " + count + " totems!");
                 }

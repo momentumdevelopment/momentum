@@ -102,14 +102,12 @@ public class Scaffold extends Module {
         }
 
         if (keepY.getValue()) {
-            if ((!isMoving(mc.player) && mc.gameSettings.keyBindJump.isKeyDown()) || mc.player.collidedVertically || mc.player.onGround) {
+            if ((!isMoving(mc.player) && mc.gameSettings.keyBindJump.isKeyDown()) || mc.player.collidedVertically || mc.player.onGround)
                 lastY = MathHelper.floor(mc.player.posY);
-            }
         }
 
-        else {
+        else
             lastY = MathHelper.floor(mc.player.posY);
-        }
 
         blockData = null;
         double x = mc.player.posX;
@@ -118,6 +116,7 @@ public class Scaffold extends Module {
         double forward = mc.player.movementInput.moveForward;
         double strafe = mc.player.movementInput.moveStrafe;
         float yaw = mc.player.rotationYaw;
+
         if (!mc.player.collidedHorizontally){
             double[] coords = getExpandCoords(x,z,forward,strafe,yaw);
             x = coords[0];

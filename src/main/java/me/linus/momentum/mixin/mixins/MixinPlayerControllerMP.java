@@ -25,7 +25,7 @@ public class MixinPlayerControllerMP implements MixinInterface {
 
     @Inject(method = "resetBlockRemoving", at = @At(value = "HEAD"), cancellable = true)
     private void resetBlock(CallbackInfo ci) {
-        if (ModuleManager.getModuleByName("EntityMine").isEnabled() && Swing.noReset.getValue())
+        if (ModuleManager.getModuleByName("Swing").isEnabled() && Swing.noReset.getValue() && mc.world != null)
             ci.cancel();
     }
 

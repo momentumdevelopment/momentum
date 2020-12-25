@@ -90,7 +90,7 @@ public class ModuleManager implements MixinInterface {
 			new DiscordRPC(),
 			new EnableMessage(),
 			new EntityAlert(),
-			new FakeCreative(),
+			new FakeGameMode(),
 			new FakePlayer(),
 			new MiddleClickFriend(),
 			new NoHandShake(),

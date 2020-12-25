@@ -15,23 +15,18 @@ public class ColoredText extends Module {
         super("ColoredText", Category.MISC, "Automatically colors your messages green");
     }
 
-    String suffix;
-    String s;
-
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
         if (event.getPacket() instanceof CPacketChatMessage) {
-            if (((CPacketChatMessage) event.getPacket()).getMessage().startsWith("/") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith(".") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("!") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("#"))
+            if (((CPacketChatMessage) event.getPacket()).getMessage().startsWith("/") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("!") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("$") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("?") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith(".") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith(","))
                 return;
 
-            String old = ((CPacketChatMessage) event.getPacket()).getMessage();
-            suffix = " > ";
-            s = suffix + old;
-            int longs = s.length();
+            String suffix = " > ";
+            String s = suffix + ((CPacketChatMessage) event.getPacket()).getMessage();
             int ok = 0;
 
             if (s.length() > 255)
-                ok = longs - 255;
+                ok = s.length() - 255;
 
             s = s.substring(0, s.length() - ok);
             ((CPacketChatMessage) event.getPacket()).message = s;

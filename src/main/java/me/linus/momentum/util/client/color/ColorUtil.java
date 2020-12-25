@@ -29,11 +29,8 @@ public abstract class ColorUtil implements MixinInterface {
 	}
 
 	public static int staticRainbow() {
-		float[] hue = new float[] {
-				(float) (System.currentTimeMillis() % 11520L) / 12000.0f
-		};
-
-		int rgb = Color.HSBtoRGB(hue[0], 1.0f, 1.0f);
+		float hue = (float) (System.currentTimeMillis() % 11520L) / 12000.0f;
+		int rgb = Color.HSBtoRGB(hue, 1.0f, 1.0f);
 		int red = rgb >> 16 & 255;
 		int green = rgb >> 8 & 255;
 		int blue = rgb & 255;

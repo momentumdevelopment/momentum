@@ -17,6 +17,7 @@ import java.util.Map;
  * @since 11/30/2020
  */
 
+// TODO: rewrite this
 public class Refill extends Module {
     public Refill() {
         super("Refill", Category.MISC, "Refills items in your hotbar");
@@ -52,23 +53,21 @@ public class Refill extends Module {
         if (delayStep < 2) {
             delayStep++;
             return;
-        } else
-            delayStep = 0;
+        }
 
+        else
+            delayStep = 0;
 
         Pair<Integer, Integer> slots = findReplenishableHotbarSlot();
 
-        if (slots == null) {
+        if (slots == null)
             return;
-        }
 
         int inventorySlot = slots.getKey();
         int hotbarSlot = slots.getValue();
 
         mc.playerController.windowClick(0, inventorySlot, 0, ClickType.PICKUP, mc.player);
-
         mc.playerController.windowClick(0, hotbarSlot, 0, ClickType.PICKUP, mc.player);
-
         mc.playerController.windowClick(0, inventorySlot, 0, ClickType.PICKUP, mc.player);
     }
 

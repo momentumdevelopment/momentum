@@ -63,7 +63,7 @@ public class TabGUI extends HUDComponent {
             count++;
         }
 
-        width = 100;
+        width = 87;
         height = 107;
     }
 

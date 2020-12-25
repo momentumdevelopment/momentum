@@ -28,6 +28,7 @@ public class HighJump extends Module {
     public void onUpdate() {
         if (mc.gameSettings.keyBindJump.isPressed()) {
             mc.player.motionY = height.getValue();
+
             if (packet.getValue()) {
                 mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, mc.player.onGround));
                 mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX + mc.player.motionX, 0.0, mc.player.posZ + mc.player.motionZ, mc.player.onGround));

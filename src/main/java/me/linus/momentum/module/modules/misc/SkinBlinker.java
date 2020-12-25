@@ -13,22 +13,22 @@ public class SkinBlinker extends Module {
         super("SkinBlinker", Category.MISC, "Switches skin model parts");
     }
 
-    private static final EnumPlayerModelParts[] PARTS_HORIZONTAL;
-
-    static {
-        PARTS_HORIZONTAL = new EnumPlayerModelParts[] { EnumPlayerModelParts.LEFT_SLEEVE, EnumPlayerModelParts.JACKET, EnumPlayerModelParts.HAT, EnumPlayerModelParts.LEFT_PANTS_LEG, EnumPlayerModelParts.RIGHT_PANTS_LEG, EnumPlayerModelParts.RIGHT_SLEEVE };
-    }
+    static final EnumPlayerModelParts[] PARTS_HORIZONTAL;
 
     @Override
     public void onUpdate() {
-        int i = mc.player.ticksExisted / 1 % (PARTS_HORIZONTAL.length * 2);
-        boolean on = false;
+        int delay = mc.player.ticksExisted % (PARTS_HORIZONTAL.length * 2);
+        boolean renderLayer = false;
 
-        if (i >= PARTS_HORIZONTAL.length) {
-            on = true;
-            i -= PARTS_HORIZONTAL.length;
+        if (delay >= PARTS_HORIZONTAL.length) {
+            renderLayer = true;
+            delay -= PARTS_HORIZONTAL.length;
         }
 
-        mc.gameSettings.setModelPartEnabled(PARTS_HORIZONTAL[i], on);
+        mc.gameSettings.setModelPartEnabled(PARTS_HORIZONTAL[delay], renderLayer);
+    }
+
+    static {
+        PARTS_HORIZONTAL = new EnumPlayerModelParts[] { EnumPlayerModelParts.LEFT_SLEEVE, EnumPlayerModelParts.JACKET, EnumPlayerModelParts.HAT, EnumPlayerModelParts.LEFT_PANTS_LEG, EnumPlayerModelParts.RIGHT_PANTS_LEG, EnumPlayerModelParts.RIGHT_SLEEVE };
     }
 }

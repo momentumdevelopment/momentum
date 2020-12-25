@@ -28,42 +28,36 @@ public class Anchor extends Module {
 
     @Override
     public void onUpdate() {
-        if (nullCheck()) {
+        if (nullCheck())
             return;
-        }
 
         double newX;
         double newZ;
 
-        if (mc.player.posX > Math.round(mc.player.posX)) {
+        if (mc.player.posX > Math.round(mc.player.posX))
             newX = Math.round(mc.player.posX) + 0.5;
-        } else if (mc.player.posX < Math.round(mc.player.posX)) {
-            newX = Math.round(mc.player.posX) - 0.5;
-        } else {
-            newX = mc.player.posX;
-        }
 
-        if (mc.player.posZ > Math.round(mc.player.posZ)) {
+        else if (mc.player.posX < Math.round(mc.player.posX))
+            newX = Math.round(mc.player.posX) - 0.5;
+
+        else
+            newX = mc.player.posX;
+
+        if (mc.player.posZ > Math.round(mc.player.posZ))
             newZ = Math.round(mc.player.posZ) + 0.5;
-        } else if (mc.player.posZ < Math.round(mc.player.posZ)) {
+
+        else if (mc.player.posZ < Math.round(mc.player.posZ))
             newZ = Math.round(mc.player.posZ) - 0.5;
-        } else {
+
+        else
             newZ = mc.player.posZ;
-        }
 
         playerPos = new BlockPos(newX, mc.player.posY, newZ);
 
-        if (mc.world.getBlockState(playerPos).getBlock() != Blocks.AIR) {
+        if (mc.world.getBlockState(playerPos).getBlock() != Blocks.AIR)
             return;
-        }
 
-        if (mc.world.getBlockState(playerPos.down()).getBlock() == Blocks.AIR
-                && mc.world.getBlockState(playerPos.down().east()).getBlock() != Blocks.AIR
-                && mc.world.getBlockState(playerPos.down().west()).getBlock() != Blocks.AIR
-                && mc.world.getBlockState(playerPos.down().north()).getBlock() != Blocks.AIR
-                && mc.world.getBlockState(playerPos.down().south()).getBlock() != Blocks.AIR
-                && mc.world.getBlockState(playerPos.down(2)).getBlock() != Blocks.AIR) {
-
+        if (mc.world.getBlockState(playerPos.down()).getBlock() == Blocks.AIR && mc.world.getBlockState(playerPos.down().east()).getBlock() != Blocks.AIR && mc.world.getBlockState(playerPos.down().west()).getBlock() != Blocks.AIR && mc.world.getBlockState(playerPos.down().north()).getBlock() != Blocks.AIR && mc.world.getBlockState(playerPos.down().south()).getBlock() != Blocks.AIR && mc.world.getBlockState(playerPos.down(2)).getBlock() != Blocks.AIR) {
             mc.player.motionX = 0;
             mc.player.motionZ = 0;
 
@@ -71,14 +65,7 @@ public class Anchor extends Module {
                 mc.player.motionY -= speed.getValue();
         }
 
-        else if (mc.world.getBlockState(playerPos.down()).getBlock() == Blocks.AIR
-                && mc.world.getBlockState(playerPos.down(2)).getBlock() == Blocks.AIR
-                && mc.world.getBlockState(playerPos.down(2).east()).getBlock() != Blocks.AIR
-                && mc.world.getBlockState(playerPos.down(2).west()).getBlock() != Blocks.AIR
-                && mc.world.getBlockState(playerPos.down(2).north()).getBlock() != Blocks.AIR
-                && mc.world.getBlockState(playerPos.down(2).south()).getBlock() != Blocks.AIR
-                && mc.world.getBlockState(playerPos.down(3)).getBlock() != Blocks.AIR) {
-
+        else if (mc.world.getBlockState(playerPos.down()).getBlock() == Blocks.AIR && mc.world.getBlockState(playerPos.down(2)).getBlock() == Blocks.AIR && mc.world.getBlockState(playerPos.down(2).east()).getBlock() != Blocks.AIR && mc.world.getBlockState(playerPos.down(2).west()).getBlock() != Blocks.AIR && mc.world.getBlockState(playerPos.down(2).north()).getBlock() != Blocks.AIR && mc.world.getBlockState(playerPos.down(2).south()).getBlock() != Blocks.AIR && mc.world.getBlockState(playerPos.down(3)).getBlock() != Blocks.AIR) {
             mc.player.motionX = 0;
             mc.player.motionZ = 0;
 

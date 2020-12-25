@@ -100,7 +100,7 @@ public class HoleESP extends Module {
                         RenderUtil.drawPrismBlockPos(hole, mainHeight.getValue(), obbyColor);
                         break;
                     case 1:
-                        // TODO: get seasnail to do this cause i'm dumb
+                        RenderUtil.drawGlowBoxBlockPos(hole, new Color(obbyColor.getRed(), obbyColor.getGreen(), obbyColor.getBlue(), 120), new Color(obbyColor.getRed(), obbyColor.getGreen(), obbyColor.getBlue(), 8));
                         break;
                 }
             }
@@ -111,7 +111,7 @@ public class HoleESP extends Module {
                         RenderUtil.drawPrismBlockPos(hole, mainHeight.getValue(), bRockColor);
                         break;
                     case 1:
-                        // TODO: get seasnail to do this cause i'm dumb
+                        RenderUtil.drawGlowBoxBlockPos(hole, new Color(bRockColor.getRed(), bRockColor.getGreen(), bRockColor.getBlue(), 120), new Color(bRockColor.getRed(), bRockColor.getGreen(), bRockColor.getBlue(), 8));
                         break;
                 }
             }

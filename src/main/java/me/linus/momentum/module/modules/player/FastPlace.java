@@ -26,12 +26,10 @@ public class FastPlace extends Module {
 
     @Override
     public void onUpdate() {
-        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal && crystal.getValue()) {
+        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal && crystal.getValue())
             mc.rightClickDelayTimer = 0;
-        }
 
-        if (Block.getBlockFromItem(mc.player.getHeldItemMainhand().getItem()).getDefaultState().isFullBlock() && blocks.getValue()) {
+        if (Block.getBlockFromItem(mc.player.getHeldItemMainhand().getItem()).getDefaultState().isFullBlock() && blocks.getValue())
             mc.rightClickDelayTimer = 0;
-        }
     }
 }

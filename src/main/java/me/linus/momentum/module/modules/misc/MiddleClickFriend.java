@@ -40,7 +40,9 @@ public class MiddleClickFriend extends Module {
             if (Momentum.friendManager.isFriend(mc.objectMouseOver.entityHit.getName())) {
                 Momentum.friendManager.removeFriend(mc.objectMouseOver.entityHit.getName());
                 MessageUtil.sendClientMessage(ChatFormatting.RED + "Removed " + ChatFormatting.LIGHT_PURPLE + mc.objectMouseOver.entityHit.getName() + ChatFormatting.WHITE + " from friends list");
-            } else {
+            }
+
+            else {
                 Momentum.friendManager.addFriend(mc.objectMouseOver.entityHit.getName());
                 MessageUtil.sendClientMessage(ChatFormatting.GREEN + "Added " + ChatFormatting.LIGHT_PURPLE + mc.objectMouseOver.entityHit.getName() + ChatFormatting.WHITE + " to friends list");
             }

@@ -21,14 +21,14 @@ public class AimBot extends Module {
     }
 
     private static final Mode mode = new Mode("Mode", "Legit", "Spoof");
-    public static Slider range = new Slider("Range", 0.0D, 
-            8.0D, 20.0D, 0);
-    public static Checkbox onlyBow = new Checkbox("Only Bow", true);
+    public static Slider range = new Slider("Range", 0.0D, 8.0D, 20.0D, 0);
+    public static Checkbox onlyBow = new Checkbox("Bow Only", true);
 
     @Override
     public void setup() {
         addSetting(mode);
         addSetting(range);
+        addSetting(onlyBow);
     }
 
     @Override

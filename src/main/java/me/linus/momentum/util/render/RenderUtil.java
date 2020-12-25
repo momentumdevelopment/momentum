@@ -167,8 +167,38 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
     }
 
-    public static void drawGlowBoxBlockPos(BlockPos blockPos, double x2, double y2, double z2, Color startColor, Color endColor) {
-        // TODO: get snail to rewrite this
+    public static void drawGlowBoxBlockPos(BlockPos blockPos, Color startColor, Color endColor) {
+        float red = (float) startColor.getRed() / 255.0f;
+        float green = (float) startColor.getGreen() / 255.0f;
+        float blue = (float) startColor.getBlue() / 255.0f;
+        float alpha = (float )startColor.getAlpha() / 255.0f;
+        float red2 = (float) endColor.getRed() / 255.0f;
+        float green2 = (float) endColor.getGreen() / 255.0f;
+        float blue2 = (float) endColor.getBlue() / 255.0f;
+        float alpha2 = (float) endColor.getAlpha() / 255.0f;
+        AxisAlignedBB bb = new AxisAlignedBB((double) blockPos.x - mc.getRenderManager().viewerPosX, (double) blockPos.y - mc.getRenderManager().viewerPosY, (double) blockPos.z - mc.getRenderManager().viewerPosZ, (double) (blockPos.x + 1) - mc.getRenderManager().viewerPosX, (double) (blockPos.y + 1) - mc.getRenderManager().viewerPosY, (double) (blockPos.z + 1) - mc.getRenderManager().viewerPosZ);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.disableDepth();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1);
+        GlStateManager.disableTexture2D();
+        GlStateManager.depthMask(false);
+        GlStateManager.glBegin(7425);
+        GL11.glBegin(7);
+        GL11.glColor4f(red2, green2, blue2, alpha2);
+        GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+        GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+        GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+        GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+        GL11.glEnd();
+        GlStateManager.depthMask(true);
+        GlStateManager.enableDepth();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
+        GlStateManager.popMatrix();
+        GlStateManager.glBegin(7424);
     }
 
     public static void drawBoundingBoxBlockPos(BlockPos blockPos, double height, Color color) {

@@ -1,6 +1,7 @@
 package me.linus.momentum.module.modules.movement;
 
 import me.linus.momentum.module.Module;
+import me.linus.momentum.setting.slider.Slider;
 import net.minecraft.init.Blocks;
 
 /**
@@ -13,13 +14,20 @@ public class IceSpeed extends Module {
         super("IceSpeed", Category.MOVEMENT, "Allows you to move faster on ice");
     }
 
+    public static Slider slipperiness = new Slider("Slipperiness", 0.0D, 0.0D, 1.0D, 2);
+
+    @Override
+    public void setup() {
+        addSetting(slipperiness);
+    }
+
     public void onUpdate() {
         if (nullCheck())
             return;
 
-        Blocks.ICE.slipperiness = 0F;
-        Blocks.PACKED_ICE.slipperiness = 0F;
-        Blocks.FROSTED_ICE.slipperiness = 0F;
+        Blocks.ICE.slipperiness = (float) slipperiness.getValue();
+        Blocks.PACKED_ICE.slipperiness = (float) slipperiness.getValue();
+        Blocks.FROSTED_ICE.slipperiness = (float) slipperiness.getValue();
     }
 
     public void onDisable() {

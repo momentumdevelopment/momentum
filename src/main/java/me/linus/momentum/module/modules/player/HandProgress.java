@@ -23,6 +23,9 @@ public class HandProgress extends Module {
     }
 
     public void onUpdate() {
+        if (nullCheck())
+            return;
+
         mc.entityRenderer.itemRenderer.equippedProgressMainHand = (float) mainhandHeight.getValue();
         mc.entityRenderer.itemRenderer.equippedProgressOffHand = (float) offhandHeight.getValue();
     }

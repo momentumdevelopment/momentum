@@ -19,11 +19,13 @@ public class AutoDisconnect extends Module {
 
     public static Slider health = new Slider("Health", 0.0D, 7.0D, 36.0D, 0);
     public static Checkbox noTotems = new Checkbox("No Totems", false);
+    public static Checkbox visualRange = new Checkbox("Player in Range", false);
 
     @Override
     public void setup() {
         addSetting(health);
         addSetting(noTotems);
+        addSetting(visualRange);
     }
 
     @Override
@@ -33,19 +35,21 @@ public class AutoDisconnect extends Module {
 
         int totems = mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
 
-        if (totems == 0 && noTotems.getValue()) {
-            this.disable();
-            mc.world.sendQuittingDisconnectingPacket();
-            mc.loadWorld(null);
-            mc.displayGuiScreen(new GuiMainMenu());
-        }
+        if (mc.player.getHealth() <= health.getValue())
+            disconnectFromWorld();
 
-        if (mc.player.getHealth() <= health.getValue()) {
-            this.disable();
-            mc.world.sendQuittingDisconnectingPacket();
-            mc.loadWorld(null);
-            mc.displayGuiScreen(new GuiMainMenu());
-        }
+        if (totems == 0 && noTotems.getValue())
+            disconnectFromWorld();
+
+        if (mc.world.playerEntities.size() != 0 && visualRange.getValue())
+            disconnectFromWorld();
+    }
+
+    public void disconnectFromWorld() {
+        this.disable();
+        mc.world.sendQuittingDisconnectingPacket();
+        mc.loadWorld(null);
+        mc.displayGuiScreen(new GuiMainMenu());
     }
 
     @Override

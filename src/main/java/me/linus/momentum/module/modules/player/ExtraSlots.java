@@ -17,8 +17,7 @@ public class ExtraSlots extends Module {
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketCloseWindow) {
+        if (event.getPacket() instanceof CPacketCloseWindow)
             event.setCanceled(true);
-        }
     }
 }

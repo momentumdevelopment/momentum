@@ -29,7 +29,7 @@ public class NoRotate  extends Module {
 
     @SubscribeEvent
     public void onPacketReceiveEvent(PacketReceiveEvent event) {
-        if (event.getPacket() instanceof SPacketPlayerPosLook && event.getStage() == MomentumEvent.Stage.PRE) {
+        if (event.getPacket() instanceof SPacketPlayerPosLook) {
             SPacketPlayerPosLook packet = (SPacketPlayerPosLook) event.getPacket();
             packet.yaw = mc.player.rotationYaw;
             packet.pitch = mc.player.rotationPitch;
@@ -38,6 +38,7 @@ public class NoRotate  extends Module {
 
             if (strict.getValue()) {
                 mc.player.connection.sendPacket(new CPacketPlayer.Rotation(packet.yaw, packet.pitch, mc.player.onGround));
+
                 for (int i = 0; i <= 3; i++) {
                     lastYaw = calculateAngle(lastYaw, mc.player.rotationYaw);
                     lastPitch = calculateAngle(lastPitch, mc.player.rotationPitch);
