@@ -1,7 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.gui.hud.HUDComponentManager;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
@@ -30,8 +29,8 @@ public class Armor extends HUDComponent {
 
             int x = ((9 - iteration) * 14);
             itemRender.zLevel = 200.0f;
-            itemRender.renderItemAndEffectIntoGUI(is, (HUDComponentManager.getComponentByName("Armor").getX() - 70) + x , HUDComponentManager.getComponentByName("Armor").getY());
-            itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, is, (HUDComponentManager.getComponentByName("Armor").getX() - 70) + x, HUDComponentManager.getComponentByName("Armor").getY(), "");
+            itemRender.renderItemAndEffectIntoGUI(is, (this.x - 70) + x , this.y);
+            itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, is, (this.x - 70) + x, this.y, "");
             itemRender.zLevel = 0.0f;
             width = x - 8;
             height = 17;

@@ -1,6 +1,7 @@
 package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.util.client.friend.FriendManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -129,6 +130,9 @@ public class EntityUtil implements MixinInterface {
         }
 
         if (r > range)
+            return null;
+
+        if (FriendManager.isFriend(closestPlayer.getName()) && FriendManager.isFriendModuleEnabled())
             return null;
 
         return closestPlayer;

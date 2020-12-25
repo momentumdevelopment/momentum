@@ -20,11 +20,13 @@ public class Swing extends Module {
 
     public static Mode mode = new Mode("Mode", "Offhand", "Mainhand");
     public static Checkbox noAnimation = new Checkbox("Cancel Animation", true);
+    public static Checkbox noReset = new Checkbox("No Reset", true);
 
     @Override
     public void setup() {
         addSetting(mode);
         addSetting(noAnimation);
+        addSetting(noReset);
     }
 
     @Override

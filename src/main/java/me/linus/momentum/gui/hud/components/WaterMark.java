@@ -1,7 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
-import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.setting.slider.Slider;
@@ -32,7 +31,7 @@ public class WaterMark extends HUDComponent {
 	public void renderComponent() {
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(scale.getValue(), scale.getValue(), scale.getValue());
-		FontUtil.drawStringWithShadow("Momentum " + TextFormatting.WHITE + Momentum.VERSION, HUDComponentManager.getComponentByName("WaterMark").getX(), HUDComponentManager.getComponentByName("WaterMark").getY(), new Color((int) Colors.r.getValue(), (int)  Colors.g.getValue() ,(int)  Colors.b.getValue()).getRGB());
+		FontUtil.drawStringWithShadow("Momentum " + TextFormatting.WHITE + Momentum.VERSION, this.x, this.y, new Color((int) Colors.r.getValue(), (int)  Colors.g.getValue() ,(int)  Colors.b.getValue()).getRGB());
 		GlStateManager.popMatrix();
 
 		width = (int) (scale.getValue() * FontUtil.getStringWidth("Momentum " + TextFormatting.WHITE + Momentum.VERSION) + 2);

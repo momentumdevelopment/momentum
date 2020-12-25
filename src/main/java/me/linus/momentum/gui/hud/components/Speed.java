@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.world.PlayerUtil;
@@ -19,7 +18,7 @@ public class Speed extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        FontUtil.drawStringWithShadow(PlayerUtil.getSpeed(), HUDComponentManager.getComponentByName("Speed").getX(), HUDComponentManager.getComponentByName("Speed").getY(), new Color(255, 255, 255).getRGB());
+        FontUtil.drawStringWithShadow(PlayerUtil.getSpeed(), this.x, this.y, new Color(255, 255, 255).getRGB());
         width = (int) FontUtil.getStringWidth(PlayerUtil.getSpeed()) + 2;
     }
 }

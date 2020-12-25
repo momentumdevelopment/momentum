@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.client.system.MathUtil;
 import me.linus.momentum.util.render.FontUtil;
@@ -49,7 +48,7 @@ public class TargetHUD extends HUDComponent {
         @Override
         public void renderComponent() {
             if (mc.player != null && mc.world != null) {
-                GuiScreen.drawRect(HUDComponentManager.getComponentByName("TargetHUD").getX(), HUDComponentManager.getComponentByName("TargetHUD").getY(), HUDComponentManager.getComponentByName("TargetHUD").getX() + 180, HUDComponentManager.getComponentByName("TargetHUD").getY() + 87, new Color(0, 0, 0, 100).getRGB());
+                GuiScreen.drawRect(this.x, this.y, this.x + 180, this.y + 87, new Color(0, 0, 0, 100).getRGB());
 
                 EntityPlayer e = (EntityPlayer) mc.world.loadedEntityList.stream()
                         .filter(entity -> IsValidEntity(entity))
@@ -65,7 +64,7 @@ public class TargetHUD extends HUDComponent {
                 GlStateManager.disableTexture2D();
                 GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
 
-                drawEntityOnScreen(HUDComponentManager.getComponentByName("TargetHUD").getX() + 27, HUDComponentManager.getComponentByName("TargetHUD").getY() + 71, 30, HUDComponentManager.getComponentByName("TargetHUD").getX() + 32,  HUDComponentManager.getComponentByName("TargetHUD").getX() + 70, e);
+                drawEntityOnScreen(this.x + 27, this.y + 71, 30, this.x + 32,  this.x + 70, e);
 
                 GlStateManager.enableRescaleNormal();
                 GlStateManager.enableTexture2D();
@@ -145,44 +144,44 @@ public class TargetHUD extends HUDComponent {
                 if (e.getHealth() + e.getAbsorptionAmount() == 35) {healthright = 171;}
                 if (e.getHealth() + e.getAbsorptionAmount() == 36) {healthright = 174;}
 
-                FontUtil.drawStringWithShadow(e.getName(), HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 8, new Color(255, 255, 255).getRGB());
-                GuiScreen.drawRect(HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 18, HUDComponentManager.getComponentByName("TargetHUD").getX() + healthright, HUDComponentManager.getComponentByName("TargetHUD").getY() + 30, healthcolor.getRGB());
-                FontUtil.drawStringWithShadow("Health: " + (Math.rint(e.getHealth() + e.getAbsorptionAmount())), HUDComponentManager.getComponentByName("TargetHUD").getX() + 57, HUDComponentManager.getComponentByName("TargetHUD").getY() + 20, new Color(255, 255, 255).getRGB());
-                FontUtil.drawStringWithShadow(playercolor + playerinfo + TextFormatting.WHITE + " | " + "Ping: " + getPing(e) + " ms", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 37, new Color(255, 255, 255).getRGB());
+                FontUtil.drawStringWithShadow(e.getName(), this.x + 54, this.y + 8, new Color(255, 255, 255).getRGB());
+                GuiScreen.drawRect(this.x + 54, this.y + 18, this.x + healthright, this.y + 30, healthcolor.getRGB());
+                FontUtil.drawStringWithShadow("Health: " + (Math.rint(e.getHealth() + e.getAbsorptionAmount())), this.x + 57, this.y + 20, new Color(255, 255, 255).getRGB());
+                FontUtil.drawStringWithShadow(playercolor + playerinfo + TextFormatting.WHITE + " | " + "Ping: " + getPing(e) + " ms", this.x + 54, this.y + 37, new Color(255, 255, 255).getRGB());
                 if (e.getHeldItemMainhand().item == Items.END_CRYSTAL) {
-                    FontUtil.drawStringWithShadow( "Target: Crystalling!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow( "Target: Crystalling!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().item == Items.GOLDEN_APPLE) {
-                    FontUtil.drawStringWithShadow( "Target: Eating Gapple!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow( "Target: Eating Gapple!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().item == Items.DIAMOND_SWORD) {
-                    FontUtil.drawStringWithShadow("Target: Swording!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow("Target: Swording!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().item == Items.POTIONITEM || e.getHeldItemOffhand().item == Items.POTIONITEM) {
-                    FontUtil.drawStringWithShadow("Target: Drinking Potion!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow("Target: Drinking Potion!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().item == Items.ENDER_PEARL) {
-                    FontUtil.drawStringWithShadow("Target: Using Pearl!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow("Target: Using Pearl!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().item == Items.DIAMOND_PICKAXE) {
-                    FontUtil.drawStringWithShadow("Target: Attempting to City!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow("Target: Attempting to City!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
                 } if (e.getHeldItemMainhand().canPlaceOn(Blocks.OBSIDIAN)) {
-                    FontUtil.drawStringWithShadow("Target: Surrounding!", HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 47, new Color(255, 255, 255).getRGB());
+                    FontUtil.drawStringWithShadow("Target: Surrounding!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
                 }
 
-                FontUtil.drawStringWithShadow("Totems Pops: " + newPopCounter, HUDComponentManager.getComponentByName("TargetHUD").getX() + 54, HUDComponentManager.getComponentByName("TargetHUD").getY() + 77, new Color(255, 255, 255).getRGB());
+                FontUtil.drawStringWithShadow("Totems Pops: " + newPopCounter, this.x + 54, this.y + 77, new Color(255, 255, 255).getRGB());
 
                 GlStateManager.enableTexture2D();
                 int iteration = 0;
                 for (ItemStack is : e.inventory.armorInventory) {
                     ++iteration;
                     if (is.isEmpty()) continue;
-                    int x = HUDComponentManager.getComponentByName("TargetHUD").getX() + ((9 - iteration) * 14) - 17;
+                    int x = this.x + ((9 - iteration) * 14) - 17;
                     itemRender.zLevel = 200.0f;
-                    itemRender.renderItemAndEffectIntoGUI(is, x, HUDComponentManager.getComponentByName("TargetHUD").getY() + 58);
-                    itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, is, x, HUDComponentManager.getComponentByName("TargetHUD").getY() + 58, "");
+                    itemRender.renderItemAndEffectIntoGUI(is, x, this.y + 58);
+                    itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, is, x, this.y + 58, "");
                     itemRender.zLevel = 0.0f;
                 }
 
                 ItemStack mainheld = e.itemStackMainHand;
                 ItemStack offheld = e.getHeldItemOffhand();
-                itemRender.renderItemAndEffectIntoGUI(mainheld, HUDComponentManager.getComponentByName("TargetHUD").getX() + 114, HUDComponentManager.getComponentByName("TargetHUD").getY() + 58);
-                itemRender.renderItemAndEffectIntoGUI(offheld, HUDComponentManager.getComponentByName("TargetHUD").getX() + 130, HUDComponentManager.getComponentByName("TargetHUD").getY() + 58);
+                itemRender.renderItemAndEffectIntoGUI(mainheld, this.x + 114, this.y + 58);
+                itemRender.renderItemAndEffectIntoGUI(offheld, this.x + 130, this.y + 58);
             }
             GlStateManager.enableDepth();
             GlStateManager.disableLighting();

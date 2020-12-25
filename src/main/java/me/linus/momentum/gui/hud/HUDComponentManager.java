@@ -29,11 +29,14 @@ public class HUDComponentManager implements MixinInterface {
             new Direction(),
             new FPS(),
             new Inventory(),
+            new LagNotifier(),
             new Notifications(),
             new Ping(),
             new PlayerViewer(),
+            new PotionEffects(),
             new Server(),
             new Speed(),
+            new TabGUI(),
             new TargetHUD(),
             new Time(),
             new Totem(),
@@ -47,12 +50,11 @@ public class HUDComponentManager implements MixinInterface {
     }
 
     public static HUDComponent getComponentByName(String name) {
-        for (HUDComponent component : components) {
-            if (component.getName().equalsIgnoreCase(name))
-                return component;
-        }
+        return components.stream().filter(component -> component.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
 
-        return null;
+    public static HUDComponent getComponentByClass(Class<?> clazz) {
+        return components.stream().filter(component -> component.getClass().equals(clazz)).findFirst().orElse(null);
     }
 
     @SubscribeEvent

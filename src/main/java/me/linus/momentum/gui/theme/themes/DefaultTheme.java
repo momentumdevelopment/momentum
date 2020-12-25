@@ -389,9 +389,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
                     drawText("...", (x + width) - 12, y + 1 + height + (boost * height), -1);
                     drawHUDDropdown(component, x, y);
                 }
-
-                if (!component.hasSettings())
-                    boost++;
             }
 
             boost++;

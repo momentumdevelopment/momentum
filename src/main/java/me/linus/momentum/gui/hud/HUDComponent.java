@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.hud;
 
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
@@ -61,7 +62,7 @@ public class HUDComponent implements MixinInterface {
     }
 
     public void renderComponent() {
-        if (mc != null) {
+        if (mc != null && !HUDEditor.allowOverflow.getValue()) {
             int screenWidth = new ScaledResolution(mc).getScaledWidth();
             int screenHeight = new ScaledResolution(mc).getScaledHeight();
 

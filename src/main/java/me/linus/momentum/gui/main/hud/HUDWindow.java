@@ -36,7 +36,7 @@ public class HUDWindow implements MixinInterface {
 		this.modules = Momentum.componentManager.getComponents();
 	}
 	
-	public static HUDWindow hw = new HUDWindow(Category.HUD.getName(), 300, 100);
+	public static HUDWindow hw = new HUDWindow("HUD", 300, 100);
 	
 	public void drawHud(int mouseX, int mouseY) {
 		mouseListen();

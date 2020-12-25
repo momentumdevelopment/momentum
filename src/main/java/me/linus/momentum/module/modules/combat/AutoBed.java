@@ -24,7 +24,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -50,6 +49,8 @@ public class AutoBed extends Module {
     public static SubMode rotate = new SubMode(explode, "Rotate", "Spoof", "Legit", "None");
 
     public static Checkbox place = new Checkbox("Place", true);
+    public static SubMode placeTimerMode = new SubMode(place, "Delay Mode", "Custom", "Ticks");
+    public static SubSlider placeTickDelay = new SubSlider(place, "Tick Delay", 0.0D, 3.0D, 50.0D, 0);
     public static SubSlider placeDelay = new SubSlider(place, "Place Delay", 0.0D, 1000.0D, 2000.0D, 0);
     public static SubSlider placeRange = new SubSlider(place, "Place Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider enemyRange = new SubSlider(place, "Enemy Range", 0.0D, 5.0D, 15.0D, 1);
@@ -176,15 +177,23 @@ public class AutoBed extends Module {
         if (currentTarget != null)
             currentBlock = BedUtil.getBedPosition((EntityPlayer) currentTarget, nowTop, rotVar);
 
-        if (place.getValue() && placeTimer.passed((long) (800 + placeDelay.getValue())))
-            BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, nowTop, spoofAngles.getValue());
+        if (place.getValue()) {
+            switch (placeTimerMode.getValue()) {
+                case 0:
+                    if (placeTimer.passed((long) (750 + placeDelay.getValue())))
+                        BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, nowTop, spoofAngles.getValue());
+                    break;
+                case 1:
+                    if (mc.player.ticksExisted % placeTickDelay.getValue() == 0)
+                        BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, nowTop, spoofAngles.getValue());
+                    break;
+            }
+        }
     }
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (currentBlock != null && currentTarget != null && renderBed.getValue())
-            GL11.glLineWidth(3.5f);
-
             if (currentBlock != null)
                 RenderUtil.drawBoundingBoxBlockPos(currentBlock, -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
 

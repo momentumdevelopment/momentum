@@ -1,7 +1,6 @@
 package me.linus.momentum.module.modules.player;
 
 import me.linus.momentum.module.Module;
-import me.linus.momentum.setting.checkbox.Checkbox;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -12,16 +11,9 @@ import net.minecraft.util.math.RayTraceResult;
  * @since 11/30/2020
  */
 
-public class EntityMine extends Module {
-    public EntityMine() {
-        super("EntityMine", Category.PLAYER, "Allows you to mine through entities");
-    }
-
-    public static Checkbox noReset = new Checkbox("No Reset", true);
-
-    @Override
-    public void setup() {
-        addSetting(noReset);
+public class NoEntityTrace extends Module {
+    public NoEntityTrace() {
+        super("NoEntityTrace", Category.PLAYER, "Allows you to mine through entities");
     }
 
     private boolean focus = false;

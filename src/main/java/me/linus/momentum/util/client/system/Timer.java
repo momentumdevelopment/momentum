@@ -16,6 +16,10 @@ public class Timer {
         return time / 1000000L;
     }
 
+    public long getTime() {
+        return time;
+    }
+
     public boolean passed(final long ms) {
         return this.getMs(System.nanoTime() - this.time) >= ms;
     }

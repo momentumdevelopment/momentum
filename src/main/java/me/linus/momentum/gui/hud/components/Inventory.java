@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -27,7 +26,7 @@ public class Inventory extends HUDComponent {
             return;
 
         GlStateManager.enableAlpha();
-        GuiScreen.drawRect(HUDComponentManager.getComponentByName("Inventory").getX(), HUDComponentManager.getComponentByName("Inventory").getY(), HUDComponentManager.getComponentByName("Inventory").getX() + 145, HUDComponentManager.getComponentByName("Inventory").getY() + 48, new Color(0, 0, 0, 125).getRGB());
+        GuiScreen.drawRect(this.x, this.y, this.x + 145, this.y + 48, new Color(0, 0, 0, 125).getRGB());
         GlStateManager.disableAlpha();
 
         int slotX = 0;
@@ -36,8 +35,8 @@ public class Inventory extends HUDComponent {
         RenderHelper.enableGUIStandardItemLighting();
         for (ItemStack stack : mc.player.inventory.mainInventory) {
             if (mc.player.inventory.mainInventory.indexOf(stack) < 9) continue; // hotbar
-            mc.getRenderItem().renderItemAndEffectIntoGUI(stack, HUDComponentManager.getComponentByName("Inventory").getX() + slotX, HUDComponentManager.getComponentByName("Inventory").getY() + slotY);
-            mc.getRenderItem().renderItemOverlays(mc.fontRenderer, stack, HUDComponentManager.getComponentByName("Inventory").getX() + slotX, HUDComponentManager.getComponentByName("Inventory").getY() + slotY);
+            mc.getRenderItem().renderItemAndEffectIntoGUI(stack, this.x + slotX, this.y + slotY);
+            mc.getRenderItem().renderItemOverlays(mc.fontRenderer, stack, this.x + slotX, this.y + slotY);
             if (slotX < (8 * 16))
                 slotX += 16;
             else {

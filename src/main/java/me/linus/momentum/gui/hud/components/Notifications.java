@@ -1,7 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.main.hud.HUD;
 import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.util.render.AnimationUtil;
@@ -37,18 +36,18 @@ public class Notifications extends HUDComponent {
                 width = (int) FontUtil.getStringWidth("This is an example notification!");
                 height = mc.fontRenderer.FONT_HEIGHT;
 
-                GuiScreen.drawRect(HUDComponentManager.getComponentByName("Notifications").getX() - 22, HUDComponentManager.getComponentByName("Notifications").getY() - 5, (int) (HUDComponentManager.getComponentByName("Notifications").getX() + FontUtil.getStringWidth("This is an example notification!") + 3), HUDComponentManager.getComponentByName("Notifications").getY() + mc.fontRenderer.FONT_HEIGHT + 5, new Color(0, 0, 0, 70).getRGB());
+                GuiScreen.drawRect(this.x - 22, this.y - 5, (int) (this.x + FontUtil.getStringWidth("This is an example notification!") + 3), this.y + mc.fontRenderer.FONT_HEIGHT + 5, new Color(0, 0, 0, 70).getRGB());
 
                 GlStateManager.enableAlpha();
                 mc.getTextureManager().bindTexture(widget);
                 GlStateManager.color(1, 1, 1, 1);
                 GL11.glPushMatrix();
-                GuiScreen.drawScaledCustomSizeModalRect(HUDComponentManager.getComponentByName("Notifications").getX() - 20, HUDComponentManager.getComponentByName("Notifications").getY() - 4, 0,0,512,512,16,16,512,512);
+                GuiScreen.drawScaledCustomSizeModalRect(this.x - 20, this.y - 4, 0,0,512,512,16,16,512,512);
                 GL11.glPopMatrix();
                 GlStateManager.disableAlpha();
                 GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
 
-                FontUtil.drawStringWithShadow("This is an example notification!", HUDComponentManager.getComponentByName("Notifications").getX(), HUDComponentManager.getComponentByName("Notifications").getY() - 1, new Color(255, 255, 255).getRGB());
+                FontUtil.drawStringWithShadow("This is an example notification!", this.x, this.y - 1, new Color(255, 255, 255).getRGB());
                 return;
             }
         }
@@ -63,7 +62,7 @@ public class Notifications extends HUDComponent {
                 NotificationManager.notifications.remove(continuedNotification);
 
             float width = FontUtil.getStringWidth(continuedNotification.getMessage());
-            int currY = HUDComponentManager.getComponentByName("Notifications").getY();
+            int currY = this.y;
 
             if (continuedNotification.remainingAnimation < width && !continuedNotification.isComplete())
                 continuedNotification.remainingAnimation = AnimationUtil.moveTowards(continuedNotification.remainingAnimation, width + 1, (float) (0.01f + ClickGUI.speed.getValue() / 30), 0.1f);
@@ -77,18 +76,18 @@ public class Notifications extends HUDComponent {
             if (continuedNotification.remainingAnimation > width && !continuedNotification.isComplete())
                 continuedNotification.remainingAnimation = width;
             
-            GuiScreen.drawRect((int) (HUDComponentManager.getComponentByName("Notifications").getX() - continuedNotification.remainingAnimation) + 63, currY - 5 - (13 * NotificationManager.notifications.size()), (int) (HUDComponentManager.getComponentByName("Notifications").getX() + width + 111 - continuedNotification.remainingAnimation), currY + mc.fontRenderer.FONT_HEIGHT + 5  - (13 * NotificationManager.notifications.size()), new Color(0, 0, 0, 70).getRGB());
+            GuiScreen.drawRect((int) (this.x - continuedNotification.remainingAnimation) + 63, currY - 5 - (13 * NotificationManager.notifications.size()), (int) (this.x + width + 111 - continuedNotification.remainingAnimation), currY + mc.fontRenderer.FONT_HEIGHT + 5  - (13 * NotificationManager.notifications.size()), new Color(0, 0, 0, 70).getRGB());
 
             GlStateManager.enableAlpha();
             mc.getTextureManager().bindTexture(widget);
             GlStateManager.color(1, 1, 1, 1);
             GL11.glPushMatrix();
-            GuiScreen.drawScaledCustomSizeModalRect((int) (HUDComponentManager.getComponentByName("Notifications").getX() - continuedNotification.remainingAnimation) + 65, HUDComponentManager.getComponentByName("Notifications").getY() - 4 - (13 * NotificationManager.notifications.size()), 0,0,512,512,16,16,512,512);
+            GuiScreen.drawScaledCustomSizeModalRect((int) (this.x - continuedNotification.remainingAnimation) + 65, this.y - 4 - (13 * NotificationManager.notifications.size()), 0,0,512,512,16,16,512,512);
             GL11.glPopMatrix();
             GlStateManager.disableAlpha();
             GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
 
-            FontUtil.drawStringWithShadow(continuedNotification.getMessage(), HUDComponentManager.getComponentByName("Notifications").getX() + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), new Color(255, 255, 255).getRGB());
+            FontUtil.drawStringWithShadow(continuedNotification.getMessage(), this.x + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), new Color(255, 255, 255).getRGB());
 
             currY -= 13;
 

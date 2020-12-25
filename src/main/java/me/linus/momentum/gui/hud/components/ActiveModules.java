@@ -1,7 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
@@ -28,7 +27,7 @@ public class ActiveModules extends HUDComponent {
         super("ActiveModules", 200, 2);
     }
 
-    private static final Mode mode = new Mode("Mode", "AlphaStep", "Rainbow", "Category", "Static");
+    private static final Mode mode = new Mode("Mode", "AlphaStep", "Rainbow", "Rainbow-Static", "Category", "Static");
     private static final Checkbox background = new Checkbox("Background", false);
 
     @Override
@@ -61,24 +60,24 @@ public class ActiveModules extends HUDComponent {
             if (module.remainingAnimation > modWidth && module.isEnabled())
                 module.remainingAnimation = modWidth;
 
-            if (HUDComponentManager.getComponentByName("ActiveModules").getX() < (screenWidthScaled / 2)) {
+            if (this.x < (screenWidthScaled / 2)) {
                 if (background.getValue())
-                    GuiScreen.drawRect((int) (HUDComponentManager.getComponentByName("ActiveModules").getX() - 1 - modWidth + module.remainingAnimation), HUDComponentManager.getComponentByName("ActiveModules").getY() + (10 * count), (int) (HUDComponentManager.getComponentByName("ActiveModules").getX() - 2 + module.remainingAnimation), HUDComponentManager.getComponentByName("ActiveModules").getY() + (10 * count) + 10, new Color(0, 0, 0, 70).getRGB());
+                    GuiScreen.drawRect((int) (this.x - 1 - modWidth + module.remainingAnimation), this.y + (10 * count), (int) (this.x - 2 + module.remainingAnimation), this.y + (10 * count) + 10, new Color(0, 0, 0, 70).getRGB());
 
-                FontUtil.drawStringWithShadow(modText, HUDComponentManager.getComponentByName("ActiveModules").getX() - 2 - modWidth + module.remainingAnimation, HUDComponentManager.getComponentByName("ActiveModules").getY() + (10 * count), generateColor(module));
+                FontUtil.drawStringWithShadow(modText, this.x - 2 - modWidth + module.remainingAnimation, this.y + (10 * count), generateColor(module));
             }
 
             else {
                 if (background.getValue())
-                    GuiScreen.drawRect((int) (HUDComponentManager.getComponentByName("ActiveModules").getX() - module.remainingAnimation - 2), HUDComponentManager.getComponentByName("ActiveModules").getY() + (10 * count), (int) (HUDComponentManager.getComponentByName("ActiveModules").getX() - module.remainingAnimation + modWidth), HUDComponentManager.getComponentByName("ActiveModules").getY() + (10 * count) + 10, new Color(0, 0, 0, 70).getRGB());
+                    GuiScreen.drawRect((int) (this.x - module.remainingAnimation - 2), this.y + (10 * count), (int) (this.x - module.remainingAnimation + modWidth), this.y + (10 * count) + 10, new Color(0, 0, 0, 70).getRGB());
 
-                FontUtil.drawStringWithShadow(modText, HUDComponentManager.getComponentByName("ActiveModules").getX() - module.remainingAnimation, HUDComponentManager.getComponentByName("ActiveModules").getY() + (10 * count), generateColor(module));
+                FontUtil.drawStringWithShadow(modText, this.x - module.remainingAnimation, this.y + (10 * count), generateColor(module));
             }
 
             count++;
         });
 
-        if (HUDComponentManager.getComponentByName("ActiveModules").getX() < (screenWidth / 2))
+        if (this.x < (screenWidth / 2))
             width = 75;
 
         else
@@ -92,10 +91,12 @@ public class ActiveModules extends HUDComponent {
             case 0:
                 return ColorUtil.alphaStep(new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue()), 50, (count * 2) + 10).getRGB();
             case 1:
-                return ColorUtil.rainbow(1);
+                return ColorUtil.staticRainbow();
             case 2:
-                return ColorUtil.getColorByCategory(mod);
+                return ColorUtil.rainbow(1);
             case 3:
+                return ColorUtil.getColorByCategory(mod);
+            case 4:
                 return new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue()).getRGB();
         }
 

@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -30,7 +29,7 @@ public class PlayerViewer extends HUDComponent {
         GlStateManager.disableTexture2D();
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
 
-        drawEntityOnScreen(HUDComponentManager.getComponentByName("PlayerViewer").getX() + 28, HUDComponentManager.getComponentByName("PlayerViewer").getY() + 67, 30, HUDComponentManager.getComponentByName("PlayerViewer").getX() + 40, HUDComponentManager.getComponentByName("PlayerViewer").getY() + 13, mc.player);
+        drawEntityOnScreen(this.x + 28, this.y + 67, 30, this.x + 40, this.y + 13, mc.player);
 
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableTexture2D();

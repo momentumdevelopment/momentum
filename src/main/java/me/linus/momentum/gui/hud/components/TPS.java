@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.world.TickUtil;
@@ -20,7 +19,7 @@ public class TPS extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        FontUtil.drawStringWithShadow(TickUtil.TPS + " " + TextFormatting.GRAY + "TPS", HUDComponentManager.getComponentByName("TPS").getX(), HUDComponentManager.getComponentByName("TPS").getY(), new Color(255, 255, 255).getRGB());
+        FontUtil.drawStringWithShadow(TickUtil.TPS + " " + TextFormatting.GRAY + "TPS", this.x, this.y, new Color(255, 255, 255).getRGB());
         width = (int) FontUtil.getStringWidth(TickUtil.TPS + " TPS") + 2;
     }
 }

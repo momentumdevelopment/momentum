@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.world.PlayerUtil;
@@ -20,7 +19,7 @@ public class Direction extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        FontUtil.drawStringWithShadow(PlayerUtil.getFacing() + TextFormatting.GRAY + " [" + PlayerUtil.getTowards() + "]", HUDComponentManager.getComponentByName("Direction").getX(), HUDComponentManager.getComponentByName("Direction").getY(), new Color(255, 255, 255).getRGB());
+        FontUtil.drawStringWithShadow(PlayerUtil.getFacing() + TextFormatting.GRAY + " [" + PlayerUtil.getTowards() + "]", this.x, this.y, new Color(255, 255, 255).getRGB());
         width = (int) (FontUtil.getStringWidth(PlayerUtil.getFacing() + " [" + PlayerUtil.getTowards() + "]") + 2);
     }
 }

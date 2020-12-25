@@ -3,8 +3,8 @@ package me.linus.momentum.mixin.mixins;
 import me.linus.momentum.event.events.world.DamageBlockEvent;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.ModuleManager;
-import me.linus.momentum.module.modules.player.EntityMine;
 import me.linus.momentum.module.modules.player.Reach;
+import me.linus.momentum.module.modules.player.Swing;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -25,7 +25,7 @@ public class MixinPlayerControllerMP implements MixinInterface {
 
     @Inject(method = "resetBlockRemoving", at = @At(value = "HEAD"), cancellable = true)
     private void resetBlock(CallbackInfo ci) {
-        if (ModuleManager.getModuleByName("EntityMine").isEnabled() && EntityMine.noReset.getValue())
+        if (ModuleManager.getModuleByName("EntityMine").isEnabled() && Swing.noReset.getValue())
             ci.cancel();
     }
 

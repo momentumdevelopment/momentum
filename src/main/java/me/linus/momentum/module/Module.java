@@ -204,7 +204,6 @@ public abstract class Module implements MixinInterface {
 		MISC("Miscellaneous"),
 		MOVEMENT("Movement"),
 		RENDER("Render"),
-		HUD("Hud"),
 		BOT("Bot");
 		
 		private final String name;
