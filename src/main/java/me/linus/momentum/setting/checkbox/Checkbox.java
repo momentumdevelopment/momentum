@@ -22,7 +22,7 @@ public class Checkbox extends Setting {
 	public Checkbox(String name, boolean checked) {
 		this.name = name;
 		this.checked = checked;
-		this.opened = false; //gui
+		this.opened = false;
 	}
 	
 	public List<SubSetting> getSubSettings(){

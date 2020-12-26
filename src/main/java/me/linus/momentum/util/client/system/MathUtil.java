@@ -25,13 +25,11 @@ public class MathUtil {
 	}
 
 	public static float clamp(float val, float min, float max) {
-		if (val <= min) {
+		if (val <= min)
 			val = min;
-		}
 
-		if (val >= max) {
+		if (val >= max)
 			val = max;
-		}
 
 		return val;
 	}
@@ -54,5 +52,9 @@ public class MathUtil {
 
 	public static double degToRad(double deg) {
 		return deg * (float) (Math.PI / 180.0f);
+	}
+
+	public static float calculateAngle(float serverValue, float currentValue) {
+		return ((currentValue - serverValue)) / 4;
 	}
 }

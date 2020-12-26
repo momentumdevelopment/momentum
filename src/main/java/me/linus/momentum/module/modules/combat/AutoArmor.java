@@ -21,7 +21,7 @@ public class AutoArmor extends Module {
     }
 
     private static final Slider delay = new Slider("Delay", 0.0D, 2.0D, 10.0D, 0);
-    public static Checkbox curse = new Checkbox("Ignore Curse", false);
+    public static Checkbox curse = new Checkbox("Ignore Curse", true);
     public static Checkbox elytra = new Checkbox("Prefer Elytra", false);
 
     @Override

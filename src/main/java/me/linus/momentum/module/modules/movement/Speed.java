@@ -6,6 +6,7 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
@@ -13,6 +14,7 @@ import me.linus.momentum.util.client.system.MathUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Keyboard;
 
 /**
  * @author linustouchtips
@@ -26,7 +28,8 @@ public class Speed extends Module {
     }
 
     private static final Mode mode = new Mode("Mode", "SmoothHop", "MomentumHop", "StrictHop", "Y-Port");
-    private static final SubCheckbox strict = new SubCheckbox(mode, "Strict Jump", false);
+    private static SubKeybind modeKey = new SubKeybind(mode, "ModeSwitch Key", -2);
+    private static final SubCheckbox strict = new SubCheckbox(mode, "Strict", false);
     private static final SubCheckbox enableStep = new SubCheckbox(mode, "Use Step", false);
 
     public static Slider multiplier = new Slider("Multiplier", 0.0D, 0.03D, 0.3D, 3);
@@ -62,6 +65,9 @@ public class Speed extends Module {
     public void onUpdate() {
         if (nullCheck())
             return;
+
+        if (Keyboard.isKeyDown(modeKey.getKey()))
+            mode.setMode(mode.nextMode());
 
         if ((mc.player.isInWater() || mc.player.isInLava() && inWater.getValue()))
             return;

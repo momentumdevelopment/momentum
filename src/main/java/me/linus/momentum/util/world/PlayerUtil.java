@@ -302,7 +302,7 @@ public class PlayerUtil implements MixinInterface {
         if (!formatter.contains("."))
             formatter += ".0";
 
-        final String bps = TextFormatting.GRAY + "Speed" + TextFormatting.WHITE + " " + formatter + "km/h";
+        final String bps = TextFormatting.GRAY + "Speed" + TextFormatting.WHITE + " " + formatter + TextFormatting.GRAY + "km/h";
 
         return bps;
     }

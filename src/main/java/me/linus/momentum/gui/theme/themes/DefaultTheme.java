@@ -11,6 +11,8 @@ import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.keybind.Keybind;
+import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.Slider;
@@ -19,7 +21,6 @@ import me.linus.momentum.util.client.system.MathUtil;
 import me.linus.momentum.util.client.color.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.input.Keyboard;
@@ -41,8 +42,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
     public DefaultTheme() {
         super(name, width, height);
     }
-
-    private static final FontRenderer font = mc.fontRenderer;
 
     @Override
     public void updateColors() {
@@ -117,6 +116,11 @@ public class DefaultTheme extends Theme implements MixinInterface {
                                 drawSubSlider(ssl, x, y);
                             }
 
+                            if (ss instanceof SubKeybind) {
+                                SubKeybind skb = (SubKeybind) ss;
+                                drawSubModuleBind(skb, GUIUtil.keydown, x, y);
+                            }
+
                             GuiScreen.drawRect(x + 4, y + (boost * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
@@ -144,6 +148,11 @@ public class DefaultTheme extends Theme implements MixinInterface {
                                 drawSubSlider(ssl, x, y);
                             }
 
+                            if (ss instanceof SubKeybind) {
+                                SubKeybind skb = (SubKeybind) ss;
+                                drawSubModuleBind(skb, GUIUtil.keydown, x, y);
+                            }
+
                             GuiScreen.drawRect(x + 4, y + (boost * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
@@ -169,6 +178,43 @@ public class DefaultTheme extends Theme implements MixinInterface {
                             if (ss instanceof SubSlider) {
                                 SubSlider ssl = (SubSlider) ss;
                                 drawSubSlider(ssl, x, y);
+                            }
+
+                            if (ss instanceof SubKeybind) {
+                                SubKeybind skb = (SubKeybind) ss;
+                                drawSubModuleBind(skb, GUIUtil.keydown, x, y);
+                            }
+
+                            GuiScreen.drawRect(x + 4, y + (boost * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
+                        }
+                    }
+                }
+
+                if (s instanceof Keybind) {
+                    Keybind kb = (Keybind) s;
+                    drawModuleBind(kb, GUIUtil.keydown, x, y);
+                    for (SubSetting ss : kb.getSubSettings()) {
+                        if (kb.isOpened()) {
+                            boost++;
+
+                            if (ss instanceof SubCheckbox) {
+                                SubCheckbox sc = (SubCheckbox) ss;
+                                drawSubCheckbox(sc, x, y);
+                            }
+
+                            if (ss instanceof SubMode) {
+                                SubMode sm = (SubMode) ss;
+                                drawSubMode(sm, x, y);
+                            }
+
+                            if (ss instanceof SubSlider) {
+                                SubSlider ssl = (SubSlider) ss;
+                                drawSubSlider(ssl, x, y);
+                            }
+
+                            if (ss instanceof SubKeybind) {
+                                SubKeybind skb = (SubKeybind) ss;
+                                drawSubModuleBind(skb, GUIUtil.keydown, x, y);
                             }
 
                             GuiScreen.drawRect(x + 4, y + (boost * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
@@ -339,6 +385,56 @@ public class DefaultTheme extends Theme implements MixinInterface {
         drawTextWithShadow(ssl.getName() + " " + ssl.getValue(), x + 10, (y + height) + 4 + (boost * height), -1);
     }
 
+    public static void drawModuleBind(Keybind keybind, int key, int x, int y) {
+        int color = 0xCC232323;
+        if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
+            color = 0xCC383838;
+            if (GUIUtil.ldown)
+                keybind.setBinding(true);
+        }
+
+        if (keybind.isBinding() && key != -1 && key != Keyboard.KEY_ESCAPE && key != Keyboard.KEY_DELETE) {
+            keybind.setKey((key == Keyboard.KEY_DELETE || key == Keyboard.KEY_BACK) ? Keyboard.KEY_NONE : key);
+            keybind.setBinding(false);
+        }
+
+        if (keybind.isBinding() && key == Keyboard.KEY_ESCAPE)
+            keybind.setBinding(false);
+
+        GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
+        GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
+
+        if (!keybind.isBinding())
+            drawTextWithShadow(keybind.getName() + ": " + (keybind.getKey() == -2 ? "None" : Keyboard.getKeyName(keybind.getKey())), x + 7, (y + height) + 4 + (boost * height), -1);
+        else
+            drawTextWithShadow("Listening...", x + 7, (y + height) + 4 + (boost * height), -1);
+    }
+
+    public static void drawSubModuleBind(SubKeybind skb, int key, int x, int y) {
+        int color = 0xCC232323;
+        if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
+            color = 0xCC383838;
+            if (GUIUtil.ldown)
+                skb.setBinding(true);
+        }
+
+        if (skb.isBinding() && key != -1 && key != Keyboard.KEY_ESCAPE && key != Keyboard.KEY_DELETE) {
+            skb.setKey((key == Keyboard.KEY_DELETE || key == Keyboard.KEY_BACK) ? Keyboard.KEY_NONE : key);
+            skb.setBinding(false);
+        }
+
+        if (skb.isBinding() && key == Keyboard.KEY_ESCAPE)
+            skb.setBinding(false);
+
+        GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
+        GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
+
+        if (!skb.isBinding())
+            drawTextWithShadow(skb.getName() + ": " + (skb.getKey() == -2 ? "None" : Keyboard.getKeyName(skb.getKey())), x + 7, (y + height) + 4 + (boost * height), -1);
+        else
+            drawTextWithShadow("Listening...", x + 7, (y + height) + 4 + (boost * height), -1);
+    }
+
     public static void drawBind(Module m, int key, int x, int y) {
         int color = 0xCC232323;
         if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
@@ -359,7 +455,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
 
         if (!m.isBinding())
-            drawTextWithShadow("Keybind " + (m.getKeybind().getDisplayName().equalsIgnoreCase("NONE") ? "None" : m.getKeybind().getDisplayName()), x + 7, (y + height) + 4 + (boost * height), -1);
+            drawTextWithShadow("Keybind: " + (m.getKeybind().getDisplayName().equalsIgnoreCase("NONE") ? "None" : m.getKeybind().getDisplayName()), x + 7, (y + height) + 4 + (boost * height), -1);
 
         else
             drawTextWithShadow("Listening...", x + 7, (y + height) + 4 + (boost * height), -1);

@@ -1,13 +1,12 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -27,7 +26,7 @@ public class CityESP extends Module {
         super("CityESP", Category.RENDER, "Highlights blocks where nearby players can be citied");
     }
 
-    public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
+    public static Slider range = new Slider("Range", 0.0D, 12.0D, 20.0D, 0);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 250.0D, 255.0D, 0);
@@ -47,16 +46,11 @@ public class CityESP extends Module {
     public void onUpdate() {
         cityBlocks.clear();
 
-        for (EntityPlayer enemy : mc.world.playerEntities) {
-            if (mc.player.getDistance(enemy) > range.getValue() || mc.player == enemy)
-                continue;
+        EntityPlayer target = EntityUtil.getClosestPlayer(20);
 
-            if (FriendManager.isFriend(enemy.getName()) && FriendManager.isFriendModuleEnabled())
-                continue;
-
-            for (BlockPos blocks : EnemyUtil.getCityBlocks(enemy, false))
-                cityBlocks.add(blocks);
-        }
+        EnemyUtil.getCityBlocks(target, false).stream().filter(blockPos -> mc.player.getDistanceSq(blockPos) <= range.getValue()).forEach(blockPos -> {
+            cityBlocks.add(blockPos);
+        });
     }
 
     @SubscribeEvent

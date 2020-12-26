@@ -20,7 +20,7 @@ public class BreakESP extends Module {
         super("BreakESP", Category.RENDER, "Highlights blocks being broken");
     }
 
-    public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
+    public static Slider range = new Slider("Range", 0.0D, 12.0D, 20.0D, 0);
     public static Checkbox showDamage = new Checkbox("Show Damage", true);
 
     public static Checkbox color = new Checkbox("Color", true);

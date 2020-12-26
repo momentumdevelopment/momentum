@@ -2,6 +2,7 @@ package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.world.InventoryUtil;
@@ -9,8 +10,8 @@ import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemExpBottle;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayer;
+import org.lwjgl.input.Keyboard;
 
 /**
  * @author linustouchtips
@@ -25,12 +26,14 @@ public class QuickEXP extends Module {
     private static final Mode mode = new Mode("Mode", "Packet", "AutoMend", "Throw");
     public static Slider delay = new Slider("Throw Delay", 0.0D, 0.0D, 4.0D, 0);
     private static final Checkbox footEXP = new Checkbox("FootEXP", true);
+    private static Keybind mendKey = new Keybind("Mend Key", -2);
 
     @Override
     public void setup() {
         addSetting(mode);
         addSetting(delay);
         addSetting(footEXP);
+        addSetting(mendKey);
     }
 
     @Override
@@ -46,7 +49,7 @@ public class QuickEXP extends Module {
         if (expInMainHand || expNotInMainHand)
             mc.rightClickDelayTimer = (int) delay.getValue();
 
-        if (mc.player.isSneaking() && 0 < PlayerUtil.getArmorDurability() && (mode.getValue() == 0 || mode.getValue() == 1)) {
+        if (Keyboard.isKeyDown(mendKey.getKey()) && 0 < PlayerUtil.getArmorDurability() && (mode.getValue() == 0 || mode.getValue() == 1)) {
             switch (mode.getValue()) {
                 case 1:
                     mc.player.inventory.currentItem = InventoryUtil.getHotbarItemSlot(Items.EXPERIENCE_BOTTLE);

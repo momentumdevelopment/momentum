@@ -25,7 +25,7 @@ public class Slider extends Setting {
 	public Slider(String name, double min, double value, double max, int scale) {
 		this.name = name;
 		this.min = min;
-		this.value = scale == 0 ? (int) value : value; //if rounding scale is 0, cast it as an int
+		this.value = scale == 0 ? (int) value : value;
 		this.max = max;
 		this.scale = scale;
 		this.opened = false;

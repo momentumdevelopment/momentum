@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.render.FontUtil;
 
 import java.awt.*;
@@ -13,6 +14,13 @@ import java.awt.*;
 public class Welcomer extends HUDComponent {
     public Welcomer() {
         super("Welcomer", 200, 2);
+    }
+
+    private static final Mode mode = new Mode("Mode", "Dynamic", "Static");
+
+    @Override
+    public void setup() {
+        addSetting(mode);
     }
 
     @Override

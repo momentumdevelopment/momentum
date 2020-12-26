@@ -145,7 +145,6 @@ public class ModuleManager implements MixinInterface {
 		 	new StorageESP(),
 		 	new Tracers(),
 			new Trajectories(),
-			new ViewModel(),
 			new VoidESP(),
 			new Weather(),
 
@@ -197,9 +196,8 @@ public class ModuleManager implements MixinInterface {
 	public static void onUpdate() {
 		for (Module m : modules) {
 			try {
-				if (m.isEnabled()) {
+				if (m.isEnabled())
 					m.onUpdate();
-				}
 			} catch (Exception exception) {
 				exception.printStackTrace();
 			}
@@ -209,9 +207,8 @@ public class ModuleManager implements MixinInterface {
 	public static void onFastUpdate() {
 		for (Module m : modules) {
 			try {
-				if (m.isEnabled()) {
+				if (m.isEnabled())
 					m.onFastUpdate();
-				}
 			} catch (Exception exception) {
 				exception.printStackTrace();
 			}
@@ -228,9 +225,11 @@ public class ModuleManager implements MixinInterface {
 					if (Keyboard.isKeyDown(m.getKeybind().getKeyCode()) && !m.isKeyDown) {
 						m.isKeyDown = true;
 						m.toggle();
-					} else if (!Keyboard.isKeyDown(m.getKeybind().getKeyCode())) {
-						m.isKeyDown = false;
 					}
+
+					else if (!Keyboard.isKeyDown(m.getKeybind().getKeyCode()))
+						m.isKeyDown = false;
+
 				} catch (Exception e) {
 					//e.printStackTrace();
 				}

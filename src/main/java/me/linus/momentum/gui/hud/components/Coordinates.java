@@ -39,12 +39,15 @@ public class Coordinates extends HUDComponent {
         netherCoords = mc.player.dimension == -1 ? TextFormatting.RED + "XYZ " + TextFormatting.WHITE + MathUtil.roundAvoid(mc.player.posX, 1) + " " + MathUtil.roundAvoid(mc.player.posY, 1) + " " + MathUtil.roundAvoid(mc.player.posZ, 1) : TextFormatting.RED + "XYZ " + TextFormatting.WHITE + MathUtil.roundAvoid(mc.player.posX / 8, 1) + " " + MathUtil.roundAvoid(mc.player.posY / 8, 1) + " " + MathUtil.roundAvoid(mc.player.posZ / 8, 1);
 
         if (mode.getValue() == 0) {
-            FontUtil.drawStringWithShadow(netherCoords, this.x, this.y, new Color(255, 255, 255).getRGB());
-            FontUtil.drawStringWithShadow(overWorldCoords, this.x, this.y + 10, new Color(255, 255, 255).getRGB());
+            if (overWorld.getValue())
+                FontUtil.drawStringWithShadow(netherCoords, this.x, this.y, new Color(255, 255, 255).getRGB());
+
+            if (nether.getValue())
+                FontUtil.drawStringWithShadow(overWorldCoords, this.x, this.y + 10, new Color(255, 255, 255).getRGB());
         }
 
         else
-            FontUtil.drawStringWithShadow(overWorldCoords + " " + netherCoords, this.x, this.y, new Color(255, 255, 255).getRGB());
+            FontUtil.drawStringWithShadow((overWorld.getValue() ? overWorldCoords : "") + " " + (nether.getValue() ? netherCoords : ""), this.x, this.y, new Color(255, 255, 255).getRGB());
 
         width = (int) FontUtil.getStringWidth(mode.getValue() == 0 ? overWorldCoords : overWorldCoords + " " + netherCoords) + 2;
         height = mode.getValue() == 0 ? (mc.fontRenderer.FONT_HEIGHT * 2) + 4 : mc.fontRenderer.FONT_HEIGHT + 4;

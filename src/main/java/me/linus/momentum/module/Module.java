@@ -32,6 +32,7 @@ public abstract class Module implements MixinInterface {
 	
 	private boolean enabled;
 	private boolean opened;
+	private boolean drawn;
 	protected boolean isKeyDown = false;
 	private boolean isBinding;
 	public float remainingAnimation = 0.0f;
@@ -44,6 +45,7 @@ public abstract class Module implements MixinInterface {
 		this.description = description;
 		this.enabled = false;
 		this.opened = false;
+		this.drawn = true;
 		
 		this.key = new KeyBinding(name, Keyboard.KEY_NONE, Momentum.NAME);
 		ClientRegistry.registerKeyBinding(this.key);
@@ -192,9 +194,17 @@ public abstract class Module implements MixinInterface {
 	public boolean isBinding() {
 		return this.isBinding;
 	}
+
+	public boolean isDrawn() {
+		return this.drawn;
+	}
 	
 	public void setBinding(boolean b) {
 		this.isBinding = b;
+	}
+
+	public void setDrawn(boolean in) {
+		this.drawn = in;
 	}
 
 	public enum Category {
@@ -216,5 +226,4 @@ public abstract class Module implements MixinInterface {
 			return this.name;
 		}
 	}
-	
 }

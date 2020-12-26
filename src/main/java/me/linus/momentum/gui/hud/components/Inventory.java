@@ -34,11 +34,15 @@ public class Inventory extends HUDComponent {
 
         RenderHelper.enableGUIStandardItemLighting();
         for (ItemStack stack : mc.player.inventory.mainInventory) {
-            if (mc.player.inventory.mainInventory.indexOf(stack) < 9) continue; // hotbar
+            if (mc.player.inventory.mainInventory.indexOf(stack) < 9)
+                continue;
+
             mc.getRenderItem().renderItemAndEffectIntoGUI(stack, this.x + slotX, this.y + slotY);
             mc.getRenderItem().renderItemOverlays(mc.fontRenderer, stack, this.x + slotX, this.y + slotY);
+
             if (slotX < (8 * 16))
                 slotX += 16;
+
             else {
                 slotX = 0;
                 slotY += 16;

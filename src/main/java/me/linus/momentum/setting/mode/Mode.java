@@ -23,7 +23,7 @@ public class Mode extends Setting {
 	public Mode(String name, String... modes) {
 		this.name = name;
 		this.modes = modes;
-		this.opened = false; //gui
+		this.opened = false;
 	}
 	
 	public List<SubSetting> getSubSettings(){

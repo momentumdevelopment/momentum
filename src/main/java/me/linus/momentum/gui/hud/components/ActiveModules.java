@@ -43,7 +43,7 @@ public class ActiveModules extends HUDComponent {
         count = 0;
         int screenWidth = new ScaledResolution(mc).getScaledWidth();
 
-        ModuleManager.getModules().stream().filter(Module::isEnabled).sorted(Comparator.comparing(module -> FontUtil.getStringWidth(module.getName() + " " + module.getHUDData()) * (-1))).forEach(module -> {
+        ModuleManager.getModules().stream().filter(Module::isEnabled).filter(Module::isDrawn).sorted(Comparator.comparing(module -> FontUtil.getStringWidth(module.getName() + " " + module.getHUDData()) * (-1))).forEach(module -> {
             int screenWidthScaled = new ScaledResolution(mc).getScaledWidth();
             float modWidth = FontUtil.getStringWidth(module.getName() + TextFormatting.WHITE + module.getHUDData());
             String modText = module.getName() + TextFormatting.WHITE + module.getHUDData();

@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.setting.slider.Slider;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -19,6 +20,13 @@ public class PlayerViewer extends HUDComponent {
         width = 50;
     }
 
+    public static Slider scale = new Slider("Scale", 0.0D, 30.0D, 100.0D, 0);
+
+    @Override
+    public void setup() {
+        addSetting(scale);
+    }
+
     @Override
     public void renderComponent() {
         if (mc.player == null || mc.world  == null)
@@ -29,7 +37,7 @@ public class PlayerViewer extends HUDComponent {
         GlStateManager.disableTexture2D();
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
 
-        drawEntityOnScreen(this.x + 28, this.y + 67, 30, this.x + 40, this.y + 13, mc.player);
+        drawEntityOnScreen(this.x + 28, this.y + 67, (int) scale.getValue(), this.x + 40, this.y + 13, mc.player);
 
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableTexture2D();
@@ -41,13 +49,13 @@ public class PlayerViewer extends HUDComponent {
     public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityLivingBase ent) {
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float)posX, (float)posY, 50.0F);
-        GlStateManager.scale((float)(-scale), (float)scale, (float)scale);
+        GlStateManager.translate((float) posX, (float) posY, 50.0F);
+        GlStateManager.scale((float) (-scale), (float) scale, (float) scale);
         GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
         GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-((float)Math.atan(mouseY / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(-((float) Math.atan(mouseY / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
         GlStateManager.translate(0.0F, 0.0F, 0.0F);
         RenderManager rendermanager = mc.getRenderManager();
         rendermanager.setPlayerViewY(180.0F);

@@ -32,7 +32,8 @@ public class CommandManager {
             new Panic(),
             new Config(),
             new Cancel(),
-            new Peek()
+            new Peek(),
+            new Drawn()
     );
 
     public static List<Command> getCommands() {
@@ -44,6 +45,7 @@ public class CommandManager {
         String[] args = event.getMessage().split(" ");
         if (event.getMessage().startsWith(Momentum.PREFIX)) {
             event.setCanceled(true);
+
             for (Command c: commands)
                 if (args[0].equalsIgnoreCase(Momentum.PREFIX + c.getUsage()))
                     c.onCommand(args);

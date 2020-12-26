@@ -3,6 +3,7 @@ package me.linus.momentum.setting.mode;
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.slider.Slider;
 
 /**
@@ -22,14 +23,23 @@ public class SubMode extends SubSetting {
 		this.name = name;
 		this.modes = modes;
 		
-		if(parent instanceof Checkbox) {
+		if (parent instanceof Checkbox) {
 			Checkbox p = (Checkbox) parent;
 			p.addSub(this);
-		} else if(parent instanceof Mode) {
+		}
+
+		else if (parent instanceof Mode) {
 			Mode p = (Mode) parent;
 			p.addSub(this);
-		} else if(parent instanceof Slider) {
+		}
+
+		else if (parent instanceof Slider) {
 			Slider p = (Slider) parent;
+			p.addSub(this);
+		}
+
+		else if (parent instanceof Keybind) {
+			Keybind p = (Keybind) parent;
 			p.addSub(this);
 		}
 	}

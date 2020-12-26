@@ -16,7 +16,7 @@ public class NoEntityTrace extends Module {
         super("NoEntityTrace", Category.PLAYER, "Allows you to mine through entities");
     }
 
-    private boolean focus = false;
+    boolean focus = false;
 
     @Override
     public void onUpdate() {

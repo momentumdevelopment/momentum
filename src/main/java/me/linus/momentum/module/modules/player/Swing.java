@@ -46,9 +46,8 @@ public class Swing extends Module {
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketAnimation && noAnimation.getValue()) {
+        if (event.getPacket() instanceof CPacketAnimation && noAnimation.getValue())
             event.setCanceled(true);
-        }
     }
 
     @Override

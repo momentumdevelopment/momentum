@@ -28,16 +28,9 @@ public class QuickMine extends Module {
     }
 
     @Override
-    public void onDisable() {
-        mc.player.removePotionEffect(MobEffects.HASTE);
-    }
-
-    @Override
     public void onUpdate() {
-        if (mode.getValue() == 3) {
-            PotionEffect effect = new PotionEffect(MobEffects.HASTE, 80950, 1, false, false);
-            mc.player.addPotionEffect(new PotionEffect(effect));
-        }
+        if (mode.getValue() == 3)
+            mc.player.addPotionEffect(new PotionEffect(new PotionEffect(MobEffects.HASTE, 80950, 1, false, false)));
     }
 
     @SubscribeEvent
@@ -76,6 +69,12 @@ public class QuickMine extends Module {
                     break;
             }
         }
+    }
+
+    @Override
+    public void onDisable() {
+        if (mode.getValue() == 3)
+            mc.player.removePotionEffect(MobEffects.HASTE);
     }
 
     @Override

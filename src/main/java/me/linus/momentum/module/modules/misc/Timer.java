@@ -33,9 +33,8 @@ public class Timer extends Module {
     public void onUpdate() {
         if (!sync.getValue())
             mc.timer.tickLength = (float) (50.0f / ticks.getValue());
-
         else
-            mc.timer.tickLength = 50.0f / TickUtil.TPS;
+            mc.timer.tickLength = 50.0f / (TickUtil.TPS / 20);
     }
 
     @Override

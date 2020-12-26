@@ -10,6 +10,8 @@ import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.keybind.Keybind;
+import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.Slider;
@@ -122,6 +124,10 @@ public class ConfigManager {
                     if (s instanceof Mode) {
                         bw.write(((Mode) s).getValue() + ":");
                     }
+
+                    if (s instanceof Keybind) {
+                        bw.write(((Keybind) s).getKey());
+                    }
                 }
 
                 bw.write("\r\n");
@@ -143,20 +149,19 @@ public class ConfigManager {
                 if (regex[0].startsWith(m.getName())) {
                     int regexCount = 0;
                     for (Setting s : m.getSettings()) {
-                        if (s instanceof Checkbox) {
+                        if (s instanceof Checkbox)
                             ((Checkbox) s).setChecked(Boolean.parseBoolean(regex[regexCount + 1]));
-                            regexCount++;
-                        }
 
-                        if (s instanceof Slider) {
+                        if (s instanceof Slider)
                             ((Slider) s).setValue(Double.parseDouble(regex[regexCount + 1]));
-                            regexCount++;
-                        }
 
-                        if (s instanceof Mode) {
+                        if (s instanceof Mode)
                             ((Mode) s).setMode(Integer.parseInt(regex[regexCount + 1]));
-                            regexCount++;
-                        }
+
+                        if (s instanceof Keybind)
+                            ((Keybind) s).setKey(Integer.parseInt(regex[regexCount + 1]));
+
+                        regexCount++;
                     }
                 } lineIndex++;
             } br.close();
@@ -183,6 +188,9 @@ public class ConfigManager {
 
                                 if (ss instanceof SubMode)
                                     bw.write(((SubMode) ss).getValue() + ":");
+
+                                if (ss instanceof SubKeybind)
+                                    bw.write(((SubKeybind) ss).getKey() + ":");
                             }
                         }
                     }
@@ -198,6 +206,9 @@ public class ConfigManager {
 
                                 if (ss instanceof SubMode)
                                     bw.write(((SubMode) ss).getValue() + ":");
+
+                                if (ss instanceof SubKeybind)
+                                    bw.write(((SubKeybind) ss).getKey() + ":");
                             }
                         }
                     }
@@ -213,6 +224,27 @@ public class ConfigManager {
 
                                 if (ss instanceof SubMode)
                                     bw.write(((SubMode) ss).getValue() + ":");
+
+                                if (ss instanceof SubKeybind)
+                                    bw.write(((SubKeybind) ss).getKey() + ":");
+                            }
+                        }
+                    }
+
+                    if (s instanceof Keybind) {
+                        if (((Keybind) s).hasSubSettings()) {
+                            for (SubSetting ss : ((Keybind) s).getSubSettings()) {
+                                if (ss instanceof SubCheckbox)
+                                    bw.write(((SubCheckbox) ss).getValue() + ":");
+
+                                if (ss instanceof SubSlider)
+                                    bw.write(((SubSlider) ss).getValue() + ":");
+
+                                if (ss instanceof SubMode)
+                                    bw.write(((SubMode) ss).getValue() + ":");
+
+                                if (ss instanceof SubKeybind)
+                                    bw.write(((SubKeybind) ss).getKey() + ":");
                             }
                         }
                     }
@@ -250,6 +282,9 @@ public class ConfigManager {
                                         if (ss instanceof SubMode)
                                             ((SubMode) ss).setMode(Integer.parseInt(regex[regexCount + 1]));
 
+                                        if (ss instanceof SubKeybind)
+                                            ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
+
                                         regexCount++;
                                     }
                                 }
@@ -267,6 +302,9 @@ public class ConfigManager {
                                         if (ss instanceof SubMode)
                                             ((SubMode) ss).setMode(Integer.parseInt(regex[regexCount + 1]));
 
+                                        if (ss instanceof SubKeybind)
+                                            ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
+
                                         regexCount++;
                                     }
                                 }
@@ -283,6 +321,49 @@ public class ConfigManager {
 
                                         if (ss instanceof SubMode)
                                             ((SubMode) ss).setMode(Integer.parseInt(regex[regexCount + 1]));
+
+                                        if (ss instanceof SubKeybind)
+                                            ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
+
+                                        regexCount++;
+                                    }
+                                }
+                            }
+
+                            if (s instanceof Mode) {
+                                for (SubSetting ss : ((Mode) s).getSubSettings()) {
+                                    if (((Mode) s).hasSubSettings()) {
+                                        if (ss instanceof SubCheckbox)
+                                            ((SubCheckbox) ss).setChecked(Boolean.parseBoolean(regex[regexCount + 1]));
+
+                                        if (ss instanceof SubSlider)
+                                            ((SubSlider) ss).setValue(Double.parseDouble(regex[regexCount + 1]));
+
+                                        if (ss instanceof SubMode)
+                                            ((SubMode) ss).setMode(Integer.parseInt(regex[regexCount + 1]));
+
+                                        if (ss instanceof SubKeybind)
+                                            ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
+
+                                        regexCount++;
+                                    }
+                                }
+                            }
+
+                            if (s instanceof Keybind) {
+                                for (SubSetting ss : ((Keybind) s).getSubSettings()) {
+                                    if (((Keybind) s).hasSubSettings()) {
+                                        if (ss instanceof SubCheckbox)
+                                            ((SubCheckbox) ss).setChecked(Boolean.parseBoolean(regex[regexCount + 1]));
+
+                                        if (ss instanceof SubSlider)
+                                            ((SubSlider) ss).setValue(Double.parseDouble(regex[regexCount + 1]));
+
+                                        if (ss instanceof SubMode)
+                                            ((SubMode) ss).setMode(Integer.parseInt(regex[regexCount + 1]));
+
+                                        if (ss instanceof SubKeybind)
+                                            ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
 
                                         regexCount++;
                                     }

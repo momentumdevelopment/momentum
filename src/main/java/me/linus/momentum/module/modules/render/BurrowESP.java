@@ -4,9 +4,8 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.render.RenderUtil;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -45,12 +44,9 @@ public class BurrowESP extends Module {
     public void onUpdate() {
         burrowList.clear();
 
-        for (EntityPlayer player : mc.world.playerEntities) {
-            BlockPos blockPos = new BlockPos(player.posX, player.posY, player.posZ);
-            
-            if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) && mc.player.getDistanceSq(blockPos) <= range.getValue()) 
-                burrowList.add(blockPos);
-        }
+        mc.world.playerEntities.stream().filter(entityPlayer -> mc.player == entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range.getValue()).filter(entityPlayer -> FriendManager.isFriend(entityPlayer.getName()) && FriendManager.isFriendModuleEnabled()).forEach(entityPlayer -> {
+            burrowList.add(new BlockPos(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ));
+        });
     }
 
     @SubscribeEvent
