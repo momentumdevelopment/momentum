@@ -18,10 +18,13 @@ public class Prefix extends Command {
 
     @Override
     public void onCommand(String[] args) {
-        if (args.length > 1) {
+        if (args.length > 0) {
             Momentum.PREFIX = args[1];
             MessageUtil.sendClientMessage(ChatFormatting.LIGHT_PURPLE + "Prefix" + ChatFormatting.WHITE + " is now " + ChatFormatting.RED + args[1].toUpperCase() + ChatFormatting.GRAY + " (" + ChatFormatting.WHITE + Keyboard.getKeyIndex(args[1].toUpperCase() + "") + ChatFormatting.GRAY + ")");
         }
+
+        else
+            MessageUtil.usageException(this, "[new prefix]");
     }
 
     @Override

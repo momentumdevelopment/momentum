@@ -29,7 +29,7 @@ public class NoRotate  extends Module {
     public void onPacketReceive(PacketReceiveEvent event) {
         if (event.getPacket() instanceof SPacketPlayerPosLook) {
             ((SPacketPlayerPosLook) event.getPacket()).yaw = mc.player.rotationYaw;
-            ((SPacketPlayerPosLook) event.getPacket()).pitch= mc.player.rotationPitch;
+            ((SPacketPlayerPosLook) event.getPacket()).pitch = mc.player.rotationPitch;
             float lastYaw = ((SPacketPlayerPosLook) event.getPacket()).yaw;
             float lastPitch = ((SPacketPlayerPosLook) event.getPacket()).pitch;
 

@@ -1,6 +1,7 @@
 package me.linus.momentum.util.combat;
 
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.util.world.RotationUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

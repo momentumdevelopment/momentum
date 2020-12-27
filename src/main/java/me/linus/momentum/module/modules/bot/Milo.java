@@ -8,6 +8,7 @@ import me.linus.momentum.module.modules.combat.Aura;
 import me.linus.momentum.util.world.BlockUtils;
 import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.PlayerUtil;
+import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -38,7 +39,7 @@ public class Milo extends Module {
         if (nullCheck())
             return;
 
-        targetPlayer = EntityUtil.getClosestPlayer(20);
+        targetPlayer = WorldUtil.getClosestPlayer(20);
 
         if (!playerCheck())
             return;

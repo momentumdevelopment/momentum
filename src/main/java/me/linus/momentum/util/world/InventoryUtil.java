@@ -18,17 +18,9 @@ import net.minecraft.network.play.client.CPacketHeldItemChange;
 
 public class InventoryUtil implements MixinInterface {
 
-    public static int getHotbarItemSlot(Item item) {
-        int slot = 0;
-        for (int i = 0; i < 9; i++) {
-            if (mc.player.inventory.getStackInSlot(i).getItem() == item) {
-                slot = i;
-                break;
-            }
-        }
-
-        return slot;
-    }
+    /**
+     * item movement
+     */
 
     public static void switchToSlot(int slot){
         mc.player.inventory.currentItem = slot;
@@ -46,10 +38,48 @@ public class InventoryUtil implements MixinInterface {
         switchToSlotGhost(getHotbarItemSlot(item));
     }
 
-    public static int getItemCount(Item item) {
-        int count = 0;
-        count = mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == item).mapToInt(ItemStack::getCount).sum();
-        return count;
+    public static void moveItemToOffhand(int slot) {
+        boolean moving = false;
+        boolean returning = false;
+        int returnSlot = -1;
+
+        if (slot == -1)
+            return;
+
+        mc.playerController.windowClick(0, slot < 9 ? slot + 36 : slot, 0, ClickType.PICKUP, mc.player);
+        mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
+
+        for (int i = 0; i < 45; i++) {
+            if (mc.player.inventory.getStackInSlot(i).isEmpty()) {
+                returnSlot = i;
+                break;
+            }
+        }
+
+        if (returnSlot != -1)
+            mc.playerController.windowClick(0, returnSlot < 9 ? returnSlot + 36 : returnSlot, 0, ClickType.PICKUP, mc.player);
+    }
+
+    public static void moveItemToOffhand(Item item) {
+        int slot = getInventoryItemSlot(item);
+        if (slot != -1)
+            moveItemToOffhand(slot);
+    }
+
+    /**
+     * item slot
+     */
+
+    public static int getHotbarItemSlot(Item item) {
+        int slot = 0;
+        for (int i = 0; i < 9; i++) {
+            if (mc.player.inventory.getStackInSlot(i).getItem() == item) {
+                slot = i;
+                break;
+            }
+        }
+
+        return slot;
     }
 
     public static int getInventoryItemSlot(Item item) {
@@ -74,29 +104,6 @@ public class InventoryUtil implements MixinInterface {
         return -1;
     }
 
-    public static void moveItemToOffhand(int slot) {
-        boolean moving = false;
-        boolean returning = false;
-        int returnSlot = -1;
-
-        if (slot == -1)
-            return;
-
-        mc.playerController.windowClick(0, slot < 9 ? slot + 36 : slot, 0, ClickType.PICKUP, mc.player);
-        mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
-
-        for (int i = 0; i < 45; i++) {
-            if (mc.player.inventory.getStackInSlot(i).isEmpty()) {
-                returnSlot = i;
-                break;
-            }
-        }
-
-        if (returnSlot != -1) {
-            mc.playerController.windowClick(0, returnSlot < 9 ? returnSlot + 36 : returnSlot, 0, ClickType.PICKUP, mc.player);
-        }
-    }
-
     public static int getAnyBlockInHotbar() {
         for (int i = 0; i < 9; i++) {
             Item item = mc.player.inventory.getStackInSlot(i).getItem();
@@ -107,19 +114,25 @@ public class InventoryUtil implements MixinInterface {
         return -1;
     }
 
+    /**
+     * item count
+     */
 
-    public static void moveItemToOffhand(Item item) {
-        int slot = getInventoryItemSlot(item);
-        if (slot != -1) {
-            moveItemToOffhand(slot);
-        }
+    public static int getItemCount(Item item) {
+        int count = mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == item).mapToInt(ItemStack::getCount).sum();
+        return count;
     }
+
+    /**
+     * item checks
+     */
 
     public static boolean Is32k(ItemStack stack) {
         if (stack.getEnchantmentTagList() != null) {
             final NBTTagList tags = stack.getEnchantmentTagList();
             for (int i = 0; i < tags.tagCount(); i++) {
                 final NBTTagCompound tagCompound = tags.getCompoundTagAt(i);
+
                 if (tagCompound != null && Enchantment.getEnchantmentByID(tagCompound.getByte("id")) != null) {
                     final Enchantment enchantment = Enchantment.getEnchantmentByID(tagCompound.getShort("id"));
                     final short lvl = tagCompound.getShort("lvl");

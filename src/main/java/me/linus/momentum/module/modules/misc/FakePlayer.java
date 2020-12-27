@@ -5,7 +5,7 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.client.external.MessageUtil;
-import me.linus.momentum.util.world.PlayerUtil;
+import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 
 import java.util.UUID;
@@ -58,7 +58,7 @@ public class FakePlayer extends Module {
         }
 
         EntityOtherPlayerMP fakePlayer = new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("873e2766-9254-49bc-89d7-5d4d585ad29d"), fakeName));
-        PlayerUtil.createFakePlayer(fakePlayer, inventory.getValue(), angles.getValue(), true);
+        WorldUtil.createFakePlayer(fakePlayer, inventory.getValue(), angles.getValue(), true);
         MessageUtil.sendClientMessage("Spawning fake player!");
     }
 

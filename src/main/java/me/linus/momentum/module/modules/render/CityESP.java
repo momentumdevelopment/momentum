@@ -7,6 +7,7 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
+import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -46,10 +47,10 @@ public class CityESP extends Module {
     public void onUpdate() {
         cityBlocks.clear();
 
-        EntityPlayer target = EntityUtil.getClosestPlayer(20);
-
-        EnemyUtil.getCityBlocks(target, false).stream().filter(blockPos -> mc.player.getDistanceSq(blockPos) <= range.getValue()).forEach(blockPos -> {
-            cityBlocks.add(blockPos);
+        WorldUtil.getNearbyPlayers(20).stream().forEach(entityPlayer -> {
+            EnemyUtil.getCityBlocks(entityPlayer, false).stream().filter(blockPos -> mc.player.getDistanceSq(blockPos) <= range.getValue()).forEach(blockPos -> {
+                cityBlocks.add(blockPos);
+            });
         });
     }
 

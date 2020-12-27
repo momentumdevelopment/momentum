@@ -3,6 +3,7 @@ package me.linus.momentum.command.commands;
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalXZ;
 import me.linus.momentum.command.Command;
+import me.linus.momentum.util.client.external.MessageUtil;
 
 /**
  * @author linustouchtips
@@ -25,6 +26,9 @@ public class GoTo extends Command {
             BaritoneAPI.getSettings().allowJumpAt256.value = true;
             BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(new GoalXZ(Integer.valueOf(args[1]), Integer.valueOf(args[3])));
         }
+
+        else
+            MessageUtil.usageException(this, "[x y z]");
     }
 
     @Override

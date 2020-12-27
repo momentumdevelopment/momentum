@@ -20,6 +20,10 @@ import java.awt.*;
 
 public class ESPUtil implements MixinInterface {
 
+    /**
+     * outline rendering
+     */
+
     public static void renderOne(float width) {
         checkSetupFBO();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
@@ -73,6 +77,10 @@ public class ESPUtil implements MixinInterface {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glPopAttrib();
     }
+
+    /**
+     * flat 2D rendering
+     */
     
     public static void draw2D(Entity drawEntity) {
         GL11.glBegin(2);
@@ -110,9 +118,17 @@ public class ESPUtil implements MixinInterface {
         }
     }
 
+    /**
+     * color rendering
+     */
+
     public static void setColor(Color c) {
         GL11.glColor4d(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
     }
+
+    /**
+     * FBO checks
+     */
 
     public static void checkSetupFBO() {
         Framebuffer fbo = mc.getFramebuffer();

@@ -32,6 +32,10 @@ public class EntityUtil implements MixinInterface {
 
     private static final Frustum frustrum = new Frustum();
 
+    /**
+     * entity classifier checks
+     */
+
     public static boolean isPassive(Entity e) {
         if (e instanceof EntityWolf && ((EntityWolf) e).isAngry())
             return false;
@@ -40,6 +44,10 @@ public class EntityUtil implements MixinInterface {
             return true;
 
         return e instanceof EntityIronGolem && ((EntityIronGolem) e).getRevengeTarget() == null;
+    }
+
+    public static boolean isVehicle(Entity entity) {
+        return entity instanceof EntityBoat || entity instanceof EntityMinecart;
     }
 
     public static boolean isHostileMob(Entity entity) {
@@ -67,6 +75,10 @@ public class EntityUtil implements MixinInterface {
         return false;
     }
 
+    /**
+     * frustrum checks
+     */
+
     public static boolean isInViewFrustrum(Entity entity) {
         return (isInViewFrustrum(entity.getEntityBoundingBox()) || entity.ignoreFrustumCheck);
     }
@@ -76,6 +88,10 @@ public class EntityUtil implements MixinInterface {
         frustrum.setPosition(current.posX, current.posY, current.posZ);
         return frustrum.isBoundingBoxInFrustum(bb);
     }
+
+    /**
+     * interpolations
+     */
 
     public static Vec3d getEyesPos() {
         return new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ);
@@ -109,36 +125,5 @@ public class EntityUtil implements MixinInterface {
 
     public static Vec3d getInterpolatedAmount(final Entity entity, final Vec3d vec) {
         return getInterpolatedAmount(entity, vec.x, vec.y, vec.z);
-    }
-
-    public static EntityPlayer getClosestPlayer(double range) {
-        if (mc.world.getLoadedEntityList().size() == 0)
-            return null;
-
-        float r = 100000;
-        EntityPlayer closestPlayer = null;
-
-        for (Entity entity : mc.world.getLoadedEntityList()) {
-            if (entity instanceof EntityPlayer && entity != mc.player) {
-                float distance = mc.player.getDistance(entity);
-
-                if (distance < r) {
-                    r = distance;
-                    closestPlayer = (EntityPlayer) entity;
-                }
-            }
-        }
-
-        if (r > range)
-            return null;
-
-        if (FriendManager.isFriend(closestPlayer.getName()) && FriendManager.isFriendModuleEnabled())
-            return null;
-
-        return closestPlayer;
-    }
-
-    public static boolean isVehicle(Entity entity) {
-        return entity instanceof EntityBoat || entity instanceof EntityMinecart;
     }
 }

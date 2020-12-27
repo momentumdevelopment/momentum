@@ -29,10 +29,10 @@ public class HoleESP extends Module {
     }
 
     private static final Mode main = new Mode("Main", "Fill", "Glow", "None");
-    private static final SubSlider mainHeight = new SubSlider(main, "Height", -1.0D, 0.0D, 2.0D, 1);
+    private static final SubSlider mainHeight = new SubSlider(main, "Height", -1.0D, 0.1D, 2.0D, 1);
 
     private static final Mode outline = new Mode("Outline", "WireFrame", "None");
-    private static final SubSlider outlineHeight = new SubSlider(outline, "Height", -1.0D, 0.0D, 2.0D, 1);
+    private static final SubSlider outlineHeight = new SubSlider(outline, "Height", -1.0D, 0.1D, 2.0D, 1);
 
     public static Checkbox obsidianColor = new Checkbox("Obsidian Color", true);
     public static SubSlider obbyRed = new SubSlider(obsidianColor, "Red", 0.0D, 93.0D, 255.0D, 0);
@@ -48,7 +48,7 @@ public class HoleESP extends Module {
 
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 1.5D, 3.0D, 2);
     public static Slider lineAlpha = new Slider("Line Alpha", 0.0D, 144.0D, 255.0D, 0);
-    public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
+    public static Slider range = new Slider("Range", 0.0D, 7.0D, 20.0D, 0);
 
     @Override
     public void setup() {
@@ -70,22 +70,20 @@ public class HoleESP extends Module {
         findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= range.getValue()).forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
-                        RenderUtil.drawPrismBlockPos(hole, mainHeight.getValue(), obbyColor);
+                        RenderUtil.drawPrismBlockPos(hole, mainHeight.getValue() - 1, obbyColor);
                         break;
                     case 1:
-                        RenderUtil.drawGlowBoxBlockPos(hole, new Color(obbyColor.getRed(), obbyColor.getGreen(), obbyColor.getBlue(), 120), new Color(obbyColor.getRed(), obbyColor.getGreen(), obbyColor.getBlue(), 8));
-                        break;
+
                 }
             });
 
         findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= range.getValue()).forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
-                        RenderUtil.drawPrismBlockPos(hole, mainHeight.getValue(), bRockColor);
+                        RenderUtil.drawPrismBlockPos(hole, mainHeight.getValue() - 1, bRockColor);
                         break;
                     case 1:
-                        RenderUtil.drawGlowBoxBlockPos(hole, new Color(bRockColor.getRed(), bRockColor.getGreen(), bRockColor.getBlue(), 120), new Color(bRockColor.getRed(), bRockColor.getGreen(), bRockColor.getBlue(), 8));
-                        break;
+
                 }
             });
     }
@@ -95,7 +93,7 @@ public class HoleESP extends Module {
                 switch (outline.getValue()) {
                     case 0:
                         GL11.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoundingBoxBlockPos(hole, outlineHeight.getValue(), obbyColor);
+                        RenderUtil.drawBoundingBoxBlockPos(hole, outlineHeight.getValue() - 1, obbyColor);
                         break;
                     case 1:
                         break;
@@ -106,7 +104,7 @@ public class HoleESP extends Module {
                 switch (outline.getValue()) {
                     case 0:
                         GL11.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoundingBoxBlockPos(hole, outlineHeight.getValue(), bRockColor);
+                        RenderUtil.drawBoundingBoxBlockPos(hole, outlineHeight.getValue() - 1, bRockColor);
                         break;
                     case 1:
                         break;

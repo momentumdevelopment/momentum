@@ -20,13 +20,16 @@ public class VClip extends Command {
     public void onCommand(String[] args) {
         Vec3d direction = PlayerUtil.direction(mc.player.rotationYaw);
 
-        if (direction != null && args.length > 2) {
+        if (direction != null && args.length > 1) {
             Entity entity = mc.player.isRiding() ? mc.player.getRidingEntity() : mc.player;
 
             entity.setPosition(mc.player.posX, mc.player.posY + Double.valueOf(args[1]), mc.player.posZ);
 
             MessageUtil.sendClientMessage("Teleported you " + args[1] + " blocks in the vertical direction!");
         }
+
+        else
+            MessageUtil.usageException(this, "[height]");
     }
 
     @Override

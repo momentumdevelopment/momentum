@@ -20,6 +20,18 @@ import net.minecraft.util.math.Vec3d;
 
 public class BedUtil implements MixinInterface {
 
+    /**
+     * break
+     */
+
+    public static void attackBed(BlockPos pos) {
+        mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, EnumFacing.UP, EnumHand.OFF_HAND, 0, 0, 0));
+    }
+
+    /**
+     * place
+     */
+
     public static BlockPos getBedPosition(EntityPlayer currentTarget, boolean nowTop, float rotVar) {
         BlockPos placeTarget = null;
 
@@ -76,10 +88,6 @@ public class BedUtil implements MixinInterface {
         }
 
         return placeTarget;
-    }
-
-    public static void attackBed(BlockPos pos) {
-        mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, EnumFacing.UP, EnumHand.OFF_HAND, 0, 0, 0));
     }
 
     public static void placeBed(BlockPos pos, EnumFacing side, float rotVar, boolean nowTop, boolean rotate) {

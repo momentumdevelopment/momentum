@@ -6,6 +6,11 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 
+/**
+ * @author linustouchtips
+ * @since 12/25/2020
+ */
+
 public class SubKeybind extends SubSetting {
 
     private final Setting parent;

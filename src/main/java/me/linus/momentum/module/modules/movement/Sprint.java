@@ -21,18 +21,20 @@ public class Sprint extends Module {
     }
 
     public void onUpdate() {
-        if (mode.getValue() == 1) {
-            try {
-                if (mc.gameSettings.keyBindForward.isKeyDown() && !(mc.player.collidedHorizontally) && !(mc.player.isSneaking()) && !(mc.player.isHandActive()) && mc.player.getFoodStats().getFoodLevel() > 6f) {
+        if (nullCheck())
+            return;
+
+        switch (mode.getValue()) {
+            case 0:
+                if (!(mc.player.isSneaking()) && !(mc.player.collidedHorizontally) && mc.player.getFoodStats().getFoodLevel() > 6f && mc.gameSettings.keyBindForward.isKeyDown() || mc.gameSettings.keyBindLeft.isKeyDown() || mc.gameSettings.keyBindRight.isKeyDown() || mc.gameSettings.keyBindBack.isKeyDown())
                     mc.player.setSprinting(true);
-                }
-            } catch (Exception ignored) {}
-        } else {
-            try {
-                if (!(mc.player.isSneaking()) && !(mc.player.collidedHorizontally) && mc.player.getFoodStats().getFoodLevel() > 6f && mc.gameSettings.keyBindForward.isKeyDown() || mc.gameSettings.keyBindLeft.isKeyDown() || mc.gameSettings.keyBindRight.isKeyDown() || mc.gameSettings.keyBindBack.isKeyDown()) {
+
+                break;
+            case 1:
+                if (mc.gameSettings.keyBindForward.isKeyDown() && !(mc.player.collidedHorizontally) && !(mc.player.isSneaking()) && !(mc.player.isHandActive()) && mc.player.getFoodStats().getFoodLevel() > 6f)
                     mc.player.setSprinting(true);
-                }
-            } catch (Exception ignored) {}
+
+                break;
         }
     }
 

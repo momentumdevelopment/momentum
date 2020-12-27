@@ -12,6 +12,10 @@ public class Timer {
         this.time = -1L;
     }
 
+    /**
+     * time - various formats
+     */
+
     public long getTime(final long time) {
         return time / 1000000L;
     }
@@ -20,8 +24,24 @@ public class Timer {
         return time;
     }
 
+    public long time() {
+        return System.nanoTime() / 1000000L - time;
+    }
+
+    public long getMs(final long time) {
+        return time / 1000000L;
+    }
+
+    /**
+     * time checks
+     */
+
     public boolean passed(final long ms) {
         return this.getMs(System.nanoTime() - this.time) >= ms;
+    }
+
+    public boolean toReach(final long ms) {
+        return this.getMs(System.nanoTime() - this.time) <= ms;
     }
 
     public void reset() {
@@ -36,14 +56,4 @@ public class Timer {
 
         return false;
     }
-
-    public long time() {
-        return System.nanoTime() / 1000000L - time;
-    }
-
-    public long getMs(final long time) {
-        return time / 1000000L;
-    }
-
 }
-

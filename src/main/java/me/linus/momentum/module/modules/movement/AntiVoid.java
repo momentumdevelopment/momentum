@@ -39,7 +39,7 @@ public class AntiVoid extends Module {
                     mc.player.motionY = 0;
                     break;
                 case 2:
-                    mc.player.motionY = mc.player.motionY / 4;
+                    mc.player.motionY /= 4;
                     break;
             }
         }

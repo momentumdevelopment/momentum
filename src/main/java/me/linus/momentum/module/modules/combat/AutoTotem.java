@@ -3,12 +3,12 @@ package me.linus.momentum.module.modules.combat;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
 /**
@@ -61,10 +61,6 @@ public class AutoTotem extends Module {
             mc.playerController.windowClick(0, t < 9 ? t + 36 : t, 0, ClickType.PICKUP, mc.player);
             returnI = false;
         }
-
-        totems = mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == item).mapToInt(ItemStack::getCount).sum();
-        if (mc.player.getHeldItemOffhand().getItem() == item)
-            totems++;
 
         else {
             if (soft.getValue() && !mc.player.getHeldItemOffhand().isEmpty())
@@ -126,6 +122,6 @@ public class AutoTotem extends Module {
 
     @Override
     public String getHUDData() {
-        return " " + totems;
+        return " " + InventoryUtil.getItemCount(Items.TOTEM_OF_UNDYING);
     }
 }

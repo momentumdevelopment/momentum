@@ -12,6 +12,10 @@ import java.math.RoundingMode;
  */
 
 public class MathUtil {
+
+	/**
+	 * rounding
+	 */
 	
 	public static double roundDouble(double number, int scale) {
 		BigDecimal bd = new BigDecimal(number);
@@ -24,6 +28,12 @@ public class MathUtil {
 		return Math.round(value * scale) / scale;
 	}
 
+	public static double round(double value) {
+		BigDecimal bd = new BigDecimal(value);
+		bd = bd.setScale(3, RoundingMode.HALF_UP);
+		return bd.doubleValue();
+	}
+
 	public static float clamp(float val, float min, float max) {
 		if (val <= min)
 			val = min;
@@ -34,6 +44,10 @@ public class MathUtil {
 		return val;
 	}
 
+	/**
+	 * angles
+	 */
+
 	public static float[] calcAngle(Vec3d from, Vec3d to) {
 		double difX = to.x - from.x;
 		double difY = (to.y - from.y) * -1.0;
@@ -42,12 +56,6 @@ public class MathUtil {
 		return new float[] {
 				(float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0), (float)MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist)))
 		};
-	}
-
-	public static double round(double value) {
-		BigDecimal bd = new BigDecimal(value);
-		bd = bd.setScale(3, RoundingMode.HALF_UP);
-		return bd.doubleValue();
 	}
 
 	public static double degToRad(double deg) {

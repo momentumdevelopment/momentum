@@ -30,6 +30,7 @@ public class StorageESP extends Module {
     private static final Checkbox furnaces = new Checkbox("Furnaces", true);
     public static final Checkbox beds = new Checkbox("Beds", true);
 
+    public static Slider range = new Slider("Range", 0.0D, 30.0D, 100.0D, 0);
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 2.5D, 4.0D, 1);
     public static Slider alpha = new Slider("Alpha", 0.0D, 80.0D, 255.0D, 0);
 
@@ -56,7 +57,7 @@ public class StorageESP extends Module {
     }
 
     public void renderTileEntities() {
-        mc.world.loadedTileEntityList.stream().forEach(tileEntity -> {
+        mc.world.loadedTileEntityList.stream().filter(tileEntity -> mc.player.getDistanceSq(tileEntity.getPos()) <= range.getValue()).forEach(tileEntity -> {
             if (tileEntity instanceof TileEntityChest && chests.getValue() || (tileEntity instanceof TileEntityEnderChest && enderChests.getValue()) || (tileEntity instanceof TileEntityHopper && hoppers.getValue()) || (tileEntity instanceof TileEntityFurnace && furnaces.getValue()) || (tileEntity instanceof TileEntityBed && beds.getValue() || (tileEntity instanceof TileEntityDropper && droppers.getValue()) || (tileEntity instanceof TileEntityShulkerBox && shulkers.getValue()))) {
                 switch (mode.getValue()) {
                     case 0:

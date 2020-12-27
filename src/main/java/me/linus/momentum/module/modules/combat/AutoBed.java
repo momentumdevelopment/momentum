@@ -10,11 +10,8 @@ import me.linus.momentum.util.client.system.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.BedUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
-import me.linus.momentum.util.combat.RotationUtil;
+import me.linus.momentum.util.world.*;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.EntityUtil;
-import me.linus.momentum.util.world.InventoryUtil;
-import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -100,7 +97,7 @@ public class AutoBed extends Module {
             return;
         }
 
-        currentTarget = EntityUtil.getClosestPlayer(enemyRange.getValue());
+        currentTarget = WorldUtil.getClosestPlayer(enemyRange.getValue());
         diffXZ = mc.player.getPositionVector().distanceTo(currentTarget.getPositionVector());
 
         switch (logicMode.getValue()) {

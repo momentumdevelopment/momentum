@@ -74,7 +74,7 @@ public class Burrow extends Module {
                     mc.player.jump();
                     break;
                 case 1:
-                    mc.player.setPosition(0, -1, 0);
+                    mc.player.setPosition(mc.player.posX, mc.player.posY - 1, mc.player.posZ);
                     break;
                 case 2:
                     mc.player.setPosition(mc.player.posX, mc.player.posY + 10, mc.player.posZ);

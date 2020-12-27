@@ -27,6 +27,9 @@ public class HClip extends Command {
 
             MessageUtil.sendClientMessage("Teleported you " + args[1] + " blocks in the horizontal direction!");
         }
+
+        else
+            MessageUtil.usageException(this, "[distance]");
     }
 
     @Override

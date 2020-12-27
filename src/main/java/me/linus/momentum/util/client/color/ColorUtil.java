@@ -17,6 +17,10 @@ import java.awt.*;
  */
 
 public abstract class ColorUtil implements MixinInterface {
+
+	/**
+	 * color cycling
+	 */
 	
 	public static int rainbow(long offset) {
 		float hue = (float) ((((System.currentTimeMillis() * (Colors.speed.getValue() / 10)) + (offset * 500)) % (30000L / (Colors.difference.getValue() / 100))) / (30000.0f / (Colors.difference.getValue() / 20)));
@@ -45,6 +49,10 @@ public abstract class ColorUtil implements MixinInterface {
 		hsb[2] = brightness % 2.0F;
 		return new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
 	}
+
+	/**
+	 * color conversion
+	 */
 	
 	public static int toRGBA(int r, int g, int b, int a) {
         return (r << 16) + (g << 8) + (b << 0) + (a << 24);
@@ -58,20 +66,27 @@ public abstract class ColorUtil implements MixinInterface {
 		GL11.glColor4f(red, green, blue, alpha);
 	}
 
+	/**
+	 * color by variable
+	 */
+
 	public static int getColorByCategory(Module mod) {
-		if (mod.getCategory().equals(Module.Category.PLAYER))
-			return new Color(37, 205, 84).getRGB();
-		if (mod.getCategory().equals(Module.Category.RENDER))
-			return new Color(231, 164, 73).getRGB();
-		if (mod.getCategory().equals(Module.Category.MOVEMENT))
-			return new Color(217, 49, 103).getRGB();
-		if (mod.getCategory().equals(Module.Category.COMBAT))
-			return new Color(56, 103, 224).getRGB();
-		if (mod.getCategory().equals(Module.Category.CLIENT))
-			return new Color(234, 71, 71).getRGB();
-		if (mod.getCategory().equals(Module.Category.MISC))
-			return new Color(122, 61, 217).getRGB();
-		else return 0;
+		switch (mod.getCategory()) {
+			case PLAYER:
+				return new Color(37, 205, 84).getRGB();
+			case RENDER:
+				return new Color(231, 164, 73).getRGB();
+			case MOVEMENT:
+				return new Color(217, 49, 103).getRGB();
+			case COMBAT:
+				return new Color(56, 103, 224).getRGB();
+			case CLIENT:
+				return new Color(234, 71, 71).getRGB();
+			case MISC:
+				return new Color(122, 61, 217).getRGB();
+		}
+
+		return -1;
 	}
 
 	public static Color getEntityColor(Entity e) {
@@ -88,11 +103,11 @@ public abstract class ColorUtil implements MixinInterface {
 	public static Color getHealthColor(float health) {
 		if (health <= 4)
 			return new Color(200, 0, 0);
-		if (health <= 8)
+		else if (health <= 8)
 			return new Color(231, 143, 85);
-		if (health <= 12)
+		else if (health <= 12)
 			return new Color(219, 201, 106);
-		if (health <= 16)
+		else if (health <= 16)
 			return new Color(117, 231, 85);
 		else
 			return new Color(44, 186, 19);
@@ -101,17 +116,17 @@ public abstract class ColorUtil implements MixinInterface {
 	public static Color getStorageColor(TileEntity tileEntity, int alpha) {
 		if (tileEntity instanceof TileEntityChest)
 			return new Color(0, 207, 244, alpha);
-		if (tileEntity instanceof TileEntityEnderChest)
+		else if (tileEntity instanceof TileEntityEnderChest)
 			return new Color(150, 0, 244, alpha);
-		if (tileEntity instanceof TileEntityHopper)
+		else if (tileEntity instanceof TileEntityHopper)
 			return new Color(217, 132, 71, alpha);
-		if (tileEntity instanceof TileEntityDropper)
+		else if (tileEntity instanceof TileEntityDropper)
 			return new Color(102, 102, 102, alpha);
-		if (tileEntity instanceof TileEntityFurnace)
+		else if (tileEntity instanceof TileEntityFurnace)
 			return new Color(102, 102, 102, alpha);
-		if (tileEntity instanceof TileEntityBed)
+		else if (tileEntity instanceof TileEntityBed)
 			return new Color(215, 37, 37, alpha);
-		if (tileEntity instanceof TileEntityShulkerBox)
+		else if (tileEntity instanceof TileEntityShulkerBox)
 			return new Color(195, 73, 227, alpha);
 		else
 			return new Color(255, 255, 255, alpha);

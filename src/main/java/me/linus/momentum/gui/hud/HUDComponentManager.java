@@ -24,6 +24,7 @@ public class HUDComponentManager implements MixinInterface {
     private static final List<HUDComponent> components = Lists.newArrayList(
             new ActiveModules(),
             new Armor(),
+            new CombatInfo(),
             new Coordinates(),
             new Crystal(),
             new Direction(),

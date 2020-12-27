@@ -4,6 +4,7 @@ import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.client.system.Timer;
 import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -31,25 +32,17 @@ public class CrossHairs extends Module {
         addSetting(color);
     }
 
-    int increment = 30;
-
-    @Override
-    public void onUpdate() {
-        if (nullCheck())
-            return;
-
-        increment++;
-    }
+    Timer hitTimer = new Timer();
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
         if (event.getPacket() instanceof CPacketUseEntity && ((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK)
-            increment = 0;
+            hitTimer.reset();
     }
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
-        if (increment < 25)
+        if (hitTimer.toReach(30))
             RenderUtil.drawHitMarkers(new Color((int) r.getValue(),(int) g.getValue(),(int)  b.getValue()));
     }
 }

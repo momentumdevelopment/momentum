@@ -316,53 +316,7 @@ public class PlayerUtil implements MixinInterface {
         return result;
     }
 
-    public static String getFacing() {
-        switch (MathHelper.floor((double) (mc.player.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7) {
-            case 0:
-                return "South";
-            case 1:
-                return "South West";
-            case 2:
-                return "West";
-            case 3:
-                return "North West";
-            case 4:
-                return "North";
-            case 5:
-                return "North East";
-            case 6:
-                return "East";
-            case 7:
-                return "South East";
-        }
-
-        return "Invalid";
-    }
-
-    public static String getTowards() {
-        switch (MathHelper.floor((double) (mc.player.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7) {
-            case 0:
-                return "+Z";
-            case 1:
-                return "-X +Z";
-            case 2:
-                return "-X";
-            case 3:
-                return "-X -Z";
-            case 4:
-                return "-Z";
-            case 5:
-                return "+X -Z";
-            case 6:
-                return "+X";
-            case 7:
-                return "+X +Z";
-        }
-
-        return "Invalid";
-    }
-
-    public static boolean isPlayerTrapped() {
+    public static boolean isTrapped() {
         BlockPos playerPos = getLocalPlayerPosFloored();
 
         final BlockPos[] trapPos = {
@@ -411,24 +365,6 @@ public class PlayerUtil implements MixinInterface {
         double z = Math.floor(posZ) + 0.5D;
 
         return new Vec3d(x, y, z);
-    }
-
-    public static void createFakePlayer(EntityOtherPlayerMP entity, boolean copyInventory, boolean copyAngles, boolean health) {
-        entity = new EntityOtherPlayerMP(mc.world, mc.getSession().getProfile());
-        entity.copyLocationAndAnglesFrom(mc.player);
-
-        if (copyInventory)
-            entity.inventory.copyInventory(mc.player.inventory);
-
-        if (copyAngles) {
-            entity.rotationYaw = mc.player.rotationYaw;
-            entity.rotationYawHead = mc.player.rotationYawHead;
-        }
-
-        if (health)
-            entity.setHealth(mc.player.getHealth() + mc.player.getAbsorptionAmount());
-
-        mc.world.addEntityToWorld(69420, entity);
     }
 
     public static boolean isInLiquid() {

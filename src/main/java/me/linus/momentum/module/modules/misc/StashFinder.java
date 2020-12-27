@@ -10,7 +10,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.external.MessageUtil;
 import me.linus.momentum.util.client.system.Timer;
-import me.linus.momentum.util.combat.RotationUtil;
+import me.linus.momentum.util.world.RotationUtil;
 import me.linus.momentum.util.config.ConfigManager;
 import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.client.audio.PositionedSoundRecord;

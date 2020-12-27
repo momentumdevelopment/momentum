@@ -2,7 +2,6 @@ package me.linus.momentum.util.render;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.color.ColorUtil;
-import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -10,21 +9,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL32;
-import org.lwjgl.util.glu.GLU;
 
 import java.awt.*;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -38,11 +29,10 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         super(0x200000);
     }
 
-    public static RenderUtil INSTANCE = new RenderUtil();
     public static ICamera camera = new Frustum();
 
     /**
-     * setup
+     * rendering setup
      */
 
     public static void prepareProfiler() {
@@ -86,11 +76,36 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GL11.glPopMatrix();
     }
 
-    /**
-     * 3D Rendering
-     */
+    public static void enableGL3D(float lineWidth) {
+        GL11.glDisable(3008);
+        GL11.glEnable(3042);
+        GL11.glBlendFunc(770, 771);
+        GL11.glDisable(3553);
+        GL11.glDisable(2929);
+        GL11.glDepthMask(false);
+        GL11.glEnable(2884);
+        mc.entityRenderer.disableLightmap();
+        GL11.glEnable(2848);
+        GL11.glHint(3154, 4354);
+        GL11.glHint(3155, 4354);
+        GL11.glLineWidth(lineWidth);
+    }
 
-    // prism rendering
+    public static void disableGL3D() {
+        GL11.glEnable(3553);
+        GL11.glEnable(2929);
+        GL11.glDisable(3042);
+        GL11.glEnable(3008);
+        GL11.glDepthMask(true);
+        GL11.glCullFace(1029);
+        GL11.glDisable(2848);
+        GL11.glHint(3154, 4352);
+        GL11.glHint(3155, 4352);
+    }
+
+    /**
+     * prism rendering
+     */
 
     public static void drawPrismBlockPos(BlockPos blockPos, double height, Color color) {
         glSetup();
@@ -167,40 +182,6 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         builder.pos(x2, y2, z2).color(red, green, blue, alpha).endVertex();
     }
 
-    public static void drawGlowBoxBlockPos(BlockPos blockPos, Color startColor, Color endColor) {
-        float red = (float) startColor.getRed() / 255.0f;
-        float green = (float) startColor.getGreen() / 255.0f;
-        float blue = (float) startColor.getBlue() / 255.0f;
-        float alpha = (float )startColor.getAlpha() / 255.0f;
-        float red2 = (float) endColor.getRed() / 255.0f;
-        float green2 = (float) endColor.getGreen() / 255.0f;
-        float blue2 = (float) endColor.getBlue() / 255.0f;
-        float alpha2 = (float) endColor.getAlpha() / 255.0f;
-        AxisAlignedBB bb = new AxisAlignedBB((double) blockPos.x - mc.getRenderManager().viewerPosX, (double) blockPos.y - mc.getRenderManager().viewerPosY, (double) blockPos.z - mc.getRenderManager().viewerPosZ, (double) (blockPos.x + 1) - mc.getRenderManager().viewerPosX, (double) (blockPos.y + 1) - mc.getRenderManager().viewerPosY, (double) (blockPos.z + 1) - mc.getRenderManager().viewerPosZ);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
-        GlStateManager.disableDepth();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1);
-        GlStateManager.disableTexture2D();
-        GlStateManager.depthMask(false);
-        GlStateManager.glBegin(7425);
-        GL11.glBegin(7);
-        GL11.glColor4f(red2, green2, blue2, alpha2);
-        GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
-        GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
-        GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
-        GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
-        GL11.glEnd();
-        GlStateManager.depthMask(true);
-        GlStateManager.enableDepth();
-        GlStateManager.disableBlend();
-        GlStateManager.enableTexture2D();
-        GlStateManager.popMatrix();
-        GlStateManager.glBegin(7424);
-    }
-
     public static void drawBoundingBoxBlockPos(BlockPos blockPos, double height, Color color) {
         glSetup();
         AxisAlignedBB axisAlignedBB = new AxisAlignedBB(blockPos.getX() - mc.getRenderManager().viewerPosX, blockPos.getY() - mc.getRenderManager().viewerPosY, blockPos.getZ() - mc.getRenderManager().viewerPosZ, blockPos.getX() + 1 - mc.getRenderManager().viewerPosX, blockPos.getY() + 1 - mc.getRenderManager().viewerPosY, blockPos.getZ() + 1 - mc.getRenderManager().viewerPosZ);
@@ -241,76 +222,9 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         buffer.pos(maxX, minY, minZ).color(red, green, blue, 0.0F).endVertex();
     }
 
-    // nametags
-
-    public static void drawNametag (double x, double y, double z, String[] text, Color color, int type) {
-        double dist = mc.player.getDistance(x, y, z);
-        double scale = 1, offset = 0;
-        int start = 0;
-        switch (type) {
-            case 0:
-                scale = dist / 20 * Math.pow(1.2589254,0.1 / (dist < 25 ? 0.5 : 2));
-                scale = Math.min(Math.max(scale, 0.5), 5);
-                offset = scale > 2 ? scale / 2 : scale;
-                scale /= 40;
-                start = 10;
-                break;
-            case 1:
-                scale =- ((int) dist) / 6.0;
-
-                if (scale < 1)
-                    scale = 1;
-
-                scale *= 2.0 / 75.0;
-                break;
-            case 2:
-                scale = 0.0018 + 0.003 * dist;
-
-                if (dist <= 8.0)
-                    scale = 0.0245;
-
-                start =- 8;
-                break;
-        }
-
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(x - mc.getRenderManager().viewerPosX,y + offset-mc.getRenderManager().viewerPosY,z - mc.getRenderManager().viewerPosZ);
-        GlStateManager.rotate(-mc.getRenderManager().playerViewY, 0, 1, 0);
-        GlStateManager.rotate(mc.getRenderManager().playerViewX, mc.gameSettings.thirdPersonView == 2? -1 : 1, 0, 0);
-        GlStateManager.scale(-scale, -scale, scale);
-
-        if (type == 2) {
-            double width = 0;
-            for (int i = 0; i<text.length; i++) {
-                double w = FontUtil.getStringWidth(text[i]) / 2;
-                if (w > width)
-                    width = w;
-            }
-
-            drawBorderedRect(-width - 1, -mc.fontRenderer.FONT_HEIGHT,width + 2,1, new Color(0, 0, 0, 90));
-        }
-
-        GlStateManager.enableTexture2D();
-        for (int i = 0; i < text.length; i++)
-            FontUtil.drawStringWithShadow(text[i], -FontUtil.getStringWidth(text[i]) / 2,i * (mc.fontRenderer.FONT_HEIGHT + 1) + start, color.getRGB());
-
-        GlStateManager.disableTexture2D();
-
-        if (type!=2)
-            GlStateManager.popMatrix();
-    }
-
-    private static void drawBorderedRect (double x, double y, double x1, double y1, Color color) {
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        GL11.glColor4f(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
-        bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        bufferbuilder.pos(x,y1,0).endVertex();
-        bufferbuilder.pos(x1,y1,0).endVertex();
-        bufferbuilder.pos(x1,y,0).endVertex();
-        bufferbuilder.pos(x,y,0).endVertex();
-        tessellator.draw();
-    }
+    /**
+     * nametag rendering
+     */
 
     public static void drawNametagFromBlockPos(final BlockPos pos, final String text) {
         GlStateManager.pushMatrix();
@@ -341,35 +255,9 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GlStateManager.scale(-scale, -scale, scale);
     }
 
-    // GL
-    public static void enableGL3D(float lineWidth) {
-        GL11.glDisable(3008);
-        GL11.glEnable(3042);
-        GL11.glBlendFunc(770, 771);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
-        GL11.glDepthMask(false);
-        GL11.glEnable(2884);
-        mc.entityRenderer.disableLightmap();
-        GL11.glEnable(2848);
-        GL11.glHint(3154, 4354);
-        GL11.glHint(3155, 4354);
-        GL11.glLineWidth(lineWidth);
-    }
-
-    public static void disableGL3D() {
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
-        GL11.glDisable(3042);
-        GL11.glEnable(3008);
-        GL11.glDepthMask(true);
-        GL11.glCullFace(1029);
-        GL11.glDisable(2848);
-        GL11.glHint(3154, 4352);
-        GL11.glHint(3155, 4352);
-    }
-
-    // lines
+    /**
+     * line rendering
+     */
 
     public static void drawLine3D(float x, float y, float z, float x1, float y1, float z1, float thickness, int hex) {
         float red = (hex >> 16 & 0xFF) / 255.0F;
@@ -388,8 +276,8 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
         GlStateManager.disableDepth();
         glEnable(GL32.GL_DEPTH_CLAMP);
-        final Tessellator tessellator = Tessellator.getInstance();
-        final BufferBuilder bufferbuilder = tessellator.getBuffer();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(GL_LINES, DefaultVertexFormats.POSITION_COLOR);
         bufferbuilder.pos(x, y, z).color(red, green, blue, alpha).endVertex();
         bufferbuilder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
@@ -404,28 +292,8 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         GlStateManager.popMatrix();
     }
 
-    public static boolean shouldRenderTracer(Entity e, boolean player, boolean mobs, boolean animals, boolean items) {
-        if (e == mc.player)
-            return false;
-
-        if (e instanceof EntityPlayer)
-            return player;
-
-        if ((EntityUtil.isHostileMob(e) || EntityUtil.isNeutralMob(e)))
-            return mobs;
-
-        if (EntityUtil.isPassive(e))
-            return animals;
-
-        if (e instanceof EntityItem)
-            return items;
-
-        else
-            return false;
-    }
-
     /**
-     * 2D Rendering
+     * 2D rendering
      */
 
     public static void drawHitMarkers(Color color) {

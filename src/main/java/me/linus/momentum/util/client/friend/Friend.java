@@ -8,11 +8,11 @@ package me.linus.momentum.util.client.friend;
 public class Friend {
     String name;
 
-    public Friend(String n) {
-        name = n;
+    public Friend(String name) {
+        this.name = name;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 }

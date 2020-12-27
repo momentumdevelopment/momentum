@@ -143,13 +143,11 @@ public class PacketFlight extends Module {
     public void onPacketSend(PacketSendEvent event) {
         if (packet.getValue() && event.getPacket() instanceof CPacketPlayer) {
             final CPacketPlayer packetPlayer = (CPacketPlayer) event.getPacket();
-            if (packets.contains(packetPlayer)) {
+            if (packets.contains(packetPlayer))
                 packets.remove(packetPlayer);
-            }
             
-            else {
+            else
                 event.setCanceled(true);
-            }
         }
     }
 

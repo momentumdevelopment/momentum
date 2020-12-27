@@ -6,6 +6,11 @@ import me.linus.momentum.setting.SubSetting;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author linustouchtips
+ * @since 12/25/2020
+ */
+
 public class Keybind extends Setting {
 
     private final String name;

@@ -41,6 +41,7 @@ public class ConfigManager {
 
     public static void saveConfig() {
         saveEnabledModules();
+        saveDrawnModules();
         saveSettings();
         saveSubSettings();
         saveFriends();
@@ -55,6 +56,7 @@ public class ConfigManager {
     public static void loadConfig() {
         createFile();
         loadEnabledModules();
+        loadDrawnModules();
         loadSettings();
         loadSubSettings();
         loadFriends();
@@ -99,6 +101,43 @@ public class ConfigManager {
                         m.enable();
                     }
 
+                } lineIndex++;
+            } br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveDrawnModules() {
+        try {
+            File modules = new File(config.getAbsolutePath(), "Drawn.txt");
+            BufferedWriter bw = new BufferedWriter(new FileWriter(modules));
+            for (Module m : ModuleManager.getModules()) {
+                bw.write(m.getName() + ":");
+                if (m.isDrawn()) {
+                    bw.write("true");
+                } else {
+                    bw.write("false");
+                }
+
+                bw.write("\r\n");
+            } bw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadDrawnModules() {
+        try {
+            File modules = new File(config.getAbsolutePath(), "Drawn.txt");
+            BufferedReader br = new BufferedReader(new FileReader(modules));
+            List<String> linezz = Files.readAllLines(modules.toPath());
+            int lineIndex = 0;
+            for (String line : linezz) {
+                String[] regex = line.split(":");
+                Module m = ModuleManager.getModules().get(lineIndex);
+                if (regex[0].startsWith(m.getName())) {
+                    m.setDrawn(Boolean.parseBoolean(regex[1]));
                 } lineIndex++;
             } br.close();
         } catch (Exception e) {

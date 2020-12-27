@@ -20,6 +20,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * @author https://github.com/HyperiumClient/Hyperium/blob/mcgradle/src/main/java/cc/hyperium/utils/HyperiumFontRenderer.java
+ * @since 12/25/2020
+ */
+
 public class CustomFont implements MixinInterface {
 	private static final Pattern COLOR_CODE_PATTERN = Pattern.compile(ChatColor.COLOR_CHAR+"[0123456789abcdefklmnor]");
 	public final int FONT_HEIGHT = 9;

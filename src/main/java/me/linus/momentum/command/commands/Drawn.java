@@ -5,6 +5,11 @@ import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.util.client.external.MessageUtil;
 import net.minecraft.util.text.TextFormatting;
 
+/**
+ * @author linustouchtips
+ * @since 12/25/2020
+ */
+
 public class Drawn extends Command {
     public Drawn() {
         super("drawn");
@@ -23,5 +28,8 @@ public class Drawn extends Command {
                 MessageUtil.sendClientMessage(args + "is now" + TextFormatting.GREEN + " drawn!");
             }
         }
+
+        else
+            MessageUtil.usageException(this, "[module name]");
     }
 }

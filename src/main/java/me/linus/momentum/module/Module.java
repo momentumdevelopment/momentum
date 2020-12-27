@@ -99,6 +99,10 @@ public abstract class Module implements MixinInterface {
 		
 	}
 
+	/**
+	 * obamahack tick
+	 */
+
 	public void onFastUpdate() {
 		
 	}

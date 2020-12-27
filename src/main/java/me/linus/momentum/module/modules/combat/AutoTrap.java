@@ -10,6 +10,7 @@ import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
+import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -80,10 +81,10 @@ public class AutoTrap extends Module {
         int blocksPlaced = 0;
 
         for (Vec3d autoTrapBox : getTrap()) {
-            final EntityPlayer target = EntityUtil.getClosestPlayer(range.getValue());
+            final EntityPlayer target = WorldUtil.getClosestPlayer(range.getValue());
 
             if (target != null) {
-                BlockPos blockPos = new BlockPos(autoTrapBox.add(EntityUtil.getClosestPlayer(range.getValue()).getPositionVector()));
+                BlockPos blockPos = new BlockPos(autoTrapBox.add(target.getPositionVector()));
 
                 if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)) {
                     int oldInventorySlot = mc.player.inventory.currentItem;
@@ -148,11 +149,7 @@ public class AutoTrap extends Module {
     ));
 
     private final List<Vec3d> feetTrap = new ArrayList<>(Arrays.asList(
-            new Vec3d(0, -1, 1),
-            new Vec3d(0, 0, 1),
-            new Vec3d(1, 0, 0),
             new Vec3d(0, 0, -1),
-            new Vec3d(-1, 0, 0),
             new Vec3d(0, 1, -1),
             new Vec3d(1, 1, 0),
             new Vec3d(0, 1, 1),
@@ -163,10 +160,6 @@ public class AutoTrap extends Module {
     ));
 
     private final List<Vec3d> bedTrap = new ArrayList<>(Arrays.asList(
-            new Vec3d(0, -1, -1),
-            new Vec3d(1, -1, 0),
-            new Vec3d(0, -1, 1),
-            new Vec3d(-1, -1, 0),
             new Vec3d(0, 0, -1),
             new Vec3d(1, 0, 0),
             new Vec3d(0, 0, 1),

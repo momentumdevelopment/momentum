@@ -1,4 +1,4 @@
-package me.linus.momentum.util.combat;
+package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.system.MathUtil;
@@ -6,6 +6,7 @@ import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 public class RotationUtil implements MixinInterface {
@@ -14,7 +15,55 @@ public class RotationUtil implements MixinInterface {
     private static double yaw;
     private static double pitch;
 
+    /**
+     * player directions
+     */
 
+    public static String getFacing() {
+        switch (MathHelper.floor((double) (mc.player.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7) {
+            case 0:
+                return "South";
+            case 1:
+                return "South West";
+            case 2:
+                return "West";
+            case 3:
+                return "North West";
+            case 4:
+                return "North";
+            case 5:
+                return "North East";
+            case 6:
+                return "East";
+            case 7:
+                return "South East";
+        }
+
+        return "Invalid";
+    }
+
+    public static String getTowards() {
+        switch (MathHelper.floor((double) (mc.player.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7) {
+            case 0:
+                return "+Z";
+            case 1:
+                return "-X +Z";
+            case 2:
+                return "-X";
+            case 3:
+                return "-X -Z";
+            case 4:
+                return "-Z";
+            case 5:
+                return "+X -Z";
+            case 6:
+                return "+X";
+            case 7:
+                return "+X +Z";
+        }
+
+        return "Invalid";
+    }
 
     /**
      * client-side rotations

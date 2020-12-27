@@ -1,6 +1,7 @@
 package me.linus.momentum.command.commands;
 
 import me.linus.momentum.command.Command;
+import me.linus.momentum.util.client.external.MessageUtil;
 
 /**
  * @author linustouchtips
@@ -13,17 +14,16 @@ public class Scale extends Command {
         super("scale");
     }
 
-    public float scale = 1.0f;
+    public static float scale = 1.0f;
 
     @Override
     public void onCommand(String[] args) {
         if (args.length > 1) {
-            try {
-                scale = Float.valueOf(args[1]);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            scale = Float.valueOf(args[1]);
         }
+
+        else
+            MessageUtil.usageException(this, "[scale]");
     }
 
     @Override

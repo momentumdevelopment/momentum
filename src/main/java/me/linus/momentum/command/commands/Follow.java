@@ -1,6 +1,7 @@
 package me.linus.momentum.command.commands;
 
 import me.linus.momentum.command.Command;
+import me.linus.momentum.util.client.external.MessageUtil;
 
 /**
  * @author linustouchtips
@@ -17,5 +18,8 @@ public class Follow extends Command {
         if (args.length > 2) {
 
         }
+
+        else
+            MessageUtil.usageException(this, "[target name]");
     }
 }

@@ -8,7 +8,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.system.MathUtil;
-import me.linus.momentum.util.combat.RotationUtil;
+import me.linus.momentum.util.world.RotationUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Items;
@@ -118,7 +118,9 @@ public class ElytraFlight extends Module {
 
             if (mc.gameSettings.keyBindJump.isKeyDown()) {
                 mc.player.motionY = ySpeed.getValue();
-            } else if (mc.gameSettings.keyBindSneak.isKeyDown()) {
+            }
+
+            else if (mc.gameSettings.keyBindSneak.isKeyDown()) {
                 mc.player.motionY = (ySpeed.getValue() * -1);
             }
 
@@ -164,7 +166,9 @@ public class ElytraFlight extends Module {
 
             if (mc.gameSettings.keyBindJump.isKeyDown()) {
                 mc.player.rotationPitch = (float) -rotationNCP.getValue();
-            } else if (mc.gameSettings.keyBindSneak.isKeyDown()) {
+            }
+
+            else if (mc.gameSettings.keyBindSneak.isKeyDown()) {
                 mc.player.rotationPitch = (float) rotationNCP.getValue();
             }
 
@@ -194,7 +198,9 @@ public class ElytraFlight extends Module {
         if (mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindForward.isKeyDown()) {
             motX = (-Math.sin(yaw) * hSpeed.getValue()) * -1;
             motZ = (Math.cos(yaw) * hSpeed.getValue()) * -1;
-        } else if (mc.gameSettings.keyBindForward.isKeyDown()) {
+        }
+
+        else if (mc.gameSettings.keyBindForward.isKeyDown()) {
             motX = -Math.sin(yaw) * hSpeed.getValue();
             motZ = Math.cos(yaw) * hSpeed.getValue();
         }

@@ -7,7 +7,9 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.color.ColorUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 
 /**
@@ -44,20 +46,17 @@ public class Tracers extends Module {
         if (mc.getRenderManager() == null || mc.getRenderManager().options == null)
             return;
 
-        for (Entity entity : mc.world.loadedEntityList) {
-            if (RenderUtil.shouldRenderTracer(entity, players.getValue(), mobs.getValue(), animals.getValue(), items.getValue())) {
-                final Vec3d pos = EntityUtil.interpolateEntity(entity, event.getPartialTicks()).subtract(mc.getRenderManager().renderPosX, mc.getRenderManager().renderPosY, mc.getRenderManager().renderPosZ);
+        mc.world.loadedEntityList.stream().filter(entity -> mc.player != entity).forEach(entity -> {
+            Vec3d pos = EntityUtil.interpolateEntity(entity, event.getPartialTicks()).subtract(mc.getRenderManager().renderPosX, mc.getRenderManager().renderPosY, mc.getRenderManager().renderPosZ);
 
-                if (pos != null) {
-                    final boolean bobbing = mc.gameSettings.viewBobbing;
-                    mc.gameSettings.viewBobbing = false;
-                    mc.entityRenderer.setupCameraTransform(event.getPartialTicks(), 0);
-                    final Vec3d forward = new Vec3d(0, 0, 1).rotatePitch(-(float) Math.toRadians(mc.player.rotationPitch)).rotateYaw(-(float) Math.toRadians(mc.player.rotationYaw));
-                    RenderUtil.drawLine3D((float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) forward.z, (float) pos.x, (float) pos.y, (float) pos.z, (float) lineWidth.getValue(), ColorUtil.getEntityColor(entity).getRGB());
-                    mc.gameSettings.viewBobbing = bobbing;
-                    mc.entityRenderer.setupCameraTransform(event.getPartialTicks(), 0);
-                }
+            if (entity instanceof EntityPlayer && !(entity instanceof EntityPlayerSP) && players.getValue() || (EntityUtil.isPassive(entity) && animals.getValue()) || (EntityUtil.isHostileMob(entity) && mobs.getValue()) || entity instanceof EntityItem && items.getValue() && pos != null) {
+                mc.entityRenderer.setupCameraTransform(event.getPartialTicks(), 0);
+
+                Vec3d forward = new Vec3d(0, 0, 1).rotatePitch(-(float) Math.toRadians(mc.player.rotationPitch)).rotateYaw(-(float) Math.toRadians(mc.player.rotationYaw));
+                RenderUtil.drawLine3D((float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) forward.z, (float) pos.x, (float) pos.y, (float) pos.z, (float) lineWidth.getValue(), ColorUtil.getEntityColor(entity).getRGB());
+
+                mc.entityRenderer.setupCameraTransform(event.getPartialTicks(), 0);
             }
-        }
+        });
     }
 }

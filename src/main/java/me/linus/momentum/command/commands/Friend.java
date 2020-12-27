@@ -19,35 +19,33 @@ public class Friend extends Command {
     @Override
     public void onCommand(String[] args) {
         if (args.length > 2) {
-            MessageUtil.sendClientMessage("Usage : " + Momentum.PREFIX + "friend [add/del] [playername]");
-        } try {
-            if (args[1].equalsIgnoreCase("add")){
-                if (FriendManager.isFriend(args[2])) {
-                    MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is already a friend!");
-                    return;
+            try {
+                if (args[1].equalsIgnoreCase("add")) {
+                    if (FriendManager.isFriend(args[2]))
+                        MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is already a friend!");
+
+                    else if (!FriendManager.isFriend(args[2])) {
+                        Momentum.friendManager.addFriend(args[2]);
+                        MessageUtil.sendClientMessage("Added " + TextFormatting.GREEN + args[2] + TextFormatting.WHITE + " to friends list");
+                    }
                 }
 
-                if (!FriendManager.isFriend(args[2])){
-                    Momentum.friendManager.addFriend(args[2]);
-                    MessageUtil.sendClientMessage("Added " + TextFormatting.GREEN + args[2] + TextFormatting.WHITE + " to friends list");
-                }
+                if (args[1].equalsIgnoreCase("del") || args[1].equalsIgnoreCase("remove")) {
+                    if (!FriendManager.isFriend(args[2]))
+                        MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is not a friend!");
 
+                    else if (FriendManager.isFriend(args[2])) {
+                        Momentum.friendManager.removeFriend(args[2]);
+                        MessageUtil.sendClientMessage("Removed " + TextFormatting.RED + args[2] + TextFormatting.WHITE + " from friends list");
+                    }
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+               e.printStackTrace();
             }
-
-            if (args[1].equalsIgnoreCase("del") || args[1].equalsIgnoreCase("remove")){
-                if (!FriendManager.isFriend(args[2])){
-                    MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is not a friend!");
-                    return;
-                }
-
-                if (FriendManager.isFriend(args[2])){
-                    Momentum.friendManager.removeFriend(args[2]);
-                    MessageUtil.sendClientMessage("Removed " + TextFormatting.RED + args[2] + TextFormatting.WHITE + " from friends list");
-                }
-            }
-        } catch(ArrayIndexOutOfBoundsException e) {
-            MessageUtil.sendClientMessage(Momentum.PREFIX + "friend [add/del] [playername]");
         }
+
+        else
+            MessageUtil.usageException(this, "[player name]");
     }
 
     @Override

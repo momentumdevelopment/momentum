@@ -11,6 +11,10 @@ import me.linus.momentum.module.modules.client.ClickGUI;
 
 public class FontUtil implements MixinInterface {
 
+    /**
+     * string rendering
+     */
+
     public static void drawStringWithShadow(String text, float x, float y, int color) {
         switch (ClickGUI.font.getValue()) {
             case 0:
@@ -58,20 +62,45 @@ public class FontUtil implements MixinInterface {
         }
     }
 
+    /**
+     * font info
+     */
+
     public static float getStringWidth(String text) {
-        if (ClickGUI.font.getValue() == 0)
-            return Momentum.latoFont.getStringWidth(text);
+        switch (ClickGUI.font.getValue()) {
+            case 0:
+                return Momentum.latoFont.getStringWidth(text);
+            case 1:
+                return Momentum.ubuntuFont.getStringWidth(text);
+            case 2:
+                return Momentum.verdanaFont.getStringWidth(text);
+            case 3:
+                return Momentum.comfortaaFont.getStringWidth(text);
+            case 4:
+                return Momentum.comicFont.getStringWidth(text);
+            case 5:
+                return mc.fontRenderer.getStringWidth(text);
+        }
 
-        if (ClickGUI.font.getValue() == 1)
-            return Momentum.verdanaFont.getStringWidth(text);
+        return -1;
+    }
 
-        if (ClickGUI.font.getValue() == 2)
-           return Momentum.comfortaaFont.getStringWidth(text);
+    public static float getFontHeight() {
+        switch (ClickGUI.font.getValue()) {
+            case 0:
+                return Momentum.latoFont.FONT_HEIGHT;
+            case 1:
+                return Momentum.ubuntuFont.FONT_HEIGHT;
+            case 2:
+                return Momentum.verdanaFont.FONT_HEIGHT;
+            case 3:
+                return Momentum.comfortaaFont.FONT_HEIGHT;
+            case 4:
+                return Momentum.comicFont.FONT_HEIGHT;
+            case 5:
+                return mc.fontRenderer.FONT_HEIGHT;
+        }
 
-        if (ClickGUI.font.getValue() == 3)
-           return Momentum.comicFont.getStringWidth(text);
-
-        else
-           return mc.fontRenderer.getStringWidth(text);
+        return -1;
     }
 }

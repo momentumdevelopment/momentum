@@ -5,8 +5,9 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.friend.FriendManager;
-import me.linus.momentum.util.combat.RotationUtil;
+import me.linus.momentum.util.world.RotationUtil;
 import me.linus.momentum.util.world.EntityUtil;
+import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBow;
 
@@ -39,7 +40,7 @@ public class AimBot extends Module {
         if (!(mc.player.getHeldItemMainhand().getItem() instanceof ItemBow) && !mc.player.isHandActive() && !(mc.player.getItemInUseMaxCount() >= 3) && onlyBow.getValue())
             return;
 
-        EntityPlayer target = EntityUtil.getClosestPlayer(range.getValue());
+        EntityPlayer target = WorldUtil.getClosestPlayer(range.getValue());
 
         if (target != null && (!FriendManager.isFriend(target.getName()) && FriendManager.isFriendModuleEnabled())) {
             if (mode.getValue() == 0)

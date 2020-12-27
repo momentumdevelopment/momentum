@@ -25,6 +25,9 @@ public class Dupe extends Command {
             y = Integer.valueOf(args[2]);
             z = Integer.valueOf(args[3]);
         }
+
+        else
+            MessageUtil.usageException(this, "[x y z]");
     }
 
     @Override

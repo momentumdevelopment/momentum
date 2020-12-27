@@ -32,18 +32,16 @@ public class ReverseStep extends Module {
     	if (nullCheck())
     	    return;
 
-        if (mc.player.isInWater() && waterPause.getValue() || mc.player.isInLava() && waterPause.getValue() || mc.player.isOnLadder() || mc.gameSettings.keyBindJump.isKeyDown())
+        if (mc.player.isInWater() && waterPause.getValue() || mc.player.isInLava() && waterPause.getValue() || mc.player.isOnLadder() || mc.gameSettings.keyBindJump.isKeyDown() || !mc.player.onGround)
             return;
 
         if (mc.player.isSneaking() && sneakPause.getValue())
             return;
 
-        if (mc.player != null && mc.player.onGround && !mc.player.isInWater() && !mc.player.isOnLadder()) {
-            for (double y = 0.0; y < height.getValue() + 0.5; y += 0.01) {
-                if (!mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, -y, 0.0)).isEmpty()) {
-                    mc.player.motionY = -10.0;
-                    break;
-                }
+        for (double y = 0.0; y < height.getValue() + 0.5; y += 0.01) {
+            if (!mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, -y, 0.0)).isEmpty()) {
+                mc.player.motionY = -10.0;
+                break;
             }
         }
     }

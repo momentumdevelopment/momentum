@@ -6,6 +6,8 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.world.WorldUtil;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -44,8 +46,9 @@ public class BurrowESP extends Module {
     public void onUpdate() {
         burrowList.clear();
 
-        mc.world.playerEntities.stream().filter(entityPlayer -> mc.player == entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range.getValue()).filter(entityPlayer -> FriendManager.isFriend(entityPlayer.getName()) && FriendManager.isFriendModuleEnabled()).forEach(entityPlayer -> {
-            burrowList.add(new BlockPos(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ));
+        WorldUtil.getNearbyPlayers(20).stream().forEach(entityPlayer -> {
+            if (mc.world.getBlockState(new BlockPos(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ)).getBlock().equals(Blocks.OBSIDIAN))
+                burrowList.add(new BlockPos(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ));
         });
     }
 

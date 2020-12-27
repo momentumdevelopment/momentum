@@ -26,6 +26,9 @@ public class FullBright extends Module {
 
     @Override
     public void onUpdate() {
+        if (nullCheck())
+            return;
+
         PotionEffect effect = new PotionEffect(MobEffects.NIGHT_VISION, 80950, 1, false, false);
 
         if (mode.getValue() == 1)

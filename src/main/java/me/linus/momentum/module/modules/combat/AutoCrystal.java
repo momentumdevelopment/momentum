@@ -11,11 +11,8 @@ import me.linus.momentum.util.client.system.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
-import me.linus.momentum.util.combat.RotationUtil;
+import me.linus.momentum.util.world.*;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.BlockUtils;
-import me.linus.momentum.util.world.EntityUtil;
-import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -94,7 +91,7 @@ public class AutoCrystal extends Module {
     public static SubMode verifyCalc = new SubMode(calculations, "Verify Calculation", "None", "Check");
     public static SubMode damageCalc = new SubMode(calculations, "Damage Calculation", "Full", "Semi");
     public static SubMode enemyFilter = new SubMode(calculations, "Enemy Filter", "None", "Lethal");
-    public static SubCheckbox taiwanTick = new SubCheckbox(calculations, "Taiwan-Tick", false);
+    public static SubCheckbox taiwanTick = new SubCheckbox(calculations, "Obama-Tick", false);
 
     public static Checkbox logic = new Checkbox("Logic", true);
     public static SubMode logicMode = new SubMode(logic, "Crystal Logic", "Break -> Place", "Place -> Break");
@@ -147,7 +144,7 @@ public class AutoCrystal extends Module {
         if (nullCheck())
             return;
 
-        currentTarget = EntityUtil.getClosestPlayer(enemyRange.getValue());
+        currentTarget = WorldUtil.getClosestPlayer(enemyRange.getValue());
 
         if (!taiwanTick.getValue())
             autoCrystal();

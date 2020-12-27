@@ -3,8 +3,7 @@ package me.linus.momentum.module.modules.player;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.combat.RotationUtil;
-import me.linus.momentum.util.world.PlayerUtil;
+import me.linus.momentum.util.world.RotationUtil;
 import net.minecraft.client.settings.KeyBinding;
 
 /**

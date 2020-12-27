@@ -23,11 +23,11 @@ public class WebTeleport extends Module {
     @Override
     public void onUpdate() {
         if (mc.player.isInWeb && mode.getValue() == 0) {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 10; i++)
                 mc.player.motionY--;
-            }
-        } if (mc.player.isInWeb && mode.getValue() == 1) {
-            mc.player.isInWeb = false;
         }
+
+        if (mc.player.isInWeb && mode.getValue() == 1)
+            mc.player.isInWeb = false;
     }
 }
