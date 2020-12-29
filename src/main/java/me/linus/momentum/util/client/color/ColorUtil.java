@@ -32,13 +32,13 @@ public abstract class ColorUtil implements MixinInterface {
 		return color;
 	}
 
-	public static int staticRainbow() {
+	public static Color staticRainbow() {
 		float hue = (float) (System.currentTimeMillis() % 11520L) / 12000.0f;
 		int rgb = Color.HSBtoRGB(hue, 1.0f, 1.0f);
 		int red = rgb >> 16 & 255;
 		int green = rgb >> 8 & 255;
 		int blue = rgb & 255;
-		return new Color(red, green, blue).getRGB();
+		return new Color(red, green, blue);
 	}
 
 	public static Color alphaStep(Color color, int index, int count) {

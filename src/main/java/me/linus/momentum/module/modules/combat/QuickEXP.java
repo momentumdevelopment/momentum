@@ -46,10 +46,10 @@ public class QuickEXP extends Module {
         if (Keyboard.isKeyDown(mendKey.getKey()) && 0 < PlayerUtil.getArmorDurability() && (mode.getValue() == 0 || mode.getValue() == 1)) {
             switch (mode.getValue()) {
                 case 1:
-                    mc.player.inventory.currentItem = InventoryUtil.getHotbarItemSlot(Items.EXPERIENCE_BOTTLE);
+                    InventoryUtil.switchToSlot(Items.EXPERIENCE_BOTTLE);
                     break;
                 case 0:
-                    InventoryUtil.switchToSlotGhost(InventoryUtil.getHotbarItemSlot(Items.EXPERIENCE_BOTTLE));
+                    InventoryUtil.switchToSlotGhost(Items.EXPERIENCE_BOTTLE);
                     break;
             }
 

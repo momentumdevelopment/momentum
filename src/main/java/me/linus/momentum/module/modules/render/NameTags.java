@@ -33,7 +33,7 @@ import java.util.List;
 
 public class NameTags extends Module {
     public NameTags() {
-        super("NameTags", Category.RENDER, "Draws useful information at player'subString heads");
+        super("NameTags", Category.RENDER, "Draws useful information at player's heads");
     }
 
     private static Checkbox health = new Checkbox("Health", true);

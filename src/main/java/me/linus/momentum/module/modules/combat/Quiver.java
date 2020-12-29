@@ -53,9 +53,8 @@ public class Quiver extends Module {
 
         hasStrength = strengthEffect != null;
 
-        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemBow) {
+        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemBow)
             mc.player.connection.sendPacket(new CPacketPlayer.Rotation(0, -90, true));
-        }
 
         if (mode.getValue() == 0) {
             if (strength.getValue() && !hasStrength) {

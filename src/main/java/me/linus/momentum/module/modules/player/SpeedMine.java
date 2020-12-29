@@ -50,9 +50,8 @@ public class SpeedMine extends Module {
                     event.setCanceled(true);
                     break;
                 case 1:
-                    if (mc.playerController.curBlockDamageMP >= 0.7f)
+                    if (mc.playerController.curBlockDamageMP >= 0.5f)
                         mc.playerController.curBlockDamageMP = 1.0f;
-
                     break;
                 case 2:
                     mc.playerController.curBlockDamageMP = 1.0f;

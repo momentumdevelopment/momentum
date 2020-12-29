@@ -29,10 +29,8 @@ public class FullBright extends Module {
         if (nullCheck())
             return;
 
-        PotionEffect effect = new PotionEffect(MobEffects.NIGHT_VISION, 80950, 1, false, false);
-
         if (mode.getValue() == 1)
-            mc.player.addPotionEffect(new PotionEffect(effect));
+            mc.player.addPotionEffect(new PotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 80950, 1, false, false)));
     }
 
     @Override

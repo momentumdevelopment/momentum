@@ -16,7 +16,7 @@ public class Rubberband extends Module {
         super("Rubberband", Category.PLAYER, "Triggers a manual rubberband");
     }
 
-    private static final Mode mode = new Mode("Mode", "Teleport", "Jump", "Packet");
+    private static final Mode mode = new Mode("Mode", "Teleport", "Jump", "Packet", "Explosion");
     public static Slider distance = new Slider("Distance", 0.0D, 4.0D, 20.0D, 1);
 
     @Override
@@ -40,10 +40,10 @@ public class Rubberband extends Module {
         if (nullCheck())
             return;
 
-        if (mc.player.getDistanceSq(preRubberbandPos) > distance.getValue()) {
+        if (mc.player.getDistanceSq(preRubberbandPos) > (distance.getValue() * distance.getValue())) {
             switch (mode.getValue()) {
                 case 0:
-                    mc.player.setPosition(mc.player.prevPosX, mc.player.prevPosY, mc.player.prevPosZ);
+                    mc.player.setPosition(preRubberbandPos.x, mc.player.prevPosY, mc.player.prevPosZ);
                     break;
                 case 1:
                     mc.player.jump();
@@ -52,7 +52,15 @@ public class Rubberband extends Module {
                 case 2:
                     mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.prevPosX, mc.player.prevPosY, mc.player.prevPosZ, true));
                     break;
+                case 3:
+                    mc.world.createExplosion(null, mc.player.posX, mc.player.posY, mc.player.posZ, 6, true);
+                    break;
             }
         }
+    }
+
+    @Override
+    public String getHUDData() {
+        return " " + mode.getMode(mode.getValue());
     }
 }

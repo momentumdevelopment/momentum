@@ -112,7 +112,9 @@ public class BoatFlight extends Module {
         if (mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindForward.isKeyDown()) {
             motX = (-Math.sin(yaw) * hSpeed.getValue()) * -1;
             motZ = (Math.cos(yaw) * hSpeed.getValue()) * -1;
-        } else if (mc.gameSettings.keyBindForward.isKeyDown()) {
+        }
+
+        else if (mc.gameSettings.keyBindForward.isKeyDown()) {
             motX = -Math.sin(yaw) * hSpeed.getValue();
             motZ = Math.cos(yaw) * hSpeed.getValue();
         }

@@ -68,7 +68,7 @@ public class HoleESP extends Module {
     }
 
     public void renderMain(Color obbyColor, Color bRockColor) {
-        findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= range.getValue()).forEach(hole -> {
+        findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= (range.getValue() * range.getValue())).forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
                         RenderUtil.drawPrismBlockPos(hole, mainHeight.getValue() - 1, obbyColor);
@@ -78,7 +78,7 @@ public class HoleESP extends Module {
                 }
             });
 
-        findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= range.getValue()).forEach(hole -> {
+        findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= (range.getValue() * range.getValue())).forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
                         RenderUtil.drawPrismBlockPos(hole, mainHeight.getValue() - 1, bRockColor);
@@ -90,7 +90,7 @@ public class HoleESP extends Module {
     }
 
     public void renderOutline(Color obbyColor, Color bRockColor) {
-        findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= range.getValue()).forEach(hole -> {
+        findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= (range.getValue() * range.getValue())).forEach(hole -> {
                 switch (outline.getValue()) {
                     case 0:
                         GL11.glLineWidth((float) lineWidth.getValue());
@@ -101,7 +101,7 @@ public class HoleESP extends Module {
                 }
             });
 
-            findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= range.getValue()).forEach(hole -> {
+            findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= (range.getValue() * range.getValue())).forEach(hole -> {
                 switch (outline.getValue()) {
                     case 0:
                         GL11.glLineWidth((float) lineWidth.getValue());

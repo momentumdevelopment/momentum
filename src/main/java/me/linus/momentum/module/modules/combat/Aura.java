@@ -7,7 +7,6 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.system.MathUtil;
 import me.linus.momentum.util.client.system.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.EnemyUtil;
@@ -22,8 +21,6 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author linustouchtips
@@ -36,25 +33,25 @@ public class Aura extends Module {
         super("Aura", Category.COMBAT, "Attacks entities");
     }
 
-    private static Mode mode = new Mode("Mode", "Closest", "Priority", "Armor");
+    private static final Mode mode = new Mode("Mode", "Closest", "Priority", "Armor");
     public static SubSlider priorityHealth = new SubSlider(mode, "Priority Health", 0.0D, 20.0D, 36.0D, 0);
 
     public static Checkbox attackCheck = new Checkbox("Attack Check", true);
-    private static SubCheckbox players = new SubCheckbox(attackCheck, "Players", true);
-    private static SubCheckbox animals = new SubCheckbox(attackCheck, "Animals", true);
-    private static SubCheckbox mobs = new SubCheckbox(attackCheck, "Mobs", true);
+    private static final SubCheckbox players = new SubCheckbox(attackCheck, "Players", true);
+    private static final SubCheckbox animals = new SubCheckbox(attackCheck, "Animals", true);
+    private static final SubCheckbox mobs = new SubCheckbox(attackCheck, "Mobs", true);
 
     public static Checkbox delay = new Checkbox("Delay", true);
     public static SubCheckbox useTicks = new SubCheckbox(delay, "Use Ticks", true);
     public static SubSlider tickDelay = new SubSlider(delay, "Tick Delay", 0.0D, 10.0D, 20.0D, 1);
-    public static SubCheckbox sync = new SubCheckbox(delay, "TPS Sync", true);
+    public static SubCheckbox sync = new SubCheckbox(delay, "TPS Sync", false);
 
     public static Checkbox armorMelt = new Checkbox("Armor Melt", false);
 
     public static Mode weaponCheck = new Mode("Weapon", "Swing", "Damage");
-    private static SubCheckbox autoSwitch = new SubCheckbox(weaponCheck, "Auto Switch", true);
-    private static SubCheckbox swordOnly = new SubCheckbox(weaponCheck, "Sword Only", true);
-    private static SubCheckbox thirtyTwoKOnly = new SubCheckbox(weaponCheck, "32K Only", false);
+    private static final SubCheckbox autoSwitch = new SubCheckbox(weaponCheck, "Auto Switch", true);
+    private static final SubCheckbox swordOnly = new SubCheckbox(weaponCheck, "Sword Only", true);
+    private static final SubCheckbox thirtyTwoKOnly = new SubCheckbox(weaponCheck, "32K Only", false);
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubCheckbox cannotSee = new SubCheckbox(pause, "Target Cannot be Seen", false);
@@ -63,7 +60,7 @@ public class Aura extends Module {
     public static SubCheckbox eatPause = new SubCheckbox(pause, "When Eating", false);
 
     public static Checkbox rotate = new Checkbox("Rotate", false);
-    public static SubCheckbox spoof = new SubCheckbox(rotate, "Spoof Angles", false);
+    public static SubCheckbox spoof = new SubCheckbox(rotate, "Spoof Angles", true);
 
     public static Slider range = new Slider("Range", 0.0D, 6.0D, 10.0D, 0);
 
@@ -86,26 +83,14 @@ public class Aura extends Module {
         if (nullCheck())
             return;
 
-        int slot;
-        if (autoSwitch.getValue()) {
-            for (int i = 0; i < 9; i++) {
-                if (mc.player.inventory.getStackInSlot(i).getItem().equals(getItem())) {
-                    slot = i;
-                    mc.player.inventory.currentItem = slot;
-                    mc.playerController.updateController();
-                    break;
-                }
-            }
-        }
+        if (autoSwitch.getValue())
+            InventoryUtil.switchToSlot(getItem());
 
         if (rotate.getValue()) {
             Vec3d pos = EntityUtil.interpolateEntityTime(currentTarget, this.mc.getRenderPartialTicks());
-            float[] angles = MathUtil.calcAngle(EntityUtil.interpolateEntityTime(this.mc.player, this.mc.getRenderPartialTicks()), pos);
 
-            if (!spoof.getValue()) {
-                mc.player.rotationYaw = angles[0];
-                mc.player.rotationPitch = angles[1];
-            }
+            if (!spoof.getValue())
+                RotationUtil.lookAtLegit(currentTarget);
 
             if (spoof.getValue())
                 RotationUtil.lookAtPacket(pos.x, pos.y, pos.z, mc.player);
@@ -115,43 +100,43 @@ public class Aura extends Module {
     }
 
     public void killAura() {
-        List<Entity> targets = null;
+        Entity target = null;
+
         if (mode.getValue() == 0)
-            targets = mc.world.loadedEntityList.stream().filter(entity -> entity != mc.player).filter(entity -> mc.player.getDistance(entity) <= range.getValue()).filter(entity -> !entity.isDead).filter(entity -> EnemyUtil.attackCheck(entity, players.getValue(), animals.getValue(), mobs.getValue())).sorted(Comparator.comparing(e -> mc.player.getDistance(e))).collect(Collectors.toList());
+            target = mc.world.loadedEntityList.stream().filter(entity -> entity != mc.player).filter(entity -> mc.player.getDistance(entity) <= range.getValue()).filter(entity -> !entity.isDead).filter(entity -> EnemyUtil.attackCheck(entity, players.getValue(), animals.getValue(), mobs.getValue())).sorted(Comparator.comparing(e -> mc.player.getDistance(e))).findFirst().orElse(null);
 
         if (mode.getValue() == 1)
-            targets = mc.world.playerEntities.stream().filter(entity -> entity != mc.player).filter(entity -> mc.player.getDistance(entity) <= range.getValue()).filter(entity -> !entity.isDead).sorted(Comparator.comparing(e -> e.getHealth() + e.getAbsorptionAmount())).collect(Collectors.toList());
+            target = mc.world.playerEntities.stream().filter(entity -> entity != mc.player).filter(entity -> mc.player.getDistance(entity) <= range.getValue()).filter(entity -> !entity.isDead).min(Comparator.comparing(entityPlayer -> EnemyUtil.getHealth(entityPlayer))).orElse(null);
 
-        targets.forEach(target -> {
-            currentTarget = target;
+        currentTarget = target;
 
-            if (swordOnly.getValue() && !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))
-                return;
+        if (swordOnly.getValue() && !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))
+            return;
 
-            if (cannotSee.getValue() && (!mc.player.canEntityBeSeen(target) && !EntityUtil.canEntityFeetBeSeen(target)))
-                return;
+        if (cannotSee.getValue() && (!mc.player.canEntityBeSeen(target) && !EntityUtil.canEntityFeetBeSeen(target)))
+            return;
 
-            if (crystalPause.getValue() && (ModuleManager.getModuleByName("AutoCrystal").isEnabled() || mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal))
-                return;
+        if (crystalPause.getValue() && (ModuleManager.getModuleByName("AutoCrystal").isEnabled() || mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal))
+            return;
 
-            if (eatPause.getValue() && (mc.player.getHeldItemMainhand().getItem() instanceof ItemFood))
-                return;
+        if (eatPause.getValue() && (mc.player.getHeldItemMainhand().getItem() instanceof ItemFood))
+            return;
 
-            if (holePause.getValue() && !HoleUtil.isInHole())
-                return;
+        if (holePause.getValue() && !HoleUtil.isInHole())
+            return;
 
-            if (thirtyTwoKOnly.getValue() && !InventoryUtil.Is32k(mc.player.getHeldItemMainhand()))
-                return;
+        if (thirtyTwoKOnly.getValue() && !InventoryUtil.Is32k(mc.player.getHeldItemMainhand()))
+            return;
 
-            if (FriendManager.isFriend(target.getName()) && FriendManager.isFriendModuleEnabled())
-                return;
+        if (FriendManager.isFriend(target.getName()) && FriendManager.isFriendModuleEnabled())
+            return;
 
+        if (target != null)
             attackEntity(target);
-        });
     }
 
     public void attackEntity(Entity target) {
-        if (useTicks.getValue() && syncTimer.passed((long) (tickDelay.getValue() * 50)))
+        if (useTicks.getValue() && !sync.getValue() && syncTimer.passed((long) (tickDelay.getValue() * 50)))
             PlayerUtil.attackEntity(target);
 
         if (sync.getValue() && syncTimer.passed((long) ((TickUtil.TPS / 20) * 1000)))
@@ -169,7 +154,7 @@ public class Aura extends Module {
     }
 
     public Item getItem() {
-        if (mode.getValue() == 0)
+        if (weaponCheck.getValue() == 0)
             return Items.DIAMOND_SWORD;
         else
             return Items.DIAMOND_AXE;

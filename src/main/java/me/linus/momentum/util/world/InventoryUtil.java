@@ -39,8 +39,6 @@ public class InventoryUtil implements MixinInterface {
     }
 
     public static void moveItemToOffhand(int slot) {
-        boolean moving = false;
-        boolean returning = false;
         int returnSlot = -1;
 
         if (slot == -1)
@@ -60,8 +58,9 @@ public class InventoryUtil implements MixinInterface {
             mc.playerController.windowClick(0, returnSlot < 9 ? returnSlot + 36 : returnSlot, 0, ClickType.PICKUP, mc.player);
     }
 
-    public static void moveItemToOffhand(Item item) {
-        int slot = getInventoryItemSlot(item);
+    public static void moveItemToOffhand(Item item, boolean hotbar) {
+        int slot = getInventoryItemSlot(item, hotbar);
+
         if (slot != -1)
             moveItemToOffhand(slot);
     }
@@ -82,9 +81,10 @@ public class InventoryUtil implements MixinInterface {
         return slot;
     }
 
-    public static int getInventoryItemSlot(Item item) {
+    public static int getInventoryItemSlot(Item item, boolean hotbar) {
         int slot = -1;
-        for (int i = 0; i < 45; i++) {
+
+        for (int i = 0; hotbar ? i < 36 : i < 45; i++) {
             if (mc.player.inventory.getStackInSlot(i).getItem() == item) {
                 slot = i;
                 break;

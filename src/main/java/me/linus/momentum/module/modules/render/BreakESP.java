@@ -21,7 +21,7 @@ public class BreakESP extends Module {
     }
 
     public static Slider range = new Slider("Range", 0.0D, 12.0D, 20.0D, 0);
-    public static Checkbox showDamage = new Checkbox("Show Damage", true);
+    public static Checkbox showInfo = new Checkbox("Render Info", true);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 250.0D, 255.0D, 0);
@@ -32,7 +32,7 @@ public class BreakESP extends Module {
     @Override
     public void setup() {
         addSetting(range);
-        addSetting(showDamage);
+        addSetting(showInfo);
         addSetting(color);
     }
 
@@ -42,7 +42,7 @@ public class BreakESP extends Module {
             if (destroyBlockProgress != null && destroyBlockProgress.getPosition().getDistance((int) mc.player.posX,(int)  mc.player.posY,(int)  mc.player.posZ) <= range.getValue()) {
                 RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
 
-                if (showDamage.getValue())
+                if (showInfo.getValue())
                     RenderUtil.drawNametagFromBlockPos(destroyBlockProgress.getPosition(), mc.world.getEntityByID(integer).getName() + " " + (destroyBlockProgress.getPartialBlockDamage() * 10) + "%");
             }
         });

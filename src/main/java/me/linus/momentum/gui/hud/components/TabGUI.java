@@ -95,7 +95,7 @@ public class TabGUI extends HUDComponent {
             else
                 currentHovered++;
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+        if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && !hoveringModules)
             hoveringModules = true;
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
@@ -103,7 +103,7 @@ public class TabGUI extends HUDComponent {
             currentModuleHovered = 0;
         }
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && hoveringModules)
+        if ((Keyboard.isKeyDown(Keyboard.KEY_RETURN) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) && hoveringModules)
             ModuleManager.getModulesInCategory(categories[currentHovered]).get(currentModuleHovered).toggle();
     }
 }

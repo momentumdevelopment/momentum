@@ -30,7 +30,7 @@ public class Criticals extends Module {
     public static SubCheckbox whenFalling = new SubCheckbox(pause, "When Falling", true);
     public static SubCheckbox waterPause = new SubCheckbox(pause, "When in Liquid", true);
 
-    Timer timer = new Timer();
+    Timer critTimer = new Timer();
 
     @Override
     public void setup() {
@@ -67,11 +67,11 @@ public class Criticals extends Module {
                         Criticals.mc.player.connection.sendPacket(new CPacketPlayer.Position(Criticals.mc.player.posX, Criticals.mc.player.posY, Criticals.mc.player.posZ, false));
                         break;
                     case 2:
-                        if (timer.passed(1000)) {
+                        if (critTimer.passed(1000)) {
                             mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.11, mc.player.posZ, false));
                             mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.1100013579, mc.player.posZ, false));
                             mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 1.3579E-6, mc.player.posZ, false));
-                            timer.reset();
+                            critTimer.reset();
                         }
 
                         break;

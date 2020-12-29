@@ -6,7 +6,6 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.external.MessageUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -78,7 +77,7 @@ public class AutoCity extends Module {
         currentTarget = WorldUtil.getClosestPlayer(enemyRange.getValue());
 
         if (autoSwitch.getValue())
-            InventoryUtil.switchToSlot(InventoryUtil.getHotbarItemSlot(Items.DIAMOND_PICKAXE));
+            InventoryUtil.switchToSlot(Items.DIAMOND_PICKAXE);
 
         mc.player.swingArm(EnumHand.MAIN_HAND);
         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, breakTarget, EnumFacing.DOWN));

@@ -228,9 +228,9 @@ public class Skeleton extends Module {
     }
 
     public static void addEntity(EntityPlayer e, ModelPlayer model) {
-        entities.put(e, new float[][] { {
+        entities.put(e, new float[][] {{
             model.bipedHead.rotateAngleX, model.bipedHead.rotateAngleY, model.bipedHead.rotateAngleZ }, { model.bipedRightArm.rotateAngleX, model.bipedRightArm.rotateAngleY, model.bipedRightArm.rotateAngleZ }, { model.bipedLeftLeg.rotateAngleX, model.bipedLeftLeg.rotateAngleY, model.bipedLeftLeg.rotateAngleZ }, { model.bipedRightLeg.rotateAngleX, model.bipedRightLeg.rotateAngleY, model.bipedRightLeg.rotateAngleZ }, { model.bipedLeftLeg.rotateAngleX, model.bipedLeftLeg.rotateAngleY, model.bipedLeftLeg.rotateAngleZ
-        } });
+        }});
     }
 
     private boolean doesNotContain(EntityPlayer player) {

@@ -34,6 +34,7 @@ public class Offhand extends Module {
 
     public static final Checkbox swordGap = new Checkbox("Sword Gapple", true);
     public static final Checkbox forceGap = new Checkbox("Force Gapple", true);
+    public static final Checkbox hotbar = new Checkbox("Search Hotbar", false);
 
     @Override
     public void setup() {
@@ -43,6 +44,7 @@ public class Offhand extends Module {
         addSetting(checks);
         addSetting(swordGap);
         addSetting(forceGap);
+        addSetting(hotbar);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class Offhand extends Module {
         if (mc.player.isElytraFlying() & elytraCheck.getValue())
             return;
 
-        if (mc.player.fallDistance > 10 && fallCheck.getValue())
+        if (mc.player.fallDistance > 5 && fallCheck.getValue())
             return;
 
         if (!ModuleManager.getModuleByName("AutoCrystal").isEnabled() && caFunction.getValue())
@@ -79,17 +81,20 @@ public class Offhand extends Module {
         if (health.getValue() > PlayerUtil.getHealth())
             searching = Items.TOTEM_OF_UNDYING;
 
-        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordGap.getValue())
+        else if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordGap.getValue())
             searching = Items.GOLDEN_APPLE;
 
-        if (forceGap.getValue() && Mouse.isButtonDown(1))
+        else if (forceGap.getValue() && Mouse.isButtonDown(1))
             searching = Items.GOLDEN_APPLE;
 
         if (mc.player.getHeldItemOffhand().getItem() == searching)
             return;
 
-        if (InventoryUtil.getInventoryItemSlot(searching)!= -1) {
-            InventoryUtil.moveItemToOffhand(InventoryUtil.getInventoryItemSlot(searching));
+        if (mc.currentScreen != null)
+            return;
+
+        if (InventoryUtil.getInventoryItemSlot(searching, hotbar.getValue()) != -1) {
+            InventoryUtil.moveItemToOffhand(InventoryUtil.getInventoryItemSlot(searching, hotbar.getValue()));
             return;
         }
 
@@ -114,8 +119,8 @@ public class Offhand extends Module {
         if (mc.player.getHeldItemOffhand().getItem() == searching)
             return;
 
-        if (InventoryUtil.getInventoryItemSlot(searching) != -1)
-            InventoryUtil.moveItemToOffhand(InventoryUtil.getInventoryItemSlot(searching));
+        if (InventoryUtil.getInventoryItemSlot(searching, hotbar.getValue()) != -1)
+            InventoryUtil.moveItemToOffhand(InventoryUtil.getInventoryItemSlot(searching, hotbar.getValue()));
     }
 
     @Override

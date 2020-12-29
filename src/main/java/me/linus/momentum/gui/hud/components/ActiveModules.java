@@ -91,7 +91,7 @@ public class ActiveModules extends HUDComponent {
             case 0:
                 return ColorUtil.alphaStep(new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue()), 50, (count * 2) + 10).getRGB();
             case 1:
-                return ColorUtil.staticRainbow();
+                return ColorUtil.staticRainbow().getRGB();
             case 2:
                 return ColorUtil.rainbow(1);
             case 3:
