@@ -11,7 +11,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.system.MathUtil;
-import me.linus.momentum.util.world.PlayerUtil;
+import me.linus.momentum.util.world.MotionUtil;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
@@ -79,7 +79,7 @@ public class Speed extends Module {
         double zDist = mc.player.posZ - mc.player.prevPosZ;
         lastDist = Math.sqrt(xDist * xDist + zDist * zDist);
 
-        if (jump.getValue() && mc.player.onGround && PlayerUtil.isMoving() && mode.getValue() != 3)
+        if (jump.getValue() && mc.player.onGround && MotionUtil.isMoving() && mode.getValue() != 3)
             mc.player.jump();
 
         if (mode.getValue() == 3)
@@ -135,7 +135,7 @@ public class Speed extends Module {
         if (timerDelay != 0)
             mc.timer.tickLength = 50;
 
-        else if (PlayerUtil.hasMotion()) {
+        else if (MotionUtil.hasMotion()) {
             if (useTimer.getValue())
                 mc.timer.tickLength = (float) (50 / timerTicks.getValue());
 
@@ -143,7 +143,7 @@ public class Speed extends Module {
             mc.player.motionZ *= 1.02f;
         }
 
-        if (mc.player.onGround && PlayerUtil.hasMotion())
+        if (mc.player.onGround && MotionUtil.hasMotion())
             level = 2;
 
         if (MathUtil.round(mc.player.posY - (double)((int)mc.player.posY)) == MathUtil.round(0.138)) {
@@ -228,13 +228,13 @@ public class Speed extends Module {
         if (timerDelay != 0)
             mc.timer.tickLength = 50f;
 
-        else if (PlayerUtil.hasMotion()) {
+        else if (MotionUtil.hasMotion()) {
             mc.timer.tickLength = 50f / 1.3f;
             mc.player.motionX *= 1.02f;
             mc.player.motionZ *= 1.02f;
         }
         
-        if (mc.player.onGround && PlayerUtil.hasMotion())
+        if (mc.player.onGround && MotionUtil.hasMotion())
             level = 2;
         
         if (MathUtil.round(mc.player.posY - (double)((int)mc.player.posY)) == MathUtil.round(0.138)) {
@@ -316,13 +316,13 @@ public class Speed extends Module {
         if (timerDelay != 0)
             mc.timer.tickLength = 50f;
 
-        else if (PlayerUtil.hasMotion()) {
+        else if (MotionUtil.hasMotion()) {
             mc.timer.tickLength = 50f / 1.3f;
             mc.player.motionX *= 1.02f;
             mc.player.motionZ *= 1.02f;
         }
 
-        if (mc.player.onGround && PlayerUtil.hasMotion())
+        if (mc.player.onGround && MotionUtil.hasMotion())
             level = 2;
 
         if (MathUtil.round(mc.player.posY - (double) ((int) mc.player.posY)) == MathUtil.round(0.138)) {
@@ -393,8 +393,8 @@ public class Speed extends Module {
         
         double mx = Math.cos(Math.toRadians(yaw + 90.0f));
         double mz = Math.sin(Math.toRadians(yaw + 90.0f));
-        event.setX((double) forward * moveSpeed * mx + (double)strafe * moveSpeed * mz);
-        event.setZ((double) forward * moveSpeed * mz - (double)strafe * moveSpeed * mx);
+        event.setX((double) forward * moveSpeed * mx + (double) strafe * moveSpeed * mz);
+        event.setZ((double) forward * moveSpeed * mz - (double) strafe * moveSpeed * mx);
         mc.player.stepHeight = 0.6f;
 
         if (forward == 0.0f && strafe == 0.0f) {
@@ -409,7 +409,7 @@ public class Speed extends Module {
                 mc.timer.tickLength = 50f / 1.15f;
 
             mc.player.jump();
-            PlayerUtil.setSpeed(mc.player, PlayerUtil.getBaseMoveSpeed() + speed.getValue());
+            MotionUtil.setSpeed(mc.player, MotionUtil.getBaseMoveSpeed() + speed.getValue());
         }
 
         else {

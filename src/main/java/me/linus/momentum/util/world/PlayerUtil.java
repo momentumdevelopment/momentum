@@ -1,34 +1,20 @@
 package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.system.MathUtil;
-import me.linus.momentum.util.client.system.Timer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketEntityAction;
-import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.client.CPacketPlayer.Rotation;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextFormatting;
-
-import java.text.DecimalFormat;
 
 /**
  * @author linustouchtips
@@ -36,42 +22,9 @@ import java.text.DecimalFormat;
  */
 
 public class PlayerUtil implements MixinInterface {
-    private static final float roundedForward = getRoundedMovementInput(mc.player.movementInput.moveForward);
-    private static final float roundedStrafing = getRoundedMovementInput(mc.player.movementInput.moveStrafe);
-    private static double prevPosX;
-    private static double prevPosZ;
-    private static final Timer timer = new Timer();
-    final static DecimalFormat Formatter = new DecimalFormat("#.#");
 
     public static double getHealth() {
         return mc.player.getHealth() + mc.player.getAbsorptionAmount();
-    }
-
-    public static boolean isInHole() {
-        BlockPos blockPos = getLocalPlayerPosFloored();
-        IBlockState blockState = mc.world.getBlockState(blockPos);
-
-        if (blockState.getBlock() != Blocks.AIR)
-            return false;
-
-        if (mc.world.getBlockState(blockPos.up()).getBlock() != Blocks.AIR)
-            return false;
-
-        if (mc.world.getBlockState(blockPos.down()).getBlock() == Blocks.AIR)
-            return false;
-
-        final BlockPos[] touchingBlocks = new BlockPos[]{
-                blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west()
-        };
-
-        int validHorizontalBlocks = 0;
-        for (BlockPos touching : touchingBlocks) {
-            final IBlockState touchingState = mc.world.getBlockState(touching);
-            if ((touchingState.getBlock() != Blocks.AIR) && touchingState.isFullBlock())
-                validHorizontalBlocks++;
-        }
-
-        return validHorizontalBlocks >= 4;
     }
 
     public static BlockPos getLocalPlayerPosFloored() {
@@ -88,91 +41,6 @@ public class PlayerUtil implements MixinInterface {
         }
     }
 
-    public static void placeBlock(final BlockPos pos, boolean rotate) {
-        for (final EnumFacing enumFacing : EnumFacing.values()) {
-            if (!mc.world.getBlockState(pos.offset(enumFacing)).getBlock().equals(Blocks.AIR) && !EntityUtil.isIntercepted(pos)) {
-                final Vec3d vec = new Vec3d(pos.getX() + 0.5D + (double) enumFacing.getFrontOffsetX() * 0.5D, pos.getY() + 0.5D + (double) enumFacing.getFrontOffsetY() * 0.5D, pos.getZ() + 0.5D + (double) enumFacing.getFrontOffsetZ() * 0.5D);
-
-                final float[] old = new float[] {
-                        mc.player.rotationYaw, mc.player.rotationPitch
-                };
-
-                if (rotate)
-                    mc.player.connection.sendPacket(new CPacketPlayer.Rotation((float) Math.toDegrees(Math.atan2((vec.z - mc.player.posZ), (vec.x - mc.player.posX))) - 90.0F, (float) (-Math.toDegrees(Math.atan2((vec.y - (mc.player.posY + (double) mc.player.getEyeHeight())), (Math.sqrt((vec.x - mc.player.posX) * (vec.x - mc.player.posX) + (vec.z - mc.player.posZ) * (vec.z - mc.player.posZ)))))), mc.player.onGround));
-
-                mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
-                mc.playerController.processRightClickBlock(mc.player, mc.world, pos.offset(enumFacing), enumFacing.getOpposite(), new Vec3d(pos), EnumHand.MAIN_HAND);
-                mc.player.swingArm(EnumHand.MAIN_HAND);
-                mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
-
-                if (rotate)
-                    mc.player.connection.sendPacket(new CPacketPlayer.Rotation(old[0], old[1], mc.player.onGround));
-
-                return;
-            }
-        }
-    }
-
-    public static void faceVectorPacketInstant(Vec3d vec) {
-        final float[] rotations = getNeededRotations2(vec);
-        mc.player.connection.sendPacket(new CPacketPlayer.Rotation(rotations[0], rotations[1], mc.player.onGround));
-    }
-
-    private static float[] getNeededRotations2(Vec3d vec) {
-        final Vec3d eyesPos = EntityUtil.getEyesPos();
-        final double diffX = vec.x - eyesPos.x;
-        final double diffY = vec.y - eyesPos.y;
-        final double diffZ = vec.z - eyesPos.z;
-        final double diffXZ = Math.sqrt(diffX * diffX + diffZ * diffZ);
-        final float yaw = (float) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F;
-        final float pitch = (float) -Math.toDegrees(Math.atan2(diffY, diffXZ));
-        return new float[]{mc.player.rotationYaw + MathHelper.wrapDegrees(yaw - mc.player.rotationYaw), mc.player.rotationPitch + MathHelper.wrapDegrees(pitch - mc.player.rotationPitch)};
-    }
-
-    public static boolean isMoving() {
-        return (mc.player.moveForward != 0.0D || mc.player.moveStrafing != 0.0D);
-    }
-
-    public static double getDirection() {
-        float rotationYaw = mc.player.rotationYaw;
-
-        if (mc.player.moveForward < 0f)
-            rotationYaw += 180f;
-
-        float forward = 1f;
-
-        if (mc.player.moveForward < 0f)
-            forward = -0.5f;
-
-        else if (mc.player.moveForward > 0f)
-            forward = 0.5f;
-
-        if (mc.player.moveStrafing > 0f)
-            rotationYaw -= 90f * forward;
-
-        if (mc.player.moveStrafing < 0f)
-            rotationYaw += 90f * forward;
-
-        return Math.toRadians(rotationYaw);
-    }
-
-    public static double calcMoveYaw(float yawIn) {
-        float moveForward = roundedForward;
-        float moveString = roundedStrafing;
-
-        float strafe = 90 * moveString;
-        if (moveForward != 0f) {
-            strafe *= moveForward * 0.5f;
-        } else strafe *= 1f;
-
-        float yaw = yawIn - strafe;
-        if (moveForward < 0f) {
-            yaw -= 180;
-        } else yaw -= 0;
-
-        return Math.toRadians(yaw);
-    }
-
     public static int getArmorDurability() {
         int totalDurability = 0;
 
@@ -180,85 +48,6 @@ public class PlayerUtil implements MixinInterface {
             totalDurability = totalDurability + itemStack.getItemDamage();
 
         return totalDurability;
-    }
-
-    private static float getRoundedMovementInput(Float input) {
-        if (input > 0) {
-            input = 1f;
-        } else if (input < 0) {
-            input = -1f;
-        } else input = 0f;
-        return input;
-    }
-
-    public static int getHotbarSlot(final Block block) {
-        for (int i = 0; i < 9; i++) {
-            final Item item = mc.player.inventory.getStackInSlot(i).getItem();
-
-            if (item instanceof ItemBlock && ((ItemBlock) item).getBlock().equals(block)) return i;
-        }
-
-        return -1;
-    }
-
-    public static void rotateToPos(double x, double y, double z) {
-        double diffX = x - mc.player.posX;
-        double diffY = y - (mc.player.posY + (double) mc.player.getEyeHeight());
-        double diffZ = z - mc.player.posZ;
-        double diffXZ = Math.sqrt(diffX * diffX + diffZ * diffZ);
-
-        float yaw = (float) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90.0F;
-        float pitch = (float) (-Math.toDegrees(Math.atan2(diffY, diffXZ)));
-
-        mc.player.connection.sendPacket(new Rotation(yaw, pitch, mc.player.onGround));
-    }
-
-    public static Vec3d direction(float yaw) {
-        return new Vec3d(Math.cos(MathUtil.degToRad(yaw + 90f)), 0, Math.sin(MathUtil.degToRad(yaw + 90f)));
-    }
-
-    public static void setSpeed(EntityLivingBase entity, double speed){
-        double[] dir = directionSpeed(speed);
-        entity.motionX = dir[0];
-        entity.motionZ = dir[1];
-    }
-
-    public static double getBaseMoveSpeed(){
-        double baseSpeed = 0.2873;
-        if (mc.player != null && mc.player.isPotionActive(Potion.getPotionById(1))){
-            final int amplifier = mc.player.getActivePotionEffect(Potion.getPotionById(1)).getAmplifier();
-            baseSpeed *= 1.0 + 0.2 * (amplifier + 1);
-        }
-
-        return baseSpeed;
-    }
-
-    public static double[] directionSpeed(double speed) {
-        float forward = mc.player.movementInput.moveForward;
-        float side = mc.player.movementInput.moveStrafe;
-        float yaw = mc.player.prevRotationYaw + (mc.player.rotationYaw - mc.player.prevRotationYaw) * mc.getRenderPartialTicks();
-        if (forward != 0.0f) {
-            if (side > 0.0f) {
-                yaw += (float)(forward > 0.0f ? -45 : 45);
-            } else if (side < 0.0f) {
-                yaw += (float)(forward > 0.0f ? 45 : -45);
-            }
-
-            side = 0.0f;
-            if (forward > 0.0f) {
-                forward = 1.0f;
-            } else if (forward < 0.0f) {
-                forward = -1.0f;
-            }
-        }
-
-        double sin = Math.sin(Math.toRadians(yaw + 90.0f));
-        double cos = Math.cos(Math.toRadians(yaw + 90.0f));
-        double posX = (double)forward * speed * cos + (double)side * speed * sin;
-        double posZ = (double)forward * speed * sin - (double)side * speed * cos;
-        return new double[] {
-                posX, posZ
-        };
     }
 
     public static boolean inPlayer(BlockPos pos) {
@@ -282,38 +71,6 @@ public class PlayerUtil implements MixinInterface {
             mc.player.ridingEntity.setVelocity(0f, 0f, 0f);
             mc.player.ridingEntity.setPosition(mc.player.posX, mc.player.posY - fallSpeed + yOffset, mc.player.posZ);
         }
-    }
-
-    public static String getSpeed() {
-        if (timer.passed(1000)) {
-            prevPosX = mc.player.prevPosX;
-            prevPosZ = mc.player.prevPosZ;
-        }
-
-        final double deltaX = mc.player.posX - prevPosX;
-        final double deltaZ = mc.player.posZ - prevPosZ;
-
-        float distance = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
-
-        double KMH = Math.floor((distance / 1000.0f) / (0.05f / 3600.0f));
-
-        String formatter = Formatter.format(KMH);
-
-        if (!formatter.contains("."))
-            formatter += ".0";
-
-        final String bps = TextFormatting.GRAY + "Speed" + TextFormatting.WHITE + " " + formatter + TextFormatting.GRAY + "km/h";
-
-        return bps;
-    }
-
-    public String format(double input) {
-        String result = Formatter.format(input);
-
-        if (!result.contains("."))
-            result += ".0";
-
-        return result;
     }
 
     public static boolean isTrapped() {
@@ -340,10 +97,6 @@ public class PlayerUtil implements MixinInterface {
         }
 
         return true;
-    }
-
-    public static boolean hasMotion() {
-        return mc.player.motionX != 0.0 && mc.player.motionZ != 0.0 && mc.player.motionY != 0.0;
     }
 
     public static boolean getArmor(EntityPlayer target, double durability) {
@@ -390,33 +143,6 @@ public class PlayerUtil implements MixinInterface {
             }
 
             return inLiquid;
-        }
-
-        return false;
-    }
-
-    public static boolean isOnLiquid(double offset) {
-        if (mc.player.fallDistance >= 3.0f)
-            return false;
-
-        if (mc.player != null) {
-            final AxisAlignedBB bb = mc.player.getRidingEntity() != null ? mc.player.getRidingEntity().getEntityBoundingBox().contract(0.0d, 0.0d, 0.0d).offset(0.0d, -offset, 0.0d) : mc.player.getEntityBoundingBox().contract(0.0d, 0.0d, 0.0d).offset(0.0d, -offset, 0.0d);
-            boolean onLiquid = false;
-            int y = (int) bb.minY;
-
-            for (int x = MathHelper.floor(bb.minX); x < MathHelper.floor(bb.maxX + 1.0D); x++) {
-                for (int z = MathHelper.floor(bb.minZ); z < MathHelper.floor(bb.maxZ + 1.0D); z++) {
-                    final Block block = mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
-                    if (block != Blocks.AIR) {
-                        if (!(block instanceof BlockLiquid))
-                            return false;
-
-                        onLiquid = true;
-                    }
-                }
-            }
-
-            return onLiquid;
         }
 
         return false;

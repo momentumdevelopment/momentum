@@ -21,7 +21,8 @@
       "MixinRenderEnderCrystal",
       "MixinRenderLivingBase",
       "MixinGuiScreen",
-      "MixinMovementInputFromOptions"
+      "MixinMovementInputFromOptions",
+      "MixinRenderPlayer"
     ],
 
     "client": [

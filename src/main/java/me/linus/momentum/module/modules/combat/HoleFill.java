@@ -6,7 +6,8 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.BlockUtils;
+import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.HoleUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Blocks;
@@ -54,21 +55,7 @@ public class HoleFill extends Module {
         addSetting(color);
     }
 
-    private int oldHand;
     BlockPos renderBlock;
-
-    @Override
-    public void onEnable() {
-        if (nullCheck())
-            return;
-
-        oldHand = mc.player.inventory.currentItem;
-    }
-
-    @Override
-    public void onDisable() {
-        mc.player.inventory.currentItem = oldHand;
-    }
 
     @Override
     public void onUpdate() {
@@ -103,9 +90,9 @@ public class HoleFill extends Module {
         renderBlock = blocks.get(0);
 
         if (autoSwitch.getValue())
-            mc.player.inventory.currentItem = getItem();
+            InventoryUtil.switchToSlot(getItem());
 
-        PlayerUtil.placeBlock(blocks.get(0), rotate.getValue());
+        BlockUtil.placeBlock(blocks.get(0), rotate.getValue());
     }
 
     private int getItem() {
@@ -129,7 +116,7 @@ public class HoleFill extends Module {
 
     public List<BlockPos> getHoles(double range) {
         NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(BlockUtils.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range, (int) range, false, true, 0).stream().filter(BlockUtils::isHole).collect(Collectors.toList()));
+        positions.addAll(BlockUtil.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range, (int) range, false, true, 0).stream().filter(HoleUtil::isHole).collect(Collectors.toList()));
         return positions;
     }
 }

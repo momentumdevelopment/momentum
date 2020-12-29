@@ -36,7 +36,7 @@ public class NoSlow extends Module {
         addSetting(inventoryMove);
     }
 
-    private boolean sneaking;
+    boolean sneaking;
 
     @Override
     public void onUpdate() {

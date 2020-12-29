@@ -8,7 +8,6 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemExpBottle;
 import net.minecraft.network.play.client.CPacketPlayer;
 import org.lwjgl.input.Keyboard;
@@ -41,12 +40,7 @@ public class QuickEXP extends Module {
         if (nullCheck())
             return;
 
-        Item itemMainHand = mc.player.getHeldItemMainhand().getItem();
-        Item itemONotMainHand = mc.player.getHeldItemOffhand().getItem();
-        boolean expInMainHand = itemMainHand instanceof ItemExpBottle;
-        boolean expNotInMainHand = itemONotMainHand instanceof ItemExpBottle;
-
-        if (expInMainHand || expNotInMainHand)
+        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemExpBottle)
             mc.rightClickDelayTimer = (int) delay.getValue();
 
         if (Keyboard.isKeyDown(mendKey.getKey()) && 0 < PlayerUtil.getArmorDurability() && (mode.getValue() == 0 || mode.getValue() == 1)) {

@@ -3,7 +3,7 @@ package me.linus.momentum.module.modules.player;
 import me.linus.momentum.event.events.world.DamageBlockEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
-import me.linus.momentum.util.world.BlockUtils;
+import me.linus.momentum.util.world.BlockUtil;
 import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.potion.PotionEffect;
@@ -15,9 +15,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @since 12/03/2020
  */
 
-public class QuickMine extends Module {
-    public QuickMine() {
-        super("QuickMine", Category.PLAYER, "Allows you to mine faster");
+public class SpeedMine extends Module {
+    public SpeedMine() {
+        super("SpeedMine", Category.PLAYER, "Allows you to mine faster");
     }
 
     private static final Mode mode = new Mode("Mode", "Packet", "Damage", "Creative", "Instant", "Delay", "Vanilla");
@@ -41,7 +41,7 @@ public class QuickMine extends Module {
         if (!this.isEnabled())
             return;
 
-        if (BlockUtils.canBreak(event.getPos())) {
+        if (BlockUtil.canBreak(event.getPos())) {
             switch (mode.getValue()) {
                 case 0:
                     mc.player.swingArm(EnumHand.MAIN_HAND);

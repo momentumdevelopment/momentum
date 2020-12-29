@@ -142,7 +142,7 @@ public class AutoBed extends Module {
 
     public void placeBed() {
         if (autoSwitch.getValue())
-            mc.player.inventory.currentItem = InventoryUtil.getHotbarItemSlot(Items.BED);
+            InventoryUtil.switchToSlot(InventoryUtil.getHotbarItemSlot(Items.BED));
 
         if (diffXZ >= placeRange.getValue())
             return;

@@ -4,9 +4,9 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.slider.Slider;
-import net.minecraft.client.gui.GuiMainMenu;
+import me.linus.momentum.util.world.InventoryUtil;
+import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 
 /**
@@ -37,26 +37,17 @@ public class AutoDisconnect extends Module {
         if (nullCheck())
             return;
 
-        int totems = mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == Items.TOTEM_OF_UNDYING).mapToInt(ItemStack::getCount).sum();
-
         if (mc.player.getHealth() <= health.getValue())
-            disconnectFromWorld();
+            WorldUtil.disconnectFromWorld(this);
 
-        if (totems == 0 && noTotems.getValue())
-            disconnectFromWorld();
+        if (InventoryUtil.getItemCount(Items.TOTEM_OF_UNDYING) == 0 && noTotems.getValue())
+            WorldUtil.disconnectFromWorld(this);
 
-        if (mc.world.playerEntities.size() != 0 && visualRange.getValue())
-            disconnectFromWorld();
+        if (WorldUtil.getNearbyPlayers(20).size() > 0 && visualRange.getValue())
+            WorldUtil.disconnectFromWorld(this);
 
         if (Keyboard.isKeyDown(disconnectKey.getKey()))
-            disconnectFromWorld();
-    }
-
-    public void disconnectFromWorld() {
-        this.disable();
-        mc.world.sendQuittingDisconnectingPacket();
-        mc.loadWorld(null);
-        mc.displayGuiScreen(new GuiMainMenu());
+            WorldUtil.disconnectFromWorld(this);
     }
 
     @Override

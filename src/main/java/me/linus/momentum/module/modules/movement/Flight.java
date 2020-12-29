@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.movement;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.world.MotionUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 
 /**
@@ -42,14 +43,20 @@ public class Flight extends Module {
 
     @Override
     public void onUpdate() {
-        if (mode.getValue() == 0) {
-            if (mc.gameSettings.keyBindJump.isKeyDown()) {
-                mc.player.motionY = ySpeed.getValue();
-            } else if (mc.gameSettings.keyBindSneak.isKeyDown()) {
-                mc.player.motionY = (ySpeed.getValue() * -1);
-            } else mc.player.motionY = 0;
+        if (nullCheck())
+            return;
 
-            double yaw = PlayerUtil.calcMoveYaw(mc.player.rotationYaw);
+        if (mode.getValue() == 0) {
+            if (mc.gameSettings.keyBindJump.isKeyDown())
+                mc.player.motionY = ySpeed.getValue();
+
+            else if (mc.gameSettings.keyBindSneak.isKeyDown())
+                mc.player.motionY = (ySpeed.getValue() * -1);
+
+            else
+                mc.player.motionY = 0;
+
+            double yaw = MotionUtil.calcMoveYaw(mc.player.rotationYaw);
             double motX = 0;
             double motZ = 0;
 
@@ -58,7 +65,9 @@ public class Flight extends Module {
             if (mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindForward.isKeyDown()) {
                 motX = (-Math.sin(yaw) * hSpeed.getValue()) * -1;
                 motZ = (Math.cos(yaw) * hSpeed.getValue()) * -1;
-            } else if (mc.gameSettings.keyBindForward.isKeyDown()) {
+            }
+
+            else if (mc.gameSettings.keyBindForward.isKeyDown()) {
                 motX = -Math.sin(yaw) * hSpeed.getValue();
                 motZ = Math.cos(yaw) * hSpeed.getValue();
             }

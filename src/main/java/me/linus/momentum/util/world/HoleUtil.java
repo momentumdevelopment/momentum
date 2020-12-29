@@ -2,67 +2,37 @@ package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.render.HoleESP;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+public class HoleUtil implements MixinInterface {
 
-/**
- * @author linustouchtips
- * @since 11/30/2020
- */
+    public static boolean isInHole() {
+        BlockPos blockPos = PlayerUtil.getLocalPlayerPosFloored();
+        IBlockState blockState = mc.world.getBlockState(blockPos);
 
-public class BlockUtils implements MixinInterface {
-    public static List<Block> emptyBlocks;
-    public static List<Block> rightClickableBlocks;
+        if (blockState.getBlock() != Blocks.AIR)
+            return false;
 
-    public static boolean isCollidedBlocks(BlockPos pos) {
-        return mc.world.getBlockState(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ)).getBlock().equals(Blocks.OBSIDIAN) || isInterceptedByOther(pos) || PlayerUtil.getHotbarSlot(Blocks.OBSIDIAN) == -1;
-    }
+        if (mc.world.getBlockState(blockPos.up()).getBlock() != Blocks.AIR)
+            return false;
 
-    public static boolean isInterceptedByOther(final BlockPos pos) {
-        for (final Entity entity : mc.world.loadedEntityList) {
-            if (entity.equals(mc.player))
-                continue;
+        if (mc.world.getBlockState(blockPos.down()).getBlock() == Blocks.AIR)
+            return false;
 
-            if (new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox()))
-                return true;
+        final BlockPos[] touchingBlocks = new BlockPos[]{
+                blockPos.north(), blockPos.south(), blockPos.east(), blockPos.west()
+        };
+
+        int validHorizontalBlocks = 0;
+        for (BlockPos touching : touchingBlocks) {
+            final IBlockState touchingState = mc.world.getBlockState(touching);
+            if ((touchingState.getBlock() != Blocks.AIR) && touchingState.isFullBlock())
+                validHorizontalBlocks++;
         }
 
-        return false;
-    }
-
-    public static boolean isBlockNotEmpty(BlockPos pos) {
-        if (emptyBlocks.contains(mc.world.getBlockState(pos).getBlock())) {
-            AxisAlignedBB axisAlignedBB = new AxisAlignedBB(pos);
-            Iterator<Entity> iterator = mc.world.loadedEntityList.iterator();
-            Entity entity;
-            do {
-                if (!iterator.hasNext()) {
-                    return true;
-                }
-
-                entity = iterator.next();
-            }
-
-            while (!(entity instanceof EntityLivingBase) || !axisAlignedBB.intersects(entity.getEntityBoundingBox()));
-        }
-        return false;
-    }
-
-    public static boolean canBreak(BlockPos pos) {
-        final IBlockState blockState = mc.world.getBlockState(pos);
-        final Block block = blockState.getBlock();
-        return block.getBlockHardness(blockState, mc.world, pos) != -1;
+        return validHorizontalBlocks >= 4;
     }
 
     public static boolean isVoidHole(BlockPos blockPos) {
@@ -70,26 +40,6 @@ public class BlockUtils implements MixinInterface {
             return false;
 
         return mc.world.getBlockState(blockPos).getBlock() == Blocks.AIR;
-    }
-
-    public static List<BlockPos> getSphere(BlockPos loc, float r, int h, boolean hollow, boolean sphere, int plus_y) {
-        List<BlockPos> blocks = new ArrayList<>();
-        int cx = loc.getX();
-        int cy = loc.getY();
-        int cz = loc.getZ();
-        for (int x = cx - (int) r; x <= cx + r; x++) {
-            for (int z = cz - (int) r; z <= cz + r; z++) {
-                for (int y = (sphere ? cy - (int) r : cy); y < (sphere ? cy + r : cy + h); y++) {
-                    double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
-                    if (dist < r * r && !(hollow && dist < (r - 1) * (r - 1))) {
-                        BlockPos l = new BlockPos(x, y + plus_y, z);
-                        blocks.add(l);
-                    }
-                }
-            }
-        }
-
-        return blocks;
     }
 
     public static boolean IsObbyHole(BlockPos blockPos) {
@@ -129,10 +79,5 @@ public class BlockUtils implements MixinInterface {
         BlockPos b8 = blockPos.add(0.5, 0.5, 0.5);
         BlockPos b9 = blockPos.add(0, -1, 0);
         return mc.world.getBlockState(b1).getBlock() == Blocks.AIR && (mc.world.getBlockState(b2).getBlock() == Blocks.AIR) && (mc.world.getBlockState(b7).getBlock() == Blocks.AIR) && ((mc.world.getBlockState(b3).getBlock() == Blocks.OBSIDIAN) || (mc.world.getBlockState(b3).getBlock() == Blocks.BEDROCK)) && ((mc.world.getBlockState(b4).getBlock() == Blocks.OBSIDIAN) || (mc.world.getBlockState(b4).getBlock() == Blocks.BEDROCK)) && ((mc.world.getBlockState(b5).getBlock() == Blocks.OBSIDIAN) || (mc.world.getBlockState(b5).getBlock() == Blocks.BEDROCK)) && ((mc.world.getBlockState(b6).getBlock() == Blocks.OBSIDIAN) || (mc.world.getBlockState(b6).getBlock() == Blocks.BEDROCK)) && (mc.world.getBlockState(b8).getBlock() == Blocks.AIR) && ((mc.world.getBlockState(b9).getBlock() == Blocks.OBSIDIAN) || (mc.world.getBlockState(b9).getBlock() == Blocks.BEDROCK));
-    }
-
-    static {
-        emptyBlocks = Arrays.asList(Blocks.AIR, Blocks.FLOWING_LAVA, Blocks.LAVA, Blocks.FLOWING_WATER, Blocks.WATER, Blocks.VINE, Blocks.SNOW_LAYER, Blocks.TALLGRASS, Blocks.FIRE);
-        rightClickableBlocks = Arrays.asList(Blocks.CHEST, Blocks.TRAPPED_CHEST, Blocks.ENDER_CHEST, Blocks.WHITE_SHULKER_BOX, Blocks.ORANGE_SHULKER_BOX, Blocks.MAGENTA_SHULKER_BOX, Blocks.LIGHT_BLUE_SHULKER_BOX, Blocks.YELLOW_SHULKER_BOX, Blocks.LIME_SHULKER_BOX, Blocks.PINK_SHULKER_BOX, Blocks.GRAY_SHULKER_BOX, Blocks.SILVER_SHULKER_BOX, Blocks.CYAN_SHULKER_BOX, Blocks.PURPLE_SHULKER_BOX, Blocks.BLUE_SHULKER_BOX, Blocks.BROWN_SHULKER_BOX, Blocks.GREEN_SHULKER_BOX, Blocks.RED_SHULKER_BOX, Blocks.BLACK_SHULKER_BOX, Blocks.ANVIL, Blocks.WOODEN_BUTTON, Blocks.STONE_BUTTON, Blocks.UNPOWERED_COMPARATOR, Blocks.UNPOWERED_REPEATER, Blocks.POWERED_REPEATER, Blocks.POWERED_COMPARATOR, Blocks.OAK_FENCE_GATE, Blocks.SPRUCE_FENCE_GATE, Blocks.BIRCH_FENCE_GATE, Blocks.JUNGLE_FENCE_GATE, Blocks.DARK_OAK_FENCE_GATE, Blocks.ACACIA_FENCE_GATE, Blocks.BREWING_STAND, Blocks.DISPENSER, Blocks.DROPPER, Blocks.LEVER, Blocks.NOTEBLOCK, Blocks.JUKEBOX, Blocks.BEACON, Blocks.BED, Blocks.FURNACE, Blocks.OAK_DOOR, Blocks.SPRUCE_DOOR, Blocks.BIRCH_DOOR, Blocks.JUNGLE_DOOR, Blocks.ACACIA_DOOR, Blocks.DARK_OAK_DOOR, Blocks.CAKE, Blocks.ENCHANTING_TABLE, Blocks.DRAGON_EGG, Blocks.HOPPER, Blocks.REPEATING_COMMAND_BLOCK, Blocks.COMMAND_BLOCK, Blocks.CHAIN_COMMAND_BLOCK, Blocks.CRAFTING_TABLE);
     }
 }

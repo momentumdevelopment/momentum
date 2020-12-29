@@ -1,15 +1,14 @@
 package me.linus.momentum.module.modules.movement;
 
-import me.linus.momentum.event.events.player.MoveEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.world.MotionUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.entity.Entity;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author linustouchtips
@@ -77,11 +76,11 @@ public class BoatFlight extends Module {
             ridingEntity.motionY += yOffset.getValue();
             ridingEntity.setVelocity(0, -fallSpeed.getValue(), 0);
 
-            if (mc.gameSettings.keyBindJump.isKeyDown()) {
+            if (mc.gameSettings.keyBindJump.isKeyDown())
                 ridingEntity.motionY = ySpeed.getValue();
-            } else if (mc.gameSettings.keyBindSneak.isKeyDown()) {
+
+            else if (mc.gameSettings.keyBindSneak.isKeyDown())
                 ridingEntity.motionY = (ySpeed.getValue() * -1);
-            }
 
             accelerateEntity();
         }
@@ -94,17 +93,17 @@ public class BoatFlight extends Module {
             ridingEntity.motionY += yOffset.getValue();
             ridingEntity.setVelocity(0, -fallSpeed.getValue(), 0);
 
-            if (mc.gameSettings.keyBindJump.isKeyDown()) {
+            if (mc.gameSettings.keyBindJump.isKeyDown())
                 ridingEntity.motionY = ySpeed.getValue();
-            } else if (mc.gameSettings.keyBindSneak.isKeyDown()) {
+
+            else if (mc.gameSettings.keyBindSneak.isKeyDown())
                 ridingEntity.motionY = (ySpeed.getValue() * -1);
-            }
         }
     }
 
     public void accelerateEntity() {
         Entity ridingEntity = mc.player.ridingEntity;
-        double yaw = PlayerUtil.calcMoveYaw(ridingEntity.rotationYaw);
+        double yaw = MotionUtil.calcMoveYaw(ridingEntity.rotationYaw);
         double motX = 0;
         double motZ = 0;
 
@@ -164,12 +163,6 @@ public class BoatFlight extends Module {
             this.disable();
             return;
         }
-    }
-
-    @SubscribeEvent
-    public void onMove(MoveEvent event) {
-        if (!PlayerUtil.isMoving())
-            event.setY(0);
     }
 
     @Override

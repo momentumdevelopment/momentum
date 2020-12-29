@@ -19,20 +19,16 @@ public class Toggle extends Command {
     @Override
     public void onCommand(String[] args) {
         if (args.length > 0) {
-            try {
-                for (Module m: Momentum.moduleManager.getModules()) {
-                    if (m.getName().equalsIgnoreCase(args[1])) {
-                        m.toggle();
+            for (Module m: Momentum.moduleManager.getModules()) {
+                if (m.getName().equalsIgnoreCase(args[1])) {
+                    m.toggle();
 
-                        if (m.isEnabled())
-                         MessageUtil.sendClientMessage(TextFormatting.AQUA + m.getName() + TextFormatting.WHITE + " is now " + TextFormatting.GREEN + "ENABLED");
+                    if (m.isEnabled())
+                        MessageUtil.sendClientMessage(TextFormatting.AQUA + m.getName() + TextFormatting.WHITE + " is now " + TextFormatting.GREEN + "ENABLED");
 
-                        else
-                            MessageUtil.sendClientMessage(TextFormatting.AQUA + m.getName() + TextFormatting.WHITE + " is now " + TextFormatting.RED + "DISABLED");
-                    }
+                    else
+                        MessageUtil.sendClientMessage(TextFormatting.AQUA + m.getName() + TextFormatting.WHITE + " is now " + TextFormatting.RED + "DISABLED");
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
 

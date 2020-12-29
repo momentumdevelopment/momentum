@@ -6,6 +6,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
@@ -129,12 +130,12 @@ public class Surround extends Module {
                 int oldInventorySlot = mc.player.inventory.currentItem;
 
                 if (onlyObsidian.getValue())
-                    mc.player.inventory.currentItem = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+                    InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
                 else
-                    mc.player.inventory.currentItem = InventoryUtil.getAnyBlockInHotbar();
+                    InventoryUtil.switchToSlot(InventoryUtil.getAnyBlockInHotbar());
 
-                PlayerUtil.placeBlock(blockPos, rotate.getValue());
-                mc.player.inventory.currentItem = oldInventorySlot;
+                BlockUtil.placeBlock(blockPos, rotate.getValue());
+                InventoryUtil.switchToSlot(oldInventorySlot);
                 blocksPlaced++;
 
                 if (blocksPlaced == blocksPerTick.getValue() && disable.getValue() != 2)

@@ -7,6 +7,7 @@ import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.util.render.GUIUtil;
+import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
@@ -70,12 +71,32 @@ public class Window implements MixinInterface {
 		current.drawTitles(name, x, y);
 		current.drawModules(modules, x, y);
 		reset();
+
+		if (mc != null && !ClickGUI.allowOverflow.getValue())
+			resetOverflow();
 	}
 	
 	/**
 	 * I would ideally like to have the below 4 methods in some other class, but
 	 * messing around with static things in constructors doesn't usually work so well.
 	 */
+
+	public void resetOverflow() {
+		int screenWidth = new ScaledResolution(mc).getScaledWidth();
+		int screenHeight = new ScaledResolution(mc).getScaledHeight();
+
+		if (this.x > screenWidth)
+			this.x = screenWidth;
+
+		if (this.y > screenHeight)
+			this.y = screenHeight;
+
+		if (this.x < 0)
+			this.x = 0;
+
+		if (y < 0)
+			this.y = 0;
+	}
 	
 	private void mouseListen() {
 		if (dragging) {

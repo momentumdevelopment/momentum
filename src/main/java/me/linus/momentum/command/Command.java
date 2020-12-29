@@ -1,13 +1,11 @@
 package me.linus.momentum.command;
 
-import me.linus.momentum.mixin.MixinInterface;
-
 /**
  * @author linustouchtips
  * @since 12/01/2020
  */
 
-public class Command implements MixinInterface {
+public class Command{
     String usage;
 
     public Command(String usage) {

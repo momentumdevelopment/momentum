@@ -5,8 +5,8 @@ import baritone.api.pathing.goals.GoalBlock;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.combat.Aura;
-import me.linus.momentum.util.world.BlockUtils;
-import me.linus.momentum.util.world.EntityUtil;
+import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.HoleUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,7 +72,7 @@ public class Milo extends Module {
     }
 
     private void baritoneIntoHole() {
-        if (PlayerUtil.isInHole()) {
+        if (HoleUtil.isInHole()) {
             lookingForHoles = false;
             return;
         }
@@ -88,7 +88,7 @@ public class Milo extends Module {
 
     public List<BlockPos> getHoles(double range) {
         NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(BlockUtils.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range, (int) range, false, true, 0).stream().filter(BlockUtils::isHole).collect(Collectors.toList()));
+        positions.addAll(BlockUtil.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range, (int) range, false, true, 0).stream().filter(HoleUtil::isHole).collect(Collectors.toList()));
         return positions;
     }
 

@@ -8,6 +8,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.system.MathUtil;
+import me.linus.momentum.util.world.MotionUtil;
 import me.linus.momentum.util.world.RotationUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
@@ -113,16 +114,14 @@ public class ElytraFlight extends Module {
 
     public void flyControl() {
         if (mc.player.isElytraFlying()) {
-            if (!PlayerUtil.isMoving())
+            if (!MotionUtil.isMoving())
                 PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
 
-            if (mc.gameSettings.keyBindJump.isKeyDown()) {
+            if (mc.gameSettings.keyBindJump.isKeyDown())
                 mc.player.motionY = ySpeed.getValue();
-            }
 
-            else if (mc.gameSettings.keyBindSneak.isKeyDown()) {
+            else if (mc.gameSettings.keyBindSneak.isKeyDown())
                 mc.player.motionY = (ySpeed.getValue() * -1);
-            }
 
             if (pitchReset.getValue())
                 RotationUtil.resetPitch(rotationNCP.getValue());
@@ -133,7 +132,7 @@ public class ElytraFlight extends Module {
 
     public void flyHighway() {
         if (mc.player.isElytraFlying()) {
-            if (!PlayerUtil.isMoving())
+            if (!MotionUtil.isMoving())
                 PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
 
             RotationUtil.resetPitch(rotationNCP.getValue());
@@ -145,7 +144,7 @@ public class ElytraFlight extends Module {
 
     public void flyPitch() {
         if (mc.player.isElytraFlying()) {
-            if (!PlayerUtil.isMoving())
+            if (!MotionUtil.isMoving())
                 PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
 
             mc.player.motionY = (-MathUtil.degToRad(mc.player.rotationPitch)) * mc.player.movementInput.moveForward;
@@ -159,18 +158,16 @@ public class ElytraFlight extends Module {
 
     public void flyNCPPitch() {
         if (mc.player.isElytraFlying()) {
-            if (!PlayerUtil.isMoving())
+            if (!MotionUtil.isMoving())
                 PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
 
             RotationUtil.resetPitch(rotationNCP.getValue());
 
-            if (mc.gameSettings.keyBindJump.isKeyDown()) {
+            if (mc.gameSettings.keyBindJump.isKeyDown())
                 mc.player.rotationPitch = (float) -rotationNCP.getValue();
-            }
 
-            else if (mc.gameSettings.keyBindSneak.isKeyDown()) {
+            else if (mc.gameSettings.keyBindSneak.isKeyDown())
                 mc.player.rotationPitch = (float) rotationNCP.getValue();
-            }
 
             accelerateElytra();
         }
@@ -189,7 +186,7 @@ public class ElytraFlight extends Module {
     }
 
     public void accelerateElytra() {
-        double yaw = PlayerUtil.calcMoveYaw(mc.player.rotationYaw);
+        double yaw = MotionUtil.calcMoveYaw(mc.player.rotationYaw);
         double motX = 0;
         double motZ = 0;
 

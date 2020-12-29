@@ -7,10 +7,7 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.external.MessageUtil;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.EntityUtil;
-import me.linus.momentum.util.world.InventoryUtil;
-import me.linus.momentum.util.world.PlayerUtil;
-import me.linus.momentum.util.world.WorldUtil;
+import me.linus.momentum.util.world.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -87,17 +84,12 @@ public class AutoTrap extends Module {
                 BlockPos blockPos = new BlockPos(autoTrapBox.add(target.getPositionVector()));
 
                 if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)) {
-                    int oldInventorySlot = mc.player.inventory.currentItem;
-
                     if (autoSwitch.getValue())
-                        mc.player.inventory.currentItem = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+                        InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
 
-                    PlayerUtil.placeBlock(blockPos, rotate.getValue());
+                    BlockUtil.placeBlock(blockPos, rotate.getValue());
                     MessageUtil.sendClientMessage("Trapping " + target.getName() + "!");
                     renderBlocks.add(blockPos);
-
-                    if (autoSwitch.getValue())
-                        mc.player.inventory.currentItem = oldInventorySlot;
 
                     blocksPlaced++;
 

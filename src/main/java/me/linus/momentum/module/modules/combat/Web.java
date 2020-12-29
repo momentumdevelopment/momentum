@@ -4,7 +4,8 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.client.external.MessageUtil;
-import me.linus.momentum.util.world.PlayerUtil;
+import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.InventoryUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
@@ -43,9 +44,9 @@ public class Web extends Module {
     @Override
     public void onUpdate() {
         if (autoSwitch.getValue())
-            mc.player.inventory.currentItem = PlayerUtil.getHotbarSlot(Blocks.WEB);
+            InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.WEB));
 
-        PlayerUtil.placeBlock(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ), rotate.getValue());
+        BlockUtil.placeBlock(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ), rotate.getValue());
 
         if (disable.getValue())
             this.disable();

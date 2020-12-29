@@ -19,28 +19,24 @@ public class Friend extends Command {
     @Override
     public void onCommand(String[] args) {
         if (args.length > 2) {
-            try {
-                if (args[1].equalsIgnoreCase("add")) {
-                    if (FriendManager.isFriend(args[2]))
-                        MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is already a friend!");
+            if (args[1].equalsIgnoreCase("add")) {
+                if (FriendManager.isFriend(args[2]))
+                    MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is already a friend!");
 
-                    else if (!FriendManager.isFriend(args[2])) {
-                        Momentum.friendManager.addFriend(args[2]);
-                        MessageUtil.sendClientMessage("Added " + TextFormatting.GREEN + args[2] + TextFormatting.WHITE + " to friends list");
-                    }
+                else if (!FriendManager.isFriend(args[2])) {
+                    Momentum.friendManager.addFriend(args[2]);
+                    MessageUtil.sendClientMessage("Added " + TextFormatting.GREEN + args[2] + TextFormatting.WHITE + " to friends list");
                 }
+            }
 
-                if (args[1].equalsIgnoreCase("del") || args[1].equalsIgnoreCase("remove")) {
-                    if (!FriendManager.isFriend(args[2]))
-                        MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is not a friend!");
+            if (args[1].equalsIgnoreCase("del") || args[1].equalsIgnoreCase("remove")) {
+                if (!FriendManager.isFriend(args[2]))
+                    MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is not a friend!");
 
-                    else if (FriendManager.isFriend(args[2])) {
-                        Momentum.friendManager.removeFriend(args[2]);
-                        MessageUtil.sendClientMessage("Removed " + TextFormatting.RED + args[2] + TextFormatting.WHITE + " from friends list");
-                    }
+                else if (FriendManager.isFriend(args[2])) {
+                    Momentum.friendManager.removeFriend(args[2]);
+                    MessageUtil.sendClientMessage("Removed " + TextFormatting.RED + args[2] + TextFormatting.WHITE + " from friends list");
                 }
-            } catch (ArrayIndexOutOfBoundsException e) {
-               e.printStackTrace();
             }
         }
 

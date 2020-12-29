@@ -5,7 +5,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.BlockUtils;
+import me.linus.momentum.util.world.HoleUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -56,7 +56,7 @@ public class VoidESP extends Module {
                 for (int y = (int) (playerPos.getY() + range.getValue()); y > playerPos.getY() - range.getValue(); y--) {
                     final BlockPos blockPos = new BlockPos(x, y, z);
 
-                    if (BlockUtils.isVoidHole(blockPos))
+                    if (HoleUtil.isVoidHole(blockPos))
                         voidBlocks.add(blockPos);
                 }
             }

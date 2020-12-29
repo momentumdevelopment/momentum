@@ -78,7 +78,7 @@ public class AutoCity extends Module {
         currentTarget = WorldUtil.getClosestPlayer(enemyRange.getValue());
 
         if (autoSwitch.getValue())
-           mc.player.inventory.currentItem = InventoryUtil.getHotbarItemSlot(Items.DIAMOND_PICKAXE);
+            InventoryUtil.switchToSlot(InventoryUtil.getHotbarItemSlot(Items.DIAMOND_PICKAXE));
 
         mc.player.swingArm(EnumHand.MAIN_HAND);
         mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, breakTarget, EnumFacing.DOWN));

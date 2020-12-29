@@ -1,6 +1,7 @@
 package me.linus.momentum.command.commands;
 
 import me.linus.momentum.command.Command;
+import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.external.MessageUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockShulkerBox;
@@ -16,7 +17,7 @@ import net.minecraft.tileentity.TileEntityShulkerBox;
  */
 
 // TODO: fix the rendering on screen
-public class Peek extends Command {
+public class Peek extends Command implements MixinInterface {
     public Peek() {
         super("peek");
     }

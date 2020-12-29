@@ -88,9 +88,8 @@ public class Offhand extends Module {
         if (mc.player.getHeldItemOffhand().getItem() == searching)
             return;
 
-        int slot = InventoryUtil.getInventoryItemSlot(searching);
-        if (slot != -1) {
-            InventoryUtil.moveItemToOffhand(slot);
+        if (InventoryUtil.getInventoryItemSlot(searching)!= -1) {
+            InventoryUtil.moveItemToOffhand(InventoryUtil.getInventoryItemSlot(searching));
             return;
         }
 
@@ -115,9 +114,12 @@ public class Offhand extends Module {
         if (mc.player.getHeldItemOffhand().getItem() == searching)
             return;
 
-        slot = InventoryUtil.getInventoryItemSlot(searching);
+        if (InventoryUtil.getInventoryItemSlot(searching) != -1)
+            InventoryUtil.moveItemToOffhand(InventoryUtil.getInventoryItemSlot(searching));
+    }
 
-        if (slot != -1)
-            InventoryUtil.moveItemToOffhand(slot);
+    @Override
+    public String getHUDData() {
+        return " " + mode.getMode(mode.getValue());
     }
 }

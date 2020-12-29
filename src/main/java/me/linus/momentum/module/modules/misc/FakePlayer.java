@@ -57,8 +57,7 @@ public class FakePlayer extends Module {
                 break;
         }
 
-        EntityOtherPlayerMP fakePlayer = new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("873e2766-9254-49bc-89d7-5d4d585ad29d"), fakeName));
-        WorldUtil.createFakePlayer(fakePlayer, inventory.getValue(), angles.getValue(), true);
+        WorldUtil.createFakePlayer(new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("873e2766-9254-49bc-89d7-5d4d585ad29d"), fakeName)), inventory.getValue(), angles.getValue(), true);
         MessageUtil.sendClientMessage("Spawning fake player!");
     }
 

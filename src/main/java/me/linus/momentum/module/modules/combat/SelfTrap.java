@@ -6,6 +6,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Blocks;
@@ -82,11 +83,10 @@ public class SelfTrap extends Module {
             BlockPos blockPos = new BlockPos(autoTrapBox.add(mc.player.getPositionVector()));
 
             if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)) {
-                int oldInventorySlot = mc.player.inventory.currentItem;
-                mc.player.inventory.currentItem = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
-                PlayerUtil.placeBlock(blockPos, rotate.getValue());
+                InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
+
+                BlockUtil.placeBlock(blockPos, rotate.getValue());
                 renderBlocks.add(blockPos);
-                mc.player.inventory.currentItem = oldInventorySlot;
                 blocksPlaced++;
 
                 if (blocksPlaced == blocksPerTick.getValue())

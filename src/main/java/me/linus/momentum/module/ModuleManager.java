@@ -72,9 +72,9 @@ public class ModuleManager implements MixinInterface {
 			new NoRotate(),
 			new PacketEat(),
 			new PortalGodMode(),
-			new QuickMine(),
 			new Reach(),
 			new Rubberband(),
+			new SpeedMine(),
 			new Swing(),
 
 			//Misc
@@ -116,7 +116,6 @@ public class ModuleManager implements MixinInterface {
 			new Jesus(),
 			new LongJump(),
 			new NoSlow(),
-			new PacketFlight(),
 			new Parkour(),
 			new ReverseStep(),
 			new Rotation(),
@@ -138,6 +137,7 @@ public class ModuleManager implements MixinInterface {
 			new FullBright(),
 			new HoleESP(),
 			new ItemPreview(),
+			new NameTags(),
 			new NoBob(),
 			new NoRender(),
 			new Skeleton(),

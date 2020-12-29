@@ -4,7 +4,8 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.client.external.MessageUtil;
-import me.linus.momentum.util.world.BlockUtils;
+import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.InventoryUtil;
 import me.linus.momentum.util.world.PlayerUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -45,7 +46,7 @@ public class Burrow extends Module {
         originalPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
         center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
 
-        if (BlockUtils.isCollidedBlocks(originalPos))
+        if (BlockUtil.isCollidedBlocks(originalPos))
             this.disable();
 
         if (centerPlayer.getValue()) {
@@ -62,9 +63,9 @@ public class Burrow extends Module {
     @Override
     public void onUpdate() {
         if (mc.player.posY > originalPos.getY() + 1.2) {
-            mc.player.inventory.currentItem = PlayerUtil.getHotbarSlot(Blocks.OBSIDIAN);
+            InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
 
-            PlayerUtil.placeBlock(originalPos, rotate.getValue());
+            BlockUtil.placeBlock(originalPos, rotate.getValue());
 
             if (onGround.getValue())
                 mc.player.onGround = true;

@@ -62,36 +62,29 @@ public class HUDComponent implements MixinInterface {
     }
 
     public void renderComponent() {
-        if (mc != null && !HUDEditor.allowOverflow.getValue()) {
-            int screenWidth = new ScaledResolution(mc).getScaledWidth();
-            int screenHeight = new ScaledResolution(mc).getScaledHeight();
-
-            if (width < 0) {
-                if (x > screenWidth)
-                    x = screenWidth;
-
-                if (x + width < 0)
-                    x = -width;
-            }
-
-            else {
-                if (x < 0)
-                    x = 0;
-
-                if (x + width > screenWidth)
-                    x = screenWidth - width;
-            }
-
-            if (y < 0)
-                y = 0;
-
-            if (y + height > screenHeight)
-                y = screenHeight - height;
-        }
+        if (mc != null && !HUDEditor.allowOverflow.getValue())
+            resetOverflow();
     }
 
     public void setup() {
 
+    }
+
+    public void resetOverflow() {
+        int screenWidth = new ScaledResolution(mc).getScaledWidth();
+        int screenHeight = new ScaledResolution(mc).getScaledHeight();
+
+        if (this.x > screenWidth)
+            this.x = screenWidth;
+
+        if (this.y > screenHeight)
+            this.y = screenHeight;
+
+        if (this.x < 0)
+            this.x = 0;
+
+        if (y < 0)
+            this.y = 0;
     }
 
     public void mouseClicked(int mouseX, int mouseY, int button) {

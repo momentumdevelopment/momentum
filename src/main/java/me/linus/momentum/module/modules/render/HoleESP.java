@@ -7,7 +7,8 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.BlockUtils;
+import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.HoleUtil;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -114,13 +115,13 @@ public class HoleESP extends Module {
 
     private List<BlockPos> findObsidianHoles() {
         NonNullList positions = NonNullList.create();
-        positions.addAll(BlockUtils.getSphere(CrystalUtil.getPlayerPos(), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(BlockUtils::IsObbyHole).collect(Collectors.toList()));
+        positions.addAll(BlockUtil.getSphere(CrystalUtil.getPlayerPos(), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(HoleUtil::IsObbyHole).collect(Collectors.toList()));
         return positions;
     }
 
     private List<BlockPos> findBedRockHoles() {
         NonNullList positions = NonNullList.create();
-        positions.addAll(BlockUtils.getSphere(CrystalUtil.getPlayerPos(), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(BlockUtils::IsBRockHole).collect(Collectors.toList()));
+        positions.addAll(BlockUtil.getSphere(CrystalUtil.getPlayerPos(), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(HoleUtil::IsBRockHole).collect(Collectors.toList()));
         return positions;
     }
 

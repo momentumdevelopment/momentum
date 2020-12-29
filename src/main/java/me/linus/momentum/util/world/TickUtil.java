@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 
 /**
- * @author linustouchtips
+ * @author ionar2
  * @since 11/26/2020
  */
 

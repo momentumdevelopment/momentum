@@ -218,7 +218,7 @@ public class AutoCrystal extends Module {
 
         breakTimer.reset();
 
-        if (!multiPlace.getValue() || (multiPlaceInHole.getValue() && PlayerUtil.isInHole()))
+        if (!multiPlace.getValue() || (multiPlaceInHole.getValue() && HoleUtil.isInHole()))
             return;
     }
 
@@ -279,7 +279,7 @@ public class AutoCrystal extends Module {
                     int minDamagePlace;
                     if (EnemyUtil.getArmor((EntityPlayer) entityTarget, armorMelt.getValue(), armorDurability.getValue()))
                         minDamagePlace = 2;
-                    else if (PlayerUtil.isInHole() && facePlaceInHole.getValue())
+                    else if (HoleUtil.isInHole() && facePlaceInHole.getValue())
                         minDamagePlace = 2;
                     else
                         minDamagePlace = (int) minDamage.getValue();
@@ -378,9 +378,9 @@ public class AutoCrystal extends Module {
     private List<BlockPos> findCrystalBlocks() {
         NonNullList positions = NonNullList.create();
         if (blockCalc.getValue() == 0)
-            positions.addAll(BlockUtils.getSphere(CrystalUtil.getPlayerPos(), (float) placeRange.getValue(), (int) placeRange.getValue(), false, true, 0).stream().filter(CrystalUtil::canPlaceCrystal).collect(Collectors.toList()));
+            positions.addAll(BlockUtil.getSphere(CrystalUtil.getPlayerPos(), (float) placeRange.getValue(), (int) placeRange.getValue(), false, true, 0).stream().filter(CrystalUtil::canPlaceCrystal).collect(Collectors.toList()));
         else
-            positions.addAll(BlockUtils.getSphere(CrystalUtil.getPlayerPos(), (float) placeRange.getValue(), (int) placeRange.getValue(), false, true, 0).stream().filter(CrystalUtil::canPlaceThirteenCrystal).collect(Collectors.toList()));
+            positions.addAll(BlockUtil.getSphere(CrystalUtil.getPlayerPos(), (float) placeRange.getValue(), (int) placeRange.getValue(), false, true, 0).stream().filter(CrystalUtil::canPlaceThirteenCrystal).collect(Collectors.toList()));
 
         return (List<BlockPos>) positions;
     }

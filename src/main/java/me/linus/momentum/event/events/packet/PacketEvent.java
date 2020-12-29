@@ -11,7 +11,7 @@ import net.minecraft.network.Packet;
 public class PacketEvent extends MomentumEvent {
 
 	private final Packet<?> packet;
-	
+
 	public PacketEvent(final Packet<?> packet, final Stage stage) {
 		super(stage);
 		this.packet = packet;
@@ -20,5 +20,4 @@ public class PacketEvent extends MomentumEvent {
 	public Packet<?> getPacket(){
 		return this.packet;
 	}
-	
 }

@@ -76,20 +76,6 @@ public class EntityUtil implements MixinInterface {
     }
 
     /**
-     * frustrum checks
-     */
-
-    public static boolean isInViewFrustrum(Entity entity) {
-        return (isInViewFrustrum(entity.getEntityBoundingBox()) || entity.ignoreFrustumCheck);
-    }
-
-    public static boolean isInViewFrustrum(AxisAlignedBB bb) {
-        Entity current = mc.getRenderViewEntity();
-        frustrum.setPosition(current.posX, current.posY, current.posZ);
-        return frustrum.isBoundingBoxInFrustum(bb);
-    }
-
-    /**
      * interpolations
      */
 
@@ -125,5 +111,16 @@ public class EntityUtil implements MixinInterface {
 
     public static Vec3d getInterpolatedAmount(final Entity entity, final Vec3d vec) {
         return getInterpolatedAmount(entity, vec.x, vec.y, vec.z);
+    }
+
+    public static double calculateDistanceWithPartialTicks(final double originalPos, final double finalPos, final float renderPartialTicks) {
+        return finalPos + (originalPos - finalPos) * mc.getRenderPartialTicks();
+    }
+
+    public static Vec3d interpolateEntityByTicks(final Entity entity, float renderPartialTicks) {
+        return new Vec3d (
+                calculateDistanceWithPartialTicks(entity.posX, entity.lastTickPosX, renderPartialTicks) - mc.getRenderManager().renderPosX,
+                calculateDistanceWithPartialTicks(entity.posY, entity.lastTickPosY, renderPartialTicks) - mc.getRenderManager().renderPosY,
+                calculateDistanceWithPartialTicks(entity.posZ, entity.lastTickPosZ, renderPartialTicks) - mc.getRenderManager().renderPosZ);
     }
 }

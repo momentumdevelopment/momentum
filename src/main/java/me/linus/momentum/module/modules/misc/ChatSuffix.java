@@ -16,7 +16,7 @@ public class ChatSuffix extends Module {
 		super("ChatSuffix", Category.MISC, "Appends a chat suffix to messages");
 	}
 
-	String suffix = "momentum";
+	public String suffix = "momentum";
 
 	@SubscribeEvent
 	public void onPacketSend(PacketSendEvent event) {

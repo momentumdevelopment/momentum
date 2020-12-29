@@ -2,9 +2,11 @@ package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.system.MathUtil;
+import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -16,8 +18,55 @@ public class RotationUtil implements MixinInterface {
     private static double pitch;
 
     /**
+     * packet rotations
+     */
+
+    public static void rotateToPos(double x, double y, double z) {
+        double diffX = x - mc.player.posX;
+        double diffY = y - (mc.player.posY + (double) mc.player.getEyeHeight());
+        double diffZ = z - mc.player.posZ;
+        double diffXZ = Math.sqrt(diffX * diffX + diffZ * diffZ);
+
+        float yaw = (float) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90.0F;
+        float pitch = (float) (-Math.toDegrees(Math.atan2(diffY, diffXZ)));
+
+        mc.player.connection.sendPacket(new CPacketPlayer.Rotation(yaw, pitch, mc.player.onGround));
+    }
+
+    /**
      * player directions
      */
+
+    public static boolean isInViewFrustrum(Entity entity) {
+        return RenderUtil.camera.isBoundingBoxInFrustum(entity.getEntityBoundingBox());
+    }
+
+    public static Vec3d direction(float yaw) {
+        return new Vec3d(Math.cos(MathUtil.degToRad(yaw + 90f)), 0, Math.sin(MathUtil.degToRad(yaw + 90f)));
+    }
+
+    public static double getDirection() {
+        float rotationYaw = mc.player.rotationYaw;
+
+        if (mc.player.moveForward < 0f)
+            rotationYaw += 180f;
+
+        float forward = 1f;
+
+        if (mc.player.moveForward < 0f)
+            forward = -0.5f;
+
+        else if (mc.player.moveForward > 0f)
+            forward = 0.5f;
+
+        if (mc.player.moveStrafing > 0f)
+            rotationYaw -= 90f * forward;
+
+        if (mc.player.moveStrafing < 0f)
+            rotationYaw += 90f * forward;
+
+        return Math.toRadians(rotationYaw);
+    }
 
     public static String getFacing() {
         switch (MathHelper.floor((double) (mc.player.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7) {

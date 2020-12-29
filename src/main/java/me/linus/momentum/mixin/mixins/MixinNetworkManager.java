@@ -46,5 +46,4 @@ public class MixinNetworkManager {
 		if (exceptionCaught2 instanceof IOException && ModuleManager.getModuleByName("AntiPacketKick").isEnabled())
 			info.cancel();
 	}
-	
 }
