@@ -9,6 +9,11 @@ import net.minecraft.util.text.TextFormatting;
 
 import java.text.DecimalFormat;
 
+/**
+ * @author linustouchtips
+ * @since 12/29/2020
+ */
+
 public class MotionUtil implements MixinInterface {
     final static DecimalFormat formatter = new DecimalFormat("#.#");
     static float roundedForward = getRoundedMovementInput(mc.player.movementInput.moveForward);

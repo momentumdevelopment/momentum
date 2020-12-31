@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @since 12/03/2020
  */
 
+// TODO: make custom view model transformations instead of using minecraft ones
 public class ViewModel extends Module {
     public ViewModel() {
         super("ViewModel", Category.RENDER, "Changes the arm position");

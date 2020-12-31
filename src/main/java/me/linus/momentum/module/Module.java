@@ -2,7 +2,6 @@ package me.linus.momentum.module;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.Momentum;
-import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.misc.EnableMessage;
 import me.linus.momentum.setting.Setting;
@@ -106,10 +105,6 @@ public abstract class Module implements MixinInterface {
 	public void onFastUpdate() {
 		
 	}
-
-	public void onRender3D(Render3DEvent eventRender) {
-
-	}
 	
 	public void toggle() {
 		onToggle();
@@ -145,14 +140,6 @@ public abstract class Module implements MixinInterface {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@SubscribeEvent
-	public void onWorldRender(RenderWorldLastEvent event) {
-		if (event.isCanceled())
-			return;
-
-		ModuleManager.onRender3D(event);
 	}
 
 	public boolean nullCheck() {

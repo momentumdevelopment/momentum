@@ -1,6 +1,5 @@
 package me.linus.momentum.module;
 
-import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.gui.theme.Color;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module.Category;
@@ -11,8 +10,6 @@ import me.linus.momentum.module.modules.misc.*;
 import me.linus.momentum.module.modules.movement.*;
 import me.linus.momentum.module.modules.player.*;
 import me.linus.momentum.module.modules.render.*;
-import me.linus.momentum.util.render.RenderUtil;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
@@ -231,26 +228,9 @@ public class ModuleManager implements MixinInterface {
 						m.isKeyDown = false;
 
 				} catch (Exception e) {
-					//e.printStackTrace();
+					// e.printStackTrace();
 				}
 			}
 		}
-	}
-
-	@SubscribeEvent
-	public static void onRender3D(RenderWorldLastEvent event) {
-		HUDEditor.boost = 0;
-		mc.mcProfiler.startSection("momentum");
-		RenderUtil.prepareProfiler();
-		Render3DEvent render3DEvent = new Render3DEvent(event.getPartialTicks());
-
-		modules.stream().filter(module -> module.isEnabled()).forEach(module -> {
-			mc.mcProfiler.startSection(module.getName());
-			module.onRender3D(render3DEvent);
-			mc.mcProfiler.endSection();
-		});
-
-		RenderUtil.releaseProfiler();
-		mc.mcProfiler.endSection();
 	}
 }

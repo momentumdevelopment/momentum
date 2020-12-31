@@ -22,6 +22,8 @@ public class Peek extends Command implements MixinInterface {
         super("peek");
     }
 
+    public static TileEntityShulkerBox shulkerBox;
+
     @Override
     public void onCommand(String[] args) {
         ItemStack shulker = mc.player.getHeldItemMainhand();
@@ -30,18 +32,11 @@ public class Peek extends Command implements MixinInterface {
             return;
         }
 
-        BlockShulkerBox shulkerBox = (BlockShulkerBox) Block.getBlockFromItem(shulker.getItem());
-        if (shulkerBox != null) {
-            NBTTagCompound tag = shulker.getTagCompound();
-            if (tag != null && tag.hasKey("BlockEntityTag", 10)) {
-                NBTTagCompound entityTag = tag.getCompoundTag("BlockEntityTag");
-
-                TileEntityShulkerBox entityShulkerBox = new TileEntityShulkerBox();
-                entityShulkerBox.setWorld(mc.world);
-                entityShulkerBox.readFromNBT(entityTag);
-                mc.displayGuiScreen(new GuiShulkerBox(mc.player.inventory, entityShulkerBox));
-            }
-        }
+        TileEntityShulkerBox entityShulkerBox = new TileEntityShulkerBox();
+        entityShulkerBox.blockType = ((ItemShulkerBox) shulker.getItem()).getBlock();
+        entityShulkerBox.setWorld(mc.world);
+        entityShulkerBox.readFromNBT(shulker.getTagCompound().getCompoundTag("BlockEntityTag"));
+        shulkerBox = entityShulkerBox;
     }
 
     @Override

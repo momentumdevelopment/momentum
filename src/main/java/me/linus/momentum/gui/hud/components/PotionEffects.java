@@ -1,9 +1,11 @@
 package me.linus.momentum.gui.hud.components;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.world.TickUtil;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 
 import java.text.DecimalFormat;
@@ -28,8 +30,10 @@ public class PotionEffects extends HUDComponent {
         count = 0;
         try {
             mc.player.getActivePotionEffects().forEach(effect -> {
+                int screenWidth = new ScaledResolution(mc).getScaledWidth();
+
                 String name = I18n.format(effect.getPotion().getName());
-                
+
                 int amplifier = effect.getAmplifier() + 1;
                 double duration = effect.getDuration() / TickUtil.TPS;
                 double timeSeconds = duration % 60;
@@ -40,10 +44,18 @@ public class PotionEffects extends HUDComponent {
                 String seconds = secondsFormatter.format(timeSeconds);
                 String potionString = name + " " + amplifier + ChatFormatting.WHITE + " " + minutes + ":" + seconds;
 
-                FontUtil.drawStringWithShadow(potionString, this.x, this.y + (count * 10), effect.getPotion().getLiquidColor());
+                if (this.x < screenWidth)
+                    Momentum.fontManager.getCustomFont().drawStringWithShadow(potionString, this.x, this.y + (count * 10), effect.getPotion().getLiquidColor());
+                else
+                    Momentum.fontManager.getCustomFont().drawStringWithShadow(potionString, this.x - (int) FontUtil.getStringWidth(potionString), this.y + (count * 10), effect.getPotion().getLiquidColor());
+
                 count++;
 
-                width = (int) FontUtil.getStringWidth(potionString);
+                if (this.x < screenWidth)
+                    width = Momentum.fontManager.getCustomFont().getStringWidth(potionString);
+                else
+                    width = -Momentum.fontManager.getCustomFont().getStringWidth(potionString);
+
                 height = (mc.fontRenderer.FONT_HEIGHT + 3) * count;
             });
         } catch(Exception e) {

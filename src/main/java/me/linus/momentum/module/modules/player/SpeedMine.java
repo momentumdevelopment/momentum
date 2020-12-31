@@ -1,6 +1,5 @@
 package me.linus.momentum.module.modules.player;
 
-import me.linus.momentum.event.events.world.DamageBlockEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.world.BlockUtil;
@@ -8,7 +7,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.util.math.RayTraceResult;
 
 /**
  * @author linustouchtips
@@ -20,7 +19,7 @@ public class SpeedMine extends Module {
         super("SpeedMine", Category.PLAYER, "Allows you to mine faster");
     }
 
-    private static final Mode mode = new Mode("Mode", "Packet", "Damage", "Creative", "Instant", "Delay", "Vanilla");
+    public static Mode mode = new Mode("Mode", "Packet", "Damage", "Creative", "Instant", "Delay", "Vanilla");
 
     @Override
     public void setup() {
@@ -29,25 +28,21 @@ public class SpeedMine extends Module {
 
     @Override
     public void onUpdate() {
-        if (mode.getValue() == 3)
-            mc.player.addPotionEffect(new PotionEffect(new PotionEffect(MobEffects.HASTE, 80950, 1, false, false)));
-    }
-
-    @SubscribeEvent
-    public void onDamageBlock(DamageBlockEvent event) {
         if (nullCheck())
             return;
 
         if (!this.isEnabled())
             return;
 
-        if (BlockUtil.canBreak(event.getPos())) {
+        if (mode.getValue() == 3)
+            mc.player.addPotionEffect(new PotionEffect(new PotionEffect(MobEffects.HASTE, 80950, 1, false, false)));
+
+        if (BlockUtil.canBreak(mc.objectMouseOver.getBlockPos()) && mc.objectMouseOver.typeOfHit.equals(RayTraceResult.Type.BLOCK)) {
             switch (mode.getValue()) {
                 case 0:
                     mc.player.swingArm(EnumHand.MAIN_HAND);
-                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.getPos(), event.getFace()));
-                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.getPos(), event.getFace()));
-                    event.setCanceled(true);
+                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, mc.objectMouseOver.getBlockPos(), mc.objectMouseOver.sideHit));
+                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, mc.objectMouseOver.getBlockPos(), mc.objectMouseOver.sideHit));
                     break;
                 case 1:
                     if (mc.playerController.curBlockDamageMP >= 0.5f)
@@ -58,10 +53,10 @@ public class SpeedMine extends Module {
                     break;
                 case 3:
                     mc.player.swingArm(EnumHand.MAIN_HAND);
-                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, event.getPos(), event.getFace()));
-                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, event.getPos(), event.getFace()));
-                    mc.playerController.onPlayerDestroyBlock(event.getPos());
-                    mc.world.setBlockToAir(event.getPos());
+                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, mc.objectMouseOver.getBlockPos(), mc.objectMouseOver.sideHit));
+                    mc.player.connection.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, mc.objectMouseOver.getBlockPos(), mc.objectMouseOver.sideHit));
+                    mc.playerController.onPlayerDestroyBlock(mc.objectMouseOver.getBlockPos());
+                    mc.world.setBlockToAir(mc.objectMouseOver.getBlockPos());
                     break;
                 case 4:
                     mc.playerController.blockHitDelay = 0;

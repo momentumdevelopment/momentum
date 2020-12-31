@@ -6,10 +6,10 @@ import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.util.client.external.CapeAPI;
-import me.linus.momentum.util.client.system.CustomFont;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.config.ConfigManager;
 import me.linus.momentum.util.config.ShutdownHook;
+import me.linus.momentum.util.render.FontUtil;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -38,17 +38,12 @@ public class Momentum {
     public static final String VERSION = "1.1.5";
     public static String PREFIX = "!";
     public static final Logger LOGGER;
-
-    public static CustomFont verdanaFont = new CustomFont("Verdana", 18.0f);
-    public static CustomFont latoFont = new CustomFont("Lato", 18.0f);
-    public static CustomFont comicFont = new CustomFont("comic-sans", 18.0f);
-    public static CustomFont comfortaaFont = new CustomFont("comfortaa", 18.0f);
-    public static CustomFont ubuntuFont = new CustomFont("Ubuntu", 18.0f);
     
     public static ModuleManager moduleManager;
     public static CommandManager commandManager;
     public static FriendManager friendManager;
     public static HUDComponentManager componentManager;
+    public static FontUtil fontManager = new FontUtil();
     public static CapeAPI capeAPI;
 
     @Mod.Instance
@@ -61,7 +56,10 @@ public class Momentum {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
+        fontManager.load();
+        LOGGER.info("Fonts Loaded!");
         moduleManager = new ModuleManager();
+        LOGGER.info("Modules Initialized!");
         MinecraftForge.EVENT_BUS.register(moduleManager);
     	LOGGER.info("Mod Initialized!");
     	Window.initGui();

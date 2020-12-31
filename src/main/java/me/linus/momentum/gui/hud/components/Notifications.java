@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.hud.HUD;
 import me.linus.momentum.module.modules.client.ClickGUI;
@@ -33,7 +34,7 @@ public class Notifications extends HUDComponent {
     public void renderComponent() {
         if (mc.currentScreen instanceof HUD) {
             if (NotificationManager.notifications.isEmpty()) {
-                width = (int) FontUtil.getStringWidth("This is an example notification!");
+                width = Momentum.fontManager.getCustomFont().getStringWidth("This is an example notification!");
                 height = mc.fontRenderer.FONT_HEIGHT;
 
                 GuiScreen.drawRect(this.x - 22, this.y - 5, (int) (this.x + FontUtil.getStringWidth("This is an example notification!") + 3), this.y + mc.fontRenderer.FONT_HEIGHT + 5, new Color(0, 0, 0, 70).getRGB());
@@ -47,7 +48,7 @@ public class Notifications extends HUDComponent {
                 GlStateManager.disableAlpha();
                 GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
 
-                FontUtil.drawStringWithShadow("This is an example notification!", this.x, this.y - 1, new Color(255, 255, 255).getRGB());
+                Momentum.fontManager.getCustomFont().drawStringWithShadow("This is an example notification!", this.x, this.y - 1, new Color(255, 255, 255).getRGB());
                 return;
             }
         }
@@ -87,7 +88,7 @@ public class Notifications extends HUDComponent {
             GlStateManager.disableAlpha();
             GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
 
-            FontUtil.drawStringWithShadow(continuedNotification.getMessage(), this.x + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), new Color(255, 255, 255).getRGB());
+            Momentum.fontManager.getCustomFont().drawStringWithShadow(continuedNotification.getMessage(), this.x + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), new Color(255, 255, 255).getRGB());
 
             currY -= 13;
 

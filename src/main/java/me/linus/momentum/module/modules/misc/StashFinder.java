@@ -1,7 +1,6 @@
 package me.linus.momentum.module.modules.misc;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
-import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.movement.ElytraFlight;
@@ -19,6 +18,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketChunkData;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
@@ -110,13 +110,15 @@ public class StashFinder extends Module {
         }
     }
 
-    @Override
-    public void onRender3D(Render3DEvent renderEvent) {
-        final boolean bobbing = mc.gameSettings.viewBobbing;
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent renderEvent) {
+        boolean bobbing = mc.gameSettings.viewBobbing;
         mc.gameSettings.viewBobbing = false;
         mc.entityRenderer.setupCameraTransform(renderEvent.getPartialTicks(), 0);
-        final Vec3d forward = new Vec3d(0, 0, 1).rotatePitch(-(float) Math.toRadians(mc.player.rotationPitch)).rotateYaw(-(float) Math.toRadians(mc.player.rotationYaw));
+
+        Vec3d forward = new Vec3d(0, 0, 1).rotatePitch(-(float) Math.toRadians(mc.player.rotationPitch)).rotateYaw(-(float) Math.toRadians(mc.player.rotationYaw));
         RenderUtil.drawLine3D((float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) forward.z, (float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) (forward.z + 100), (float) 3, new Color(0, 255, 0).getRGB());
+
         mc.gameSettings.viewBobbing = bobbing;
         mc.entityRenderer.setupCameraTransform(renderEvent.getPartialTicks(), 0);
     }

@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
@@ -40,16 +41,16 @@ public class Coordinates extends HUDComponent {
 
         if (mode.getValue() == 0) {
             if (overWorld.getValue())
-                FontUtil.drawStringWithShadow(netherCoords, this.x, this.y, new Color(255, 255, 255).getRGB());
+                Momentum.fontManager.getCustomFont().drawStringWithShadow(netherCoords, this.x, this.y, new Color(255, 255, 255).getRGB());
 
             if (nether.getValue())
-                FontUtil.drawStringWithShadow(overWorldCoords, this.x, this.y + 10, new Color(255, 255, 255).getRGB());
+                Momentum.fontManager.getCustomFont().drawStringWithShadow(overWorldCoords, this.x, this.y + 10, new Color(255, 255, 255).getRGB());
         }
 
         else
-            FontUtil.drawStringWithShadow((overWorld.getValue() ? overWorldCoords : "") + " " + (nether.getValue() ? netherCoords : ""), this.x, this.y, new Color(255, 255, 255).getRGB());
+            Momentum.fontManager.getCustomFont().drawStringWithShadow((overWorld.getValue() ? overWorldCoords : "") + " " + (nether.getValue() ? netherCoords : ""), this.x, this.y, new Color(255, 255, 255).getRGB());
 
-        width = (int) FontUtil.getStringWidth(mode.getValue() == 0 ? overWorldCoords : overWorldCoords + " " + netherCoords) + 2;
+        width = Momentum.fontManager.getCustomFont().getStringWidth(mode.getValue() == 0 ? overWorldCoords : overWorldCoords + " " + netherCoords) + 2;
         height = mode.getValue() == 0 ? (mc.fontRenderer.FONT_HEIGHT * 2) + 4 : mc.fontRenderer.FONT_HEIGHT + 4;
     }
 }

@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.render;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.setting.checkbox.Checkbox;
@@ -64,7 +65,7 @@ public class ItemPreview extends Module {
                 itemRender.zLevel = 300.0F;
                 GuiScreen.drawRect(x1 - 4, y1 - 9, x1 + width + 1, y1 + 5, new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), 164).getRGB());
                 GuiScreen.drawRect(x1 - 4, y1 + 5, x1 + width + 1, y1 + height + 3, new Color(0, 0, 0, 144).getRGB());
-                FontUtil.drawString(itemStack.getDisplayName(), x1 - 2, y1 - 8, new Color(255, 255, 255).getRGB());
+                Momentum.fontManager.getCustomFont().drawStringWithShadow(itemStack.getDisplayName(), x1 - 2, y1 - 8, new Color(255, 255, 255).getRGB());
 
                 GlStateManager.enableBlend();
                 GlStateManager.enableAlpha();

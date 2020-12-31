@@ -11,6 +11,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+/**
+ * @author linustouchtips
+ * @since 12/29/2020
+ */
+
 public class RotationUtil implements MixinInterface {
 
     private static boolean isSpoofingAngles;

@@ -7,6 +7,7 @@ import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.*;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -21,14 +22,14 @@ public abstract class ColorUtil implements MixinInterface {
 	/**
 	 * color cycling
 	 */
-	
+
 	public static int rainbow(long offset) {
 		float hue = (float) ((((System.currentTimeMillis() * (Colors.speed.getValue() / 10)) + (offset * 500)) % (30000L / (Colors.difference.getValue() / 100))) / (30000.0f / (Colors.difference.getValue() / 20)));
 		int rgb = Color.HSBtoRGB(hue, (float) Colors.saturation.getValue(), (float) Colors.brightness.getValue());
 		int red = rgb >> 16 & 255;
-        int green = rgb >> 8 & 255;
-        int blue = rgb & 255;
-        int color = toRGBA(red, green, blue, (int) Colors.a.getValue());
+		int green = rgb >> 8 & 255;
+		int blue = rgb & 255;
+		int color = toRGBA(red, green, blue, (int) Colors.a.getValue());
 		return color;
 	}
 
@@ -44,7 +45,7 @@ public abstract class ColorUtil implements MixinInterface {
 	public static Color alphaStep(Color color, int index, int count) {
 		float[] hsb = new float[3];
 		Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb);
-		float brightness = Math.abs(((float)(System.currentTimeMillis() % 2000L) / 1000.0F + (float)index / (float)count * 2.0F) % 2.0F - 1.0F);
+		float brightness = Math.abs(((float) (System.currentTimeMillis() % 2000L) / 1000.0F + (float) index / (float) count * 2.0F) % 2.0F - 1.0F);
 		brightness = 0.5F + 0.5F * brightness;
 		hsb[2] = brightness % 2.0F;
 		return new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
@@ -53,10 +54,10 @@ public abstract class ColorUtil implements MixinInterface {
 	/**
 	 * color conversion
 	 */
-	
+
 	public static int toRGBA(int r, int g, int b, int a) {
-        return (r << 16) + (g << 8) + (b << 0) + (a << 24);
-    }
+		return (r << 16) + (g << 8) + (b << 0) + (a << 24);
+	}
 
 	public static void hexColor(int hexColor) {
 		float red = (hexColor >> 16 & 0xFF) / 255.0F;
@@ -130,5 +131,31 @@ public abstract class ColorUtil implements MixinInterface {
 			return new Color(195, 73, 227, alpha);
 		else
 			return new Color(255, 255, 255, alpha);
+	}
+
+	public static TextFormatting getHealthText(float health) {
+		if (health <= 4)
+			return TextFormatting.RED;
+		else if (health <= 8)
+			return TextFormatting.GOLD;
+		else if (health <= 12)
+			return TextFormatting.YELLOW;
+		else if (health <= 16)
+			return TextFormatting.DARK_GREEN;
+		else
+			return TextFormatting.GREEN;
+	}
+
+	public static TextFormatting getPingText(float ping) {
+		if (ping <= 20)
+			return TextFormatting.DARK_GREEN;
+		else if (ping <= 50)
+			return TextFormatting.GREEN;
+		else if (ping <= 90)
+			return TextFormatting.YELLOW;
+		else if (ping <= 130)
+			return TextFormatting.GOLD;
+		else
+			return TextFormatting.RED;
 	}
 }

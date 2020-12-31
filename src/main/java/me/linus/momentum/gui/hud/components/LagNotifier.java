@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.hud.HUD;
@@ -40,12 +41,12 @@ public class LagNotifier extends HUDComponent {
             return;
 
         if (mc.currentScreen instanceof HUD)
-            FontUtil.drawStringWithShadow("Server has stopped responding for X seconds!", this.x, this.y, -1);
+            Momentum.fontManager.getCustomFont().drawStringWithShadow("Server has stopped responding for X seconds!", this.x, this.y, -1);
 
         if (!(mc.currentScreen instanceof HUD))
-            FontUtil.drawStringWithShadow("Server has stopped responding for " + new DecimalFormat("#.#").format(seconds) + " seconds!", this.x, this.y, -1);
+            Momentum.fontManager.getCustomFont().drawStringWithShadow("Server has stopped responding for " + new DecimalFormat("#.#").format(seconds) + " seconds!", this.x, this.y, -1);
 
-        width = (int) (FontUtil.getStringWidth("Server has stopped responding for X.X seconds!"));
+        width = Momentum.fontManager.getCustomFont().getStringWidth("Server has stopped responding for X.X seconds!");
     }
 
     @SubscribeEvent

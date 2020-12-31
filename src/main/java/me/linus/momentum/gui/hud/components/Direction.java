@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.world.RotationUtil;
@@ -19,7 +20,7 @@ public class Direction extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        FontUtil.drawStringWithShadow(RotationUtil.getFacing() + TextFormatting.GRAY + " [" + RotationUtil.getTowards() + "]", this.x, this.y, new Color(255, 255, 255).getRGB());
-        width = (int) (FontUtil.getStringWidth(RotationUtil.getFacing() + " [" + RotationUtil.getTowards() + "]") + 2);
+        Momentum.fontManager.getCustomFont().drawStringWithShadow(RotationUtil.getFacing() + TextFormatting.GRAY + " [" + RotationUtil.getTowards() + "]", this.x, this.y, new Color(255, 255, 255).getRGB());
+        width = Momentum.fontManager.getCustomFont().getStringWidth(RotationUtil.getFacing() + " [" + RotationUtil.getTowards() + "]") + 2;
     }
 }

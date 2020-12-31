@@ -56,7 +56,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 	public void drawTitles(String name, int x, int y) {
 		GuiScreen.drawRect(x, y, (x + width), y + height, 0xCC000000);
 		GuiScreen.drawRect(x - 1, y - 1, x + width + 1, y, 0xFF202020);
-		drawTextWithShadow(name, (x + ((x + width) - x) / 2 - (ClickGUI.font.getValue() == 1 ? Momentum.verdanaFont.getStringWidth(name) : font.getStringWidth(name)) / 2), y + 3, -1);
+		drawTextWithShadow(name, (x + ((x + width) - x) / 2 - (ClickGUI.font.getValue() == 1 ? Momentum.fontManager.getCustomFont().getStringWidth(name) : font.getStringWidth(name)) / 2), y + 3, -1);
 	}
 
 	@Override
@@ -356,42 +356,10 @@ public class DarkTheme extends Theme implements MixinInterface {
 	}
 
 	public static void drawTextWithShadow(String text, float x, float y, int color) {
-		if (ClickGUI.font.getValue() == 0)
-			Momentum.latoFont.drawStringWithShadow(text, x - 1, y - 2, color);
-
-		if (ClickGUI.font.getValue() == 1)
-			Momentum.ubuntuFont.drawStringWithShadow(text, x - 1, y - 2, color);
-
-		if (ClickGUI.font.getValue() == 2)
-			Momentum.verdanaFont.drawStringWithShadow(text, x - 1, y - 2, color);
-
-		if (ClickGUI.font.getValue() == 3)
-			Momentum.comfortaaFont.drawStringWithShadow(text, x - 1, y - 2, color);
-
-		if (ClickGUI.font.getValue() == 4)
-			Momentum.comicFont.drawStringWithShadow(text, x - 1, y - 2, color);
-
-		if (ClickGUI.font.getValue() == 5)
-			mc.fontRenderer.drawStringWithShadow(text, x, y, color);
+		Momentum.fontManager.getCustomFont().drawStringWithShadow(text, x, y, color);
 	}
 
 	public static void drawText(String text, float x, float y, int color) {
-		if (ClickGUI.font.getValue() == 0)
-			Momentum.latoFont.drawString(text, x - 1, y - 2, color);
-
-		if (ClickGUI.font.getValue() == 1)
-			Momentum.ubuntuFont.drawStringWithShadow(text, x - 1, y - 2, color);
-
-		if (ClickGUI.font.getValue() == 2)
-			Momentum.verdanaFont.drawString(text, x - 1, y - 2, color);
-
-		if (ClickGUI.font.getValue() == 3)
-			Momentum.comfortaaFont.drawString(text, x - 1, y - 2, color);
-
-		if (ClickGUI.font.getValue() == 4)
-			Momentum.comicFont.drawString(text, x - 1, y - 2, color);
-
-		if (ClickGUI.font.getValue() == 5)
-			mc.fontRenderer.drawString(text, (int) x, (int) y, color);
+		Momentum.fontManager.getCustomFont().drawString(text, x, y, color);
 	}
 }

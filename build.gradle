@@ -90,6 +90,7 @@ mixin {
 
 shadowJar {
     dependencies {
+        include(dependency('org.spongepowered:mixin'))
         include(dependency('cabaletta:baritone-api'))
         include(dependency('org.slick2d:slick2d-core'))
         include(dependency('club.minnced:java-discord-rpc:2.0.1'))

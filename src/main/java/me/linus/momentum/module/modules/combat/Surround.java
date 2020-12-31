@@ -106,13 +106,9 @@ public class Surround extends Module {
                     this.disable();
                 break;
             case 2:
-                if (timeout.getValue()) {
-                    if (mode.getValue() != 2) {
-                        if (mc.player.ticksExisted % timeoutTick.getValue() == 0)
+                if (timeout.getValue() && mode.getValue() != 2)
+                    if (mc.player.ticksExisted % timeoutTick.getValue() == 0)
                             this.disable();
-                    }
-                }
-
                 break;
         }
 

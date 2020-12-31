@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.render.FontUtil;
@@ -25,7 +26,7 @@ public class Welcomer extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        FontUtil.drawStringWithShadow("Welcome " + mc.player.getName() + "! :^)", this.x, this.y, new Color(255, 255, 255).getRGB());
-        width = (int) FontUtil.getStringWidth("Welcome " + mc.player.getName() + "! :^)") + 2;
+        Momentum.fontManager.getCustomFont().drawStringWithShadow("Welcome " + mc.player.getName() + "! :^)", this.x, this.y, new Color(255, 255, 255).getRGB());
+        width = Momentum.fontManager.getCustomFont().getStringWidth("Welcome " + mc.player.getName() + "! :^)") + 2;
     }
 }

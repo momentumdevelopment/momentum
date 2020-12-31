@@ -1,6 +1,5 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
@@ -11,6 +10,8 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author linustouchtips
@@ -38,8 +39,8 @@ public class Tracers extends Module {
         addSetting(lineWidth);
     }
 
-    @Override
-    public void onRender3D(Render3DEvent event) {
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent event) {
         if (nullCheck())
             return;
 

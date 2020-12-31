@@ -6,6 +6,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * @author linustouchtips
+ * @since 12/29/2020
+ */
+
 public class HoleUtil implements MixinInterface {
 
     public static boolean isInHole() {

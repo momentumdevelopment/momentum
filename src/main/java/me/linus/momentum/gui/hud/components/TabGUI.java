@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.Module.Category;
@@ -52,13 +53,13 @@ public class TabGUI extends HUDComponent {
 
         if (hoveringModules)
             for (Module module : ModuleManager.getModulesInCategory(categories[currentHovered])) {
-                FontUtil.drawStringWithShadow(module.getName(), this.x + 93, this.y + 6 + (moduleCount * 15), -1);
+                Momentum.fontManager.getCustomFont().drawStringWithShadow(module.getName(), this.x + 93, this.y + 6 + (moduleCount * 15), -1);
 
                 moduleCount++;
             }
 
         for (Category category : categories) {
-            FontUtil.drawStringWithShadow(category.getName(), this.x + 5, this.y + 6 + (count * 15), -1);
+            Momentum.fontManager.getCustomFont().drawStringWithShadow(category.getName(), this.x + 5, this.y + 6 + (count * 15), -1);
 
             count++;
         }

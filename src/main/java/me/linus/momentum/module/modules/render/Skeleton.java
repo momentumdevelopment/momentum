@@ -1,6 +1,5 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.event.events.render.Render3DEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
@@ -12,6 +11,8 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
@@ -43,16 +44,11 @@ public class Skeleton extends Module {
     private final ICamera camera = new Frustum();
     private static final HashMap<EntityPlayer, float[][]> entities = new HashMap<>();
 
-    private Vec3d getVec3(Render3DEvent event, EntityPlayer e) {
-        float pt = event.getPartialTicks();
-        double x = e.lastTickPosX + (e.posX - e.lastTickPosX) * pt;
-        double y = e.lastTickPosY + (e.posY - e.lastTickPosY) * pt;
-        double z = e.lastTickPosZ + (e.posZ - e.lastTickPosZ) * pt;
-        return new Vec3d(x, y, z);
-    }
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent event) {
+        if (nullCheck())
+            return;
 
-    @Override
-    public void onRender3D(Render3DEvent event) {
         if (mc.getRenderManager() == null || mc.getRenderManager().options == null)
             return;
 
@@ -67,7 +63,7 @@ public class Skeleton extends Module {
         startEnd(false);
     }
 
-    private void drawSkeleton(Render3DEvent event, EntityPlayer e) {
+    private void drawSkeleton(RenderWorldLastEvent event, EntityPlayer e) {
         double d3 = mc.player.lastTickPosX + (mc.player.posX - mc.player.lastTickPosX) * (double) event.getPartialTicks();
         double d4 = mc.player.lastTickPosY + (mc.player.posY - mc.player.lastTickPosY) * (double )event.getPartialTicks();
         double d5 = mc.player.lastTickPosZ + (mc.player.posZ - mc.player.lastTickPosZ) * (double) event.getPartialTicks();
@@ -225,6 +221,14 @@ public class Skeleton extends Module {
         }
 
         GlStateManager.depthMask(!revert);
+    }
+
+    private Vec3d getVec3(RenderWorldLastEvent event, EntityPlayer e) {
+        float pt = event.getPartialTicks();
+        double x = e.lastTickPosX + (e.posX - e.lastTickPosX) * pt;
+        double y = e.lastTickPosY + (e.posY - e.lastTickPosY) * pt;
+        double z = e.lastTickPosZ + (e.posZ - e.lastTickPosZ) * pt;
+        return new Vec3d(x, y, z);
     }
 
     public static void addEntity(EntityPlayer e, ModelPlayer model) {

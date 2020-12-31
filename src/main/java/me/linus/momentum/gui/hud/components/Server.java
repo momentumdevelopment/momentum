@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.render.FontUtil;
 
@@ -23,8 +24,8 @@ public class Server extends HUDComponent {
         else
             server = "SinglePlayer";
 
-        FontUtil.drawStringWithShadow(server, this.x, this.y, new Color(255, 255, 255).getRGB());
+        Momentum.fontManager.getCustomFont().drawStringWithShadow(server, this.x, this.y, new Color(255, 255, 255).getRGB());
 
-        width = (int) FontUtil.getStringWidth(server) + 2;
+        width = Momentum.fontManager.getCustomFont().getStringWidth(server) + 2;
     }
 }

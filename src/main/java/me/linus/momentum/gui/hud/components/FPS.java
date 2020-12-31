@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.util.render.FontUtil;
@@ -27,7 +28,7 @@ public class FPS extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        FontUtil.drawStringWithShadow(Minecraft.getDebugFPS() + " " + TextFormatting.GRAY + "FPS", this.x, this.y, new Color(255, 255, 255).getRGB());
-        width = (int) FontUtil.getStringWidth(Minecraft.getDebugFPS() + " FPS") + 2;
+        Momentum.fontManager.getCustomFont().drawStringWithShadow(Minecraft.getDebugFPS() + " " + TextFormatting.GRAY + "FPS", this.x, this.y, new Color(255, 255, 255).getRGB());
+        width = Momentum.fontManager.getCustomFont().getStringWidth(Minecraft.getDebugFPS() + " FPS") + 2;
     }
 }

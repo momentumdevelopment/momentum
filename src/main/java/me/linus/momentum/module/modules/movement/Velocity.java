@@ -1,7 +1,6 @@
 package me.linus.momentum.module.modules.movement;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
-import me.linus.momentum.event.events.player.PushEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
@@ -36,12 +35,6 @@ public class Velocity extends Module {
 			event.setCanceled(true);
 		
 		if (event.getPacket() instanceof SPacketExplosion)
-			event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public void onPush(PushEvent event) {
-		if (noPush.getValue())
 			event.setCanceled(true);
 	}
 

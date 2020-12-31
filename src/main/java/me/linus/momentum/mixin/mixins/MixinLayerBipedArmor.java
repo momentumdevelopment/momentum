@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LayerBipedArmor.class)
 public class MixinLayerBipedArmor {
+
     @Inject(method = "setModelSlotVisible", at = @At(value = "HEAD"), cancellable = true)
     protected void setModelSlotVisible(ModelBiped model, EntityEquipmentSlot slotIn, CallbackInfo info) {
         if (ModuleManager.getModuleByName("NoRender").isEnabled() && NoRender.armor.getValue()) {
