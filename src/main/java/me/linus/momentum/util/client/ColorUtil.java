@@ -1,4 +1,4 @@
-package me.linus.momentum.util.client.color;
+package me.linus.momentum.util.client;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;

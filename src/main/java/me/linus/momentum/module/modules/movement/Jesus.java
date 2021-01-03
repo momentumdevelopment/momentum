@@ -4,7 +4,7 @@ import me.linus.momentum.event.events.player.MoveEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.world.PlayerUtil;
+import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**

@@ -1,7 +1,7 @@
 package me.linus.momentum.gui.theme;
 
 import me.linus.momentum.module.modules.client.Colors;
-import me.linus.momentum.util.client.color.ColorUtil;
+import me.linus.momentum.util.client.ColorUtil;
 
 /**
  * @author bon

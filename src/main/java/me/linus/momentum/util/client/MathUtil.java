@@ -1,4 +1,4 @@
-package me.linus.momentum.util.client.system;
+package me.linus.momentum.util.client;
 
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;

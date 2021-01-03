@@ -8,8 +8,8 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.HoleUtil;
-import me.linus.momentum.util.world.InventoryUtil;
-import me.linus.momentum.util.world.PlayerUtil;
+import me.linus.momentum.util.player.InventoryUtil;
+import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
  */
 
 // TODO: rewrite this
-
 public class HoleFill extends Module {
     public HoleFill() {
         super("HoleFill", Category.COMBAT, "Automatically fills in nearby holes");
@@ -43,7 +42,7 @@ public class HoleFill extends Module {
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 250.0D, 255.0D, 0);
     public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 25.0D, 255.0D, 0);
+    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 40.0D, 255.0D, 0);
 
     @Override
     public void setup() {
@@ -56,6 +55,7 @@ public class HoleFill extends Module {
     }
 
     BlockPos renderBlock;
+    List<BlockPos> blocksToRemove = new ArrayList<>();
 
     @Override
     public void onUpdate() {
@@ -64,16 +64,9 @@ public class HoleFill extends Module {
 
         List<BlockPos> blocks = getHoles(range.getValue());
 
-        int slot = getItem();
-        List<BlockPos> blocksToRemove = new ArrayList<>();
-
-        if (slot == -1) {
-            disable();
-            return;
-        }
-
         for (BlockPos block : blocks) {
-            if (PlayerUtil.inPlayer(block)) blocksToRemove.add(block);
+            if (PlayerUtil.inPlayer(block))
+                blocksToRemove.add(block);
         }
 
         for (BlockPos blockPos : blocksToRemove)

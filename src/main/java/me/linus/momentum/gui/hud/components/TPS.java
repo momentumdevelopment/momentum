@@ -20,7 +20,7 @@ public class TPS extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        Momentum.fontManager.getCustomFont().drawStringWithShadow(TickUtil.TPS + " " + TextFormatting.GRAY + "TPS", this.x, this.y, new Color(255, 255, 255).getRGB());
+        Momentum.fontManager.getCustomFont().drawStringWithShadow(TickUtil.TPS + " " + TextFormatting.GRAY + "TPS", this.x, this.y, -1);
         width = Momentum.fontManager.getCustomFont().getStringWidth(TickUtil.TPS + " TPS") + 2;
     }
 }

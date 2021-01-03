@@ -3,7 +3,7 @@ package me.linus.momentum.module.modules.render;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.color.ColorUtil;
+import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.client.entity.EntityPlayerSP;

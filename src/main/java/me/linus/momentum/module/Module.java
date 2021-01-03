@@ -5,12 +5,10 @@ import me.linus.momentum.Momentum;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.misc.EnableMessage;
 import me.linus.momentum.setting.Setting;
-import me.linus.momentum.util.client.external.MessageUtil;
+import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
@@ -74,18 +72,18 @@ public abstract class Module implements MixinInterface {
 
 	public void onEnable() {
 		remainingAnimation = 0.0f;
-		if (ModuleManager.getModuleByClass(EnableMessage.class).isEnabled() && !this.name.equalsIgnoreCase("clickgui")) {
+
+		if (ModuleManager.getModuleByClass(EnableMessage.class).isEnabled() && !this.name.equalsIgnoreCase("ClickGUI"))
 			MessageUtil.sendClientMessage(this.name + ChatFormatting.GREEN + " ENABLED");
-		}
 
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
 	public void onDisable() {
 		remainingAnimation = 0.0f;
-		if (ModuleManager.getModuleByClass(EnableMessage.class).isEnabled() && !this.name.equalsIgnoreCase("clickgui")) {
+
+		if (ModuleManager.getModuleByClass(EnableMessage.class).isEnabled() && !this.name.equalsIgnoreCase("ClickGUI"))
 			MessageUtil.sendClientMessage(this.name + ChatFormatting.RED + " DISABLED");
-		}
 
 		MinecraftForge.EVENT_BUS.unregister(this);
 	}
@@ -107,14 +105,13 @@ public abstract class Module implements MixinInterface {
 	}
 	
 	public void toggle() {
-		onToggle();
 		this.enabled = !this.enabled;
 		try {
-			if (this.isEnabled()) {
+			if (this.isEnabled())
 				this.onEnable();
-			} else {
+
+			else
 				this.onDisable();
-			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

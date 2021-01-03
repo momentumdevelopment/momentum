@@ -1,7 +1,7 @@
 package me.linus.momentum.util.render;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.color.ColorUtil;
+import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.shader.Framebuffer;

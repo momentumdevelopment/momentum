@@ -5,8 +5,8 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.world.InventoryUtil;
-import me.linus.momentum.util.world.PlayerUtil;
+import me.linus.momentum.util.player.InventoryUtil;
+import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemExpBottle;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -24,6 +24,7 @@ public class QuickEXP extends Module {
 
     private static final Mode mode = new Mode("Mode", "Packet", "AutoMend", "Throw");
     public static Slider delay = new Slider("Throw Delay", 0.0D, 0.0D, 4.0D, 0);
+    private static final Checkbox stopEXP = new Checkbox("Stop EXP", true);
     private static final Checkbox footEXP = new Checkbox("FootEXP", true);
     private static Keybind mendKey = new Keybind("Mend Key", -2);
 
@@ -40,10 +41,13 @@ public class QuickEXP extends Module {
         if (nullCheck())
             return;
 
+        if (stopEXP.getValue() && 0 < PlayerUtil.getArmorDurability())
+            return;
+
         if (mc.player.getHeldItemMainhand().getItem() instanceof ItemExpBottle)
             mc.rightClickDelayTimer = (int) delay.getValue();
 
-        if (Keyboard.isKeyDown(mendKey.getKey()) && 0 < PlayerUtil.getArmorDurability() && (mode.getValue() == 0 || mode.getValue() == 1)) {
+        if (Keyboard.isKeyDown(mendKey.getKey()) && (mode.getValue() == 0 || mode.getValue() == 1)) {
             switch (mode.getValue()) {
                 case 1:
                     InventoryUtil.switchToSlot(Items.EXPERIENCE_BOTTLE);

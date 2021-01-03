@@ -5,8 +5,8 @@ import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.system.Timer;
-import me.linus.momentum.util.world.RotationUtil;
+import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.player.rotation.RotationUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
@@ -136,9 +136,6 @@ public class Scaffold extends Module {
         pos = blockBelow;
         if (mc.world.getBlockState(blockBelow).getBlock() == Blocks.AIR) {
             blockData = getBlockData2(blockBelow);
-            if (blockData != null) {
-                RotationUtil.lookAtPacket(blockData.position.getX(), blockData.position.getY(), blockData.position.getZ(), mc.player);
-            }
         }
 
         if (blockData != null) {

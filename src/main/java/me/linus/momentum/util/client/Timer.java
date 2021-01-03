@@ -1,4 +1,4 @@
-package me.linus.momentum.util.client.system;
+package me.linus.momentum.util.client;
 
 /**
  * @author linustouchtips

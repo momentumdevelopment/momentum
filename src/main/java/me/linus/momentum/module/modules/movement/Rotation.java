@@ -37,7 +37,7 @@ public class Rotation extends Module {
         if (nullCheck())
             return;
 
-        final Vec3d vec3d = EntityUtil.getInterpolatedPos(mc.player, 0);
+        Vec3d vec3d = EntityUtil.getInterpolatedPos(mc.player, 0);
         northBlockPos = new BlockPos(vec3d).north();
         southBlockPos = new BlockPos(vec3d).south();
         eastBlockPos = new BlockPos(vec3d).east();

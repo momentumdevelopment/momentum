@@ -5,7 +5,8 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.external.MessageUtil;
+import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +43,7 @@ public class AutoTrap extends Module {
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 25.0D, 255.0D, 0);
+    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 40.0D, 255.0D, 0);
 
     @Override
     public void setup() {
@@ -63,6 +64,8 @@ public class AutoTrap extends Module {
     public void onEnable() {
         if (nullCheck())
             return;
+
+        super.onEnable();
 
         hasPlaced = false;
     }

@@ -5,9 +5,9 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.color.ColorUtil;
+import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.friend.FriendManager;
-import me.linus.momentum.util.client.system.MathUtil;
+import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.RenderUtil;
@@ -76,7 +76,7 @@ public class NameTags extends Module {
             if (!RenderUtil.camera.isBoundingBoxInFrustum(e.getEntityBoundingBox()) && onlyInViewFrustrum.getValue())
                 return;
 
-                nametagEntities.add(e);
+            nametagEntities.add(e);
         });
 
         nametagEntities.sort((p1, p2) -> Double.compare(p2.getDistance(mc.getRenderViewEntity()), p1.getDistance(mc.getRenderViewEntity())));
@@ -85,11 +85,11 @@ public class NameTags extends Module {
 
             Vec3d pos = EntityUtil.interpolateEntityByTicks(entityPlayer, event.getPartialTicks());
 
-            double n = pos.x;
+            double x = pos.x;
             double distance = pos.y + 0.65;
-            double n2 = pos.z;
+            double z = pos.z;
 
-            final double n3 = distance + (entityPlayer.isSneaking() ? 0.0 : 0.08f);
+            final double y = distance + (entityPlayer.isSneaking() ? 0.0 : 0.08f);
 
             pos = EntityUtil.interpolateEntityByTicks(entity2, event.getPartialTicks());
 
@@ -106,7 +106,7 @@ public class NameTags extends Module {
             GlStateManager.enablePolygonOffset();
             GlStateManager.doPolygonOffset(1.0f, -1500000.0f);
             GlStateManager.disableLighting();
-            GlStateManager.translate((float) n, (float) n3 + 1.4f, (float) n2);
+            GlStateManager.translate((float) x, (float) y + 1.4f, (float) z);
             GlStateManager.rotate(-mc.getRenderManager().playerViewY, 0.0f, 1.0f, 0.0f);
             GlStateManager.rotate(mc.getRenderManager().playerViewX, (mc.gameSettings.thirdPersonView == 2) ? -1.0f : 1.0f, 0.0f, (float) 0);
             GlStateManager.scale(-(scale.getValue() / 100), -(scale.getValue() / 100), (scale.getValue() / 100));
@@ -141,12 +141,12 @@ public class NameTags extends Module {
 
                 Collections.reverse(stacks);
 
-                int x = (int) -width;
+                int currX = (int) -width;
 
                 for (ItemStack stack : stacks) {
-                    renderItemStack(stack, x, -32, 0);
-                    renderItemEnchantments(stack, x, -62);
-                    x += 16;
+                    renderItemStack(stack, currX, -32, 0);
+                    renderItemEnchantments(stack, currX, -62);
+                    currX += 16;
                 }
 
                 GlStateManager.popMatrix();
@@ -188,10 +188,9 @@ public class NameTags extends Module {
         return "";
     }
 
-    private void renderItemEnchantments(ItemStack itemStack, int n, int n2) {
+    private void renderItemEnchantments(ItemStack itemStack, int x, int y) {
         if (enchants.getValue()) {
             GlStateManager.scale(0.5f, 0.5f, 0.5f);
-            int n3 = -1;
             Iterator<Enchantment> iterator2;
             Iterator<Enchantment> iterator = iterator2 = EnchantmentHelper.getEnchantments(itemStack).keySet().iterator();
             while (iterator.hasNext()) {
@@ -200,15 +199,15 @@ public class NameTags extends Module {
                     iterator = iterator2;
 
                 else {
-                    Momentum.fontManager.getCustomFont().drawString(getEnchantName(enchantment, EnchantmentHelper.getEnchantmentLevel(enchantment, itemStack)), (float) (n * 2), (float) n2, n3);
+                    Momentum.fontManager.getCustomFont().drawString(getEnchantName(enchantment, EnchantmentHelper.getEnchantmentLevel(enchantment, itemStack)), (float) (x * 2), (float) y, -1);
 
-                    n2 += 8;
+                    y += 8;
                     iterator = iterator2;
                 }
             }
 
             if (itemStack.getItem().equals(Items.GOLDEN_APPLE) && itemStack.hasEffect())
-                Momentum.fontManager.getCustomFont().drawString(TextFormatting.DARK_RED + "God", (float) (n * 2), (float) n2, -1);
+                Momentum.fontManager.getCustomFont().drawString(TextFormatting.DARK_RED + "God", (float) (x * 2), (float) y, -1);
 
             GlStateManager.scale(2.0f, 2.0f, 2.0f);
         }

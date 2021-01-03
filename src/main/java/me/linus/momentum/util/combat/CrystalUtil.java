@@ -1,7 +1,7 @@
 package me.linus.momentum.util.combat;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.world.RotationUtil;
+import me.linus.momentum.util.player.rotation.RotationUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,50 +31,53 @@ import java.util.ArrayList;
 
 public class CrystalUtil implements MixinInterface {
 
-    private static final int oldSlot = -1;
+    private static int oldSlot = -1;
     private static int newSlot;
 
-    public static float calculateDamage(final double posX, final double posY, final double posZ, final Entity entity) {
-        final float doubleExplosionSize = 12.0f;
-        final double distancedsize = entity.getDistance(posX, posY, posZ) / doubleExplosionSize;
-        final Vec3d vec3d = new Vec3d(posX, posY, posZ);
-        final double blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
-        final double v = (1.0 - distancedsize) * blockDensity;
-        final float damage = (float) (int) ((v * v + v) / 2.0 * 7.0 * doubleExplosionSize + 1.0);
+    public static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
+        float doubleExplosionSize = 12.0f;
+        double distancedsize = entity.getDistance(posX, posY, posZ) / doubleExplosionSize;
+        Vec3d vec3d = new Vec3d(posX, posY, posZ);
+        double blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
+        double v = (1.0 - distancedsize) * blockDensity;
+        float damage = (float) (int) ((v * v + v) / 2.0 * 7.0 * doubleExplosionSize + 1.0);
         double finald = 1.0;
-        if (entity instanceof EntityLivingBase) {
+        
+        if (entity instanceof EntityLivingBase) 
             finald = getBlastReduction((EntityLivingBase) entity, getDamageMultiplied(damage), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
-        }
+        
         return (float) finald;
     }
 
-    public static float getBlastReduction(final EntityLivingBase entity, float damage, final Explosion explosion) {
+    public static float getBlastReduction(EntityLivingBase entity, float damage, Explosion explosion) {
         if (entity instanceof EntityPlayer) {
-            final EntityPlayer ep = (EntityPlayer) entity;
-            final DamageSource ds = DamageSource.causeExplosionDamage(explosion);
+            EntityPlayer ep = (EntityPlayer) entity;
+            DamageSource ds = DamageSource.causeExplosionDamage(explosion);
             damage = CombatRules.getDamageAfterAbsorb(damage, (float) ep.getTotalArmorValue(), (float) ep.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
-            final int k = EnchantmentHelper.getEnchantmentModifierDamage(ep.getArmorInventoryList(), ds);
-            final float f = MathHelper.clamp((float) k, 0.0f, 20.0f);
+            int k = EnchantmentHelper.getEnchantmentModifierDamage(ep.getArmorInventoryList(), ds);
+            float f = MathHelper.clamp((float) k, 0.0f, 20.0f);
             damage *= 1.0f - f / 25.0f;
-            if (entity.isPotionActive(Potion.getPotionById(11))) {
+
+            if (entity.isPotionActive(Potion.getPotionById(11)))
                 damage -= damage / 4.0f;
-            }
+
             return damage;
         }
+
         damage = CombatRules.getDamageAfterAbsorb(damage, (float) entity.getTotalArmorValue(), (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
         return damage;
     }
 
-    private static float getDamageMultiplied(final float damage) {
-        final int diff = mc.world.getDifficulty().getDifficultyId();
+    private static float getDamageMultiplied(float damage) {
+        int diff = mc.world.getDifficulty().getDifficultyId();
         return damage * ((diff == 0) ? 0.0f : ((diff == 2) ? 1.0f : ((diff == 1) ? 0.5f : 1.5f)));
     }
 
-    public static float calculateDamage(final EntityEnderCrystal crystal, final Entity entity) {
+    public static float calculateDamage(EntityEnderCrystal crystal, Entity entity) {
         return calculateDamage(crystal.posX, crystal.posY, crystal.posZ, entity);
     }
 
-    public static boolean canBlockBeSeen(final BlockPos blockPos) {
+    public static boolean canBlockBeSeen(BlockPos blockPos) {
         return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
     }
 
@@ -83,22 +86,21 @@ public class CrystalUtil implements MixinInterface {
     }
 
     public static void attackCrystal(EntityEnderCrystal crystal, boolean packet) {
-        if (packet) {
+        if (packet)
             mc.player.connection.sendPacket(new CPacketUseEntity(crystal));
-        } else {
+        else
             mc.playerController.attackEntity(mc.player, crystal);
-        }
     }
 
     public static boolean canPlaceCrystal(BlockPos blockPos) {
-        final BlockPos boost = blockPos.add(0, 1, 0);
-        final BlockPos boost2 = blockPos.add(0, 2, 0);
+        BlockPos boost = blockPos.add(0, 1, 0);
+        BlockPos boost2 = blockPos.add(0, 2, 0);
         return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getBlockState(boost).getBlock() == Blocks.AIR && mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
     }
 
     public static boolean canPlaceThirteenCrystal(BlockPos blockPos) {
-        final BlockPos boost = blockPos.add(0, 1, 0);
-        final BlockPos boost2 = blockPos.add(0, 2, 0);
+        BlockPos boost = blockPos.add(0, 1, 0);
+        BlockPos boost2 = blockPos.add(0, 2, 0);
         return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
     }
 
@@ -117,22 +119,6 @@ public class CrystalUtil implements MixinInterface {
         }
 
         return false;
-    }
-
-    public static void placeCrystal(BlockPos pos, double delay, boolean offhand) {
-        RotationUtil.lookAtPacket(pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5, mc.player);
-        final RayTraceResult result = mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5));
-
-        EnumFacing f;
-        if (result == null || result.sideHit == null) {
-            f = EnumFacing.UP;
-        } else {
-            f = result.sideHit;
-        }
-
-        if (System.nanoTime() / 1000000L >= delay) {
-            mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, f, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
-        }
     }
 
     public static void getSwingArm(int mode) {
@@ -189,17 +175,17 @@ public class CrystalUtil implements MixinInterface {
     }
 
     public static EnumFacing getEnumFacing(boolean rayTrace, BlockPos render, BlockPos finalPos) {
-        final RayTraceResult result = mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(finalPos.getX() + 0.5, finalPos.getY() - 0.5, finalPos.getZ() + 0.5));
+        RayTraceResult result = mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(finalPos.getX() + 0.5, finalPos.getY() - 0.5, finalPos.getZ() + 0.5));
 
         EnumFacing enumFacing = null;
         if (rayTrace) {
             if (result == null || result.sideHit == null) {
                 render = null;
-                RotationUtil.resetRotation();
                 return null;
-            } else {
-                enumFacing = result.sideHit;
             }
+
+            else
+                enumFacing = result.sideHit;
         }
 
         return enumFacing;

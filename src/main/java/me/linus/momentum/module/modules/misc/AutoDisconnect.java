@@ -4,7 +4,7 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.world.InventoryUtil;
+import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.init.Items;
 import org.lwjgl.input.Keyboard;

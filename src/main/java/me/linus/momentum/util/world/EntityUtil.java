@@ -30,8 +30,6 @@ import net.minecraft.util.math.Vec3d;
 
 public class EntityUtil implements MixinInterface {
 
-    private static final Frustum frustrum = new Frustum();
-
     /**
      * entity classifier checks
      */
@@ -118,9 +116,6 @@ public class EntityUtil implements MixinInterface {
     }
 
     public static Vec3d interpolateEntityByTicks(final Entity entity, float renderPartialTicks) {
-        return new Vec3d (
-                calculateDistanceWithPartialTicks(entity.posX, entity.lastTickPosX, renderPartialTicks) - mc.getRenderManager().renderPosX,
-                calculateDistanceWithPartialTicks(entity.posY, entity.lastTickPosY, renderPartialTicks) - mc.getRenderManager().renderPosY,
-                calculateDistanceWithPartialTicks(entity.posZ, entity.lastTickPosZ, renderPartialTicks) - mc.getRenderManager().renderPosZ);
+        return new Vec3d (calculateDistanceWithPartialTicks(entity.posX, entity.lastTickPosX, renderPartialTicks) - mc.getRenderManager().renderPosX, calculateDistanceWithPartialTicks(entity.posY, entity.lastTickPosY, renderPartialTicks) - mc.getRenderManager().renderPosY, calculateDistanceWithPartialTicks(entity.posZ, entity.lastTickPosZ, renderPartialTicks) - mc.getRenderManager().renderPosZ);
     }
 }

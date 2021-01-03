@@ -24,7 +24,7 @@ public class Server extends HUDComponent {
         else
             server = "SinglePlayer";
 
-        Momentum.fontManager.getCustomFont().drawStringWithShadow(server, this.x, this.y, new Color(255, 255, 255).getRGB());
+        Momentum.fontManager.getCustomFont().drawStringWithShadow(server, this.x, this.y, -1);
 
         width = Momentum.fontManager.getCustomFont().getStringWidth(server) + 2;
     }

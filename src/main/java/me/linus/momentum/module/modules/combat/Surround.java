@@ -8,8 +8,8 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.EntityUtil;
-import me.linus.momentum.util.world.InventoryUtil;
-import me.linus.momentum.util.world.PlayerUtil;
+import me.linus.momentum.util.player.InventoryUtil;
+import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -49,7 +49,7 @@ public class Surround extends Module {
     public static SubSlider r = new SubSlider(renderSurround, "Red", 0.0D, 0.0D, 255.0D, 0);
     public static SubSlider g = new SubSlider(renderSurround, "Green", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider b = new SubSlider(renderSurround, "Blue", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(renderSurround, "Alpha", 0.0D, 25.0D, 255.0D, 0);
+    public static SubSlider a = new SubSlider(renderSurround, "Alpha", 0.0D, 40.0D, 255.0D, 0);
 
     @Override
     public void setup() {
@@ -75,6 +75,11 @@ public class Surround extends Module {
 
     @Override
     public void onEnable() {
+        if (nullCheck())
+            return;
+
+        super.onEnable();
+
         hasPlaced = false;
         center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
 

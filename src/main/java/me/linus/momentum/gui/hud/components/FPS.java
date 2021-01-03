@@ -28,7 +28,7 @@ public class FPS extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        Momentum.fontManager.getCustomFont().drawStringWithShadow(Minecraft.getDebugFPS() + " " + TextFormatting.GRAY + "FPS", this.x, this.y, new Color(255, 255, 255).getRGB());
+        Momentum.fontManager.getCustomFont().drawStringWithShadow(Minecraft.getDebugFPS() + " " + TextFormatting.GRAY + "FPS", this.x, this.y, -1);
         width = Momentum.fontManager.getCustomFont().getStringWidth(Minecraft.getDebugFPS() + " FPS") + 2;
     }
 }

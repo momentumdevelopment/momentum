@@ -18,19 +18,19 @@ import java.util.List;
 
 public class HUDComponent implements MixinInterface {
 
-    private final String name;
+    String name;
 
-    protected int x;
-    protected int y;
-    private int dragX = 0;
-    private int dragY = 0;
-    protected int width = 10;
-    protected int height = mc.fontRenderer.FONT_HEIGHT + 3;
+    public int x;
+    public int y;
+    int dragX = 0;
+    int dragY = 0;
+    public int width = 10;
+    public int height = mc.fontRenderer.FONT_HEIGHT + 3;
     public int colors;
 
-    private boolean opened;
-    private boolean dragging = false;
-    private boolean enabled;
+    boolean opened;
+    boolean dragging = false;
+    boolean enabled;
 
     public List<Setting> settingsList = new ArrayList<>();
 
@@ -94,7 +94,9 @@ public class HUDComponent implements MixinInterface {
                 dragY = y - mouseY;
                 dragging = true;
             }
-        } else {
+        }
+
+        else {
             if (button == 0 && mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height){
                 dragX = x - mouseX;
                 dragY = y - mouseY;
@@ -109,10 +111,6 @@ public class HUDComponent implements MixinInterface {
 
     public void onGuiClosed(){
         dragging = false;
-    }
-
-    public void mouseHovered(int mouseX, int mouseY) {
-
     }
 
     public void addSetting(Setting s) {

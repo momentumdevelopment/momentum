@@ -36,19 +36,15 @@ public class Anchor extends Module {
 
         if (mc.player.posX > Math.round(mc.player.posX))
             newX = Math.round(mc.player.posX) + 0.5;
-
         else if (mc.player.posX < Math.round(mc.player.posX))
             newX = Math.round(mc.player.posX) - 0.5;
-
         else
             newX = mc.player.posX;
 
         if (mc.player.posZ > Math.round(mc.player.posZ))
             newZ = Math.round(mc.player.posZ) + 0.5;
-
         else if (mc.player.posZ < Math.round(mc.player.posZ))
             newZ = Math.round(mc.player.posZ) - 0.5;
-
         else
             newZ = mc.player.posZ;
 

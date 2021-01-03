@@ -9,7 +9,7 @@ import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.render.AnimationUtil;
-import me.linus.momentum.util.client.color.ColorUtil;
+import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;

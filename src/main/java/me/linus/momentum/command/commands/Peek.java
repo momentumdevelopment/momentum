@@ -2,13 +2,9 @@ package me.linus.momentum.command.commands;
 
 import me.linus.momentum.command.Command;
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.external.MessageUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockShulkerBox;
-import net.minecraft.client.gui.inventory.GuiShulkerBox;
+import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.item.ItemShulkerBox;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityShulkerBox;
 
 /**

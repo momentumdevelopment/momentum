@@ -2,7 +2,7 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.util.client.system.MathUtil;
+import me.linus.momentum.util.client.MathUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -144,27 +144,27 @@ public class TargetHUD extends HUDComponent {
                 if (e.getHealth() + e.getAbsorptionAmount() == 35) {healthright = 171;}
                 if (e.getHealth() + e.getAbsorptionAmount() == 36) {healthright = 174;}
 
-                Momentum.fontManager.getCustomFont().drawStringWithShadow(e.getName(), this.x + 54, this.y + 8, new Color(255, 255, 255).getRGB());
+                Momentum.fontManager.getCustomFont().drawStringWithShadow(e.getName(), this.x + 54, this.y + 8, -1);
                 GuiScreen.drawRect(this.x + 54, this.y + 18, this.x + healthright, this.y + 30, healthcolor.getRGB());
-                Momentum.fontManager.getCustomFont().drawStringWithShadow("Health: " + (Math.rint(e.getHealth() + e.getAbsorptionAmount())), this.x + 57, this.y + 20, new Color(255, 255, 255).getRGB());
-                Momentum.fontManager.getCustomFont().drawStringWithShadow(playercolor + playerinfo + TextFormatting.WHITE + " | " + "Ping: " + getPing(e) + " ms", this.x + 54, this.y + 37, new Color(255, 255, 255).getRGB());
+                Momentum.fontManager.getCustomFont().drawStringWithShadow("Health: " + (Math.rint(e.getHealth() + e.getAbsorptionAmount())), this.x + 57, this.y + 20, -1);
+                Momentum.fontManager.getCustomFont().drawStringWithShadow(playercolor + playerinfo + TextFormatting.WHITE + " | " + "Ping: " + getPing(e) + " ms", this.x + 54, this.y + 37, -1);
                 if (e.getHeldItemMainhand().item == Items.END_CRYSTAL) {
-                    Momentum.fontManager.getCustomFont().drawStringWithShadow( "Target: Crystalling!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
+                    Momentum.fontManager.getCustomFont().drawStringWithShadow( "Target: Crystalling!", this.x + 54, this.y + 47, -1);
                 } if (e.getHeldItemMainhand().item == Items.GOLDEN_APPLE) {
-                    Momentum.fontManager.getCustomFont().drawStringWithShadow( "Target: Eating Gapple!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
+                    Momentum.fontManager.getCustomFont().drawStringWithShadow( "Target: Eating Gapple!", this.x + 54, this.y + 47, -1);
                 } if (e.getHeldItemMainhand().item == Items.DIAMOND_SWORD) {
-                    Momentum.fontManager.getCustomFont().drawStringWithShadow("Target: Swording!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
+                    Momentum.fontManager.getCustomFont().drawStringWithShadow("Target: Swording!", this.x + 54, this.y + 47, -1);
                 } if (e.getHeldItemMainhand().item == Items.POTIONITEM || e.getHeldItemOffhand().item == Items.POTIONITEM) {
-                    Momentum.fontManager.getCustomFont().drawStringWithShadow("Target: Drinking Potion!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
+                    Momentum.fontManager.getCustomFont().drawStringWithShadow("Target: Drinking Potion!", this.x + 54, this.y + 47, -1);
                 } if (e.getHeldItemMainhand().item == Items.ENDER_PEARL) {
-                    Momentum.fontManager.getCustomFont().drawStringWithShadow("Target: Using Pearl!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
+                    Momentum.fontManager.getCustomFont().drawStringWithShadow("Target: Using Pearl!", this.x + 54, this.y + 47, -1);
                 } if (e.getHeldItemMainhand().item == Items.DIAMOND_PICKAXE) {
-                    Momentum.fontManager.getCustomFont().drawStringWithShadow("Target: Attempting to City!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
+                    Momentum.fontManager.getCustomFont().drawStringWithShadow("Target: Attempting to City!", this.x + 54, this.y + 47, -1);
                 } if (e.getHeldItemMainhand().canPlaceOn(Blocks.OBSIDIAN)) {
-                    Momentum.fontManager.getCustomFont().drawStringWithShadow("Target: Surrounding!", this.x + 54, this.y + 47, new Color(255, 255, 255).getRGB());
+                    Momentum.fontManager.getCustomFont().drawStringWithShadow("Target: Surrounding!", this.x + 54, this.y + 47, -1);
                 }
 
-                Momentum.fontManager.getCustomFont().drawStringWithShadow("Totems Pops: " + newPopCounter, this.x + 54, this.y + 77, new Color(255, 255, 255).getRGB());
+                Momentum.fontManager.getCustomFont().drawStringWithShadow("Totems Pops: " + newPopCounter, this.x + 54, this.y + 77, -1);
 
                 GlStateManager.enableTexture2D();
                 int iteration = 0;

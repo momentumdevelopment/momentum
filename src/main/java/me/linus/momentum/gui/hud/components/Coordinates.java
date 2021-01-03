@@ -4,8 +4,7 @@ import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
-import me.linus.momentum.util.client.system.MathUtil;
-import me.linus.momentum.util.render.FontUtil;
+import me.linus.momentum.util.client.MathUtil;
 import net.minecraft.util.text.TextFormatting;
 
 import java.awt.*;
@@ -41,10 +40,10 @@ public class Coordinates extends HUDComponent {
 
         if (mode.getValue() == 0) {
             if (overWorld.getValue())
-                Momentum.fontManager.getCustomFont().drawStringWithShadow(netherCoords, this.x, this.y, new Color(255, 255, 255).getRGB());
+                Momentum.fontManager.getCustomFont().drawStringWithShadow(netherCoords, this.x, this.y, -1);
 
             if (nether.getValue())
-                Momentum.fontManager.getCustomFont().drawStringWithShadow(overWorldCoords, this.x, this.y + 10, new Color(255, 255, 255).getRGB());
+                Momentum.fontManager.getCustomFont().drawStringWithShadow(overWorldCoords, this.x, this.y + 10, -1);
         }
 
         else

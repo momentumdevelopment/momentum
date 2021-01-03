@@ -2,7 +2,7 @@ package me.linus.momentum.util.render;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.color.ColorUtil;
+import me.linus.momentum.util.client.ColorUtil;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -232,7 +232,7 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         glBillboardDistanceScaled(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, mc.player, 1.0f);
         GlStateManager.disableDepth();
         GlStateManager.translate(-(mc.fontRenderer.getStringWidth(text) / 2.0), 0.0, 0.0);
-        Momentum.fontManager.getCustomFont().drawStringWithShadow(text, 0, 0, new Color(255, 255, 255).getRGB());
+        Momentum.fontManager.getCustomFont().drawStringWithShadow(text, 0, 0, -1);
         GlStateManager.popMatrix();
     }
 

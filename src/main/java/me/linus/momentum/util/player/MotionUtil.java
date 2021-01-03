@@ -1,7 +1,7 @@
-package me.linus.momentum.util.world;
+package me.linus.momentum.util.player;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.system.Timer;
+import me.linus.momentum.util.client.Timer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.math.MathHelper;

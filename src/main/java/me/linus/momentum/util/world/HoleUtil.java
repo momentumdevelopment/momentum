@@ -2,6 +2,7 @@ package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.render.HoleESP;
+import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;

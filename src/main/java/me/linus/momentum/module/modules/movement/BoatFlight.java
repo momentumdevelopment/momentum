@@ -6,8 +6,7 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.world.MotionUtil;
-import me.linus.momentum.util.world.PlayerUtil;
+import me.linus.momentum.util.player.FlightUtil;
 import net.minecraft.entity.Entity;
 
 /**
@@ -82,7 +81,7 @@ public class BoatFlight extends Module {
             else if (mc.gameSettings.keyBindSneak.isKeyDown())
                 ridingEntity.motionY = (ySpeed.getValue() * -1);
 
-            accelerateEntity();
+            FlightUtil.horizontalEntityFlight(hSpeed.getValue());
         }
     }
 
@@ -101,70 +100,32 @@ public class BoatFlight extends Module {
         }
     }
 
-    public void accelerateEntity() {
-        Entity ridingEntity = mc.player.ridingEntity;
-        double yaw = MotionUtil.calcMoveYaw(ridingEntity.rotationYaw);
-        double motX = 0;
-        double motZ = 0;
-
-        yaw -= mc.player.moveStrafing * 90;
-
-        if (mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindForward.isKeyDown()) {
-            motX = (-Math.sin(yaw) * hSpeed.getValue()) * -1;
-            motZ = (Math.cos(yaw) * hSpeed.getValue()) * -1;
-        }
-
-        else if (mc.gameSettings.keyBindForward.isKeyDown()) {
-            motX = -Math.sin(yaw) * hSpeed.getValue();
-            motZ = Math.cos(yaw) * hSpeed.getValue();
-        }
-
-        ridingEntity.motionX = motX;
-        ridingEntity.motionZ = motZ;
-
-        if (mc.player.moveStrafing == 0 && mc.player.moveForward == 0) {
-            ridingEntity.motionX = 0;
-            ridingEntity.motionZ = 0;
-        }
-    }
-
     public void flyTick() {
         if (mc.player.isRiding() && !useTimer.getValue())
             mc.timer.tickLength = 50;
 
         if (mc.player.isRiding() && useTimer.getValue())
             mc.timer.tickLength = (float) (50.0f / timerTicks.getValue());
-
     }
 
     public void disableCheck() {
         if (!disable.getValue())
             return;
 
-        if (mc.player.posY <= lowestY.getValue()) {
-            this.disable();
+        if (mc.player.posY <= lowestY.getValue())
             return;
-        }
 
-        if ((mc.player.isInWater() || mc.player.isInLava()) && waterCancel.getValue()) {
-            this.disable();
+        if ((mc.player.isInWater() || mc.player.isInLava()) && waterCancel.getValue())
             return;
-        }
 
-        if (mc.player.rotationPitch >= 40 && onUpward.getValue()) {
-            this.disable();
+        if (mc.player.rotationPitch >= 40 && onUpward.getValue())
             return;
-        }
 
-        if (mc.player.isRowingBoat() && mc.gameSettings.keyBindJump.isKeyDown() && onUpward.getValue()) {
-            this.disable();
+        if (mc.player.isRowingBoat() && mc.gameSettings.keyBindJump.isKeyDown() && onUpward.getValue())
             return;
-        }
 
-        if (mc.player.collidedHorizontally && onCollision.getValue()) {
-            this.disable();
+        if (mc.player.collidedHorizontally && onCollision.getValue())
             return;
-        }
     }
 
     @Override

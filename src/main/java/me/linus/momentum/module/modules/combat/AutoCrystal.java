@@ -1,16 +1,21 @@
 package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
+import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.system.MathUtil;
-import me.linus.momentum.util.client.system.Timer;
+import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
+import me.linus.momentum.util.player.PlayerUtil;
+import me.linus.momentum.util.player.rotation.Rotation;
+import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.world.*;
 import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.entity.Entity;
@@ -27,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -39,7 +45,7 @@ import java.util.stream.Collectors;
  * @since 11/24/2020
  */
 
-// TODO: better place calc, the basic ones are pretty terrible & proper rotations
+// TODO: better place calc, the basic ones are pretty terrible
 public class AutoCrystal extends Module {
     public AutoCrystal() {
         super("AutoCrystal", Category.COMBAT, "Automatically places and explodes crystals");
@@ -58,7 +64,6 @@ public class AutoCrystal extends Module {
     public static SubCheckbox prediction = new SubCheckbox(explode, "Prediction", true);
     public static SubCheckbox damageSync = new SubCheckbox(explode, "Damage Sync", false);
     public static SubCheckbox antiWeakness = new SubCheckbox(explode, "Anti-Weakness", false);
-    public static SubMode rotate = new SubMode(explode, "Rotate", "Spoof", "Legit", "None");
     public static SubMode breakHand = new SubMode(explode, "BreakHand", "MainHand", "OffHand", "Both", "GhostHand");
 
     public static Checkbox place = new Checkbox("Place", true);
@@ -69,6 +74,14 @@ public class AutoCrystal extends Module {
     public static SubCheckbox autoSwitch = new SubCheckbox(place, "Auto-Switch", false);
     public static SubCheckbox rayTrace = new SubCheckbox(place, "Ray-Trace", true);
     public static SubCheckbox multiPlace = new SubCheckbox(place, "MultiPlace", false);
+    public static SubCheckbox multiPlaceInHole = new SubCheckbox(place, "MultiPlace in Hole", false);
+
+    public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static SubMode rotateMode = new SubMode(rotate, "Mode", "None", "Packet", "Legit");
+    public static SubSlider rotateDelay = new SubSlider(rotate, "Rotation Delay", 0.0D, 1000.0D, 5000.0D, 0);
+    public static SubCheckbox faceBeforePlace = new SubCheckbox(rotate, "Face Before Place", true);
+    public static SubCheckbox onlyInViewFrustrum = new SubCheckbox(rotate, "Only In View Frustrum", false);
+    public static SubCheckbox randomRotate = new SubCheckbox(rotate, "Random Rotations", false);
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubMode pauseMode = new SubMode(pause, "Mode", "Place", "Break", "Both");
@@ -85,6 +98,8 @@ public class AutoCrystal extends Module {
     public static SubSlider facePlaceHealth = new SubSlider(facePlace, "Face-Place Health", 0.0D, 16.0D, 36.0D, 0);
     public static SubCheckbox armorMelt = new SubCheckbox(facePlace, "Armor Melt", false);
     public static SubSlider armorDurability = new SubSlider(facePlace, "Armor Durability", 0.0D, 15.0D, 100.0D, 0);
+    public static SubCheckbox facePlaceInHole = new SubCheckbox(facePlace, "FacePlace in Hole", false);
+    public static SubKeybind forceFaceplace = new SubKeybind(facePlace, "Force Face-Place", -2);
 
     public static Checkbox calculations = new Checkbox("Calculations", true);
     public static SubMode placeCalc = new SubMode(calculations, "Place Calculation", "Ideal", "Actual");
@@ -96,10 +111,6 @@ public class AutoCrystal extends Module {
     public static Checkbox logic = new Checkbox("Logic", true);
     public static SubMode logicMode = new SubMode(logic, "Crystal Logic", "Break -> Place", "Place -> Break");
     public static SubMode blockCalc = new SubMode(logic, "Block Logic", "Normal", "1.13+");
-
-    public static Checkbox hole = new Checkbox("Hole", false);
-    public static SubCheckbox multiPlaceInHole = new SubCheckbox(hole, "MultiPlace in Hole", false);
-    public static SubCheckbox facePlaceInHole = new SubCheckbox(hole, "FacePlace in Hole", false);
 
     public static Checkbox renderCrystal = new Checkbox("Render", true);
     public static SubSlider r = new SubSlider(renderCrystal, "Red", 0.0D, 250.0D, 255.0D, 0);
@@ -113,28 +124,43 @@ public class AutoCrystal extends Module {
     public void setup() {
         addSetting(explode);
         addSetting(place);
+        addSetting(rotate);
         addSetting(facePlace);
         addSetting(pause);
         addSetting(prevent);
         addSetting(calculations);
         addSetting(logic);
-        addSetting(hole);
         addSetting(renderCrystal);
     }
 
     Timer breakTimer = new Timer();
     Timer placeTimer = new Timer();
-    static EntityPlayer currentTarget;
+    Timer rotationTimer = new Timer();
+
+    EntityPlayer currentTarget = null;
     EntityEnderCrystal crystal;
+    Entity renderEntity;
+
     boolean switchCooldown = false;
+
+    Rotation crystalRotation = null;
+
     BlockPos render;
-    Entity renderEnt;
-    final ArrayList<BlockPos> placedCrystals = new ArrayList<>();
+    ArrayList<BlockPos> placedCrystals = new ArrayList<>();
 
     @Override
-    public void onToggle() {
+    public void onEnable() {
         if (nullCheck())
             return;
+
+        super.onEnable();
+
+        placedCrystals.clear();
+    }
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
 
         placedCrystals.clear();
     }
@@ -145,6 +171,11 @@ public class AutoCrystal extends Module {
             return;
 
         currentTarget = WorldUtil.getClosestPlayer(enemyRange.getValue());
+
+        if (currentTarget != null && (!FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled())) {
+            crystalRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1]);
+            RotationUtil.updateRotations(crystalRotation, rotateMode.getValue());
+        }
 
         if (!taiwanTick.getValue())
             autoCrystal();
@@ -185,17 +216,11 @@ public class AutoCrystal extends Module {
             if (!mc.player.canEntityBeSeen(crystal) && mc.player.getDistance(crystal) > wallRange.getValue())
                 return;
 
+            if (!RotationUtil.isInViewFrustrum(crystal) && onlyInViewFrustrum.getValue())
+                return;
+
             if (antiWeakness.getValue() && mc.player.isPotionActive(MobEffects.WEAKNESS))
                 CrystalUtil.doAntiWeakness(switchCooldown);
-
-            switch (rotate.getValue()) {
-                case 0:
-                    RotationUtil.lookAtPacket(crystal.posX, crystal.posY, crystal.posZ, mc.player);
-                    break;
-                case 1:
-                    RotationUtil.lookAtLegit(crystal);
-                    break;
-            }
 
             if (explode.getValue())
                 for (int i = 0; i < breakAttempts.getValue(); i++)
@@ -305,29 +330,24 @@ public class AutoCrystal extends Module {
 
         if (damage == 0.5) {
             render = null;
-            renderEnt = null;
-            RotationUtil.resetRotation();
+            renderEntity = null;
             return;
         }
 
         render = finalPos;
-        renderEnt = entity;
+        renderEntity = entity;
 
         if (true) {
             if (!offhand && mc.player.inventory.currentItem != crystalSlot) {
                 if (autoSwitch.getValue())
                     mc.player.inventory.currentItem = crystalSlot;
 
-                RotationUtil.resetRotation();
                 switchCooldown = true;
                 return;
             }
         }
 
         if (place.getValue()) {
-            if (rotate.getValue() == 0)
-                RotationUtil.lookAtPacket(finalPos.getX() + 0.5, finalPos.getY() - 0.5, finalPos.getZ() + 0.5, mc.player);
-
             EnumFacing enumFacing = CrystalUtil.getEnumFacing(rayTrace.getValue(), render, finalPos);
 
             if (placeTimer.passed((long) placeDelay.getValue())) {
@@ -344,11 +364,20 @@ public class AutoCrystal extends Module {
     }
 
     @SubscribeEvent
+    public void onRotation(RotationEvent event) {
+        if (crystalRotation != null && rotateMode.getValue() == 0) {
+            event.setCanceled(true);
+            event.setPitch(crystalRotation.yaw);
+            event.setYaw(crystalRotation.pitch);
+        }
+    }
+
+    @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (renderCrystal.getValue() && render != null) {
             RenderUtil.drawBoxBlockPos(render, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
 
-            double damage = CrystalUtil.calculateDamage(render.getX() + .5, render.getY() + 1, render.getZ() + .5, renderEnt);
+            double damage = CrystalUtil.calculateDamage(render.getX() + .5, render.getY() + 1, render.getZ() + .5, renderEntity);
             double damageRounded = MathUtil.roundAvoid(damage, 1);
 
             if (outline.getValue())
@@ -362,7 +391,7 @@ public class AutoCrystal extends Module {
     @SubscribeEvent
     public void onPacketReceive(PacketReceiveEvent event) {
         if (event.getPacket() instanceof SPacketSoundEffect && antiDeSync.getValue() && explode.getValue()) {
-            final SPacketSoundEffect packet = (SPacketSoundEffect) event.getPacket();
+            SPacketSoundEffect packet = (SPacketSoundEffect) event.getPacket();
             if (packet.getCategory() == SoundCategory.BLOCKS && packet.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
                 for (Entity e : mc.world.loadedEntityList) {
                     if (e instanceof EntityEnderCrystal) {

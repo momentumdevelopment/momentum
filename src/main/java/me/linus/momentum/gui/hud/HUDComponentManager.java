@@ -21,7 +21,7 @@ public class HUDComponentManager implements MixinInterface {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private static final List<HUDComponent> components = Lists.newArrayList(
+    static final List<HUDComponent> components = Lists.newArrayList(
             new ActiveModules(),
             new Armor(),
             new CombatInfo(),
@@ -63,7 +63,7 @@ public class HUDComponentManager implements MixinInterface {
         if (!(mc.currentScreen instanceof HUD) && !(mc.currentScreen instanceof GUI)) {
             for (HUDComponent component : components) {
                 if (component.isEnabled()) {
-                    // TODO: figure out why some of these get npe's
+                    // TODO: figure out why some of these get NPE's
 
                     try {
                         component.renderComponent();

@@ -2,7 +2,9 @@ package me.linus.momentum.mixin.mixins;
 
 import com.mojang.authlib.GameProfile;
 import me.linus.momentum.event.events.player.MoveEvent;
+import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.util.player.rotation.RotationUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -12,7 +14,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * @author linustouchtips
@@ -27,11 +31,23 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer {
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/AbstractClientPlayer;move(Lnet/minecraft/entity/MoverType;DDD)V"))
     public void move(final AbstractClientPlayer player, final MoverType moverType, final double x, final double y, final double z) {
-        final MoveEvent event = new MoveEvent(moverType, x, y, z);
+        MoveEvent event = new MoveEvent(moverType, x, y, z);
         MinecraftForge.EVENT_BUS.post(event);
 
         if (!event.isCanceled())
             super.move(event.getType(), event.getX(), event.getY(), event.getZ());
+    }
+
+    @Inject(method = "onUpdateWalkingPlayer", at = @At("HEAD"), cancellable = true)
+    public void OnUpdateWalkingPlayer(CallbackInfo info) {
+        RotationEvent event = new RotationEvent();
+        MinecraftForge.EVENT_BUS.post(event);
+
+        if (event.isCanceled()) {
+            info.cancel();
+
+            RotationUtil.updateRotationPackets(event);
+        }
     }
 
     @Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;closeScreen()V"))

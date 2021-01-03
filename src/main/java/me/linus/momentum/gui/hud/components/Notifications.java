@@ -48,7 +48,7 @@ public class Notifications extends HUDComponent {
                 GlStateManager.disableAlpha();
                 GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
 
-                Momentum.fontManager.getCustomFont().drawStringWithShadow("This is an example notification!", this.x, this.y - 1, new Color(255, 255, 255).getRGB());
+                Momentum.fontManager.getCustomFont().drawStringWithShadow("This is an example notification!", this.x, this.y - 1, -1);
                 return;
             }
         }
@@ -88,7 +88,7 @@ public class Notifications extends HUDComponent {
             GlStateManager.disableAlpha();
             GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
 
-            Momentum.fontManager.getCustomFont().drawStringWithShadow(continuedNotification.getMessage(), this.x + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), new Color(255, 255, 255).getRGB());
+            Momentum.fontManager.getCustomFont().drawStringWithShadow(continuedNotification.getMessage(), this.x + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), -1);
 
             currY -= 13;
 

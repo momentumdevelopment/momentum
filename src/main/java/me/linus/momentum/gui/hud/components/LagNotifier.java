@@ -5,8 +5,7 @@ import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.hud.HUD;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.system.Timer;
-import me.linus.momentum.util.render.FontUtil;
+import me.linus.momentum.util.client.Timer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 

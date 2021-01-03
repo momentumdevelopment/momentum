@@ -1,27 +1,25 @@
 package me.linus.momentum.module.modules.movement;
 
+import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.Module;
+import me.linus.momentum.module.modules.movement.elytra.ElytraMode;
+import me.linus.momentum.module.modules.movement.elytra.modes.*;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.system.MathUtil;
-import me.linus.momentum.util.world.MotionUtil;
-import me.linus.momentum.util.world.RotationUtil;
-import me.linus.momentum.util.world.InventoryUtil;
-import me.linus.momentum.util.world.PlayerUtil;
-import net.minecraft.init.Items;
+import me.linus.momentum.util.player.MotionUtil;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
-import net.minecraft.util.EnumHand;
+import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author linustouchtips
  * @since 12/03/2020
+ * @updated 12/29/2020
  */
 
 public class ElytraFlight extends Module {
@@ -29,14 +27,14 @@ public class ElytraFlight extends Module {
         super("ElytraFlight", Category.MOVEMENT, "Allows you to fly faster on an elytra");
     }
 
-    private static final Mode mode = new Mode("Mode", "Control", "Pitch", "NCP-Pitch", "Highway");
+    private static final Mode mode = new Mode("Mode", "Control", "MotionControl", "Pitch", "PitchNCP", "Firework", "Deer", "Dynamic", "DynamicNCP", "Glide", "Vanilla");
     public static final SubSlider rotationNCP = new SubSlider(mode, "NCP Rotation", 0.0D, 30.0D, 90.0D, 1);
-    private static final SubCheckbox pitchReset = new SubCheckbox(mode, "Pitch Reset", false);
+    public static final SubCheckbox rotationLock = new SubCheckbox(mode, "Rotation Lock", false);
 
-    private static final Mode boost = new Mode("Boost", "None", "Firework", "Infinite");
+    public static final Mode boost = new Mode("Boost", "None", "Firework", "Accelerate");
 
     public static Slider hSpeed = new Slider("Glide Speed", 0.0D, 2.1D, 3.0D, 1);
-    public static Slider ySpeed = new Slider("Vertical Speed", 0.0D, 1.0D, 3.0D, 1);
+    public static Slider ySpeed = new Slider("Rise Speed", 0.0D, 1.0D, 3.0D, 1);
     public static Slider yOffset = new Slider("Y-Offset", 0.0D, 0.009D, 0.1D, 3);
     public static Slider fallSpeed = new Slider("Fall Speed", 0.0D, 0.0D, 0.1D, 3);
 
@@ -53,6 +51,7 @@ public class ElytraFlight extends Module {
     private static final SubCheckbox waterCancel = new SubCheckbox(disable, "In Liquid", true);
     private static final SubCheckbox onUpward = new SubCheckbox(disable, "On Upward Motion", false);
     private static final SubCheckbox onCollision = new SubCheckbox(disable, "On Collision", false);
+    private static final SubCheckbox onRubberband = new SubCheckbox(disable, "On Rubberband", false);
     private static final SubSlider lowestY = new SubSlider(disable, "Below Y-Level", 0.0D, 8.0D, 20.0D, 0);
 
     @Override
@@ -69,6 +68,8 @@ public class ElytraFlight extends Module {
         addSetting(autoTakeoff);
         addSetting(disable);
     }
+
+    ElytraMode elytraMode;
 
     @Override
     public void onEnable() {
@@ -92,84 +93,47 @@ public class ElytraFlight extends Module {
         disableCheck();
         flyTick();
 
-        if (boost.getValue() == 1)
-            fireworkElytra();
-
-        mc.player.fallDistance = 0;
         switch (mode.getValue()) {
             case 0:
-                flyControl();
+                elytraMode = new Control();
                 break;
             case 1:
-                flyPitch();
+                elytraMode = new MotionControl();
                 break;
             case 2:
-                flyNCPPitch();
+                elytraMode = new Pitch();
                 break;
             case 3:
-                flyHighway();
+                elytraMode = new PitchNCP();
+                break;
+            case 4:
+                elytraMode = new Firework();
+                break;
+            case 5:
+                elytraMode = new Deer();
+                break;
+            case 6:
+                elytraMode = new Dynamic();
+                break;
+            case 7:
+                elytraMode = new DynamicNCP();
+                break;
+            case 8:
+                elytraMode = new Glide();
+                break;
+            case 9:
+                elytraMode = new Vanilla();
                 break;
         }
-    }
 
-    public void flyControl() {
         if (mc.player.isElytraFlying()) {
             if (!MotionUtil.isMoving())
-                PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
+                elytraMode.noMovement();
 
-            if (mc.gameSettings.keyBindJump.isKeyDown())
-                mc.player.motionY = ySpeed.getValue();
-
-            else if (mc.gameSettings.keyBindSneak.isKeyDown())
-                mc.player.motionY = (ySpeed.getValue() * -1);
-
-            if (pitchReset.getValue())
-                RotationUtil.resetPitch(rotationNCP.getValue());
-
-            accelerateElytra();
-        }
-    }
-
-    public void flyHighway() {
-        if (mc.player.isElytraFlying()) {
-            if (!MotionUtil.isMoving())
-                PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
-
-            RotationUtil.resetPitch(rotationNCP.getValue());
-            RotationUtil.resetYaw(rotationNCP.getValue());
-
-            accelerateElytra();
-        }
-    }
-
-    public void flyPitch() {
-        if (mc.player.isElytraFlying()) {
-            if (!MotionUtil.isMoving())
-                PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
-
-            mc.player.motionY = (-MathUtil.degToRad(mc.player.rotationPitch)) * mc.player.movementInput.moveForward;
-
-            if (pitchReset.getValue())
-                RotationUtil.resetPitch(rotationNCP.getValue());
-
-            accelerateElytra();
-        }
-    }
-
-    public void flyNCPPitch() {
-        if (mc.player.isElytraFlying()) {
-            if (!MotionUtil.isMoving())
-                PlayerUtil.freezePlayer(fallSpeed.getValue(), yOffset.getValue());
-
-            RotationUtil.resetPitch(rotationNCP.getValue());
-
-            if (mc.gameSettings.keyBindJump.isKeyDown())
-                mc.player.rotationPitch = (float) -rotationNCP.getValue();
-
-            else if (mc.gameSettings.keyBindSneak.isKeyDown())
-                mc.player.rotationPitch = (float) rotationNCP.getValue();
-
-            accelerateElytra();
+            elytraMode.onAscendingMovement();
+            elytraMode.onVerticalMovement();
+            elytraMode.onHorizontalMovement();
+            elytraMode.onRotation();
         }
     }
 
@@ -185,75 +149,39 @@ public class ElytraFlight extends Module {
 
     }
 
-    public void accelerateElytra() {
-        double yaw = MotionUtil.calcMoveYaw(mc.player.rotationYaw);
-        double motX = 0;
-        double motZ = 0;
-
-        yaw -= mc.player.moveStrafing * 90;
-
-        if (mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindForward.isKeyDown()) {
-            motX = (-Math.sin(yaw) * hSpeed.getValue()) * -1;
-            motZ = (Math.cos(yaw) * hSpeed.getValue()) * -1;
-        }
-
-        else if (mc.gameSettings.keyBindForward.isKeyDown()) {
-            motX = -Math.sin(yaw) * hSpeed.getValue();
-            motZ = Math.cos(yaw) * hSpeed.getValue();
-        }
-
-        mc.player.motionX = motX;
-        mc.player.motionZ = motZ;
-
-        if (mc.player.moveStrafing == 0 && mc.player.moveForward == 0) {
-            mc.player.motionX = 0;
-            mc.player.motionZ = 0;
-        }
-    }
-
-    public void fireworkElytra() {
-        if (mc.gameSettings.keyBindJump.isKeyDown() || mc.player.rotationPitch >= rotationNCP.getValue()) {
-            InventoryUtil.switchToSlot(Items.FIREWORKS);
-            mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
-        }
-    }
-
     public void disableCheck() {
         if (!disable.getValue())
             return;
 
-        if (mc.player.posY <= lowestY.getValue()) {
-            this.disable();
+        if (mc.player.posY <= lowestY.getValue())
             return;
-        }
 
-        if ((mc.player.isInWater() || mc.player.isInLava()) && waterCancel.getValue()) {
-            this.disable();
+        if ((mc.player.isInWater() || mc.player.isInLava()) && waterCancel.getValue())
             return;
-        }
 
-        if (mc.player.rotationPitch >= rotationNCP.getValue() && onUpward.getValue()) {
-            this.disable();
+        if (mc.player.rotationPitch >= rotationNCP.getValue() && onUpward.getValue())
             return;
-        }
 
-        if (mc.player.isElytraFlying() && mc.gameSettings.keyBindJump.isKeyDown() && onUpward.getValue()) {
-            this.disable();
+        if (mc.player.isElytraFlying() && mc.gameSettings.keyBindJump.isKeyDown() && onUpward.getValue())
             return;
-        }
 
-        if (mc.player.collidedHorizontally && onCollision.getValue()) {
-            this.disable();
+        if (mc.player.collidedHorizontally && onCollision.getValue())
             return;
+    }
+
+    @SubscribeEvent
+    public void onPacketRecieve(PacketReceiveEvent event) {
+        if (event.getPacket() instanceof SPacketPlayerPosLook && mc.player.isElytraFlying()) {
+            if (disable.getValue() && onRubberband.getValue())
+                return;
+
+            elytraMode.onRubberband();
         }
     }
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketPlayer && pitchSpoof.getValue()) {
-            if (!mc.player.isElytraFlying())
-                return;
-
+        if (event.getPacket() instanceof CPacketPlayer && pitchSpoof.getValue() && mc.player.isElytraFlying()) {
             if (event.getPacket() instanceof CPacketPlayer.PositionRotation && pitchSpoof.getValue()) {
                 CPacketPlayer.PositionRotation rotation = (CPacketPlayer.PositionRotation) event.getPacket();
                 mc.getConnection().sendPacket(new CPacketPlayer.Position(rotation.x, rotation.y, rotation.z, rotation.onGround));

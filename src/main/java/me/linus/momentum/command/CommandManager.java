@@ -20,7 +20,7 @@ public class CommandManager {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private static final List<Command> commands = Lists.newArrayList(
+    static final List<Command> commands = Lists.newArrayList(
             new Toggle(),
             new Prefix(),
             new Help(),

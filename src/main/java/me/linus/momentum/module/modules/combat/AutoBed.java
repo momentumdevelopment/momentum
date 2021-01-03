@@ -1,15 +1,20 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.external.MessageUtil;
-import me.linus.momentum.util.client.system.Timer;
+import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.BedUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
+import me.linus.momentum.util.player.InventoryUtil;
+import me.linus.momentum.util.player.PlayerUtil;
+import me.linus.momentum.util.player.rotation.Rotation;
+import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.world.*;
 import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.entity.Entity;
@@ -43,7 +48,7 @@ public class AutoBed extends Module {
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 20.0D, 60.0D, 0);
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubCheckbox unload = new SubCheckbox(explode, "Unload Bed", false);
-    public static SubMode rotate = new SubMode(explode, "Rotate", "Spoof", "Legit", "None");
+    public static SubMode rotate = new SubMode(explode, "Rotate", "Packet", "Legit", "None");
 
     public static Checkbox place = new Checkbox("Place", true);
     public static SubMode placeTimerMode = new SubMode(place, "Delay Mode", "Custom", "Ticks");
@@ -81,10 +86,16 @@ public class AutoBed extends Module {
 
     Timer breakTimer = new Timer();
     Timer placeTimer = new Timer();
+
     Entity currentTarget = null;
+    
+    Rotation bedRotation;
+
     BlockPos currentBlock = null;
+
     double diffXZ;
     float rotVar;
+
     boolean nowTop = false;
 
     @Override
@@ -99,6 +110,11 @@ public class AutoBed extends Module {
 
         currentTarget = WorldUtil.getClosestPlayer(enemyRange.getValue());
         diffXZ = mc.player.getPositionVector().distanceTo(currentTarget.getPositionVector());
+
+        if (currentTarget != null && (!FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled())) {
+            bedRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1]);
+            RotationUtil.updateRotations(bedRotation, rotate.getValue());
+        }
 
         switch (logicMode.getValue()) {
             case 0:
@@ -119,14 +135,7 @@ public class AutoBed extends Module {
             if (pause.getValue() && PlayerUtil.getHealth() <= pauseHealth.getValue())
                 return;
 
-            switch (rotate.getValue()) {
-                case 0:
-                    RotationUtil.lookAtPacket(bed.getPos().x, bed.getPos().y, bed.getPos().z, mc.player);
-                    break;
-                case 1:
-                    RotationUtil.lookAtLegitTile(bed);
-                    break;
-            }
+            RotationUtil.updateRotations(new Rotation(RotationUtil.getTileAngles(bed)[0], RotationUtil.getTileAngles(bed)[1]), rotate.getValue());
 
             if (explode.getValue())
                 BedUtil.attackBed(bed.getPos());
@@ -189,25 +198,20 @@ public class AutoBed extends Module {
     }
 
     @SubscribeEvent
-    public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        if (currentBlock != null && currentTarget != null && renderBed.getValue())
-            if (currentBlock != null)
-                RenderUtil.drawBoundingBoxBlockPos(currentBlock, -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+    public void onRotation(RotationEvent event) {
+        if (bedRotation != null && rotate.getValue() == 0) {
+            event.setCanceled(true);
+            event.setPitch(bedRotation.yaw);
+            event.setYaw(bedRotation.pitch);
+        }
+    }
 
-            switch ((int) rotVar) {
-                case -90:
-                    RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x + 1, currentBlock.y, currentBlock.z), -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
-                    break;
-                case 0:
-                    RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x, currentBlock.y, currentBlock.z + 1), -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
-                    break;
-                case 90:
-                    RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x - 1, currentBlock.y, currentBlock.z), -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
-                    break;
-                case 180:
-                    RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x, currentBlock.y, currentBlock.z - 1), -0.5, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
-                    break;
-            }
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent eventRender) {
+        if (currentBlock != null && currentTarget != null && renderBed.getValue()) {
+            RenderUtil.drawBoundingBoxBlockPos(currentBlock, -0.5, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+            RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x + 1, currentBlock.y, currentBlock.z), -0.5, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+        }
     }
 
     @Override

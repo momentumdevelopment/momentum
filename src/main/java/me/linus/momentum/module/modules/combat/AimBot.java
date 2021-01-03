@@ -1,15 +1,17 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.friend.FriendManager;
-import me.linus.momentum.util.world.RotationUtil;
-import me.linus.momentum.util.world.EntityUtil;
+import me.linus.momentum.util.player.rotation.Rotation;
+import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBow;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author linustouchtips
@@ -21,7 +23,7 @@ public class AimBot extends Module {
         super("AimBot", Category.COMBAT, "Automatically rotates to nearby entities");
     }
 
-    private static final Mode mode = new Mode("Mode", "Legit", "Spoof");
+    public static Mode mode = new Mode("Rotate","Packet", "Legit", "None");
     public static Slider range = new Slider("Range", 0.0D, 8.0D, 20.0D, 0);
     public static Checkbox onlyBow = new Checkbox("Bow Only", true);
 
@@ -32,6 +34,9 @@ public class AimBot extends Module {
         addSetting(onlyBow);
     }
 
+    EntityPlayer target = null;
+    Rotation aimbotRotation = null;
+
     @Override
     public void onUpdate() {
         if (nullCheck())
@@ -40,15 +45,24 @@ public class AimBot extends Module {
         if (!(mc.player.getHeldItemMainhand().getItem() instanceof ItemBow) && !mc.player.isHandActive() && !(mc.player.getItemInUseMaxCount() >= 3) && onlyBow.getValue())
             return;
 
-        EntityPlayer target = WorldUtil.getClosestPlayer(range.getValue());
+        target = WorldUtil.getClosestPlayer(range.getValue());
 
         if (target != null && (!FriendManager.isFriend(target.getName()) && FriendManager.isFriendModuleEnabled())) {
-            if (mode.getValue() == 0)
-                RotationUtil.lookAtLegit(target);
-
-            if (mode.getValue() == 1)
-                RotationUtil.lookAtPacket(target.posX, target.posY, target.posZ, mc.player);
+            aimbotRotation = new Rotation(RotationUtil.getAngles(target)[0], RotationUtil.getAngles(target)[1]);
+            RotationUtil.updateRotations(aimbotRotation, mode.getValue());
         }
+    }
+
+    @SubscribeEvent
+    public void onRotation(RotationEvent event) {
+        if (aimbotRotation != null && mode.getValue() == 0) {
+            event.setCanceled(true);
+            event.setPitch(aimbotRotation.yaw);
+            event.setYaw(aimbotRotation.pitch);
+        }
+
+        if (target != null && event.isCanceled())
+            RotationUtil.resetRotation(event);
     }
 
     @Override

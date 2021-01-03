@@ -3,24 +3,29 @@ package me.linus.momentum.event;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
- * @author bon
- * @since 11/21/20
+ * @author bon & linustouchtips
+ * @since 11/21/2020
  */
 
 public class MomentumEvent extends Event {
 	
-	private Stage s;
+	Stage stage;
 	
 	public MomentumEvent() {
 		
 	}
 	
-	public MomentumEvent(Stage s) {
-		this.s = s;
+	public MomentumEvent(Stage stage) {
+		this.stage = stage;
 	}
 	
 	public Stage getStage() {
-		return this.s;
+		return this.stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+		this.setCanceled(false);
 	}
 	
 	public enum Stage {

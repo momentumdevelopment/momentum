@@ -26,7 +26,7 @@ public class Sprint extends Module {
 
         switch (mode.getValue()) {
             case 0:
-                if (!(mc.player.isSneaking()) && !(mc.player.collidedHorizontally) && mc.player.getFoodStats().getFoodLevel() > 6f && mc.gameSettings.keyBindForward.isKeyDown() || mc.gameSettings.keyBindLeft.isKeyDown() || mc.gameSettings.keyBindRight.isKeyDown() || mc.gameSettings.keyBindBack.isKeyDown())
+                if (!(mc.player.isSneaking()) && !(mc.player.collidedHorizontally) && mc.gameSettings.keyBindForward.isKeyDown() || mc.gameSettings.keyBindLeft.isKeyDown() || mc.gameSettings.keyBindRight.isKeyDown() || mc.gameSettings.keyBindBack.isKeyDown() && mc.player.getFoodStats().getFoodLevel() > 6f)
                     mc.player.setSprinting(true);
                 break;
             case 1:

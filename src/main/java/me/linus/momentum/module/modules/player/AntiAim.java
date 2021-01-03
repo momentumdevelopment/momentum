@@ -3,7 +3,7 @@ package me.linus.momentum.module.modules.player;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.system.Timer;
+import me.linus.momentum.util.client.Timer;
 
 /**
  * @author linustouchtips

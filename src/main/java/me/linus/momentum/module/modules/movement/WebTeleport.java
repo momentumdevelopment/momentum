@@ -22,12 +22,19 @@ public class WebTeleport extends Module {
 
     @Override
     public void onUpdate() {
-        if (mc.player.isInWeb && mode.getValue() == 0) {
-            for (int i = 0; i < 10; i++)
-                mc.player.motionY--;
-        }
+        if (nullCheck())
+            return;
 
-        if (mc.player.isInWeb && mode.getValue() == 1)
-            mc.player.isInWeb = false;
+        if (mc.player.isInWeb) {
+            switch (mode.getValue()) {
+                case 0:
+                    for (int i = 0; i < 10; i++)
+                        mc.player.motionY--;
+                    break;
+                case 1:
+                    mc.player.isInWeb = false;
+                    break;
+            }
+        }
     }
 }

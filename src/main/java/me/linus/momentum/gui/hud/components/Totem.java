@@ -2,10 +2,8 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.util.render.FontUtil;
-import me.linus.momentum.util.world.InventoryUtil;
+import me.linus.momentum.util.player.InventoryUtil;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 
 import java.awt.*;

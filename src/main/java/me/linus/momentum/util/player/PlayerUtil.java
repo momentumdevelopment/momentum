@@ -1,4 +1,4 @@
-package me.linus.momentum.util.world;
+package me.linus.momentum.util.player;
 
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.block.Block;
@@ -55,24 +55,6 @@ public class PlayerUtil implements MixinInterface {
         return axisAlignedBB.intersects(mc.player.getEntityBoundingBox());
     }
 
-    public static void freezePlayer(double fallSpeed, double yOffset) {
-        if (mc.player.ridingEntity == null) {
-            mc.player.motionX = 0.0;
-            mc.player.motionY = 0.0;
-            mc.player.motionZ = 0.0;
-            mc.player.setVelocity(0f, 0f, 0f);
-            mc.player.setPosition(mc.player.posX, mc.player.posY - fallSpeed + yOffset, mc.player.posZ);
-        }
-
-        else {
-            mc.player.ridingEntity.motionX = 0.0;
-            mc.player.ridingEntity.motionY = 0.0;
-            mc.player.ridingEntity.motionZ = 0.0;
-            mc.player.ridingEntity.setVelocity(0f, 0f, 0f);
-            mc.player.ridingEntity.setPosition(mc.player.posX, mc.player.posY - fallSpeed + yOffset, mc.player.posZ);
-        }
-    }
-
     public static boolean isTrapped() {
         BlockPos playerPos = getLocalPlayerPosFloored();
 
@@ -116,7 +98,6 @@ public class PlayerUtil implements MixinInterface {
         double x = Math.floor(posX) + 0.5D;
         double y = Math.floor(posY);
         double z = Math.floor(posZ) + 0.5D;
-
         return new Vec3d(x, y, z);
     }
 

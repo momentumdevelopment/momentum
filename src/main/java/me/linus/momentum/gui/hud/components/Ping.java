@@ -26,7 +26,7 @@ public class Ping extends HUDComponent {
         else
             ping = -1;
 
-        Momentum.fontManager.getCustomFont().drawStringWithShadow(TextFormatting.GRAY + "Ping " + TextFormatting.WHITE + ping + " ms", this.x, this.y, new Color(255, 255, 255).getRGB());
+        Momentum.fontManager.getCustomFont().drawStringWithShadow(TextFormatting.GRAY + "Ping " + TextFormatting.WHITE + ping + " ms", this.x, this.y, -1);
         width = (int) Momentum.fontManager.getCustomFont().getStringWidth("Ping " + ping + " ms") + 2;
     }
 }

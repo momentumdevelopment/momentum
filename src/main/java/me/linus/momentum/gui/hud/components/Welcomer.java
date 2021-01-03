@@ -26,7 +26,7 @@ public class Welcomer extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        Momentum.fontManager.getCustomFont().drawStringWithShadow("Welcome " + mc.player.getName() + "! :^)", this.x, this.y, new Color(255, 255, 255).getRGB());
+        Momentum.fontManager.getCustomFont().drawStringWithShadow("Welcome " + mc.player.getName() + "! :^)", this.x, this.y, -1);
         width = Momentum.fontManager.getCustomFont().getStringWidth("Welcome " + mc.player.getName() + "! :^)") + 2;
     }
 }

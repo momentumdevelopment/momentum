@@ -1,4 +1,4 @@
-package me.linus.momentum.util.world;
+package me.linus.momentum.util.player;
 
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.block.Block;

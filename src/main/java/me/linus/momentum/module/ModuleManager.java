@@ -25,7 +25,7 @@ import java.util.List;
 
 public class ModuleManager implements MixinInterface {
 
-	private static final List<Module> modules = Arrays.asList
+	static final List<Module> modules = Arrays.asList
 		(
 			//Client
 			new ClickGUI(),
@@ -155,11 +155,12 @@ public class ModuleManager implements MixinInterface {
 	
 	public static List<Module> getModulesInCategory(Category cat){
 		List<Module> module = new ArrayList<>();
-		for(Module m : modules) {
-			if(m.getCategory().equals(cat)) {
+
+		for (Module m : modules) {
+			if (m.getCategory().equals(cat))
 				module.add(m);
-			}
 		}
+
 		return module;
 	}
 	

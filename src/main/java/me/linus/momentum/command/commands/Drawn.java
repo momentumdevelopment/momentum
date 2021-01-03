@@ -2,7 +2,7 @@ package me.linus.momentum.command.commands;
 
 import me.linus.momentum.command.Command;
 import me.linus.momentum.module.ModuleManager;
-import me.linus.momentum.util.client.external.MessageUtil;
+import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.util.text.TextFormatting;
 
 /**

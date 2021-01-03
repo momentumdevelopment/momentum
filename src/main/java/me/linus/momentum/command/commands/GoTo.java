@@ -3,7 +3,7 @@ package me.linus.momentum.command.commands;
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalXZ;
 import me.linus.momentum.command.Command;
-import me.linus.momentum.util.client.external.MessageUtil;
+import me.linus.momentum.util.client.MessageUtil;
 
 /**
  * @author linustouchtips

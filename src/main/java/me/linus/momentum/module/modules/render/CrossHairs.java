@@ -4,7 +4,7 @@ import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.system.Timer;
+import me.linus.momentum.util.client.Timer;
 import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;

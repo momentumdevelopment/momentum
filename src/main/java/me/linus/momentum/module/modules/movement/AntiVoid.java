@@ -2,7 +2,7 @@ package me.linus.momentum.module.modules.movement;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
-import me.linus.momentum.util.client.external.MessageUtil;
+import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.util.text.TextFormatting;
 
 /**

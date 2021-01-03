@@ -2,11 +2,7 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.util.render.FontUtil;
-import me.linus.momentum.util.world.MotionUtil;
-import me.linus.momentum.util.world.PlayerUtil;
-
-import java.awt.*;
+import me.linus.momentum.util.player.MotionUtil;
 
 /**
  * @author linustouchtips
@@ -20,7 +16,7 @@ public class Speed extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        Momentum.fontManager.getCustomFont().drawStringWithShadow(MotionUtil.getSpeed(), this.x, this.y, new Color(255, 255, 255).getRGB());
+        Momentum.fontManager.getCustomFont().drawStringWithShadow(MotionUtil.getSpeed(), this.x, this.y, -1);
         width = Momentum.fontManager.getCustomFont().getStringWidth(MotionUtil.getSpeed()) + 2;
     }
 }

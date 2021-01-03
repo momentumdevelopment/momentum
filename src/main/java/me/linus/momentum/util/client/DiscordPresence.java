@@ -1,4 +1,4 @@
-package me.linus.momentum.util.client.external;
+package me.linus.momentum.util.client;
 
 import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
