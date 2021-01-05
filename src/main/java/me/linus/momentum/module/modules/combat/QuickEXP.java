@@ -45,7 +45,7 @@ public class QuickEXP extends Module {
         if (stopEXP.getValue() && 0 < PlayerUtil.getArmorDurability())
             return;
 
-        if (mc.player.getHeldItemMainhand().getItem() instanceof ItemExpBottle)
+        if (InventoryUtil.getHeldItem(Items.EXPERIENCE_BOTTLE))
             mc.rightClickDelayTimer = (int) delay.getValue();
 
         if (Keyboard.isKeyDown(mendKey.getKey()) && (mode.getValue() == 0 || mode.getValue() == 1)) {

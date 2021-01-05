@@ -17,7 +17,7 @@ public class AutoMine extends Module {
     }
 
     private static final Mode mode = new Mode("Mode", "Auto-Tunnel", "Frenzy");
-    public static SubSlider speed = new SubSlider(mode, "Rotate Speed", 0.0D, 5.0D, 50.0D, 1);
+    public static SubSlider delay = new SubSlider(mode, "Rotate Delay", 0.0D, 5.0D, 50.0D, 1);
 
     @Override
     public void setup() {
@@ -44,7 +44,7 @@ public class AutoMine extends Module {
 
         KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), true);
 
-        if (mc.player.ticksExisted % speed.getValue() == 0)
+        if (mc.player.ticksExisted % delay.getValue() == 0)
             mc.player.rotationPitch += 75;
     }
 

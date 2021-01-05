@@ -9,6 +9,7 @@ import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.client.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.CrystalUtil;
@@ -30,7 +31,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -69,7 +69,8 @@ public class AutoCrystal extends Module {
     public static SubSlider enemyRange = new SubSlider(place, "Enemy Range", 0.0D, 5.0D, 15.0D, 1);
     public static SubSlider placeDelay = new SubSlider(place, "Place Delay", 0.0D, 40.0D, 600.0D, 0);
     public static SubSlider minDamage = new SubSlider(place, "Minimum Damage", 0.0D, 7.0D, 36.0D, 0);
-    public static SubSlider resetDistance = new SubSlider(place, "Reset Distance", 0.0D, 4.0D, 10.0D, 0);
+    public static SubSlider resetDistance = new SubSlider(place, "Reset Distance", 0.0D, 4.0D, 10.0D, 1);
+    public static SubSlider resetThreshold = new SubSlider(place, "Reset Threshold", 0.0D, 3.0D, 10.0D, 1);
     public static SubCheckbox packetPlace = new SubCheckbox(place, "Packet Place", true);
     public static SubCheckbox walls = new SubCheckbox(place, "Through Walls", true);
     public static SubCheckbox autoSwitch = new SubCheckbox(place, "Auto-Switch", false);
@@ -94,12 +95,12 @@ public class AutoCrystal extends Module {
     public static SubSlider wasteAmount = new SubSlider(prevent, "Waste Amount", 0.0D, 20.0D, 40.0D, 0);
     public static SubCheckbox closePlacements = new SubCheckbox(prevent, "Close Placements", false);
 
-    public static Checkbox facePlace = new Checkbox("Face-Place", true);
-    public static SubSlider facePlaceHealth = new SubSlider(facePlace, "Face-Place Health", 0.0D, 16.0D, 36.0D, 0);
+    public static Checkbox facePlace = new Checkbox("FacePlace", true);
+    public static SubSlider facePlaceHealth = new SubSlider(facePlace, "FacePlace Health", 0.0D, 16.0D, 36.0D, 0);
     public static SubCheckbox armorMelt = new SubCheckbox(facePlace, "Armor Melt", false);
     public static SubSlider armorDurability = new SubSlider(facePlace, "Armor Durability", 0.0D, 15.0D, 100.0D, 0);
     public static SubCheckbox facePlaceInHole = new SubCheckbox(facePlace, "FacePlace in Hole", false);
-    public static SubKeybind forceFaceplace = new SubKeybind(facePlace, "Force Face-Place", -2);
+    public static SubKeybind forceFaceplace = new SubKeybind(facePlace, "Force FacePlace", -2);
 
     public static Checkbox calculations = new Checkbox("Calculations", true);
     public static SubMode placeCalc = new SubMode(calculations, "Place Calculation", "Ideal", "Actual");
@@ -228,7 +229,7 @@ public class AutoCrystal extends Module {
                 for (int i = 0; i < breakAttempts.getValue(); i++)
                     CrystalUtil.attackCrystal(crystal, packetBreak.getValue());
 
-            CrystalUtil.getSwingArm(breakHand.getValue());
+            CrystalUtil.swingArm(breakHand.getValue());
             if (syncBreak.getValue())
                 crystal.setDead();
 
@@ -260,32 +261,36 @@ public class AutoCrystal extends Module {
             if (verifyCalc.getValue() == 1 && mc.player.getDistanceSq(calculatedPos) > breakRange.getValue() * breakRange.getValue())
                 continue;
 
-            if (mc.player.getDistanceSq(calculatedPos) > resetDistance.getValue())
+            if (mc.player.getDistanceSq(calculatedPos) > resetDistance.getValue()) {
+                MessageUtil.sendPublicMessage("Resetting Place Position!");
                 continue;
+            }
 
             double calculatedDamage;
             if (placeCalc.getValue() == 1)
-                calculatedDamage = CrystalUtil.calculateDamage(calculatedPos.getX(), calculatedPos.getY() + 1, calculatedPos.getZ(), currentTarget);
+                calculatedDamage = CrystalUtil.calculateDamage(mc.world, calculatedPos.getX(), calculatedPos.getY() + 1, calculatedPos.getZ(), currentTarget, 0);
             else
-                calculatedDamage = CrystalUtil.calculateDamage(calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5, currentTarget);
+                calculatedDamage = CrystalUtil.calculateDamage(mc.world, calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5, currentTarget, 0);
+
+            if (calculatedDamage <= placeDamage + resetThreshold.getValue() && calculatedDamage >= placeDamage - resetThreshold.getValue()) {
+                tempDamage = placeDamage;
+                tempPos = placePos;
+                MessageUtil.sendPublicMessage("Below Threshold, No Reset!");
+                continue;
+            }
 
             int minDamagePlace;
-            if (EnemyUtil.getArmor(currentTarget, armorMelt.getValue(), armorDurability.getValue()) || HoleUtil.isInHole() && facePlaceInHole.getValue() || Keyboard.isKeyDown(forceFaceplace.getKey()))
+            if (EnemyUtil.getArmor(currentTarget, armorMelt.getValue(), armorDurability.getValue()) || HoleUtil.isInHole() && facePlaceInHole.getValue())
                 minDamagePlace = 2;
             else
                 minDamagePlace = (int) minDamage.getValue();
             if (calculatedDamage < minDamagePlace && EnemyUtil.getHealth(currentTarget) > facePlaceHealth.getValue())
                 continue;
 
-            if (calculatedDamage <= placeDamage + 10 && calculatedDamage >= placeDamage - 10 ) {
-                tempDamage = placeDamage;
-                tempPos = placePos;
-            }
-
             if (calculatedDamage <= tempDamage && !(damageCalc.getValue() == 1))
                 continue;
 
-            double selfDamage = CrystalUtil.calculateDamage(calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5, mc.player);
+            double selfDamage = CrystalUtil.calculateDamage(mc.world, calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5, mc.player, 0);
             if (PlayerUtil.getHealth() - selfDamage <= pauseHealth.getValue() && pause.getValue() && (pauseMode.getValue() == 0 || pauseMode.getValue() == 2))
                 continue;
 
@@ -305,13 +310,12 @@ public class AutoCrystal extends Module {
         placePos = tempPos;
         placeDamage = tempDamage;
 
-        if (autoSwitch.getValue())
+        if (autoSwitch.getValue() && (!InventoryUtil.getHeldItem(Items.GOLDEN_APPLE) && whenEating.getValue()) && (!InventoryUtil.getHeldItem(Items.DIAMOND_PICKAXE) && whenMining.getValue()))
             InventoryUtil.switchToSlot(Items.END_CRYSTAL);
 
         if (place.getValue()) {
-            if (placeTimer.passed((long) placeDelay.getValue()) && mc.player.getHeldItemMainhand().getItem().equals(Items.END_CRYSTAL) || mc.player.getHeldItemOffhand().getItem().equals(Items.END_CRYSTAL) ) {
+            if (placeTimer.passed((long) placeDelay.getValue()) && InventoryUtil.getHeldItem(Items.END_CRYSTAL)) {
                 CrystalUtil.placeCrystal(placePos, rayTrace.getValue() ? CrystalUtil.getEnumFacing(rayTrace.getValue(), tempPos) : EnumFacing.UP, packetPlace.getValue());
-
                 placedCrystals.add(tempPos);
             }
 

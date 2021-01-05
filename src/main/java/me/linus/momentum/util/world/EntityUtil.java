@@ -118,4 +118,11 @@ public class EntityUtil implements MixinInterface {
     public static Vec3d interpolateEntityByTicks(final Entity entity, float renderPartialTicks) {
         return new Vec3d (calculateDistanceWithPartialTicks(entity.posX, entity.lastTickPosX, renderPartialTicks) - mc.getRenderManager().renderPosX, calculateDistanceWithPartialTicks(entity.posY, entity.lastTickPosY, renderPartialTicks) - mc.getRenderManager().renderPosY, calculateDistanceWithPartialTicks(entity.posZ, entity.lastTickPosZ, renderPartialTicks) - mc.getRenderManager().renderPosZ);
     }
+
+    public static double getDistance(double x, double y, double z, double finalX, double finalY, double finalZ) {
+        double interpolationX = x - finalX;
+        double interpolationY = y - finalY;
+        double interpolationZ = z - finalZ;
+        return MathHelper.sqrt(interpolationX * interpolationX + interpolationY * interpolationY + interpolationZ * interpolationZ);
+    }
 }
