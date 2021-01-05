@@ -9,7 +9,6 @@ import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.client.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.CrystalUtil;
@@ -262,7 +261,6 @@ public class AutoCrystal extends Module {
                 continue;
 
             if (mc.player.getDistanceSq(calculatedPos) > resetDistance.getValue()) {
-                MessageUtil.sendPublicMessage("Resetting Place Position!");
                 continue;
             }
 
@@ -275,7 +273,6 @@ public class AutoCrystal extends Module {
             if (calculatedDamage <= placeDamage + resetThreshold.getValue() && calculatedDamage >= placeDamage - resetThreshold.getValue()) {
                 tempDamage = placeDamage;
                 tempPos = placePos;
-                MessageUtil.sendPublicMessage("Below Threshold, No Reset!");
                 continue;
             }
 

@@ -24,11 +24,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @since 11/26/2020
  */
 
-public class RenderUtil extends Tessellator implements MixinInterface {
-    public RenderUtil() {
-        super(0x200000);
-    }
-
+public class RenderUtil implements MixinInterface {
     public static ICamera camera = new Frustum();
 
     /**
