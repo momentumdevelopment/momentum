@@ -33,7 +33,7 @@ public class Offhand extends Module {
     private static final SubCheckbox fallCheck = new SubCheckbox(checks, "Falling", false);
 
     public static final Checkbox swordGap = new Checkbox("Sword Gapple", true);
-    public static final Checkbox forceGap = new Checkbox("Force Gapple", true);
+    public static final Checkbox forceGap = new Checkbox("Force Gapple", false);
     public static final Checkbox hotbar = new Checkbox("Search Hotbar", false);
 
     @Override

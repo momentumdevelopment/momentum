@@ -33,7 +33,7 @@ public class SkyColor extends Module {
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void onFogColorRender(EntityViewRenderEvent.FogColors event) {
+    public void onFogRender(EntityViewRenderEvent.FogColors event) {
         if (rainbow.getValue()) {
             event.setRed(ColorUtil.staticRainbow().getRed() / 255f);
             event.setGreen(ColorUtil.staticRainbow().getBlue() / 255f);

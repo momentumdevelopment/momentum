@@ -1,7 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.module.ModuleManager;
@@ -46,20 +46,20 @@ public class TabGUI extends HUDComponent {
 
         if (hoveringModules) {
             GuiScreen.drawRect(this.x + 87, this.y + (moduleCount * 15), this.x + 167, this.y + 2 + (count * 15) + (ModuleManager.getModulesInCategory(categories[currentHovered]).size() * 15), new Color(0, 0, 0, 90).getRGB());
-            GuiScreen.drawRect(this.x + 89, this.y + 2 + (currentModuleHovered * 15), this.x + 163, this.y + 2 + ((currentModuleHovered + 1) * 15), new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), 110).getRGB());
+            GuiScreen.drawRect(this.x + 89, this.y + 2 + (currentModuleHovered * 15), this.x + 163, this.y + 2 + ((currentModuleHovered + 1) * 15), ThemeColor.COLOR);
         }
 
         GuiScreen.drawRect(this.x + 2, this.y + 2 + (currentHovered * 15), this.x + 83, this.y + 2 + ((currentHovered + 1) * 15), new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), 110).getRGB());
 
         if (hoveringModules)
             for (Module module : ModuleManager.getModulesInCategory(categories[currentHovered])) {
-                Momentum.fontManager.getCustomFont().drawStringWithShadow(module.getName(), this.x + 93, this.y + 6 + (moduleCount * 15), -1);
+                FontUtil.drawString(module.getName(), this.x + 93, this.y + 6 + (moduleCount * 15), module.isEnabled() ? ThemeColor.BRIGHT : -1);
 
                 moduleCount++;
             }
 
         for (Category category : categories) {
-            Momentum.fontManager.getCustomFont().drawStringWithShadow(category.getName(), this.x + 5, this.y + 6 + (count * 15), -1);
+            FontUtil.drawString(category.getName(), this.x + 5, this.y + 6 + (count * 15), -1);
 
             count++;
         }

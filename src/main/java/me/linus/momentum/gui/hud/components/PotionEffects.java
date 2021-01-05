@@ -45,9 +45,9 @@ public class PotionEffects extends HUDComponent {
                 String potionString = name + " " + amplifier + ChatFormatting.WHITE + " " + minutes + ":" + seconds;
 
                 if (this.x < screenWidth)
-                    Momentum.fontManager.getCustomFont().drawStringWithShadow(potionString, this.x, this.y + (count * 10), effect.getPotion().getLiquidColor());
+                    FontUtil.drawString(potionString, this.x, this.y + (count * 10), effect.getPotion().getLiquidColor());
                 else
-                    Momentum.fontManager.getCustomFont().drawStringWithShadow(potionString, this.x - (int) FontUtil.getStringWidth(potionString), this.y + (count * 10), effect.getPotion().getLiquidColor());
+                    FontUtil.drawString(potionString, this.x - (int) FontUtil.getStringWidth(potionString), this.y + (count * 10), effect.getPotion().getLiquidColor());
 
                 count++;
 

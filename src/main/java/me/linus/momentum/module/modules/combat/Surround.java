@@ -34,13 +34,13 @@ public class Surround extends Module {
 
     private static final Mode mode = new Mode("Mode", "Standard", "Full", "Anti-City");
     private static final Mode disable = new Mode("Disable", "Jump", "Completion", "Never");
+    private static final Mode centerPlayer = new Mode("Center", "Teleport", "NCP", "None");
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
 
     private static final Checkbox timeout = new Checkbox("Timeout", true);
     public static SubSlider timeoutTick = new SubSlider(timeout, "Timeout Ticks", 1.0D, 15.0D, 20.0D, 1);
 
     private static final Checkbox rotate = new Checkbox("Rotate", true);
-    private static final Checkbox centerPlayer = new Checkbox("Center", true);
     private static final Checkbox onlyObsidian = new Checkbox("Only Obsidian", true);
     private static final Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
     private static final Checkbox chorusSave = new Checkbox("Chorus Save", false);
@@ -83,11 +83,19 @@ public class Surround extends Module {
         hasPlaced = false;
         center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
 
-        if (centerPlayer.getValue()) {
-            mc.player.motionX = 0;
-            mc.player.motionZ = 0;
-            mc.player.connection.sendPacket(new CPacketPlayer.Position(center.x, center.y, center.z, true));
-            mc.player.setPosition(center.x, center.y, center.z);
+        switch (centerPlayer.getValue()) {
+            case 0:
+                mc.player.motionX = 0;
+                mc.player.motionZ = 0;
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(center.x, center.y, center.z, true));
+                mc.player.setPosition(center.x, center.y, center.z);
+                break;
+            case 1:
+                mc.player.motionX = (center.x - mc.player.posX) / 2;
+                mc.player.motionZ = (center.z - mc.player.posZ) / 2;
+                break;
+            case 2:
+                break;
         }
     }
 
@@ -149,24 +157,24 @@ public class Surround extends Module {
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (renderSurround.getValue()) {
             if (northBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(northBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(northBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
             else
-                RenderUtil.drawBoxBlockPos(northBlockPos, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(northBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
 
             if (westBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(westBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(westBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
             else
-                RenderUtil.drawBoxBlockPos(westBlockPos, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(westBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
 
             if (southBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(southBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(southBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
             else
-                RenderUtil.drawBoxBlockPos(southBlockPos, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(southBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
 
             if (eastBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(eastBlockPos, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(eastBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
             else
-                RenderUtil.drawBoxBlockPos(eastBlockPos, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(eastBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
         }
     }
 
@@ -218,4 +226,9 @@ public class Surround extends Module {
             new Vec3d(0, 0, 3),
             new Vec3d(0, 0, -3)
     ));
+
+    @Override
+    public String getHUDData() {
+        return " " + centerPlayer.getMode(centerPlayer.getValue());
+    }
 }

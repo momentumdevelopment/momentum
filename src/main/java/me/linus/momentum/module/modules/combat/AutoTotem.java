@@ -22,7 +22,7 @@ public class AutoTotem extends Module {
 
     public static final Slider health = new Slider("Health", 0.1, 24.0, 36.0, 1);
     public static final Checkbox swordGap = new Checkbox("Sword Gapple", true);
-    public static final Checkbox forceGap = new Checkbox("Force Gapple", true);
+    public static final Checkbox forceGap = new Checkbox("Force Gapple", false);
     public static final Checkbox hotbar = new Checkbox("Search Hotbar", false);
 
     @Override

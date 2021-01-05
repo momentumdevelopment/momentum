@@ -57,6 +57,8 @@ public class AutoCity extends Module {
         if (nullCheck())
             return;
 
+        super.onEnable();
+
         for (BlockPos cityBlock : EnemyUtil.getCityBlocks(currentTarget, false))
             cityBlocks.add(cityBlock);
 
@@ -95,7 +97,7 @@ public class AutoCity extends Module {
     @SubscribeEvent
     public void onWorldRender(RenderWorldLastEvent eventRender) {
         if (breakTarget != null)
-            RenderUtil.drawBoxBlockPos(breakTarget, new Color(0, 255, 0, 50));
+            RenderUtil.drawBoxBlockPos(breakTarget, 0, new Color(0, 255, 0, 50));
     }
 
     @Override

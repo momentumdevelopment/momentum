@@ -102,7 +102,7 @@ public class SelfTrap extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         for (BlockPos renderBlock : renderBlocks)
-            RenderUtil.drawBoxBlockPos(renderBlock, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+            RenderUtil.drawBoxBlockPos(renderBlock, 0, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
     }
 
     public List<Vec3d> getTrap() {

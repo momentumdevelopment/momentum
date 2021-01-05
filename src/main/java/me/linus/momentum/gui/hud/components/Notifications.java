@@ -3,7 +3,9 @@ package me.linus.momentum.gui.hud.components;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.hud.HUD;
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.ClickGUI;
+import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.util.render.AnimationUtil;
 import me.linus.momentum.util.client.notification.Notification;
 import me.linus.momentum.util.client.notification.NotificationManager;
@@ -48,7 +50,7 @@ public class Notifications extends HUDComponent {
                 GlStateManager.disableAlpha();
                 GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
 
-                Momentum.fontManager.getCustomFont().drawStringWithShadow("This is an example notification!", this.x, this.y - 1, -1);
+                FontUtil.drawString("This is an example notification!", this.x, this.y - 1, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
                 return;
             }
         }
@@ -76,19 +78,19 @@ public class Notifications extends HUDComponent {
 
             if (continuedNotification.remainingAnimation > width && !continuedNotification.isComplete())
                 continuedNotification.remainingAnimation = width;
-            
+
             GuiScreen.drawRect((int) (this.x - continuedNotification.remainingAnimation) + 63, currY - 5 - (13 * NotificationManager.notifications.size()), (int) (this.x + width + 111 - continuedNotification.remainingAnimation), currY + mc.fontRenderer.FONT_HEIGHT + 5  - (13 * NotificationManager.notifications.size()), new Color(0, 0, 0, 70).getRGB());
 
+            GlStateManager.pushMatrix();
             GlStateManager.enableAlpha();
             mc.getTextureManager().bindTexture(widget);
             GlStateManager.color(1, 1, 1, 1);
-            GL11.glPushMatrix();
             GuiScreen.drawScaledCustomSizeModalRect((int) (this.x - continuedNotification.remainingAnimation) + 65, this.y - 4 - (13 * NotificationManager.notifications.size()), 0,0,512,512,16,16,512,512);
-            GL11.glPopMatrix();
             GlStateManager.disableAlpha();
             GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
+            GlStateManager.popMatrix();
 
-            Momentum.fontManager.getCustomFont().drawStringWithShadow(continuedNotification.getMessage(), this.x + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), -1);
+            FontUtil.drawString(continuedNotification.getMessage(), this.x + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
 
             currY -= 13;
 

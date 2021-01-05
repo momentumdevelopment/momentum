@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 
 /**
- * @author max & linustouchtips
+ * @author max & linustouchtips & reap
  * @since 11/26/2020
  */
 
@@ -22,20 +22,34 @@ public class InventoryUtil implements MixinInterface {
      * item movement
      */
 
-    public static void switchToSlot(int slot){
-        mc.player.inventory.currentItem = slot;
+    public static void switchToSlot(int slot) {
+        if (slot != -1 && mc.player.inventory.currentItem != slot)
+            mc.player.inventory.currentItem = slot;
+    }
+
+    public static void switchToSlot(Block block) {
+        if (getBlockInHotbar(block) != -1 && mc.player.inventory.currentItem != getBlockInHotbar(block))
+            mc.player.inventory.currentItem = getBlockInHotbar(block);
     }
 
     public static void switchToSlot(Item item) {
-        mc.player.inventory.currentItem = getHotbarItemSlot(item);
+        if (getHotbarItemSlot(item) != -1 && mc.player.inventory.currentItem != getHotbarItemSlot(item))
+            mc.player.inventory.currentItem = getHotbarItemSlot(item);
     }
 
     public static void switchToSlotGhost(int slot) {
-        mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
+        if (slot != -1 && mc.player.inventory.currentItem != slot)
+            mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
+    }
+
+    public static void switchToSlotGhost(Block block) {
+        if (getBlockInHotbar(block) != -1 && mc.player.inventory.currentItem != getBlockInHotbar(block))
+            mc.player.connection.sendPacket(new CPacketHeldItemChange(getBlockInHotbar(block)));
     }
 
     public static void switchToSlotGhost(Item item) {
-        switchToSlotGhost(getHotbarItemSlot(item));
+        if (getHotbarItemSlot(item) != -1 && mc.player.inventory.currentItem != getHotbarItemSlot(item))
+            switchToSlotGhost(getHotbarItemSlot(item));
     }
 
     public static void moveItemToOffhand(int slot) {
@@ -70,28 +84,21 @@ public class InventoryUtil implements MixinInterface {
      */
 
     public static int getHotbarItemSlot(Item item) {
-        int slot = 0;
         for (int i = 0; i < 9; i++) {
-            if (mc.player.inventory.getStackInSlot(i).getItem() == item) {
-                slot = i;
-                break;
-            }
+            if (mc.player.inventory.getStackInSlot(i).getItem() == item)
+                return i;
         }
 
-        return slot;
+        return -1;
     }
 
     public static int getInventoryItemSlot(Item item, boolean hotbar) {
-        int slot = -1;
-
         for (int i = 0; hotbar ? i < 36 : i < 45; i++) {
-            if (mc.player.inventory.getStackInSlot(i).getItem() == item) {
-                slot = i;
-                break;
-            }
+            if (mc.player.inventory.getStackInSlot(i).getItem() == item)
+                return i;
         }
 
-        return slot;
+        return -1;
     }
 
     public static int getBlockInHotbar(Block block) {

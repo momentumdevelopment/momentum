@@ -26,6 +26,7 @@ public class CityESP extends Module {
     }
 
     public static Slider range = new Slider("Range", 0.0D, 12.0D, 20.0D, 0);
+    public static Checkbox outline = new Checkbox("Outline", false);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubSlider r = new SubSlider(color, "Red", 0.0D, 250.0D, 255.0D, 0);
@@ -36,6 +37,7 @@ public class CityESP extends Module {
     @Override
     public void setup() {
         addSetting(range);
+        addSetting(outline);
         addSetting(color);
     }
 
@@ -54,7 +56,11 @@ public class CityESP extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        for (BlockPos cityPos : cityBlocks)
-            RenderUtil.drawBoxBlockPos(cityPos, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+        for (BlockPos cityPos : cityBlocks) {
+            RenderUtil.drawBoxBlockPos(cityPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+
+            if (outline.getValue())
+                RenderUtil.drawBoundingBoxBlockPos(cityPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), 144));
+        }
     }
 }

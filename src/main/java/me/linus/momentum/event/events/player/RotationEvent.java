@@ -23,23 +23,15 @@ public class RotationEvent extends MomentumEvent {
         return yaw;
     }
 
-    public void setYaw(float yaw) {
-        this.yaw = yaw;
-    }
-
     public float getPitch() {
         return pitch;
     }
 
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
+    }
+
     public void setPitch(float pitch) {
         this.pitch = pitch;
-    }
-
-    public void setYaw(double yaw) {
-        this.yaw = (float) yaw;
-    }
-
-    public void setPitch(double pitch) {
-        this.pitch = (float) pitch;
     }
 }

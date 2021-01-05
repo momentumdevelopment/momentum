@@ -21,6 +21,7 @@ public class BreakESP extends Module {
     }
 
     public static Slider range = new Slider("Range", 0.0D, 12.0D, 20.0D, 0);
+    public static Checkbox outline = new Checkbox("Outline", false);
     public static Checkbox showInfo = new Checkbox("Render Info", true);
 
     public static Checkbox color = new Checkbox("Color", true);
@@ -32,6 +33,7 @@ public class BreakESP extends Module {
     @Override
     public void setup() {
         addSetting(range);
+        addSetting(outline);
         addSetting(showInfo);
         addSetting(color);
     }
@@ -40,7 +42,10 @@ public class BreakESP extends Module {
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         mc.renderGlobal.damagedBlocks.forEach((integer, destroyBlockProgress) -> {
             if (destroyBlockProgress != null && destroyBlockProgress.getPosition().getDistance((int) mc.player.posX,(int)  mc.player.posY,(int)  mc.player.posZ) <= range.getValue()) {
-                RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), 0,  new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+
+                if (outline.getValue())
+                    RenderUtil.drawBoundingBoxBlockPos(destroyBlockProgress.getPosition(), 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), 144));
 
                 if (showInfo.getValue())
                     RenderUtil.drawNametagFromBlockPos(destroyBlockProgress.getPosition(), mc.world.getEntityByID(integer).getName() + " " + (destroyBlockProgress.getPartialBlockDamage() * 10) + "%");

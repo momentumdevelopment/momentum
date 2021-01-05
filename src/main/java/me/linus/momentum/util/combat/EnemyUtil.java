@@ -26,14 +26,24 @@ public class EnemyUtil implements MixinInterface {
     public static float getHealth(EntityPlayer entityPlayer) {
         return entityPlayer.getHealth() + entityPlayer.getAbsorptionAmount();
     }
+    public static float getArmor(EntityPlayer target) {
+        float armorDurability = 0;
+        for (ItemStack stack : target.getArmorInventoryList()) {
+            if (stack == null || stack.getItem() == Items.AIR)
+                continue;
+
+            armorDurability += ((float) (stack.getMaxDamage() - stack.getItemDamage()) / (float) stack.getMaxDamage()) * 100.0f;
+        }
+
+        return armorDurability;
+    }
 
     public static boolean getArmor(EntityPlayer target, boolean melt, double durability) {
         for (ItemStack stack : target.getArmorInventoryList()) {
             if (stack == null || stack.getItem() == Items.AIR)
                 return true;
 
-            final float armorDurability = ((float) (stack.getMaxDamage() - stack.getItemDamage()) / (float) stack.getMaxDamage()) * 100.0f;
-            if (melt && durability >= armorDurability)
+            if (melt && durability >= ((float) (stack.getMaxDamage() - stack.getItemDamage()) / (float) stack.getMaxDamage()) * 100.0f)
                 return true;
         }
 
@@ -50,7 +60,6 @@ public class EnemyUtil implements MixinInterface {
 
             else if (mc.world.getBlockState(playerPos.north().north()).getBlock() == Blocks.AIR)
                 cityBlocks.add(playerPos.north());
-
         }
 
         if (mc.world.getBlockState(playerPos.east()).getBlock() == Blocks.OBSIDIAN) {
@@ -59,7 +68,6 @@ public class EnemyUtil implements MixinInterface {
 
             else if (mc.world.getBlockState(playerPos.east().east()).getBlock() == Blocks.AIR)
                 cityBlocks.add(playerPos.east());
-
         }
 
         if (mc.world.getBlockState(playerPos.south()).getBlock() == Blocks.OBSIDIAN) {
@@ -68,8 +76,6 @@ public class EnemyUtil implements MixinInterface {
 
             else if (mc.world.getBlockState(playerPos.south().south()).getBlock() == Blocks.AIR)
                 cityBlocks.add(playerPos.south());
-
-
         }
 
         if (mc.world.getBlockState(playerPos.west()).getBlock() == Blocks.OBSIDIAN) {
@@ -78,7 +84,6 @@ public class EnemyUtil implements MixinInterface {
 
             else if (mc.world.getBlockState(playerPos.west().west()).getBlock() == Blocks.AIR)
                 cityBlocks.add(playerPos.west());
-
         }
 
         return cityBlocks;
@@ -97,6 +102,9 @@ public class EnemyUtil implements MixinInterface {
         if (animals && (EntityUtil.isPassive(entity) || EntityUtil.isNeutralMob(entity)))
             return true;
 
-        return mobs && EntityUtil.isHostileMob(entity);
+        if (mobs && EntityUtil.isHostileMob(entity))
+            return true;
+
+        return false;
     }
 }

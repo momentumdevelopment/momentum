@@ -22,16 +22,17 @@ public class QuickEXP extends Module {
         super("QuickEXP", Category.COMBAT, "Throws EXP much faster");
     }
 
-    private static final Mode mode = new Mode("Mode", "Packet", "AutoMend", "Throw");
-    public static Slider delay = new Slider("Throw Delay", 0.0D, 0.0D, 4.0D, 0);
-    private static final Checkbox stopEXP = new Checkbox("Stop EXP", true);
-    private static final Checkbox footEXP = new Checkbox("FootEXP", true);
+    private static Mode mode = new Mode("Mode", "Packet", "AutoMend", "Throw");
+    private static Slider delay = new Slider("Throw Delay", 0.0D, 0.0D, 4.0D, 0);
+    private static Checkbox stopEXP = new Checkbox("Stop EXP", true);
+    private static Checkbox footEXP = new Checkbox("FootEXP", true);
     private static Keybind mendKey = new Keybind("Mend Key", -2);
 
     @Override
     public void setup() {
         addSetting(mode);
         addSetting(delay);
+        addSetting(stopEXP);
         addSetting(footEXP);
         addSetting(mendKey);
     }

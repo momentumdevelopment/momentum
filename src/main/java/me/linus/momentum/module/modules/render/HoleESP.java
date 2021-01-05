@@ -71,7 +71,7 @@ public class HoleESP extends Module {
         findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= (range.getValue() * range.getValue())).forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
-                        RenderUtil.drawPrismBlockPos(hole, mainHeight.getValue() - 1, obbyColor);
+                        RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor);
                         break;
                     case 1:
 
@@ -81,7 +81,7 @@ public class HoleESP extends Module {
         findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= (range.getValue() * range.getValue())).forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
-                        RenderUtil.drawPrismBlockPos(hole, mainHeight.getValue() - 1, bRockColor);
+                        RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor);
                         break;
                     case 1:
 

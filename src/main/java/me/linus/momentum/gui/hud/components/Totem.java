@@ -2,11 +2,12 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.gui.theme.ThemeColor;
+import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.util.player.InventoryUtil;
+import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.init.Items;
 import net.minecraft.util.text.TextFormatting;
-
-import java.awt.*;
 
 /**
  * @author linustouchtips
@@ -20,7 +21,7 @@ public class Totem extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        Momentum.fontManager.getCustomFont().drawStringWithShadow(TextFormatting.GRAY + "Totems:" + TextFormatting.WHITE + " " + InventoryUtil.getItemCount(Items.TOTEM_OF_UNDYING), this.x, this.y, new Color(255, 255, 255).getRGB());
+        FontUtil.drawString("Totems: " + TextFormatting.WHITE + InventoryUtil.getItemCount(Items.TOTEM_OF_UNDYING), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
         width = Momentum.fontManager.getCustomFont().getStringWidth("Totems: " + InventoryUtil.getItemCount(Items.TOTEM_OF_UNDYING)) + 2;
     }
 }

@@ -10,6 +10,7 @@ import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.HoleUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -88,23 +89,23 @@ public class HoleFill extends Module {
         BlockUtil.placeBlock(blocks.get(0), rotate.getValue());
     }
 
-    private int getItem() {
+    private Block getItem() {
         switch (mode.getValue()) {
             case 0:
-                return InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+                return Blocks.OBSIDIAN;
             case 1:
-                return InventoryUtil.getBlockInHotbar(Blocks.ENDER_CHEST);
+                return Blocks.ENDER_CHEST;
             case 3:
-                return InventoryUtil.getBlockInHotbar(Blocks.WEB);
+                return Blocks.WEB;
         }
 
-        return InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+        return Blocks.OBSIDIAN;
     }
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (renderBlock != null)
-            RenderUtil.drawBoxBlockPos(renderBlock, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+            RenderUtil.drawBoxBlockPos(renderBlock, 0, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
     }
 
     public List<BlockPos> getHoles(double range) {

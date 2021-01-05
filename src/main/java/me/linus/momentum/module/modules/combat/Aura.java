@@ -39,7 +39,6 @@ public class Aura extends Module {
     }
 
     private static final Mode mode = new Mode("Mode", "Closest", "Priority", "Armor");
-    public static SubSlider priorityHealth = new SubSlider(mode, "Priority Health", 0.0D, 20.0D, 36.0D, 0);
 
     public static Checkbox attackCheck = new Checkbox("Attack Check", true);
     private static final SubCheckbox players = new SubCheckbox(attackCheck, "Players", true);
@@ -110,11 +109,17 @@ public class Aura extends Module {
     }
 
     public void killAura() {
-        if (mode.getValue() == 0)
-            currentTarget = mc.world.loadedEntityList.stream().filter(entity -> entity != mc.player).filter(entity -> mc.player.getDistance(entity) <= range.getValue()).filter(entity -> !entity.isDead).filter(entity -> EnemyUtil.attackCheck(entity, players.getValue(), animals.getValue(), mobs.getValue())).sorted(Comparator.comparing(e -> mc.player.getDistance(e))).findFirst().orElse(null);
-
-        if (mode.getValue() == 1)
-            currentTarget = mc.world.playerEntities.stream().filter(entity -> entity != mc.player).filter(entity -> mc.player.getDistance(entity) <= range.getValue()).filter(entity -> !entity.isDead).min(Comparator.comparing(entityPlayer -> EnemyUtil.getHealth(entityPlayer))).orElse(null);
+        switch (mode.getValue()) {
+            case 0:
+                currentTarget = WorldUtil.getNearbyPlayers(range.getValue()).stream().filter(entity -> EnemyUtil.attackCheck(entity, players.getValue(), animals.getValue(), mobs.getValue())).sorted(Comparator.comparing(e -> mc.player.getDistance(e))).findFirst().orElse(null);
+                break;
+            case 1:
+                currentTarget = WorldUtil.getNearbyPlayers(range.getValue()).stream().min(Comparator.comparing(entityPlayer -> EnemyUtil.getHealth(entityPlayer))).orElse(null);
+                break;
+            case 2:
+                currentTarget = WorldUtil.getNearbyPlayers(range.getValue()).stream().min(Comparator.comparing(entityPlayer -> EnemyUtil.getArmor(entityPlayer))).orElse(null);
+                break;
+        }
 
         if (swordOnly.getValue() && !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))
             return;

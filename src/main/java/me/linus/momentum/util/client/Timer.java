@@ -50,7 +50,7 @@ public class Timer {
 
     public boolean sleep(final long time) {
         if (time() >= time) {
-            reset();
+            this.reset();
             return true;
         }
 

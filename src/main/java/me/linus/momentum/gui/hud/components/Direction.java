@@ -2,7 +2,10 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.gui.theme.ThemeColor;
+import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.util.player.rotation.RotationUtil;
+import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.util.text.TextFormatting;
 
 /**
@@ -17,7 +20,7 @@ public class Direction extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        Momentum.fontManager.getCustomFont().drawStringWithShadow(RotationUtil.getFacing() + TextFormatting.GRAY + " [" + RotationUtil.getTowards() + "]", this.x, this.y, -1);
+        FontUtil.drawString(RotationUtil.getFacing() + TextFormatting.WHITE + RotationUtil.getTowards(), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
         width = Momentum.fontManager.getCustomFont().getStringWidth(RotationUtil.getFacing() + " [" + RotationUtil.getTowards() + "]") + 2;
     }
 }

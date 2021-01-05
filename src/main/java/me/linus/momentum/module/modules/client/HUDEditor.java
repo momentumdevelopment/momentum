@@ -16,10 +16,12 @@ public class HUDEditor extends Module {
 		super("HUD", Category.CLIENT, "The in-game hud editor");
 	}
 
-	public static final Checkbox allowOverflow = new Checkbox("Allow Overflow", false);
+	public static Checkbox allowOverflow = new Checkbox("Allow Overflow", false);
+	public static Checkbox colorSync = new Checkbox("Color Sync", true);
 
 	public void setup() {
 		addSetting(allowOverflow);
+		addSetting(colorSync);
 	}
 	
 	public static HUD hudEditor = new HUD();

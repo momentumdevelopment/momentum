@@ -15,12 +15,12 @@ import java.text.DecimalFormat;
  */
 
 public class MotionUtil implements MixinInterface {
-    final static DecimalFormat formatter = new DecimalFormat("#.#");
+    static DecimalFormat formatter = new DecimalFormat("#.#");
     static float roundedForward = getRoundedMovementInput(mc.player.movementInput.moveForward);
     static float roundedStrafing = getRoundedMovementInput(mc.player.movementInput.moveStrafe);
     private static double prevPosX;
     private static double prevPosZ;
-    private static final Timer timer = new Timer();
+    private static Timer timer = new Timer();
 
     public static boolean isMoving() {
         return (mc.player.moveForward != 0.0D || mc.player.moveStrafing != 0.0D);
@@ -69,7 +69,7 @@ public class MotionUtil implements MixinInterface {
     public static double getBaseMoveSpeed() {
         double baseSpeed = 0.2873;
         if (mc.player != null && mc.player.isPotionActive(Potion.getPotionById(1))) {
-            final int amplifier = mc.player.getActivePotionEffect(Potion.getPotionById(1)).getAmplifier();
+            int amplifier = mc.player.getActivePotionEffect(Potion.getPotionById(1)).getAmplifier();
             baseSpeed *= 1.0 + 0.2 * (amplifier + 1);
         }
 
@@ -112,8 +112,8 @@ public class MotionUtil implements MixinInterface {
             prevPosZ = mc.player.prevPosZ;
         }
 
-        final double deltaX = mc.player.posX - prevPosX;
-        final double deltaZ = mc.player.posZ - prevPosZ;
+        double deltaX = mc.player.posX - prevPosX;
+        double deltaZ = mc.player.posZ - prevPosZ;
 
         float distance = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
 
@@ -124,7 +124,7 @@ public class MotionUtil implements MixinInterface {
         if (!formattedString.contains("."))
             formattedString += ".0";
 
-        final String bps = TextFormatting.GRAY + "Speed" + TextFormatting.WHITE + " " + formattedString + TextFormatting.GRAY + "km/h";
+        String bps = " " + formattedString + TextFormatting.GRAY + "km/h";
 
         return bps;
     }

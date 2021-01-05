@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
  * idk if it works well, prob not :P - linus
  */
 
+// TODO: fix placements
 public class AutoBed extends Module {
     public AutoBed() {
         super("AutoBed", Category.COMBAT, "Automatically places and explodes beds");

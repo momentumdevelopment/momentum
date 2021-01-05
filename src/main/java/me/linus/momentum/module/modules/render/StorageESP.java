@@ -65,12 +65,12 @@ public class StorageESP extends Module {
                         RenderUtil.drawBoundingBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity, 144));
                         break;
                     case 1:
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), ColorUtil.getStorageColor(tileEntity, (int) alpha.getValue()));
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity, (int) alpha.getValue()));
                         break;
                     case 2:
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
                         RenderUtil.drawBoundingBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity, 144));
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), ColorUtil.getStorageColor(tileEntity, (int) alpha.getValue()));
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity, (int) alpha.getValue()));
                         break;
                 }
             }

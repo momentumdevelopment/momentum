@@ -68,6 +68,8 @@ public class ESP extends Module {
 
     @Override
     public void onUpdate() {
+        mc.gameSettings.fancyGraphics = true;
+
         renderGlow();
     }
 

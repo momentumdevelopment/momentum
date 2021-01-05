@@ -1,6 +1,6 @@
 package me.linus.momentum.module;
 
-import me.linus.momentum.gui.theme.Color;
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.module.modules.bot.Milo;
@@ -25,17 +25,17 @@ import java.util.List;
 
 public class ModuleManager implements MixinInterface {
 
-	static final List<Module> modules = Arrays.asList
-		(
-			//Client
+	static final List<Module> modules = Arrays.asList(
+			// client
 			new ClickGUI(),
 			new Colors(),
 			new HUDEditor(),
 			new Baritone(),
+			new ClientFont(),
 			new Friends(),
 			new Capes(),
 
-			//Combat
+			// combat
 			new AimBot(),
 			new Aura(),
 			new AutoArmor(),
@@ -56,7 +56,7 @@ public class ModuleManager implements MixinInterface {
 			new Trigger(),
 			new Web(),
 
-			//Player
+			// player
 			new AntiHunger(),
 			new AutoMine(),
 			new Blink(),
@@ -74,7 +74,7 @@ public class ModuleManager implements MixinInterface {
 			new SpeedMine(),
 			new Swing(),
 
-			//Misc
+			// misc
 			new AntiAFK(),
 			new AntiLag(),
 			new AntiPacketKick(),
@@ -98,7 +98,7 @@ public class ModuleManager implements MixinInterface {
 			new StashFinder(),
 			new Timer(),
 
-			//Movement
+			// movement
 			new AirJump(),
 			new Anchor(),
 			new AntiLevitation(),
@@ -124,7 +124,8 @@ public class ModuleManager implements MixinInterface {
 			new Velocity(),
 			new WebTeleport(),
 
-			//Render
+			// render
+			new BlockHighlight(),
 			new BreakESP(),
 			new BurrowESP(),
 			new CityESP(),
@@ -145,7 +146,7 @@ public class ModuleManager implements MixinInterface {
 			new VoidESP(),
 			new Weather(),
 
-			//Bot
+			// bot
 			new Milo()
 		);
 	
@@ -176,13 +177,8 @@ public class ModuleManager implements MixinInterface {
 	public void onTick(TickEvent.ClientTickEvent event) {
 		ModuleManager.onUpdate();
 		ModuleManager.keyListen();
-		Color.updateColors();
+		ThemeColor.updateColors();
 	}
-	
-	/**
-	 * this method runs extremely fast
-	 * @see Module
-	 **/
 
 	@SubscribeEvent
 	public void onFastTick(TickEvent event) {
@@ -190,7 +186,6 @@ public class ModuleManager implements MixinInterface {
 	}
 
 	// TODO: add null checks to every override so the try catch in this is unneccesary
-	
 	public static void onUpdate() {
 		for (Module m : modules) {
 			try {

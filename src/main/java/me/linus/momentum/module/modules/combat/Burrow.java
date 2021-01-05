@@ -63,7 +63,7 @@ public class Burrow extends Module {
     @Override
     public void onUpdate() {
         if (mc.player.posY > originalPos.getY() + 1.2) {
-            InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
+            InventoryUtil.switchToSlot(Blocks.OBSIDIAN);
 
             BlockUtil.placeBlock(originalPos, rotate.getValue());
 
@@ -88,6 +88,6 @@ public class Burrow extends Module {
 
     @Override
     public String getHUDData() {
-        return mode.getMode(mode.getValue());
+        return " " + mode.getMode(mode.getValue());
     }
 }

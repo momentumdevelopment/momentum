@@ -5,9 +5,8 @@ import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.util.text.TextFormatting;
-
-import java.awt.*;
 
 /**
  * @author linustouchtips
@@ -40,14 +39,14 @@ public class Coordinates extends HUDComponent {
 
         if (mode.getValue() == 0) {
             if (overWorld.getValue())
-                Momentum.fontManager.getCustomFont().drawStringWithShadow(netherCoords, this.x, this.y, -1);
+                FontUtil.drawString(netherCoords, this.x, this.y, -1);
 
             if (nether.getValue())
-                Momentum.fontManager.getCustomFont().drawStringWithShadow(overWorldCoords, this.x, this.y + 10, -1);
+                FontUtil.drawString(overWorldCoords, this.x, this.y + 10, -1);
         }
 
         else
-            Momentum.fontManager.getCustomFont().drawStringWithShadow((overWorld.getValue() ? overWorldCoords : "") + " " + (nether.getValue() ? netherCoords : ""), this.x, this.y, new Color(255, 255, 255).getRGB());
+            FontUtil.drawString((overWorld.getValue() ? overWorldCoords : "") + " " + (nether.getValue() ? netherCoords : ""), this.x, this.y, -1);
 
         width = Momentum.fontManager.getCustomFont().getStringWidth(mode.getValue() == 0 ? overWorldCoords : overWorldCoords + " " + netherCoords) + 2;
         height = mode.getValue() == 0 ? (mc.fontRenderer.FONT_HEIGHT * 2) + 4 : mc.fontRenderer.FONT_HEIGHT + 4;

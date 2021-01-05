@@ -1,7 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
@@ -65,14 +65,14 @@ public class ActiveModules extends HUDComponent {
                 if (background.getValue())
                     GuiScreen.drawRect((int) (this.x - 1 - modWidth + module.remainingAnimation), this.y + (10 * count), (int) (this.x - 2 + module.remainingAnimation), this.y + (10 * count) + 10, new Color(0, 0, 0, 70).getRGB());
 
-                Momentum.fontManager.getCustomFont().drawStringWithShadow(modText, this.x - 2 - modWidth + module.remainingAnimation, this.y + (10 * count), generateColor(module));
+                FontUtil.drawString(modText, this.x - 2 - modWidth + module.remainingAnimation, this.y + (10 * count), generateColor(module));
             }
 
             else {
                 if (background.getValue())
                     GuiScreen.drawRect((int) (this.x - module.remainingAnimation - 2), this.y + (10 * count), (int) (this.x - module.remainingAnimation + modWidth), this.y + (10 * count) + 10, new Color(0, 0, 0, 70).getRGB());
 
-                Momentum.fontManager.getCustomFont().drawStringWithShadow(modText, this.x - module.remainingAnimation, this.y + (10 * count), generateColor(module));
+                FontUtil.drawString(modText, this.x - module.remainingAnimation, this.y + (10 * count), generateColor(module));
             }
 
             count++;
@@ -98,7 +98,7 @@ public class ActiveModules extends HUDComponent {
             case 3:
                 return ColorUtil.getColorByCategory(mod);
             case 4:
-                return new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue()).getRGB();
+                return ThemeColor.BRIGHT;
         }
 
         return -1;

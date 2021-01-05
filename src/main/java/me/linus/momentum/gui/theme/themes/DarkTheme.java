@@ -2,7 +2,7 @@ package me.linus.momentum.gui.theme.themes;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.gui.theme.Color;
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
@@ -28,8 +28,7 @@ import java.util.List;
 /**
  * @author bon
  * @since 11/18/20
- * 
- * The default theme for the gui.
+ *
  * More themes can be created by basically copy-pasting this class
  * and then changing colors, rectangles, sizes, and etc.
  */
@@ -49,7 +48,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 	
 	@Override
 	public void updateColors() {
-		Color.updateColors();
+		ThemeColor.updateColors();
 	}
 	
 	@Override
@@ -73,7 +72,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 			}
 
 			GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-			GuiScreen.drawRect(x + 1, y + height + (boost * height) + 1, (x + width) - 1, y + height*2 + (boost * height), m.isEnabled() ? (Color.GRADIENT ? ColorUtil.rainbow(boost) : Color.COLOR) : 0xCC232323);
+			GuiScreen.drawRect(x + 1, y + height + (boost * height) + 1, (x + width) - 1, y + height*2 + (boost * height), m.isEnabled() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : 0xCC232323);
 			drawTextWithShadow(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
 			
 			if (m.hasSettings())
@@ -195,7 +194,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		}
 
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), checkbox.getValue() ? (Color.GRADIENT ? ColorUtil.rainbow(boost) : Color.COLOR) : 0xCC232323);
+		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), checkbox.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : 0xCC232323);
 		drawTextWithShadow(checkbox.getName(), x + 7, (y + height) + 4 + (boost * height), -1);
 
 		if (checkbox.hasSubSettings())
@@ -209,7 +208,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		}
 
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), sc.getValue() ? (Color.GRADIENT ? ColorUtil.rainbow(boost) : Color.COLOR) : 0xCC232323);
+		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), sc.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : 0xCC232323);
 		drawTextWithShadow(sc.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
 	}
 	
@@ -269,7 +268,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), 0xCC232323);
-		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, x + 4 + (rectAdd > width - 1 ? (width - 5) : rectAdd), (y + height) + height + (boost * height), (Color.GRADIENT ? ColorUtil.rainbow(boost) : Color.COLOR));
+		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, x + 4 + (rectAdd > width - 1 ? (width - 5) : rectAdd), (y + height) + height + (boost * height), (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR));
 		drawTextWithShadow(sl.getName(), x + 6, (y + height) + 4 + (boost * height), -1);
 		drawTextWithShadow(Double.toString(sl.getValue()), x + font.getStringWidth(sl.getName()) + (ClickGUI.font.getValue() == 1 ? 8 : 12), (y + height) + 4 + (boost * height), 0xFF767676);
 
@@ -303,7 +302,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), 0xCC232323);
-		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, x + 8 + (rectAdd > width ? (width-8) : rectAdd), (y + height) + height + (boost * height), (Color.GRADIENT ? ColorUtil.rainbow(boost) : Color.COLOR));
+		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, x + 8 + (rectAdd > width ? (width-8) : rectAdd), (y + height) + height + (boost * height), (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR));
 		drawTextWithShadow(ssl.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
 		drawTextWithShadow(Double.toString(ssl.getValue()), x + font.getStringWidth(ssl.getName()) + (ClickGUI.font.getValue() == 1 ? 8 : 12), (y + height) + 4 + (boost * height), 0xFF767676);
 	}
@@ -349,7 +348,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 			}
 
 			GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-			GuiScreen.drawRect(x + 1, y + height + (boost * height) + 1, (x + width) - 1, y + height*2 + (boost * height), m.isEnabled() ? (Color.GRADIENT ? ColorUtil.rainbow(boost) : Color.COLOR) : 0xCC232323);
+			GuiScreen.drawRect(x + 1, y + height + (boost * height) + 1, (x + width) - 1, y + height*2 + (boost * height), m.isEnabled() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : 0xCC232323);
 			drawTextWithShadow(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
 			boost++;
 		}

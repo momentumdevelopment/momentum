@@ -2,8 +2,11 @@ package me.linus.momentum.util.render;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
+import me.linus.momentum.module.modules.client.ClientFont;
 import me.linus.momentum.util.client.font.FontRender;
+import net.minecraft.client.renderer.GlStateManager;
 
 import java.awt.*;
 import java.io.InputStream;
@@ -23,11 +26,11 @@ public class FontUtil implements MixinInterface {
 
     public void load() {
         try {
-            this.lato = new FontRender(FontUtil.getFont("Lato.ttf", 40.0f));
-            this.comfortaa = new FontRender(FontUtil.getFont("comfortaa.ttf", 40.0f));
-            this.comicsans = new FontRender(FontUtil.getFont("comic-sans.ttf", 40.0f));
-            this.verdana = new FontRender(FontUtil.getFont("Verdana.ttf", 40.0f));
-            this.ubuntu = new FontRender(FontUtil.getFont("Ubuntu.ttf", 40.0f));
+            this.lato = new FontRender(FontUtil.getFont("Lato.ttf", (float) ClientFont.scale.getValue()));
+            this.comfortaa = new FontRender(FontUtil.getFont("comfortaa.ttf", (float) ClientFont.scale.getValue()));
+            this.comicsans = new FontRender(FontUtil.getFont("comic-sans.ttf", (float) ClientFont.scale.getValue()));
+            this.verdana = new FontRender(FontUtil.getFont("Verdana.ttf", (float) ClientFont.scale.getValue()));
+            this.ubuntu = new FontRender(FontUtil.getFont("Ubuntu.ttf", (float) ClientFont.scale.getValue()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,7 +51,7 @@ public class FontUtil implements MixinInterface {
     }
 
     public FontRender getCustomFont() {
-        switch (ClickGUI.font.getValue()) {
+        switch (ClientFont.family.getValue()) {
             case 0:
                 return this.lato;
             case 1:
@@ -62,6 +65,22 @@ public class FontUtil implements MixinInterface {
         }
 
         return this.lato;
+    }
+
+    public static void drawString(String text, float x, float y, int color) {
+        if (ModuleManager.getModuleByName("Font").isEnabled()) {
+            if (ClientFont.shadow.getValue())
+                Momentum.fontManager.getCustomFont().drawStringWithShadow(text, x, y, color);
+            else
+                Momentum.fontManager.getCustomFont().drawString(text, x, y, color);
+        }
+
+        else {
+            if (ClientFont.shadow.getValue())
+                mc.fontRenderer.drawStringWithShadow(text, x, y, color);
+            else
+                mc.fontRenderer.drawString(text, (int) x, (int) y, color);
+        }
     }
 
     /**

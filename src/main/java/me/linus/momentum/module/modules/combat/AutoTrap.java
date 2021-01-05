@@ -31,7 +31,7 @@ public class AutoTrap extends Module {
         super("AutoTrap", Category.COMBAT, "Automatically traps nearby players");
     }
 
-    private static final Mode mode = new Mode("Mode", "Full", "Feet", "Bed");
+    private static final Mode mode = new Mode("Mode", "Full", "City", "Bed");
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
@@ -109,7 +109,7 @@ public class AutoTrap extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         for (BlockPos renderBlock : renderBlocks)
-            RenderUtil.drawBoxBlockPos(renderBlock, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+            RenderUtil.drawBoxBlockPos(renderBlock, 0, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
     }
 
     public List<Vec3d> getTrap() {
@@ -117,7 +117,7 @@ public class AutoTrap extends Module {
             case 0:
                 return fullTrap;
             case 1:
-                return feetTrap;
+                return cityTrap;
             case 2:
                 return bedTrap;
         }
@@ -143,8 +143,15 @@ public class AutoTrap extends Module {
             new Vec3d(0, 2, 0)
     ));
 
-    private final List<Vec3d> feetTrap = new ArrayList<>(Arrays.asList(
+    private final List<Vec3d> cityTrap = new ArrayList<>(Arrays.asList(
+            new Vec3d(0, -1, -1),
+            new Vec3d(1, -1, 0),
+            new Vec3d(0, -1, 1),
+            new Vec3d(-1, -1, 0),
             new Vec3d(0, 0, -1),
+            new Vec3d(1, 0, 0),
+            new Vec3d(0, 0, 1),
+            new Vec3d(-1, 0, 0),
             new Vec3d(0, 1, -1),
             new Vec3d(1, 1, 0),
             new Vec3d(0, 1, 1),
@@ -164,4 +171,9 @@ public class AutoTrap extends Module {
             new Vec3d(0, 2, 1),
             new Vec3d(0, 2, 0)
     ));
+
+    @Override
+    public String getHUDData() {
+        return " " + mode.getMode(mode.getValue());
+    }
 }

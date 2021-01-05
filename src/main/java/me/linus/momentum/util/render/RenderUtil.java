@@ -1,6 +1,5 @@
 package me.linus.momentum.util.render;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.ColorUtil;
 import net.minecraft.client.gui.ScaledResolution;
@@ -36,45 +35,25 @@ public class RenderUtil extends Tessellator implements MixinInterface {
      * rendering setup
      */
 
-    public static void prepareProfiler() {
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlpha();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.shadeModel(7425);
-        GlStateManager.disableDepth();
-    }
-
-    public static void releaseProfiler() {
-        GlStateManager.shadeModel(7424);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableDepth();
-        GlStateManager.enableCull();
-        GlStateManager.enableCull();
-        GlStateManager.depthMask(true);
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.enableDepth();
-    }
-
     public static void glSetup() {
-        GL11.glPushMatrix();
-        GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
-        GL11.glDepthMask(false);
-        GL11.glLineWidth(1.0f);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.disableDepth();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1);
+        GlStateManager.disableTexture2D();
+        GlStateManager.depthMask(false);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11.glLineWidth(1.5f);
     }
 
     public static void glRelease() {
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
-        GL11.glDepthMask(true);
-        GL11.glDisable(3042);
-        GL11.glPopMatrix();
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GlStateManager.depthMask(true);
+        GlStateManager.enableDepth();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     public static void enableGL3D(float lineWidth) {
@@ -108,33 +87,20 @@ public class RenderUtil extends Tessellator implements MixinInterface {
      * prism rendering
      */
 
-    public static void drawPrismBlockPos(BlockPos blockPos, double height, Color color) {
+    public static void drawBoxBlockPos(BlockPos blockPos, double height, Color color) {
         glSetup();
         AxisAlignedBB axisAlignedBB = new AxisAlignedBB(blockPos.getX() - mc.getRenderManager().viewerPosX, blockPos.getY() - mc.getRenderManager().viewerPosY, blockPos.getZ() - mc.getRenderManager().viewerPosZ, blockPos.getX() + 1 - mc.getRenderManager().viewerPosX, blockPos.getY() + 1 - mc.getRenderManager().viewerPosY, blockPos.getZ() + 1 - mc.getRenderManager().viewerPosZ);
-        drawPrism(axisAlignedBB, height, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
+        drawBox(axisAlignedBB, height, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
         glRelease();
     }
 
-    public static void drawBoxBlockPos(BlockPos blockPos, Color color) {
+    public static void drawBox(AxisAlignedBB aabb, double height, float red, float green, float blue, float alpha) {
         glSetup();
-        AxisAlignedBB axisAlignedBB = new AxisAlignedBB(blockPos.getX() - mc.getRenderManager().viewerPosX, blockPos.getY() - mc.getRenderManager().viewerPosY, blockPos.getZ() - mc.getRenderManager().viewerPosZ, blockPos.getX() + 1 - mc.getRenderManager().viewerPosX, blockPos.getY() + 1 - mc.getRenderManager().viewerPosY, blockPos.getZ() + 1 - mc.getRenderManager().viewerPosZ);
-        drawBox(axisAlignedBB, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
+        renderFilledBox(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ, height, red, green, blue, alpha);
         glRelease();
     }
 
-    public static void drawBox(AxisAlignedBB aabb, float red, float green, float blue, float alpha) {
-        glSetup();
-        renderFilledBox(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ, red, green, blue, alpha);
-        glRelease();
-    }
-
-    public static void drawPrism(AxisAlignedBB aabb, double height, float red, float green, float blue, float alpha) {
-        glSetup();
-        renderFilledPrism(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ, height, red, green, blue, alpha);
-        glRelease();
-    }
-
-    public static void renderFilledPrism(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, double height, float red, float green, float blue, float alpha) {
+    public static void renderFilledBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, double height, float red, float green, float blue, float alpha) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
@@ -142,13 +108,6 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         tessellator.draw();
     }
 
-    public static void renderFilledBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float red, float green, float blue, float alpha) {
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
-        addChainedFilledBoxVertices(bufferbuilder, minX, minY, minZ, maxX, maxY, maxZ, red, green, blue, alpha);
-        tessellator.draw();
-    }
 
     public static void addChainedFilledBoxVertices(BufferBuilder builder, double x1, double y1, double z1, double x2, double y2, double z2, float red, float green, float blue, float alpha) {
         builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
@@ -232,7 +191,7 @@ public class RenderUtil extends Tessellator implements MixinInterface {
         glBillboardDistanceScaled(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, mc.player, 1.0f);
         GlStateManager.disableDepth();
         GlStateManager.translate(-(mc.fontRenderer.getStringWidth(text) / 2.0), 0.0, 0.0);
-        Momentum.fontManager.getCustomFont().drawStringWithShadow(text, 0, 0, -1);
+        FontUtil.drawString(text, 0, 0, -1);
         GlStateManager.popMatrix();
     }
 
