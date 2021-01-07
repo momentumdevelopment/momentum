@@ -46,7 +46,7 @@ public class RotationUtil implements MixinInterface {
 
         if (mc.getRenderViewEntity() == mc.player) {
             double changePosX = mc.player.posX - mc.player.lastTickPosX;
-            double changePosY = mc.player.posY - mc.player.lastTickPosY;
+            double changePosY = mc.player.getEntityBoundingBox().minY - mc.player.lastTickPosY;
             double changePosZ = mc.player.posZ - mc.player.lastTickPosZ;
             double changeYaw = event.getYaw() - mc.player.prevRotationYaw;
             double changePitch = event.getPitch() - mc.player.prevRotationPitch;
@@ -62,9 +62,9 @@ public class RotationUtil implements MixinInterface {
             }
 
             else if (playerMoved && playerRotated)
-                mc.player.connection.sendPacket(new CPacketPlayer.PositionRotation(mc.player.posX, mc.player.posY, mc.player.posZ, event.getYaw(), event.getPitch(), mc.player.onGround));
+                mc.player.connection.sendPacket(new CPacketPlayer.PositionRotation(mc.player.posX, mc.player.getEntityBoundingBox().minY, mc.player.posZ, event.getYaw(), event.getPitch(), mc.player.onGround));
             else if (playerMoved)
-                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, mc.player.onGround));
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.getEntityBoundingBox().minY, mc.player.posZ, mc.player.onGround));
             else if (playerRotated)
                 mc.player.connection.sendPacket(new CPacketPlayer.Rotation(event.getYaw(), event.getPitch(), mc.player.onGround));
 
@@ -73,7 +73,7 @@ public class RotationUtil implements MixinInterface {
 
             if (playerMoved) {
                 mc.player.lastReportedPosX = mc.player.posX;
-                mc.player.lastReportedPosY = mc.player.posY;
+                mc.player.lastReportedPosY = mc.player.getEntityBoundingBox().minY;
                 mc.player.lastReportedPosZ = mc.player.posZ;
                 mc.player.positionUpdateTicks = 0;
             }
@@ -92,13 +92,14 @@ public class RotationUtil implements MixinInterface {
     public static void updateRotations(Rotation spoofRotation, int mode) {
        switch (mode) {
             case 0:
+            case 1:
                 mc.player.rotationYawHead = spoofRotation.yaw;
                 break;
-            case 1:
+            case 2:
                 mc.player.rotationYaw = spoofRotation.yaw;
                 mc.player.rotationPitch = spoofRotation.pitch;
                 break;
-            case 2:
+            case 3:
                 break;
         }
     }

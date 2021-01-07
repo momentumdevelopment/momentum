@@ -2,6 +2,7 @@ package me.linus.momentum.module.modules.player;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.slider.Slider;
+import net.minecraft.util.EnumHand;
 
 /**
  * @author linustouchtips
@@ -26,6 +27,8 @@ public class HandProgress extends Module {
         if (nullCheck())
             return;
 
+        mc.entityRenderer.itemRenderer.itemStackMainHand = mc.player.getHeldItem(EnumHand.MAIN_HAND);
+        mc.entityRenderer.itemRenderer.itemStackOffHand = mc.player.getHeldItem(EnumHand.OFF_HAND);
         mc.entityRenderer.itemRenderer.equippedProgressMainHand = (float) mainhandHeight.getValue();
         mc.entityRenderer.itemRenderer.equippedProgressOffHand = (float) offhandHeight.getValue();
     }

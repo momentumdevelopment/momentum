@@ -27,17 +27,9 @@ public class Flight extends Module {
     }
 
     @Override
-    public void onEnable() {
-       if (nullCheck())
-           return;
-
-       if (mode.getValue() == 1)
-           mc.player.capabilities.isFlying = true;
-    }
-
-    @Override
     public void onDisable() {
         mc.player.capabilities.isFlying = false;
+        mc.player.capabilities.allowFlying = false;
     }
 
     @Override
@@ -45,17 +37,21 @@ public class Flight extends Module {
         if (nullCheck())
             return;
 
-        if (mode.getValue() == 0) {
-            if (mc.gameSettings.keyBindJump.isKeyDown())
-                mc.player.motionY = ySpeed.getValue();
+        switch (mode.getValue()) {
+            case 0:
+                if (mc.gameSettings.keyBindJump.isKeyDown())
+                    mc.player.motionY = ySpeed.getValue();
+                else if (mc.gameSettings.keyBindSneak.isKeyDown())
+                    mc.player.motionY = (ySpeed.getValue() * -1);
+                else
+                    mc.player.motionY = 0;
 
-            else if (mc.gameSettings.keyBindSneak.isKeyDown())
-                mc.player.motionY = (ySpeed.getValue() * -1);
-
-            else
-                mc.player.motionY = 0;
-
-            FlightUtil.horizontalEntityFlight(hSpeed.getValue());
+                FlightUtil.horizontalEntityFlight(hSpeed.getValue());
+                break;
+            case 1:
+                mc.player.capabilities.setFlySpeed((float) (hSpeed.getValue() / 23));
+                mc.player.capabilities.isFlying = true;
+                mc.player.capabilities.allowFlying = true;
         }
     }
 

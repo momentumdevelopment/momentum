@@ -21,7 +21,6 @@ import org.lwjgl.input.Keyboard;
  * @since 12/17/2020
  */
 
-
 public class Speed extends Module {
     public Speed() {
         super("Speed", Category.MOVEMENT, "Allows you to go faster");

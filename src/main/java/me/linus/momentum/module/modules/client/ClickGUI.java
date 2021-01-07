@@ -7,6 +7,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 
 /**
  * @author bon & linustouchtips
@@ -16,13 +17,14 @@ import net.minecraft.util.ResourceLocation;
 public class ClickGUI extends Module {
 	public ClickGUI() {
 		super("ClickGUI", Category.CLIENT, "Opens the ClickGUI");
+		this.getKeybind().setKeyCode(Keyboard.KEY_P);
 	}
 
 	public static Slider scrollSpeed = new Slider("Scroll Speed", 0.0D, 10.0D, 20.0D, 0);
 	public static Slider speed = new Slider("Animation Speed", 0.0D, 3.5D, 5.0D, 1);
 
 	public static Checkbox blurEffect = new Checkbox("Blur Effect", true);
-	public static final Checkbox allowOverflow = new Checkbox("Allow Overflow", false);
+	public static final Checkbox allowOverflow = new Checkbox("Allow Overflow", true);
 
 	public static Checkbox snapSlider = new Checkbox("Slider Snap", true);
 	public static SubSlider snapSub = new SubSlider(snapSlider, "Snap Distance", 1.0D, 5.0D, 10.0D, 0);

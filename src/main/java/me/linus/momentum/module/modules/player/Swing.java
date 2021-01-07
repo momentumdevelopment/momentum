@@ -18,9 +18,9 @@ public class Swing extends Module {
         super("Swing", Category.PLAYER, "Swings with your offhand");
     }
 
-    public static Mode mode = new Mode("Mode", "Offhand", "Mainhand");
+    public static Mode mode = new Mode("Mode", "Offhand", "Mainhand", "Switch");
     public static Checkbox noAnimation = new Checkbox("Cancel Animation", true);
-    public static Checkbox noReset = new Checkbox("No Reset", true);
+    public static Checkbox noReset = new Checkbox("No Reset", false);
 
     @Override
     public void setup() {

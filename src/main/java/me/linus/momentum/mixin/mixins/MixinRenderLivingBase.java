@@ -35,8 +35,8 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
 
     @Inject(method = "renderModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V"))
     private void renderModelWrapper(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, CallbackInfo ci) {
-        if (ModuleManager.getModuleByName("ESP").isEnabled())
-            ESP.renderOutlines(mainModel, entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.mode.getValue() == 0)
+            ESP.espMode.drawESPMixin(mainModel, entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
     }
 
     @Overwrite
@@ -51,7 +51,7 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
                 GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
 
             if (ModuleManager.getModuleByName("ESP").isEnabled())
-                ESP.renderChams(mainModel, entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+                ESP.espMode.drawESPMixin(mainModel, entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
             if (!(ESP.mode.getValue() == 3) || !(ESP.mode.getValue() == 4) || !ModuleManager.getModuleByName("ESP").isEnabled())
                 mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);

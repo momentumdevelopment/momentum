@@ -38,14 +38,14 @@ public class ElytraFlight extends Module {
     public static Slider yOffset = new Slider("Y-Offset", 0.0D, 0.009D, 0.1D, 3);
     public static Slider fallSpeed = new Slider("Fall Speed", 0.0D, 0.0D, 0.1D, 3);
 
-    private static final Checkbox takeoffTimer = new Checkbox("Takeoff Timer", false);
-    private static final SubSlider takeoffTicks = new SubSlider(takeoffTimer, "Takeoff Timer Speed", 0.1D, 0.5D, 1.0D, 2);
+    private static final Checkbox takeoff = new Checkbox("Auto-Takeoff", true);
+    private static final SubCheckbox takeoffTimer = new SubCheckbox(takeoff, "Takeoff Timer", false);
+    private static final SubSlider takeoffTicks = new SubSlider(takeoff, "Takeoff Timer Ticks", 0.1D, 0.3D, 1.0D, 2);
 
     private static final Checkbox useTimer = new Checkbox("Use Timer", false);
-    private static final SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.1D, 1.1D, 2.0D, 2);
+    private static final SubSlider timerTicks = new SubSlider(useTimer, "Timer Ticks", 0.1D, 1.1D, 2.0D, 2);
 
     private static final Checkbox pitchSpoof = new Checkbox("Pitch Spoof", false);
-    private static final Checkbox autoTakeoff = new Checkbox("Auto-Takeoff", false);
 
     private static final Checkbox disable = new Checkbox("Disable", true);
     private static final SubCheckbox waterCancel = new SubCheckbox(disable, "In Liquid", true);
@@ -62,23 +62,13 @@ public class ElytraFlight extends Module {
         addSetting(ySpeed);
         addSetting(yOffset);
         addSetting(fallSpeed);
-        addSetting(takeoffTimer);
+        addSetting(takeoff);
         addSetting(useTimer);
         addSetting(pitchSpoof);
-        addSetting(autoTakeoff);
         addSetting(disable);
     }
 
     ElytraMode elytraMode;
-
-    @Override
-    public void onEnable() {
-        if (nullCheck())
-            return;
-
-        if (autoTakeoff.getValue())
-            mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_FALL_FLYING));
-    }
 
     @Override
     public void onDisable() {
@@ -89,6 +79,13 @@ public class ElytraFlight extends Module {
     public void onUpdate() {
         if (nullCheck())
             return;
+
+        if (takeoff.getValue()) {
+            if (mc.player.onGround && !mc.player.isElytraFlying())
+                mc.player.motionY = 0.405f;
+            else if (!mc.player.isElytraFlying() && mc.player.ticksExisted % 5 == 0)
+                mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_FALL_FLYING));
+        }
 
         disableCheck();
         flyTick();

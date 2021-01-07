@@ -80,7 +80,6 @@ dependencies {
 
     compile 'com.github.cabaletta:baritone:1.2.14'
     compile 'cabaletta:baritone-api:1.2'
-    compile 'org.slick2d:slick2d-core:1.0.2'
     compile group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.1'
 }
 

@@ -7,7 +7,6 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.RayTraceResult;
 
 /**
  * @author linustouchtips
@@ -34,10 +33,7 @@ public class SpeedMine extends Module {
         if (!this.isEnabled())
             return;
 
-        if (mode.getValue() == 3)
-            mc.player.addPotionEffect(new PotionEffect(new PotionEffect(MobEffects.HASTE, 80950, 1, false, false)));
-
-        if (BlockUtil.canBreak(mc.objectMouseOver.getBlockPos()) && mc.objectMouseOver.typeOfHit.equals(RayTraceResult.Type.BLOCK)) {
+        if (BlockUtil.canBreak(mc.objectMouseOver.getBlockPos()) && mc.playerController.isHittingBlock) {
             switch (mode.getValue()) {
                 case 0:
                     mc.player.swingArm(EnumHand.MAIN_HAND);
@@ -61,14 +57,11 @@ public class SpeedMine extends Module {
                 case 4:
                     mc.playerController.blockHitDelay = 0;
                     break;
+                case 5:
+                    mc.player.addPotionEffect(new PotionEffect(new PotionEffect(MobEffects.HASTE, 80950, 1, false, false)));
+                    break;
             }
         }
-    }
-
-    @Override
-    public void onDisable() {
-        if (mode.getValue() == 3)
-            mc.player.removePotionEffect(MobEffects.HASTE);
     }
 
     @Override

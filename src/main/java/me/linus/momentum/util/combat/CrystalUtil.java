@@ -1,7 +1,6 @@
 package me.linus.momentum.util.combat;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +18,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.*;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,29 +28,19 @@ import java.util.List;
  */
 
 public class CrystalUtil implements MixinInterface {
-    public static float calculateDamage(World world, double posX, double posY, double posZ, Entity entity, int interpolatedAmount) {
-        if (entity == mc.player && mc.player.capabilities.isCreativeMode)
-                return 0.0f;
-        
-        float doubleExplosionSize = 12.0F;
-        double distance = entity.getDistance(posX, posY, posZ);
 
-        if (distance > doubleExplosionSize)
-            return 0f;
+    public static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
+        if (mc.player.capabilities.isCreativeMode)
+            return 0;
 
-        if (interpolatedAmount > 0) {
-            Vec3d interpolationAmount = EntityUtil.getInterpolatedAmount(entity, interpolatedAmount);
-            distance = EntityUtil.getDistance(interpolationAmount.x, interpolationAmount.y, interpolationAmount.z, posX, posY, posZ);
-        }
-
-        double vectorDistance = (1.0D - (distance / (double) doubleExplosionSize)) * entity.world.getBlockDensity(new Vec3d(posX, posY, posZ), entity.getEntityBoundingBox());
-        float damage = (int) ((vectorDistance * vectorDistance + vectorDistance) / 2.0D * 7.0D * doubleExplosionSize + 1.0D);
-        double finalDamage = 1.0D;
+        double factor = (1.0 - entity.getDistance(posX, posY, posZ) / 12.0f) * entity.world.getBlockDensity(new Vec3d(posX, posY, posZ), entity.getEntityBoundingBox());
+        float calculatedDamage = (float) (int) ((factor * factor + factor) / 2.0 * 7.0 * 12.0f + 1.0);
+        double damage = 1.0;
 
         if (entity instanceof EntityLivingBase)
-            finalDamage = getBlastReduction((EntityLivingBase) entity, getDamageMultiplied(world, damage), new Explosion(world, null, posX, posY, posZ, 6F, false, true));
+            damage = getBlastReduction((EntityLivingBase) entity, getDamageMultiplied(calculatedDamage), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
 
-        return (float) finalDamage;
+        return (float) damage;
     }
 
     public static float getBlastReduction(EntityLivingBase entity, float damage, Explosion explosion) {
@@ -70,8 +58,8 @@ public class CrystalUtil implements MixinInterface {
         return damage;
     }
 
-    private static float getDamageMultiplied(World world, float damage) {
-        int diff = world.getDifficulty().getDifficultyId();
+    private static float getDamageMultiplied(float damage) {
+        int diff = mc.world.getDifficulty().getDifficultyId();
         return damage * ((diff == 0) ? 0.0f : ((diff == 2) ? 1.0f : ((diff == 1) ? 0.5f : 1.5f)));
     }
 

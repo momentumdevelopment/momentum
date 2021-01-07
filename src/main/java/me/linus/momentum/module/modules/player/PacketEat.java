@@ -30,7 +30,7 @@ public class PacketEat extends Module {
     private static final Mode mode = new Mode("Mode", "Packet", "DeSync", "Auto");
     public static SubSlider health = new SubSlider(mode, "Health", 0.0D, 28.0D, 36.0D, 0);
     public static Slider delay = new Slider("Delay", 0.0D, 6.0D, 10.0D, 0);
-    public static Slider packetSize = new Slider("Packet Size", 0.0D, 20.0D, 40.0D, 0);
+    public static Slider packetSize = new Slider("Packet Iteration", 0.0D, 20.0D, 40.0D, 0);
 
     Timer timer = new Timer();
 

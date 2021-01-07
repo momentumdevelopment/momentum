@@ -11,6 +11,7 @@ import net.minecraft.util.math.RayTraceResult;
  * @since 11/30/2020
  */
 
+// TODO: rewrite this
 public class NoEntityTrace extends Module {
     public NoEntityTrace() {
         super("NoEntityTrace", Category.PLAYER, "Allows you to mine through entities");

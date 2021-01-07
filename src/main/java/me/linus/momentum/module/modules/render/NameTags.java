@@ -50,7 +50,7 @@ public class NameTags extends Module {
     private static Checkbox onlyInViewFrustrum = new Checkbox("View Frustrum", true);
 
     public static Slider scale = new Slider("Scale", 0.0D, 2.0D, 10.0D, 1);
-    private static SubCheckbox distanceScale = new SubCheckbox(scale, "Scale By Distance", false);
+    private static SubCheckbox scaleByDistance = new SubCheckbox(scale, "Scale By Distance", true);
 
     @Override
     public void setup() {
@@ -101,6 +101,11 @@ public class NameTags extends Module {
             entity2.posY = pos.y;
             entity2.posZ = pos.z;
 
+            double distanceScale = scale.getValue();;
+
+            if (distance > 0.0 && scaleByDistance.getValue())
+                distanceScale = 0.02 + (scale.getValue() / 1000f) * distance;
+
             GlStateManager.pushMatrix();
             RenderHelper.enableStandardItemLighting();
             GlStateManager.enablePolygonOffset();
@@ -109,7 +114,7 @@ public class NameTags extends Module {
             GlStateManager.translate((float) x, (float) y + 1.4f, (float) z);
             GlStateManager.rotate(-mc.getRenderManager().playerViewY, 0.0f, 1.0f, 0.0f);
             GlStateManager.rotate(mc.getRenderManager().playerViewX, (mc.gameSettings.thirdPersonView == 2) ? -1.0f : 1.0f, 0.0f, (float) 0);
-            GlStateManager.scale(-(scale.getValue() / 100), -(scale.getValue() / 100), (scale.getValue() / 100));
+            GlStateManager.scale(-(distanceScale / 100), -(distanceScale / 100), (distanceScale / 100));
             GlStateManager.disableDepth();
             GlStateManager.enableBlend();
 

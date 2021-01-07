@@ -23,7 +23,7 @@ public class AimBot extends Module {
         super("AimBot", Category.COMBAT, "Automatically rotates to nearby entities");
     }
 
-    public static Mode mode = new Mode("Rotate","Packet", "Legit", "None");
+    public static Mode mode = new Mode("Rotate","Packet", "Face", "Legit", "None");
     public static Slider range = new Slider("Range", 0.0D, 8.0D, 20.0D, 0);
     public static Checkbox onlyBow = new Checkbox("Bow Only", true);
 

@@ -13,6 +13,10 @@ import java.math.RoundingMode;
 
 public class MathUtil {
 
+	public static double square(double in) {
+		return in * in;
+	}
+
 	/**
 	 * rounding
 	 */
