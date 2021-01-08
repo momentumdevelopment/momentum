@@ -24,7 +24,7 @@ public class QuickEXP extends Module {
 
     private static Mode mode = new Mode("Mode", "Packet", "AutoMend", "Throw");
     private static Slider delay = new Slider("Throw Delay", 0.0D, 0.0D, 4.0D, 0);
-    private static Checkbox stopEXP = new Checkbox("Stop EXP", true);
+    private static Checkbox stopEXP = new Checkbox("Stop EXP", false);
     private static Checkbox footEXP = new Checkbox("FootEXP", true);
     private static Keybind mendKey = new Keybind("Mend Key", -2);
 

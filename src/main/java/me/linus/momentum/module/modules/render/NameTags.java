@@ -47,6 +47,7 @@ public class NameTags extends Module {
     private static Checkbox armor = new Checkbox("Armor", true);
     private static Checkbox item = new Checkbox("Items", true);
     private static Checkbox enchants = new Checkbox("Enchants", true);
+    private static Checkbox background = new Checkbox("Background", true);
     private static Checkbox onlyInViewFrustrum = new Checkbox("View Frustrum", true);
 
     public static Slider scale = new Slider("Scale", 0.0D, 2.0D, 10.0D, 1);
@@ -59,6 +60,7 @@ public class NameTags extends Module {
         addSetting(gamemode);
         addSetting(armor);
         addSetting(item);
+        addSetting(background);
         addSetting(onlyInViewFrustrum);
         addSetting(scale);
     }
@@ -106,28 +108,13 @@ public class NameTags extends Module {
             if (distance > 0.0 && scaleByDistance.getValue())
                 distanceScale = 2 + (scale.getValue() / 10) * distance;
 
-            GlStateManager.pushMatrix();
-            RenderHelper.enableStandardItemLighting();
-            GlStateManager.enablePolygonOffset();
-            GlStateManager.doPolygonOffset(1.0f, -1500000.0f);
-            GlStateManager.disableLighting();
-            GlStateManager.translate((float) x, (float) y + 1.4f, (float) z);
-            GlStateManager.rotate(-mc.getRenderManager().playerViewY, 0.0f, 1.0f, 0.0f);
-            GlStateManager.rotate(mc.getRenderManager().playerViewX, (mc.gameSettings.thirdPersonView == 2) ? -1.0f : 1.0f, 0.0f, (float) 0);
-            GlStateManager.scale(-(distanceScale / 100), -(distanceScale / 100), (distanceScale / 100));
-            GlStateManager.disableDepth();
-            GlStateManager.enableBlend();
-
             String nameTag = generateNameTag(entityPlayer);
-
             float width = FontUtil.getStringWidth(nameTag) / 2;
             float height = mc.fontRenderer.FONT_HEIGHT;
 
-            GlStateManager.enableBlend();
-            GuiScreen.drawRect((int) -width - 1, (int) -(height - 1), (int) width + 2, 3, 0x5F0A0A0A);
-            GlStateManager.disableBlend();
-            Momentum.fontManager.getCustomFont().drawString(nameTag, -width + 1, -height + 3, -1);
-
+            GlStateManager.pushMatrix();
+            RenderHelper.enableStandardItemLighting();
+            RenderUtil.drawNametag(nameTag, x, y, z, width, height, distanceScale, background.getValue());
             GlStateManager.pushMatrix();
 
             if (armor.getValue()) {

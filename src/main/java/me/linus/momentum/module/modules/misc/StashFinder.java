@@ -8,7 +8,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.config.ConfigManager;
 import me.linus.momentum.util.render.RenderUtil;
@@ -53,7 +53,7 @@ public class StashFinder extends Module {
     }
 
     Timer timer = new Timer();
-    private boolean stop = false;
+    boolean stop = false;
 
     @Override
     public void onEnable() {
@@ -89,17 +89,17 @@ public class StashFinder extends Module {
             return;
 
         if (mc.player.isElytraFlying()) {
-            if (rotate.getValue() && timer.passed((long) (1000 * delay.getValue())))
+            if (rotate.getValue() && timer.passed((long) (1000 * delay.getValue()), Timer.Format.System)) {
                 MessageUtil.sendClientMessage("No stashes found! Rotated you 90 degrees!");
                 mc.player.rotationYaw += 90f;
+            }
 
             timer.reset();
 
             RotationUtil.resetYaw(ElytraFlight.rotationNCP.getValue());
 
-            if (mc.player.posY <= 120) {
+            if (mc.player.posY <= 120)
                 KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.getKeyCode(), true);
-            }
 
             KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), true);
         }
@@ -117,7 +117,7 @@ public class StashFinder extends Module {
         mc.entityRenderer.setupCameraTransform(renderEvent.getPartialTicks(), 0);
 
         Vec3d forward = new Vec3d(0, 0, 1).rotatePitch(-(float) Math.toRadians(mc.player.rotationPitch)).rotateYaw(-(float) Math.toRadians(mc.player.rotationYaw));
-        RenderUtil.drawLine3D((float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) forward.z, (float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) (forward.z + 100), (float) 3, new Color(0, 255, 0).getRGB());
+        RenderUtil.drawLine3D((float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) forward.z, (float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) (forward.z + 100), (float) 3, new Color(0, 255, 0));
 
         mc.gameSettings.viewBobbing = bobbing;
         mc.entityRenderer.setupCameraTransform(renderEvent.getPartialTicks(), 0);

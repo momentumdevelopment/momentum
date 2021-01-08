@@ -7,7 +7,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.client.notification.Notification;
 import me.linus.momentum.util.client.notification.NotificationManager;
 import me.linus.momentum.util.player.PlayerUtil;
@@ -54,7 +54,7 @@ public class Notifier extends Module {
             return;
 
         if (armor.getValue() && PlayerUtil.getArmor(mc.player, 15)) {
-            if (armorTimer.passed((long) armorDelay.getValue())) {
+            if (armorTimer.passed((long) armorDelay.getValue(), Timer.Format.System)) {
                 armorTimer.reset();
 
                 NotificationManager.notifications.add(new Notification("Your armor durability is getting low!"));
@@ -77,7 +77,7 @@ public class Notifier extends Module {
                 }
             }
 
-            if (player != mc.player && visualRangeTimer.passed((long) visualRangeDelay.getValue()) && visualRange.getValue()) {
+            if (player != mc.player && visualRangeTimer.passed((long) visualRangeDelay.getValue(), Timer.Format.System) && visualRange.getValue()) {
                 visualRangeTimer.reset();
 
                 if (Momentum.friendManager.isFriend(player.getName())) {

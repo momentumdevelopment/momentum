@@ -1,7 +1,7 @@
 package me.linus.momentum.util.player;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.world.Timer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.math.MathHelper;
@@ -107,7 +107,7 @@ public class MotionUtil implements MixinInterface {
     }
 
     public static String getSpeed() {
-        if (timer.passed(1000)) {
+        if (timer.passed(1000, Timer.Format.System)) {
             prevPosX = mc.player.prevPosX;
             prevPosZ = mc.player.prevPosZ;
         }

@@ -63,13 +63,12 @@ public class AutoArmor extends Module {
             if (stack == null || !(stack.getItem() instanceof ItemArmor))
                 continue;
 
-            ItemArmor armor = (ItemArmor) stack.getItem();
-            int armorType = armor.armorType.ordinal() - 2;
+            int armorType = ((ItemArmor) stack.getItem()).armorType.ordinal() - 2;
 
             if (armorType == 2 && mc.player.inventory.armorItemInSlot(armorType).getItem().equals(Items.ELYTRA) && elytra.getValue())
                 continue;
 
-            int armorValue = armor.damageReduceAmount;
+            int armorValue = ((ItemArmor) stack.getItem()).damageReduceAmount;
 
             if (armorValue > bestArmorValues[armorType]) {
                 bestArmorSlots[armorType] = slot;
@@ -83,8 +82,7 @@ public class AutoArmor extends Module {
             if (slot == -1)
                 continue;
 
-            ItemStack oldArmor = mc.player.inventory.armorItemInSlot(armorType);
-            if (oldArmor == null || oldArmor != ItemStack.EMPTY || mc.player.inventory.getFirstEmptyStack() != -1) {
+            if (mc.player.inventory.armorItemInSlot(armorType) == null || mc.player.inventory.armorItemInSlot(armorType) != ItemStack.EMPTY || mc.player.inventory.getFirstEmptyStack() != -1) {
                 if (slot < 9)
                     slot += 36;
 

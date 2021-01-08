@@ -41,7 +41,7 @@ public class BurrowESP extends Module {
         addSetting(color);
     }
 
-    private final List<BlockPos> burrowList = new ArrayList<>();
+    List<BlockPos> burrowList = new ArrayList<>();
 
     @Override
     public void onUpdate() {

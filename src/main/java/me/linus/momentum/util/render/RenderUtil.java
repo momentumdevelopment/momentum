@@ -2,6 +2,7 @@ package me.linus.momentum.util.render;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.ColorUtil;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -182,6 +183,25 @@ public class RenderUtil implements MixinInterface {
      * nametag rendering
      */
 
+    public static void drawNametag(String text, double x, double y, double z, float width, float height, double distanceScale, boolean background) {
+        GlStateManager.enablePolygonOffset();
+        GlStateManager.doPolygonOffset(1.0f, -1500000.0f);
+        GlStateManager.disableLighting();
+        GlStateManager.translate((float) x, (float) y + 1.4f, (float) z);
+        GlStateManager.rotate(-mc.getRenderManager().playerViewY, 0.0f, 1.0f, 0.0f);
+        GlStateManager.rotate(mc.getRenderManager().playerViewX, (mc.gameSettings.thirdPersonView == 2) ? -1.0f : 1.0f, 0.0f, (float) 0);
+        GlStateManager.scale(-(distanceScale / 100), -(distanceScale / 100), (distanceScale / 100));
+        GlStateManager.disableDepth();
+        GlStateManager.enableBlend();
+        GlStateManager.enableBlend();
+
+        if (background)
+            GuiScreen.drawRect((int) -width - 1, (int) -(height - 1), (int) width + 2, 3, 0x5F0A0A0A);
+
+        GlStateManager.disableBlend();
+        FontUtil.drawString(text, -width + 1, -height + 3, -1);
+    }
+
     public static void drawNametagFromBlockPos(final BlockPos pos, final String text) {
         GlStateManager.pushMatrix();
         glBillboardDistanceScaled(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, mc.player, 1.0f);
@@ -216,12 +236,7 @@ public class RenderUtil implements MixinInterface {
      * line rendering
      */
 
-    public static void drawLine3D(float x, float y, float z, float x1, float y1, float z1, float thickness, int hex) {
-        float red = (hex >> 16 & 0xFF) / 255.0F;
-        float green = (hex >> 8 & 0xFF) / 255.0F;
-        float blue = (hex & 0xFF) / 255.0F;
-        float alpha = (hex >> 24 & 0xFF) / 255.0F;
-
+    public static void drawLine3D(float x, float y, float z, float x1, float y1, float z1, float thickness, Color color) {
         GlStateManager.pushMatrix();
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
@@ -236,8 +251,8 @@ public class RenderUtil implements MixinInterface {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos(x, y, z).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, y, z).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+        bufferbuilder.pos(x1, y1, z1).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
         tessellator.draw();
         GlStateManager.shadeModel(GL_FLAT);
         glDisable(GL_LINE_SMOOTH);

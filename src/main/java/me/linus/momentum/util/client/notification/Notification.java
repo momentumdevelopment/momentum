@@ -1,6 +1,6 @@
 package me.linus.momentum.util.client.notification;
 
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.world.Timer;
 
 /**
  * @author linustouchtips
@@ -13,7 +13,6 @@ public class Notification {
     private final long completionTime;
     public float remainingAnimation = -1.0f;
 
-    Timer beginTimer = new Timer();
     Timer completionTimer = new Timer();
 
     public Notification(String message) {
@@ -21,11 +20,10 @@ public class Notification {
         this.completionTime = 2500;
 
         completionTimer.reset();
-        beginTimer.reset();
     }
 
     public boolean isComplete() {
-        return completionTimer.passed(completionTime);
+        return completionTimer.passed(completionTime, Timer.Format.System);
     }
 
     public String getMessage() {

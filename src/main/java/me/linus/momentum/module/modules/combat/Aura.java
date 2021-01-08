@@ -8,7 +8,7 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
@@ -132,7 +132,7 @@ public class Aura extends Module {
         if (eatPause.getValue() && (mc.player.getHeldItemMainhand().getItem() instanceof ItemFood))
             return;
 
-        if (holePause.getValue() && !HoleUtil.isInHole())
+        if (holePause.getValue() && !HoleUtil.isInHole(mc.player))
             return;
 
         if (thirtyTwoKOnly.getValue() && !InventoryUtil.Is32k(mc.player.getHeldItemMainhand()))
@@ -146,10 +146,10 @@ public class Aura extends Module {
     }
 
     public void attackEntity(Entity target) {
-        if (useTicks.getValue() && !sync.getValue() && syncTimer.passed((long) (tickDelay.getValue() * 50)))
+        if (useTicks.getValue() && !sync.getValue() && syncTimer.passed((long) (tickDelay.getValue() * 50), Timer.Format.System))
             PlayerUtil.attackEntity(target);
 
-        if (sync.getValue() && syncTimer.passed((long) ((TickUtil.TPS / 20) * 1000)))
+        if (sync.getValue() && syncTimer.passed((long) ((TickUtil.TPS / 20) * 1000), Timer.Format.System))
             PlayerUtil.attackEntity(target);
 
         if (armorMelt.getValue()) {

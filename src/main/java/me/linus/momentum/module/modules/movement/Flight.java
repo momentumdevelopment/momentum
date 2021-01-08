@@ -52,6 +52,7 @@ public class Flight extends Module {
                 mc.player.capabilities.setFlySpeed((float) (hSpeed.getValue() / 23));
                 mc.player.capabilities.isFlying = true;
                 mc.player.capabilities.allowFlying = true;
+                break;
         }
     }
 

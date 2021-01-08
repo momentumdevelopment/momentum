@@ -3,7 +3,8 @@ package me.linus.momentum.module.modules.player;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.world.Timer;
+import net.minecraft.client.renderer.RenderGlobal;
 
 /**
  * @author linustouchtips
@@ -43,7 +44,7 @@ public class AntiAim extends Module {
     }
 
     public void spinPlayer() {
-        if (spinTimer.passed((long) speed.getValue())) {
+        if (spinTimer.passed((long) speed.getValue(), Timer.Format.System)) {
             mc.player.rotationYaw += 5;
         }
 
@@ -51,7 +52,7 @@ public class AntiAim extends Module {
     }
 
     public void spinHead() {
-        if (spinTimer.passed((long) speed.getValue())) {
+        if (spinTimer.passed((long) speed.getValue(), Timer.Format.System)) {
             mc.player.rotationYawHead += 5;
         }
 

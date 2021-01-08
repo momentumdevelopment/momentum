@@ -115,13 +115,13 @@ public class HoleESP extends Module {
 
     private List<BlockPos> findObsidianHoles() {
         NonNullList positions = NonNullList.create();
-        positions.addAll(BlockUtil.getSphere(CrystalUtil.getPlayerPos(), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(HoleUtil::IsObbyHole).collect(Collectors.toList()));
+        positions.addAll(BlockUtil.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(HoleUtil::IsObbyHole).collect(Collectors.toList()));
         return positions;
     }
 
     private List<BlockPos> findBedRockHoles() {
         NonNullList positions = NonNullList.create();
-        positions.addAll(BlockUtil.getSphere(CrystalUtil.getPlayerPos(), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(HoleUtil::IsBRockHole).collect(Collectors.toList()));
+        positions.addAll(BlockUtil.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(HoleUtil::IsBRockHole).collect(Collectors.toList()));
         return positions;
     }
 

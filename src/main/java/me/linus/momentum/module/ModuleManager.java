@@ -37,6 +37,7 @@ public class ModuleManager implements MixinInterface {
 
 			// combat
 			new AimBot(),
+			new AntiCrystal(),
 			new Aura(),
 			new AutoArmor(),
 			new AutoBed(),
@@ -55,7 +56,6 @@ public class ModuleManager implements MixinInterface {
 			new Surround(),
 			new Trigger(),
 			new Web(),
-			new AntiCrystal(),
 
 			// player
 			new AntiHunger(),
@@ -186,7 +186,7 @@ public class ModuleManager implements MixinInterface {
 		ModuleManager.onFastUpdate();
 	}
 
-	// TODO: add null checks to every override so the try catch in this is unneccesary
+	// TODO: add null checks to every override so the try catch in this is unnecessary
 	public static void onUpdate() {
 		for (Module m : modules) {
 			try {
