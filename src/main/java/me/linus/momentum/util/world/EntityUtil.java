@@ -77,16 +77,6 @@ public class EntityUtil implements MixinInterface {
      * interpolations
      */
 
-    public static Vec3d getEyesPos() {
-        return new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ);
-    }
-
-    public static float getRotations(EntityLivingBase ent) {
-        double x = ent.posX - mc.player.posX;
-        double z = ent.posZ - mc.player.posZ;
-        return (float) -(Math.atan2(x, z) * 57.29577951308232D);
-    }
-
     public static Vec3d interpolateEntity(final Entity entity, final float n) {
         return new Vec3d(entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * n, entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * n, entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * n);
     }

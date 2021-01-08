@@ -22,7 +22,7 @@ public class PacketFlight extends Module {
     public static SubSlider packetIteration = new SubSlider(mode,"Packet Iteration", 0.0D, 20.0D, 40.0D, 0);
 
     private static final Mode phase = new Mode("Phase","Full", "Semi", "None");
-    public static SubCheckbox packet = new SubCheckbox(phase, "Packet", false);
+    public static SubCheckbox packet = new SubCheckbox(phase, "Packet Spoof", false);
     public static SubCheckbox noMove = new SubCheckbox(phase, "Unnatural Movement", false);
     public static SubCheckbox noClip = new SubCheckbox(phase, "NoClip", true);
 
@@ -42,6 +42,8 @@ public class PacketFlight extends Module {
         addSetting(speed);
         addSetting(gravity);
     }
+
+
 
     @Override
     public String getHUDData() {

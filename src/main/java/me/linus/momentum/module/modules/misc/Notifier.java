@@ -110,9 +110,8 @@ public class Notifier extends Module {
                     totemPopContainer.put(entity.getName(), count++);
                 }
 
-                else {
+                else
                     totemPopContainer.put(entity.getName(), count);
-                }
 
                 if (Momentum.friendManager.isFriend(entity.getName())) {
                     NotificationManager.notifications.add(new Notification("Your friend, " + entity.getName() + ", popped " + count + " totems!"));

@@ -48,7 +48,7 @@ public class BreakESP extends Module {
                     RenderUtil.drawBoundingBoxBlockPos(destroyBlockProgress.getPosition(), 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), 144));
 
                 if (showInfo.getValue())
-                    RenderUtil.drawNametagFromBlockPos(destroyBlockProgress.getPosition(), mc.world.getEntityByID(integer).getName() + " " + (destroyBlockProgress.getPartialBlockDamage() * 10) + "%");
+                    RenderUtil.drawNametagFromBlockPos(destroyBlockProgress.getPosition(), mc.world.getEntityByID(integer).getName() + ": " + (destroyBlockProgress.getPartialBlockDamage() * 10) + "%");
             }
         });
     }

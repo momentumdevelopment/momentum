@@ -81,7 +81,7 @@ public class NameTags extends Module {
 
         nametagEntities.sort((p1, p2) -> Double.compare(p2.getDistance(mc.getRenderViewEntity()), p1.getDistance(mc.getRenderViewEntity())));
         nametagEntities.stream().forEach(entityPlayer -> {
-            final Entity entity2 = mc.getRenderViewEntity();
+            Entity entity2 = mc.getRenderViewEntity();
 
             Vec3d pos = EntityUtil.interpolateEntityByTicks(entityPlayer, event.getPartialTicks());
 
@@ -89,22 +89,22 @@ public class NameTags extends Module {
             double distance = pos.y + 0.65;
             double z = pos.z;
 
-            final double y = distance + (entityPlayer.isSneaking() ? 0.0 : 0.08f);
+            double y = distance + (entityPlayer.isSneaking() ? 0.0 : 0.08);
 
             pos = EntityUtil.interpolateEntityByTicks(entity2, event.getPartialTicks());
 
-            final double posX = entity2.posX;
-            final double posY = entity2.posY;
-            final double posZ = entity2.posZ;
+            double posX = entity2.posX;
+            double posY = entity2.posY;
+            double posZ = entity2.posZ;
 
             entity2.posX = pos.x;
             entity2.posY = pos.y;
             entity2.posZ = pos.z;
 
-            double distanceScale = scale.getValue();;
+            double distanceScale = scale.getValue();
 
             if (distance > 0.0 && scaleByDistance.getValue())
-                distanceScale = 0.02 + (scale.getValue() / 1000f) * distance;
+                distanceScale = 2 + (scale.getValue() / 10) * distance;
 
             GlStateManager.pushMatrix();
             RenderHelper.enableStandardItemLighting();

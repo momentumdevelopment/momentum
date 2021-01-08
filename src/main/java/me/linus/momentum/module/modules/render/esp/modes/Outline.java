@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.render.esp.modes;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.util.client.ColorUtil;
+import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.ESPUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
@@ -37,21 +38,18 @@ public class Outline extends ESPMode {
             return;
 
         if (entitylivingbaseIn instanceof EntityPlayer && !(entitylivingbaseIn instanceof EntityPlayerSP) && ESP.players.getValue() || (EntityUtil.isPassive(entitylivingbaseIn) && ESP.animals.getValue()) || (EntityUtil.isHostileMob(entitylivingbaseIn) && ESP.mobs.getValue()) || (EntityUtil.isVehicle(entitylivingbaseIn) && ESP.vehicles.getValue()) || (entitylivingbaseIn instanceof EntityEnderCrystal && ESP.crystals.getValue())) {
-            if (ESP.mode.getValue() == 0) {
-                Color color = ColorUtil.getEntityColor(entitylivingbaseIn);
-                ESPUtil.setColor(color);
-                mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-                ESPUtil.renderOne((float) ESP.lineWidth.getValue());
-                mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-                ESPUtil.renderTwo();
-                mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-                ESPUtil.renderThree();
-                ESPUtil.renderFour();
-                ESPUtil.setColor(color);
-                mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-                ESPUtil.renderFive();
-                ESPUtil.setColor(Color.WHITE);
-            }
+            ESPUtil.setColor(ColorUtil.getEntityColor(entitylivingbaseIn));
+            mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            ESPUtil.renderOne((float) ESP.lineWidth.getValue());
+            mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            ESPUtil.renderTwo();
+            mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            ESPUtil.renderThree();
+            ESPUtil.renderFour();
+            ESPUtil.setColor(ColorUtil.getEntityColor(entitylivingbaseIn));
+            mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+            ESPUtil.renderFive();
+            ESPUtil.setColor(Color.WHITE);
         }
     }
 
@@ -62,7 +60,7 @@ public class Outline extends ESPMode {
         GlStateManager.translate(x, y, z);
         mc.renderManager.renderEngine.bindTexture(texture);
         float rotationRounded = MathHelper.sin(rotation * 0.2f) / 2.0f + 0.5f;
-        rotationRounded += rotationRounded * rotationRounded;
+        rotationRounded += MathUtil.square(rotationRounded);
         GL11.glLineWidth((float) ESP.lineWidth.getValue());
 
         if (entity.shouldShowBottom())

@@ -158,22 +158,22 @@ public class Surround extends Module {
         if (renderSurround.getValue()) {
             if (northBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
                 RenderUtil.drawBoxBlockPos(northBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
-            else
+            else if (northBlockPos != null)
                 RenderUtil.drawBoxBlockPos(northBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
 
             if (westBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
                 RenderUtil.drawBoxBlockPos(westBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
-            else
+            else if (westBlockPos != null)
                 RenderUtil.drawBoxBlockPos(westBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
 
             if (southBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
                 RenderUtil.drawBoxBlockPos(southBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
-            else
+            else if (southBlockPos != null)
                 RenderUtil.drawBoxBlockPos(southBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
 
             if (eastBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
                 RenderUtil.drawBoxBlockPos(eastBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
-            else
+            else if (eastBlockPos != null)
                 RenderUtil.drawBoxBlockPos(eastBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
         }
     }

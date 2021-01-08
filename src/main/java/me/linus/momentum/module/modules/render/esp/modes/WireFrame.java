@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.render.esp.modes;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.util.client.ColorUtil;
+import me.linus.momentum.util.render.ESPUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
@@ -25,27 +26,20 @@ public class WireFrame extends ESPMode {
     @Override
     public void drawESPMixin(ModelBase mainModel, Entity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
         if (entitylivingbaseIn instanceof EntityPlayer && !(entitylivingbaseIn instanceof EntityPlayerSP) && ESP.players.getValue() || (EntityUtil.isPassive(entitylivingbaseIn) && ESP.animals.getValue()) || (EntityUtil.isHostileMob(entitylivingbaseIn) && ESP.mobs.getValue()) || (EntityUtil.isVehicle(entitylivingbaseIn) && ESP.vehicles.getValue()) || (entitylivingbaseIn instanceof EntityEnderCrystal && ESP.crystals.getValue())) {
+            GL11.glPushMatrix();
             GL11.glPushAttrib(1048575);
-            GL11.glDisable(3008);
+            GL11.glPolygonMode(1032, 6913);
             GL11.glDisable(3553);
             GL11.glDisable(2896);
+            GL11.glDisable(2929);
+            GL11.glEnable(2848);
             GL11.glEnable(3042);
             GL11.glBlendFunc(770, 771);
-            GL11.glLineWidth(1.5f);
-            GL11.glEnable(2960);
-            GL11.glDisable(2929);
-            GL11.glDepthMask(false);
-            GL11.glEnable(10754);
-            GL11.glColor4f(ColorUtil.getEntityColor(entitylivingbaseIn).getRed() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getGreen() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getBlue() / 255.0f, (int) ESP.a.getValue() / 255.0f);
+            ESPUtil.setColor(ColorUtil.getEntityColor(entitylivingbaseIn));
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-            GL11.glEnable(2929);
-            GL11.glDepthMask(true);
-            mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-            GL11.glEnable(3042);
-            GL11.glEnable(2896);
-            GL11.glEnable(3553);
-            GL11.glEnable(3008);
+            GL11.glLineWidth((float) ESP.lineWidth.getValue());
             GL11.glPopAttrib();
+            GL11.glPopMatrix();
         }
     }
 

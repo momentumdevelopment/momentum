@@ -5,6 +5,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.ColorUtil;
+import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.tileentity.*;
@@ -44,6 +45,7 @@ public class StorageESP extends Module {
         addSetting(droppers);
         addSetting(furnaces);
         addSetting(beds);
+        addSetting(range);
         addSetting(lineWidth);
         addSetting(alpha);
     }
@@ -57,7 +59,7 @@ public class StorageESP extends Module {
     }
 
     public void renderTileEntities() {
-        mc.world.loadedTileEntityList.stream().filter(tileEntity -> mc.player.getDistanceSq(tileEntity.getPos()) <= range.getValue()).forEach(tileEntity -> {
+        mc.world.loadedTileEntityList.stream().filter(tileEntity -> mc.player.getDistanceSq(tileEntity.getPos()) <= MathUtil.square(range.getValue())).forEach(tileEntity -> {
             if (tileEntity instanceof TileEntityChest && chests.getValue() || (tileEntity instanceof TileEntityEnderChest && enderChests.getValue()) || (tileEntity instanceof TileEntityHopper && hoppers.getValue()) || (tileEntity instanceof TileEntityFurnace && furnaces.getValue()) || (tileEntity instanceof TileEntityBed && beds.getValue() || (tileEntity instanceof TileEntityDropper && droppers.getValue()) || (tileEntity instanceof TileEntityShulkerBox && shulkers.getValue()))) {
                 switch (mode.getValue()) {
                     case 0:

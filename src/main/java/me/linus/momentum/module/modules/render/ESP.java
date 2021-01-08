@@ -8,25 +8,9 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.ColorUtil;
-import me.linus.momentum.util.render.ESPUtil;
-import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.EntityUtil;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityEnderCrystal;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.opengl.GL11;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.awt.*;
 
 /**
  * @author linustouchtips
@@ -39,7 +23,7 @@ public class ESP extends Module {
         super("ESP", Category.RENDER, "Highlights entities");
     }
 
-    public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "Wire-Frame", "CS:GO");
+    public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "Wire-Frame", "CS:GO", "Normal", "Textured", "Box");
     public static SubCheckbox players = new SubCheckbox(mode, "Players", true);
     public static SubCheckbox animals = new SubCheckbox(mode, "Animals", true);
     public static SubCheckbox mobs = new SubCheckbox(mode, "Mobs", true);
@@ -64,14 +48,6 @@ public class ESP extends Module {
     public static ESPMode espMode;
 
     @Override
-    public void onDisable() {
-        for (Entity entity : mc.world.loadedEntityList) {
-            if (entity.isGlowing())
-                entity.setGlowing(false);
-        }
-    }
-
-    @Override
     public void onUpdate() {
         if (nullCheck())
             return;
@@ -94,13 +70,34 @@ public class ESP extends Module {
             case 4:
                 espMode = new CSGO();
                 break;
+            case 5:
+                espMode = new Normal();
+                break;
+            case 6:
+                espMode = new Textured();
+                break;
+            case 7:
+                espMode = new Box();
+                break;
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        for (Entity entity : mc.world.loadedEntityList) {
+            if (entity.isGlowing())
+                entity.setGlowing(false);
         }
     }
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        if (mode.getValue() == 1 || mode.getValue() == 2)
-            espMode.drawESP();
+        espMode.drawESP();
+
+        for (Entity entity : mc.world.loadedEntityList) {
+            if (entity.isGlowing() && !(mode.getValue() == 1))
+                entity.setGlowing(false);
+        }
     }
 
     @Override

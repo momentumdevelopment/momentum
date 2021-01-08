@@ -15,6 +15,9 @@ public class AutoJump extends Module {
 
     @Override
     public void onUpdate() {
+        if (nullCheck())
+            return;
+
         KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.getKeyCode(), true);
     }
 }

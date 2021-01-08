@@ -2,6 +2,7 @@ package me.linus.momentum.mixin.mixins;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.module.modules.render.ESP;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.util.ResourceLocation;
@@ -28,10 +29,13 @@ public abstract class MixinAbstractClientPlayer {
 
     @Inject(method = "getLocationCape", at = @At("HEAD"), cancellable = true)
     public void getLocationCape(CallbackInfoReturnable<ResourceLocation> cir){
-        UUID uuid = getPlayerInfo().getGameProfile().getId();
-
-        if (ModuleManager.getModuleByName("Capes").isEnabled() && Momentum.capeAPI.hasCape(uuid)) {
+        if (ModuleManager.getModuleByName("Capes").isEnabled() && Momentum.capeAPI.hasCape(getPlayerInfo().getGameProfile().getId()))
             cir.setReturnValue(new ResourceLocation("momentum:momentum_cape.png"));
-        }
+    }
+
+    @Inject(method = "getLocationSkin", at = @At("HEAD"), cancellable = true)
+    public void getLocationSkin(CallbackInfoReturnable<ResourceLocation> cir) {
+        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.mode.getValue() == 6)
+            cir.setReturnValue(new ResourceLocation("momentum:texturechams.png"));
     }
 }

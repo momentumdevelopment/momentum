@@ -11,7 +11,7 @@ import net.minecraft.init.Blocks;
 
 public class IceSpeed extends Module {
     public IceSpeed() {
-        super("IceSpeed", Category.MOVEMENT, "Allows you to move faster on ice");
+        super("IceSpeed", Category.MOVEMENT, "Reduces the slipperiness of ice");
     }
 
     public static Slider slipperiness = new Slider("Slipperiness", 0.0D, 0.0D, 1.0D, 2);
