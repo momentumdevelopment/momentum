@@ -55,6 +55,7 @@ public class ModuleManager implements MixinInterface {
 			new Surround(),
 			new Trigger(),
 			new Web(),
+			new AntiCrystal(),
 
 			// player
 			new AntiHunger(),
