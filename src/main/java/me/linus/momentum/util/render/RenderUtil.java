@@ -91,20 +91,68 @@ public class RenderUtil implements MixinInterface {
         glRelease();
     }
 
-    public static void drawBox(AxisAlignedBB aabb, double height, float red, float green, float blue, float alpha) {
+    public static void drawGlowBoxBlockPos(BlockPos blockPos, double height, Color color) {
         glSetup();
-        renderFilledBox(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ, height, red, green, blue, alpha);
+        AxisAlignedBB axisAlignedBB = new AxisAlignedBB(blockPos.getX() - mc.getRenderManager().viewerPosX, blockPos.getY() - mc.getRenderManager().viewerPosY, blockPos.getZ() - mc.getRenderManager().viewerPosZ, blockPos.getX() + 1 - mc.getRenderManager().viewerPosX, blockPos.getY() + 1 - mc.getRenderManager().viewerPosY, blockPos.getZ() + 1 - mc.getRenderManager().viewerPosZ);
+        drawGlowBox(axisAlignedBB, height, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
         glRelease();
     }
 
-    public static void renderFilledBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, double height, float red, float green, float blue, float alpha) {
+    public static void drawBox(AxisAlignedBB aabb, double height, float red, float green, float blue, float alpha) {
+        glSetup();
+        renderBox(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ, height, red, green, blue, alpha, false);
+        glRelease();
+    }
+
+    public static void drawGlowBox(AxisAlignedBB aabb, double height, float red, float green, float blue, float alpha) {
+        glSetup();
+        renderBox(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ, height, red, green, blue, alpha, true);
+        glRelease();
+    }
+
+    public static void renderBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, double height, float red, float green, float blue, float alpha, boolean glow) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
-        addChainedFilledBoxVertices(bufferbuilder, minX, minY, minZ, maxX, maxY + height, maxZ, red, green, blue, alpha);
+        if (glow)
+            addChainedGlowBoxVertices(bufferbuilder, minX, minY, minZ, maxX, maxY + height, maxZ, red, green, blue, alpha, 0);
+        else
+            addChainedFilledBoxVertices(bufferbuilder, minX, minY, minZ, maxX, maxY + height, maxZ, red, green, blue, alpha);
         tessellator.draw();
     }
 
+    public static void addChainedGlowBoxVertices(BufferBuilder builder, double x1, double y1, double z1, double x2, double y2, double z2, float red, float green, float blue, float beginAlpha, float endAlpha) {
+        builder.pos(x1, y1, z1).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x1, y1, z1).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x1, y1, z1).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x1, y1, z2).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x1, y2, z1).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x1, y2, z2).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x1, y2, z2).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x1, y1, z2).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x2, y2, z2).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x2, y1, z2).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x2, y1, z2).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x2, y1, z1).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x2, y2, z2).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x2, y2, z1).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x2, y2, z1).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x2, y1, z1).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x1, y2, z1).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x1, y1, z1).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x1, y1, z1).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x2, y1, z1).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x1, y1, z2).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x2, y1, z2).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x2, y1, z2).color(red, green, blue, beginAlpha).endVertex();
+        builder.pos(x1, y2, z1).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x1, y2, z1).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x1, y2, z2).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x2, y2, z1).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x2, y2, z2).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x2, y2, z2).color(red, green, blue, endAlpha).endVertex();
+        builder.pos(x2, y2, z2).color(red, green, blue, endAlpha).endVertex();
+    }
 
     public static void addChainedFilledBoxVertices(BufferBuilder builder, double x1, double y1, double z1, double x2, double y2, double z2, float red, float green, float blue, float alpha) {
         builder.pos(x1, y1, z1).color(red, green, blue, alpha).endVertex();
@@ -179,6 +227,50 @@ public class RenderUtil implements MixinInterface {
         buffer.pos(maxX, minY, minZ).color(red, green, blue, 0.0F).endVertex();
     }
 
+    public static void drawGlowBox(AxisAlignedBB bb, Color color, int startAlpha, int endAlpha) {
+        int r = color.getRed();
+        int g = color.getGreen();
+        int b = color.getBlue();
+        GlStateManager.pushMatrix();
+        GlStateManager.enableCull();
+        GlStateManager.enableBlend();
+        GlStateManager.disableDepth();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1);
+        GlStateManager.disableTexture2D();
+        GlStateManager.depthMask(false);
+        glSetup();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        bufferbuilder.pos(bb.maxX, bb.minY, bb.minZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.maxX, bb.minY, bb.maxZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.minX, bb.minY, bb.maxZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.minX, bb.minY, bb.minZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.maxX, bb.minY, bb.minZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.minX, bb.minY, bb.minZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.minX, bb.maxY, bb.minZ).color(r, g, b, endAlpha).endVertex();
+        bufferbuilder.pos(bb.maxX, bb.maxY, bb.minZ).color(r, g, b, endAlpha).endVertex();
+        bufferbuilder.pos(bb.minX, bb.minY, bb.maxZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.maxX, bb.minY, bb.maxZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.maxX, bb.maxY, bb.maxZ).color(r, g, b, endAlpha).endVertex();
+        bufferbuilder.pos(bb.minX, bb.maxY, bb.maxZ).color(r, g, b, endAlpha).endVertex();
+        bufferbuilder.pos(bb.minX, bb.minY, bb.minZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.minX, bb.minY, bb.maxZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.minX, bb.maxY, bb.maxZ).color(r, g, b, endAlpha).endVertex();
+        bufferbuilder.pos(bb.minX, bb.maxY, bb.minZ).color(r, g, b, endAlpha).endVertex();
+        bufferbuilder.pos(bb.maxX, bb.minY, bb.maxZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.maxX, bb.minY, bb.minZ).color(r, g, b, startAlpha).endVertex();
+        bufferbuilder.pos(bb.maxX, bb.maxY, bb.minZ).color(r, g, b, endAlpha).endVertex();
+        bufferbuilder.pos(bb.maxX, bb.maxY, bb.maxZ).color(r, g, b, endAlpha).endVertex();
+        tessellator.draw();
+        glRelease();
+        GlStateManager.depthMask(true);
+        GlStateManager.enableDepth();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
+    }
+
     /**
      * nametag rendering
      */
@@ -202,7 +294,7 @@ public class RenderUtil implements MixinInterface {
         FontUtil.drawString(text, -width + 1, -height + 3, -1);
     }
 
-    public static void drawNametagFromBlockPos(final BlockPos pos, final String text) {
+    public static void drawNametagFromBlockPos(BlockPos pos, String text) {
         GlStateManager.pushMatrix();
         glBillboardDistanceScaled(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, mc.player, 1.0f);
         GlStateManager.disableDepth();
@@ -211,7 +303,7 @@ public class RenderUtil implements MixinInterface {
         GlStateManager.popMatrix();
     }
 
-    public static void glBillboardDistanceScaled(final float x, final float y, final float z, final EntityPlayer player, final float scale) {
+    public static void glBillboardDistanceScaled(float x, float y, float z, EntityPlayer player, float scale) {
         glBillboard(x, y, z);
         int distance = (int) player.getDistance(x, y, z);
         float scaleDistance = distance / 2.0f / (2.0f + (2.0f - scale));
@@ -222,7 +314,7 @@ public class RenderUtil implements MixinInterface {
         GlStateManager.scale(scaleDistance, scaleDistance, scaleDistance);
     }
 
-    public static void glBillboard(final float x, final float y, final float z) {
+    public static void glBillboard(float x, float y, float z) {
         float scale = 0.02666667f;
 
         GlStateManager.translate(x - mc.getRenderManager().renderPosX, y - mc.getRenderManager().renderPosY, z - mc.getRenderManager().renderPosZ);

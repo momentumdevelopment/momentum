@@ -48,7 +48,7 @@ public class QuickEXP extends Module {
         if (InventoryUtil.getHeldItem(Items.EXPERIENCE_BOTTLE))
             mc.rightClickDelayTimer = (int) delay.getValue();
 
-        if (Keyboard.isKeyDown(mendKey.getKey()) && (mode.getValue() == 0 || mode.getValue() == 1)) {
+        if (Keyboard.isKeyDown(mendKey.getKey())) {
             switch (mode.getValue()) {
                 case 1:
                     InventoryUtil.switchToSlot(Items.EXPERIENCE_BOTTLE);

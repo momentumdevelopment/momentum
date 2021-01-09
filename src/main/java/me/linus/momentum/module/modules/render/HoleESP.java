@@ -5,12 +5,21 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.HoleUtil;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
@@ -68,29 +77,31 @@ public class HoleESP extends Module {
     }
 
     public void renderMain(Color obbyColor, Color bRockColor) {
-        findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= (range.getValue() * range.getValue())).forEach(hole -> {
+        findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= MathUtil.square(range.getValue())).forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
                         RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor);
                         break;
                     case 1:
-
+                        RenderUtil.drawGlowBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor);
+                        break;
                 }
             });
 
-        findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= (range.getValue() * range.getValue())).forEach(hole -> {
+        findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= MathUtil.square(range.getValue())).forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
                         RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor);
                         break;
                     case 1:
-
+                        RenderUtil.drawGlowBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor);
+                        break;
                 }
             });
     }
 
     public void renderOutline(Color obbyColor, Color bRockColor) {
-        findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= (range.getValue() * range.getValue())).forEach(hole -> {
+        findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= MathUtil.square(range.getValue())).forEach(hole -> {
                 switch (outline.getValue()) {
                     case 0:
                         GL11.glLineWidth((float) lineWidth.getValue());
@@ -101,7 +112,7 @@ public class HoleESP extends Module {
                 }
             });
 
-            findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= (range.getValue() * range.getValue())).forEach(hole -> {
+            findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= MathUtil.square(range.getValue())).forEach(hole -> {
                 switch (outline.getValue()) {
                     case 0:
                         GL11.glLineWidth((float) lineWidth.getValue());

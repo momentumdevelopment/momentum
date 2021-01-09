@@ -66,10 +66,6 @@ public class CrystalUtil implements MixinInterface {
         return damage;
     }
 
-    public static boolean canBlockBeSeen(BlockPos blockPos) {
-        return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
-    }
-
     public static void attackCrystal(EntityEnderCrystal crystal, boolean packet) {
         if (packet)
             mc.player.connection.sendPacket(new CPacketUseEntity(crystal));
@@ -124,7 +120,7 @@ public class CrystalUtil implements MixinInterface {
 
     public static void placeCrystal(BlockPos placePos, EnumFacing enumFacing, boolean packet) {
         if (packet)
-            mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(placePos, enumFacing, mc.player.getHeldItemOffhand().equals(Items.END_CRYSTAL) ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
+            mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(placePos, enumFacing, mc.player.getHeldItemOffhand().getItem().equals(Items.END_CRYSTAL) ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
         else
             mc.playerController.processRightClickBlock(mc.player, mc.world, placePos, enumFacing, new Vec3d(0, 0, 0), mc.player.getHeldItemOffhand().equals(Items.END_CRYSTAL) ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
     }

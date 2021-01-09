@@ -28,7 +28,7 @@ public class ElytraFlight extends Module {
         super("ElytraFlight", Category.MOVEMENT, "Allows you to fly faster on an elytra");
     }
 
-    private static final Mode mode = new Mode("Mode", "Control", "MotionControl", "Pitch", "PitchNCP", "Firework", "Deer", "Dynamic", "DynamicNCP", "Glide", "Vanilla");
+    private static final Mode mode = new Mode("Mode", "Control", "MotionControl", "Pitch", "PitchNCP", "Firework", "Deer", "Dynamic", "DynamicNCP", "Glide", "Vanilla", "Packet");
     public static final SubSlider rotationNCP = new SubSlider(mode, "NCP Rotation", 0.0D, 30.0D, 90.0D, 1);
     public static final SubCheckbox rotationLock = new SubCheckbox(mode, "Rotation Lock", false);
 
@@ -122,6 +122,9 @@ public class ElytraFlight extends Module {
                 break;
             case 9:
                 elytraMode = new Vanilla();
+                break;
+            case 10:
+                elytraMode = new Packet();
                 break;
         }
 

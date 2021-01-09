@@ -37,13 +37,13 @@ public class LagNotifier extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        final float seconds = ((System.currentTimeMillis() - lagTimer.time) / 1000.0f) % 60.0f;
-
-        if (seconds < threshHold.getValue())
-            return;
+        float seconds = ((System.currentTimeMillis() - lagTimer.time) / 1000.0f) % 60.0f;
 
         if (mc.currentScreen instanceof HUD)
             FontUtil.drawString("Server has stopped responding for X seconds!", this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+
+        if (seconds < threshHold.getValue())
+            return;
 
         if (!(mc.currentScreen instanceof HUD))
             FontUtil.drawString("Server has stopped responding for " + new DecimalFormat("#.#").format(seconds) + " seconds!", this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
