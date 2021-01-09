@@ -1,7 +1,7 @@
 package me.linus.momentum.module.modules.combat.autocrystal.modes;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
-import me.linus.momentum.module.modules.combat.AutoCrystalTest;
+import me.linus.momentum.module.modules.combat.AutoCrystal;
 import me.linus.momentum.module.modules.combat.autocrystal.AutoCrystalAlgorithm;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.Pair;
@@ -40,42 +40,42 @@ public class MiniMax extends AutoCrystalAlgorithm {
 
     @Override
     public void breakCrystal() {
-        this.crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> CrystalUtil.attackCheck(entity, AutoCrystalTest.breakMode.getValue(), AutoCrystalTest.breakRange.getValue(), placedCrystals)).min(Comparator.comparing(c -> mc.player.getDistance(c))).orElse(null);
+        this.crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> CrystalUtil.attackCheck(entity, AutoCrystal.breakMode.getValue(), AutoCrystal.breakRange.getValue(), placedCrystals)).min(Comparator.comparing(c -> mc.player.getDistance(c))).orElse(null);
 
-        if (this.crystal != null && breakTimer.passed((long) AutoCrystalTest.breakDelay.getValue(), Timer.Format.System)) {
-            if (this.crystal.getDistance(mc.player) > (!mc.player.canEntityBeSeen(this.crystal) ? AutoCrystalTest.wallRange.getValue() : AutoCrystalTest.breakRange.getValue()))
+        if (this.crystal != null && breakTimer.passed((long) AutoCrystal.breakDelay.getValue(), Timer.Format.System)) {
+            if (this.crystal.getDistance(mc.player) > (!mc.player.canEntityBeSeen(this.crystal) ? AutoCrystal.wallRange.getValue() : AutoCrystal.breakRange.getValue()))
                 return;
 
-            if (AutoCrystalTest.pause.getValue() && PlayerUtil.getHealth() <= AutoCrystalTest.pauseHealth.getValue() && (AutoCrystalTest.pauseMode.getValue() == 1 || AutoCrystalTest.pauseMode.getValue() == 2))
+            if (AutoCrystal.pause.getValue() && PlayerUtil.getHealth() <= AutoCrystal.pauseHealth.getValue() && (AutoCrystal.pauseMode.getValue() == 1 || AutoCrystal.pauseMode.getValue() == 2))
                 return;
 
-            if (AutoCrystalTest.closePlacements.getValue() && mc.player.getDistance(this.crystal) < 1.5)
+            if (AutoCrystal.closePlacements.getValue() && mc.player.getDistance(this.crystal) < 1.5)
                 return;
 
-            if (!RotationUtil.isInViewFrustrum(this.crystal) && AutoCrystalTest.onlyInViewFrustrum.getValue())
+            if (!RotationUtil.isInViewFrustrum(this.crystal) && AutoCrystal.onlyInViewFrustrum.getValue())
                 return;
 
-            if (AutoCrystalTest.antiWeakness.getValue() && mc.player.isPotionActive(MobEffects.WEAKNESS))
+            if (AutoCrystal.antiWeakness.getValue() && mc.player.isPotionActive(MobEffects.WEAKNESS))
                 InventoryUtil.switchToSlot(Items.DIAMOND_SWORD);
 
-            if (AutoCrystalTest.explode.getValue())
-                for (int i = 0; i < AutoCrystalTest.breakAttempts.getValue(); i++)
-                    CrystalUtil.attackCrystal(this.crystal, AutoCrystalTest.packetBreak.getValue());
+            if (AutoCrystal.explode.getValue())
+                for (int i = 0; i < AutoCrystal.breakAttempts.getValue(); i++)
+                    CrystalUtil.attackCrystal(this.crystal, AutoCrystal.packetBreak.getValue());
 
-            CrystalUtil.swingArm(AutoCrystalTest.breakHand.getValue());
-            if (AutoCrystalTest.removeCrystal.getValue())
+            CrystalUtil.swingArm(AutoCrystal.breakHand.getValue());
+            if (AutoCrystal.removeCrystal.getValue())
                 mc.world.removeEntityFromWorld(this.crystal.entityId);
 
-            if (AutoCrystalTest.syncBreak.getValue())
+            if (AutoCrystal.syncBreak.getValue())
                 this.crystal.setDead();
 
-            if (AutoCrystalTest.unload.getValue()) {
+            if (AutoCrystal.unload.getValue()) {
                 mc.world.removeAllEntities();
                 mc.world.getLoadedEntityList();
             }
 
-            mc.world.loadedEntityList.stream().filter(entity -> entity.getDistance(crystal) <= AutoCrystalTest.breakMode.getValue()).forEach(entity -> {
-                if (AutoCrystalTest.damageSync.getValue())
+            mc.world.loadedEntityList.stream().filter(entity -> entity.getDistance(crystal) <= AutoCrystal.breakMode.getValue()).forEach(entity -> {
+                if (AutoCrystal.damageSync.getValue())
                     entity.attackEntityFrom(DamageSource.causeExplosionDamage(new Explosion(mc.world, crystal, crystal.posX, crystal.posY, crystal.posZ, 6.0f, false, true)), 8);
             });
         }
@@ -88,15 +88,15 @@ public class MiniMax extends AutoCrystalAlgorithm {
         BlockPos tempPos = null;
         double tempDamage = 0;
 
-        for (EntityPlayer tempPlayer : WorldUtil.getNearbyPlayers(AutoCrystalTest.enemyRange.getValue())) {
-            for (BlockPos calculatedPos : CrystalUtil.getCrystalBlocks(mc.player, AutoCrystalTest.placeRange.getValue(), AutoCrystalTest.prediction.getValue(), AutoCrystalTest.blockCalc.getValue())) {
-                float calculatedTargetDamage = AutoCrystalTest.placeCalc.getValue() == 0 ? CrystalUtil.getDamage(new Vec3d(calculatedPos.add(0.5, 1, 0.5)), tempPlayer) : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX(), calculatedPos.getY() + 1, calculatedPos.getZ()), tempPlayer);
+        for (EntityPlayer tempPlayer : WorldUtil.getNearbyPlayers(AutoCrystal.enemyRange.getValue())) {
+            for (BlockPos calculatedPos : CrystalUtil.getCrystalBlocks(mc.player, AutoCrystal.placeRange.getValue(), AutoCrystal.prediction.getValue(), AutoCrystal.blockCalc.getValue())) {
+                float calculatedTargetDamage = AutoCrystal.placeCalc.getValue() == 0 ? CrystalUtil.getDamage(new Vec3d(calculatedPos.add(0.5, 1, 0.5)), tempPlayer) : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX(), calculatedPos.getY() + 1, calculatedPos.getZ()), tempPlayer);
                 float calculatedSelfDamage = mc.player.isCreative() ? 0 : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5), mc.player);
 
-                if (calculatedTargetDamage < AutoCrystalTest.minDamage.getValue())
+                if (calculatedTargetDamage < AutoCrystal.minDamage.getValue())
                     continue;
 
-                if (PlayerUtil.getHealth() - calculatedSelfDamage <= AutoCrystalTest.pauseHealth.getValue())
+                if (PlayerUtil.getHealth() - calculatedSelfDamage <= AutoCrystal.pauseHealth.getValue())
                     continue;
 
                 targetDamage.add(new Pair<>(calculatedTargetDamage, calculatedPos));
@@ -114,11 +114,11 @@ public class MiniMax extends AutoCrystalAlgorithm {
             this.placeDamage = tempDamage;
         }
 
-        if (AutoCrystalTest.autoSwitch.getValue())
+        if (AutoCrystal.autoSwitch.getValue())
             InventoryUtil.switchToSlot(Items.END_CRYSTAL);
 
-        if (placeTimer.passed((long) AutoCrystalTest.placeDelay.getValue(), Timer.Format.System) && AutoCrystalTest.place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && this.placePos != null) {
-            CrystalUtil.placeCrystal(this.placePos, CrystalUtil.getEnumFacing(AutoCrystalTest.rayTrace.getValue(), this.placePos), AutoCrystalTest.packetPlace.getValue());
+        if (placeTimer.passed((long) AutoCrystal.placeDelay.getValue(), Timer.Format.System) && AutoCrystal.place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && this.placePos != null) {
+            CrystalUtil.placeCrystal(this.placePos, CrystalUtil.getEnumFacing(AutoCrystal.rayTrace.getValue(), this.placePos), AutoCrystal.packetPlace.getValue());
             placedCrystals.add(this.placePos);
         }
 
@@ -127,13 +127,13 @@ public class MiniMax extends AutoCrystalAlgorithm {
     
     @Override
     public void renderPlacement() {
-        if (AutoCrystalTest.renderCrystal.getValue() && this.placePos != null) {
-            RenderUtil.drawBoxBlockPos(this.placePos, 0, new Color((int) AutoCrystalTest.r.getValue(), (int) AutoCrystalTest.g.getValue(), (int) AutoCrystalTest.b.getValue(), (int) AutoCrystalTest.a.getValue()));
+        if (AutoCrystal.renderCrystal.getValue() && this.placePos != null) {
+            RenderUtil.drawBoxBlockPos(this.placePos, 0, new Color((int) AutoCrystal.r.getValue(), (int) AutoCrystal.g.getValue(), (int) AutoCrystal.b.getValue(), (int) AutoCrystal.a.getValue()));
 
-            if (AutoCrystalTest.outline.getValue())
-                RenderUtil.drawBoundingBoxBlockPos(this.placePos, 0, new Color((int) AutoCrystalTest.r.getValue(), (int) AutoCrystalTest.g.getValue(), (int) AutoCrystalTest.b.getValue(), 144));
+            if (AutoCrystal.outline.getValue())
+                RenderUtil.drawBoundingBoxBlockPos(this.placePos, 0, new Color((int) AutoCrystal.r.getValue(), (int) AutoCrystal.g.getValue(), (int) AutoCrystal.b.getValue(), 144));
 
-            if (AutoCrystalTest.renderDamage.getValue())
+            if (AutoCrystal.renderDamage.getValue())
                 RenderUtil.drawNametagFromBlockPos(placePos, String.valueOf(MathUtil.roundAvoid(placeDamage, 1)));
         }
     }
@@ -145,6 +145,6 @@ public class MiniMax extends AutoCrystalAlgorithm {
 
     @Override
     public void onSync(PacketReceiveEvent event) {
-        placedCrystals.removeIf(calculatedPos -> calculatedPos.getDistance((int) ((SPacketSoundEffect) event.getPacket()).getX(), (int)  ((SPacketSoundEffect) event.getPacket()).getY(), (int) ((SPacketSoundEffect) event.getPacket()).getZ()) <= AutoCrystalTest.breakRange.getValue());
+        placedCrystals.removeIf(calculatedPos -> calculatedPos.getDistance((int) ((SPacketSoundEffect) event.getPacket()).getX(), (int)  ((SPacketSoundEffect) event.getPacket()).getY(), (int) ((SPacketSoundEffect) event.getPacket()).getZ()) <= AutoCrystal.breakRange.getValue());
     }
 }

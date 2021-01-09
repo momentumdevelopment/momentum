@@ -4,13 +4,12 @@ import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.module.modules.combat.AutoCrystal;
 import me.linus.momentum.module.modules.combat.autocrystal.AutoCrystalAlgorithm;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.Pair;
 import me.linus.momentum.util.combat.CrystalUtil;
-import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.HoleUtil;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -30,10 +29,10 @@ import java.util.List;
 
 /**
  * @author linustouchtips
- * @since 01/08/2021
+ * @since 01/09/2021
  */
 
-public class DepthFirst extends AutoCrystalAlgorithm {
+public class AStar extends AutoCrystalAlgorithm {
 
     Timer breakTimer = new Timer();
     Timer placeTimer = new Timer();
@@ -84,58 +83,53 @@ public class DepthFirst extends AutoCrystalAlgorithm {
 
     @Override
     public void placeCrystal() {
-        double tempDamage = 0;
+        List<Pair<Float, BlockPos>> selfDamage = new ArrayList<>();
+        List<Pair<Float, BlockPos>> targetDamage = new ArrayList<>();
         BlockPos tempPos = null;
+        double tempDamage = 0;
 
         for (EntityPlayer tempPlayer : WorldUtil.getNearbyPlayers(AutoCrystal.enemyRange.getValue())) {
             for (BlockPos calculatedPos : CrystalUtil.getCrystalBlocks(mc.player, AutoCrystal.placeRange.getValue(), AutoCrystal.prediction.getValue(), AutoCrystal.blockCalc.getValue())) {
-                if (AutoCrystal.verifyCalc.getValue() && mc.player.getDistanceSq(calculatedPos) > MathUtil.square(AutoCrystal.breakRange.getValue()) || mc.player.getDistanceSq(calculatedPos) > 52.6 && AutoCrystal.pastDistance.getValue())
+                float calculatedTargetDamage = AutoCrystal.placeCalc.getValue() == 0 ? CrystalUtil.getDamage(new Vec3d(calculatedPos.add(0.5, 1, 0.5)), tempPlayer) : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX(), calculatedPos.getY() + 1, calculatedPos.getZ()), tempPlayer);
+                float calculatedSelfDamage = mc.player.isCreative() ? 0 : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5), mc.player);
+
+                if (calculatedTargetDamage < AutoCrystal.minDamage.getValue())
                     continue;
 
-                double calculatedDamage = AutoCrystal.placeCalc.getValue() == 0 ? CrystalUtil.getDamage(new Vec3d(calculatedPos.add(0.5, 1, 0.5)), tempPlayer) : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX(), calculatedPos.getY() + 1, calculatedPos.getZ()), tempPlayer);
-
-                double minCalculatedDamage = AutoCrystal.minDamage.getValue();
-                if (EnemyUtil.getHealth(tempPlayer) <= AutoCrystal.facePlaceHealth.getValue() || HoleUtil.isInHole(tempPlayer) && AutoCrystal.facePlaceHole.getValue() || EnemyUtil.getArmor(tempPlayer, AutoCrystal.armorMelt.getValue(), AutoCrystal.armorDurability.getValue()))
-                    minCalculatedDamage = 2;
-
-                if (calculatedDamage < minCalculatedDamage || calculatedDamage < tempDamage)
+                if (PlayerUtil.getHealth() - calculatedSelfDamage <= AutoCrystal.pauseHealth.getValue())
                     continue;
 
-                if (calculatedDamage <= tempDamage + AutoCrystal.resetThreshold.getValue() && calculatedDamage > tempDamage) {
-                    tempDamage = placeDamage;
-                    tempPos = placePos;
-                    continue;
-                }
+                targetDamage.add(new Pair<>(calculatedTargetDamage, calculatedPos));
+                selfDamage.add(new Pair<>(calculatedSelfDamage, calculatedPos));
 
-                double selfDamage = mc.player.isCreative() ? 0 : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5), mc.player);
-                if (PlayerUtil.getHealth() - selfDamage <= AutoCrystal.pauseHealth.getValue() && AutoCrystal.pause.getValue() && (AutoCrystal.pauseMode.getValue() == 0 || AutoCrystal.pauseMode.getValue() == 2))
-                    continue;
-
-                if (selfDamage > calculatedDamage)
-                    continue;
-
-                if (tempPlayer != null && calculatedDamage != 0) {
-                    tempDamage = calculatedDamage;
-                    tempPos = calculatedPos;
-                    currentTarget = tempPlayer;
-                }
+                tempPos = targetDamage.stream().max(Comparator.comparing(damage -> getHeuristic(damage.getKey(), damage.getValue()))).get().getValue();
+                tempDamage = calculatedTargetDamage;
             }
+
+            this.currentTarget = tempPlayer;
         }
 
         if (tempPos != null && tempDamage != 0) {
-            placeDamage = tempDamage;
-            placePos = tempPos;
+            this.placePos = tempPos;
+            this.placeDamage = tempDamage;
         }
 
         if (AutoCrystal.autoSwitch.getValue())
             InventoryUtil.switchToSlot(Items.END_CRYSTAL);
 
-        if (placeTimer.passed((long) AutoCrystal.placeDelay.getValue(), Timer.Format.System) && AutoCrystal.place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && placePos != null) {
-            CrystalUtil.placeCrystal(placePos, CrystalUtil.getEnumFacing(AutoCrystal.rayTrace.getValue(), placePos), AutoCrystal.packetPlace.getValue());
-            placedCrystals.add(placePos);
+        if (placeTimer.passed((long) AutoCrystal.placeDelay.getValue(), Timer.Format.System) && AutoCrystal.place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && this.placePos != null) {
+            CrystalUtil.placeCrystal(this.placePos, CrystalUtil.getEnumFacing(AutoCrystal.rayTrace.getValue(), this.placePos), AutoCrystal.packetPlace.getValue());
+            placedCrystals.add(this.placePos);
         }
 
         placeTimer.reset();
+    }
+
+    public double getHeuristic(double damage, BlockPos blockPos) {
+        if (currentTarget != null)
+            return damage - currentTarget.getDistanceSq(blockPos);
+        else
+            return damage;
     }
 
     @Override
