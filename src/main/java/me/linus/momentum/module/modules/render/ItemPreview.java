@@ -40,8 +40,6 @@ public class ItemPreview extends Module {
         addSetting(maps);
     }
 
-    static RenderItem itemRender = mc.getRenderItem();
-
     public static void tooltipShulker(ItemStack itemStack, int x, int y, CallbackInfo callbackInfo) {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound != null && tagCompound.hasKey("BlockEntityTag", 10)) {
@@ -62,7 +60,7 @@ public class ItemPreview extends Module {
                 int height = 57;
                 int width = (int) Math.max(144, FontUtil.getStringWidth(itemStack.getDisplayName())+3);
 
-                itemRender.zLevel = 300.0F;
+                mc.getRenderItem().zLevel = 300.0F;
                 GuiScreen.drawRect(x1 - 4, y1 - 9, x1 + width + 1, y1 + 5, new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), 164).getRGB());
                 GuiScreen.drawRect(x1 - 4, y1 + 5, x1 + width + 1, y1 + height + 3, new Color(0, 0, 0, 144).getRGB());
                 Momentum.fontManager.getCustomFont().drawStringWithShadow(itemStack.getDisplayName(), x1 - 2, y1 - 8, new Color(255, 255, 255).getRGB());
@@ -79,12 +77,12 @@ public class ItemPreview extends Module {
                     int iY = y + (i / 9) * 16 - 11 + 8;
                     ItemStack stack = nonnulllist.get(i);
 
-                    itemRender.renderItemAndEffectIntoGUI(stack, iX, iY);
-                    itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, stack, iX, iY, null);
+                    mc.getRenderItem().renderItemAndEffectIntoGUI(stack, iX, iY);
+                    mc.getRenderItem().renderItemOverlayIntoGUI(mc.fontRenderer, stack, iX, iY, null);
                 }
                 
                 RenderHelper.disableStandardItemLighting();
-                itemRender.zLevel = 0.0F;
+                mc.getRenderItem().zLevel = 0.0F;
 
                 GlStateManager.enableLighting();
                 GlStateManager.enableDepth();

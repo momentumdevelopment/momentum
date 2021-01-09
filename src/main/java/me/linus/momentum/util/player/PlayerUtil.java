@@ -27,13 +27,6 @@ public class PlayerUtil implements MixinInterface {
         return mc.player.getHealth() + mc.player.getAbsorptionAmount();
     }
 
-    public static BlockPos getLocalPlayerPosFloored() {
-        if (mc.player == null)
-            return BlockPos.ORIGIN;
-
-        return new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
-    }
-
     public static void attackEntity(Entity entity) {
         if (mc.player.getCooledAttackStrength(0) >= 1) {
             mc.playerController.attackEntity(mc.player, entity);
@@ -56,7 +49,7 @@ public class PlayerUtil implements MixinInterface {
     }
 
     public static boolean isTrapped() {
-        BlockPos playerPos = getLocalPlayerPosFloored();
+        BlockPos playerPos = new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
 
         final BlockPos[] trapPos = {
                 playerPos.down(),

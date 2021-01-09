@@ -7,7 +7,7 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.BedUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
@@ -132,7 +132,7 @@ public class AutoBed extends Module {
     public void breakBed() {
         TileEntityBed bed = (TileEntityBed) mc.world.loadedTileEntityList.stream().filter(e -> e instanceof TileEntityBed).filter(e -> mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()) <= breakRange.getValue()).sorted(Comparator.comparing(e -> mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()))).findFirst().orElse(null);
 
-        if (bed != null && breakTimer.passed((long) breakDelay.getValue())) {
+        if (bed != null && breakTimer.passed((long) breakDelay.getValue(), Timer.Format.System)) {
             if (pause.getValue() && PlayerUtil.getHealth() <= pauseHealth.getValue())
                 return;
 
@@ -187,11 +187,11 @@ public class AutoBed extends Module {
         if (place.getValue()) {
             switch (placeTimerMode.getValue()) {
                 case 0:
-                    if (placeTimer.passed((long) (750 + placeDelay.getValue())))
+                    if (placeTimer.passed((long) (750 + placeDelay.getValue()), Timer.Format.System))
                         BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, nowTop, spoofAngles.getValue());
                     break;
                 case 1:
-                    if (mc.player.ticksExisted % placeTickDelay.getValue() == 0)
+                    if (placeTimer.passed((long) placeTickDelay.getValue(), Timer.Format.Ticks))
                         BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, nowTop, spoofAngles.getValue());
                     break;
             }

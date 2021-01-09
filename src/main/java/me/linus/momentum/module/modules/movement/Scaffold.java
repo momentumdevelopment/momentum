@@ -5,8 +5,7 @@ import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.Timer;
-import me.linus.momentum.util.player.rotation.RotationUtil;
+import me.linus.momentum.util.world.Timer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
@@ -88,7 +87,7 @@ public class Scaffold extends Module {
             }
         }
 
-        if (replenishBlocks.getValue() && !(mc.player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemBlock) && getBlockCountHotbar() <= 0 && itemTimer.passed(100L)) {
+        if (replenishBlocks.getValue() && !(mc.player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemBlock) && getBlockCountHotbar() <= 0 && itemTimer.passed(100L, Timer.Format.System)) {
             for (int i = 9; i < 45; ++i) {
                 if (mc.player.inventoryContainer.getSlot(i).getHasStack()) {
                     final ItemStack is = mc.player.inventoryContainer.getSlot(i).getStack();

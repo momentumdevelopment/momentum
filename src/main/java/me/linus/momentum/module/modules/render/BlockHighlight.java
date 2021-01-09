@@ -19,9 +19,9 @@ public class BlockHighlight extends Module {
     public static Mode mode = new Mode("Mode", "Outline", "Fill", "Both");
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static SubSlider r = new SubSlider(color, "Red", 0.0D, 255.0D, 255.0D, 0);
+    public static SubSlider r = new SubSlider(color, "Red", 0.0D, 210.0D, 255.0D, 0);
     public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
+    public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 30.0D, 255.0D, 0);
 
     @Override

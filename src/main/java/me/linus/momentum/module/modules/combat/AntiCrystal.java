@@ -4,8 +4,8 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.client.Timer;
 import me.linus.momentum.util.player.InventoryUtil;
+import me.linus.momentum.util.world.Timer;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -69,7 +69,7 @@ public class AntiCrystal extends Module {
                 mc.player.inventory.currentItem = pressurePlateSlot;
             }
 
-            if (placeTimer.passed((long) (placeDelay.getValue() * 100))) {
+            if (placeTimer.passed((long) (placeDelay.getValue() * 100), Timer.Format.System)) {
                 if (mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(Blocks.WOODEN_PRESSURE_PLATE)) {
                     mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(entityEnderCrystal.getPosition(), EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
                 }

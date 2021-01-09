@@ -1,13 +1,15 @@
 package me.linus.momentum.util.world;
 
-import net.minecraft.network.Packet;
+import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
 /**
- * @author ionar2
+ * @author ionar2 & linustouchtips
  * @since 11/26/2020
  */
 
@@ -18,8 +20,13 @@ public class TickUtil {
     public static float[] tpsCounts = new float[10];
     public static DecimalFormat format = new DecimalFormat("##.0#");
 
-    public static void update(Packet packet) {
-        if (!(packet instanceof SPacketTimeUpdate))
+    public TickUtil() {
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @SubscribeEvent
+    public void onPacketRecieve(PacketReceiveEvent event) {
+        if (!(event.getPacket() instanceof SPacketTimeUpdate))
             return;
 
         long currentTime = System.currentTimeMillis();

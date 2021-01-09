@@ -4,6 +4,7 @@ import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.render.HoleESP;
 import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -17,12 +18,10 @@ import java.util.stream.Collectors;
  */
 
 public class HoleUtil implements MixinInterface {
+    public static boolean isInHole(EntityPlayer entityPlayer) {
+        BlockPos blockPos = new BlockPos(Math.floor(entityPlayer.posX), Math.floor(entityPlayer.posY), Math.floor(entityPlayer.posZ));
 
-    public static boolean isInHole() {
-        BlockPos blockPos = PlayerUtil.getLocalPlayerPosFloored();
-        IBlockState blockState = mc.world.getBlockState(blockPos);
-
-        if (blockState.getBlock() != Blocks.AIR)
+        if (mc.world.getBlockState(blockPos).getBlock() != Blocks.AIR)
             return false;
 
         if (mc.world.getBlockState(blockPos.up()).getBlock() != Blocks.AIR)

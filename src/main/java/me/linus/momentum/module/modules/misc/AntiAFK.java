@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.misc;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.world.Timer;
 
 /**
  * @author linustouchtips
@@ -25,9 +26,11 @@ public class AntiAFK extends Module {
         addSetting(chat);
     }
 
+    Timer afkTimer = new Timer();
+
     @Override
     public void onUpdate() {
-        if (mc.player.ticksExisted % delay.getValue() == 0) {
+        if (afkTimer.passed((long) delay.getValue(), Timer.Format.Ticks)) {
             if (jump.getValue())
                 mc.player.jump();
 

@@ -49,9 +49,4 @@ public class Swing extends Module {
         if (event.getPacket() instanceof CPacketAnimation && noAnimation.getValue())
             event.setCanceled(true);
     }
-
-    @Override
-    public String getHUDData() {
-        return " " + mode.getValue();
-    }
 }

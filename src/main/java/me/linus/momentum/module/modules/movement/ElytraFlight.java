@@ -11,6 +11,7 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.player.MotionUtil;
+import me.linus.momentum.util.world.Timer;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
@@ -27,7 +28,7 @@ public class ElytraFlight extends Module {
         super("ElytraFlight", Category.MOVEMENT, "Allows you to fly faster on an elytra");
     }
 
-    private static final Mode mode = new Mode("Mode", "Control", "MotionControl", "Pitch", "PitchNCP", "Firework", "Deer", "Dynamic", "DynamicNCP", "Glide", "Vanilla");
+    private static final Mode mode = new Mode("Mode", "Control", "MotionControl", "Pitch", "PitchNCP", "Firework", "Deer", "Dynamic", "DynamicNCP", "Glide", "Vanilla", "Packet");
     public static final SubSlider rotationNCP = new SubSlider(mode, "NCP Rotation", 0.0D, 30.0D, 90.0D, 1);
     public static final SubCheckbox rotationLock = new SubCheckbox(mode, "Rotation Lock", false);
 
@@ -69,6 +70,7 @@ public class ElytraFlight extends Module {
     }
 
     ElytraMode elytraMode;
+    Timer takeOffTimer = new Timer();
 
     @Override
     public void onDisable() {
@@ -81,9 +83,9 @@ public class ElytraFlight extends Module {
             return;
 
         if (takeoff.getValue()) {
-            if (mc.player.onGround && !mc.player.isElytraFlying())
-                mc.player.motionY = 0.405f;
-            else if (!mc.player.isElytraFlying() && mc.player.ticksExisted % 5 == 0)
+            if (mc.player.onGround)
+                mc.player.jump();
+            else if (!mc.player.isElytraFlying() && takeOffTimer.passed(5, Timer.Format.Ticks))
                 mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_FALL_FLYING));
         }
 
@@ -120,6 +122,9 @@ public class ElytraFlight extends Module {
                 break;
             case 9:
                 elytraMode = new Vanilla();
+                break;
+            case 10:
+                elytraMode = new Packet();
                 break;
         }
 

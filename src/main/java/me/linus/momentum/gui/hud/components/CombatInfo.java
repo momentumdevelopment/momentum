@@ -32,9 +32,6 @@ public class CombatInfo extends HUDComponent {
     }
 
     public String getEnabled(Module module) {
-        if (module.isEnabled())
-            return TextFormatting.GREEN + " ON";
-        else
-            return TextFormatting.RED + " OFF";
+        return module.isEnabled() ? TextFormatting.GREEN + " ON" : TextFormatting.WHITE + " OFF";
     }
 }

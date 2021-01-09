@@ -18,7 +18,7 @@ public class MiddleClickFriend extends Module {
         super("MiddleClickFriend", Category.MISC, "Adds players to your friends list when you middle click them");
     }
 
-    private boolean hasClicked = false;
+    boolean hasClicked = false;
 
     public void onUpdate() {
         if (nullCheck())

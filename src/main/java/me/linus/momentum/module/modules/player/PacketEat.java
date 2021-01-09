@@ -4,7 +4,7 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.Timer;
+import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.init.Items;
@@ -64,7 +64,7 @@ public class PacketEat extends Module {
         Item item = itemStack.getItem();
 
         if (item.equals(Items.GOLDEN_APPLE) && mode.getValue() == 1) {
-            if (timer.passed((long) (delay.getValue() * 10))) {
+            if (timer.passed((long) (delay.getValue() * 10), Timer.Format.System)) {
                 event.setCanceled(true);
                 item.onItemUseFinish(itemStack, event.getWorld(), event.getEntityPlayer());
             }

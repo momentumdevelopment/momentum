@@ -72,7 +72,7 @@ public class Milo extends Module {
     }
 
     private void baritoneIntoHole() {
-        if (HoleUtil.isInHole()) {
+        if (HoleUtil.isInHole(mc.player)) {
             lookingForHoles = false;
             return;
         }

@@ -27,15 +27,15 @@ public class MathUtil {
 		return bd.doubleValue();
 	}
 
-	public static double roundAvoid(double value, int places) {
-		double scale = Math.pow(10, places);
-		return Math.round(value * scale) / scale;
-	}
-
 	public static double round(double value) {
 		BigDecimal bd = new BigDecimal(value);
 		bd = bd.setScale(3, RoundingMode.HALF_UP);
 		return bd.doubleValue();
+	}
+
+	public static double roundAvoid(double value, int places) {
+		double scale = Math.pow(10, places);
+		return Math.round(value * scale) / scale;
 	}
 
 	public static float clamp(float val, float min, float max) {
