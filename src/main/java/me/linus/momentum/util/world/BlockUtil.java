@@ -1,10 +1,12 @@
 package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -13,6 +15,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +72,20 @@ public class BlockUtil implements MixinInterface {
         final IBlockState blockState = mc.world.getBlockState(pos);
         final Block block = blockState.getBlock();
         return block.getBlockHardness(blockState, mc.world, pos) != -1;
+    }
+    public static List<BlockPos> getNearbyBlocks(EntityPlayer player, double blockRange, boolean motion) {
+        List<BlockPos> nearbyBlocks = new ArrayList<>();
+        int range = (int) MathUtil.roundDouble(blockRange, 0);
+
+        if (motion)
+            player.getPosition().add(new Vec3i(player.motionX, player.motionY, player.motionZ));
+
+        for (int x = -range; x <= range; x++)
+            for (int y = -range; y <= range; y++)
+                for (int z = -range; z <= range; z++)
+                    nearbyBlocks.add(player.getPosition().add(x, y, z));
+
+        return nearbyBlocks;
     }
 
     public static List<BlockPos> getSphere(BlockPos loc, float r, int h, boolean hollow, boolean sphere, int plus_y) {

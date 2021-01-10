@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.combat;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.world.Timer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.init.Items;
@@ -31,12 +32,14 @@ public class AutoArmor extends Module {
         addSetting(elytra);
     }
 
+    Timer armorTimer = new Timer();
+
     @Override
     public void onUpdate() {
         if (nullCheck())
             return;
 
-        if (mc.player.ticksExisted % delay.getValue() == 0)
+        if (armorTimer.passed((long) delay.getValue(), Timer.Format.Ticks))
             return;
 
         if (mc.currentScreen instanceof GuiContainer && !(mc.currentScreen instanceof InventoryEffectRenderer))

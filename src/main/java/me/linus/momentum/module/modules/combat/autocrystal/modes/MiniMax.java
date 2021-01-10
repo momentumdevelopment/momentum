@@ -10,6 +10,7 @@ import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.world.HoleUtil;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -79,6 +80,11 @@ public class MiniMax extends AutoCrystalAlgorithm {
                     entity.attackEntityFrom(DamageSource.causeExplosionDamage(new Explosion(mc.world, crystal, crystal.posX, crystal.posY, crystal.posZ, 6.0f, false, true)), 8);
             });
         }
+
+        breakTimer.reset();
+
+        if (!AutoCrystal.multiPlace.getValue() || (AutoCrystal.multiPlaceInHole.getValue() && HoleUtil.isInHole(mc.player)))
+            return;
     }
 
     @Override

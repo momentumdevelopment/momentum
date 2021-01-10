@@ -5,6 +5,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.HoleUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -42,7 +43,7 @@ public class VoidESP extends Module {
         addSetting(color);
     }
 
-    public final List<BlockPos> voidBlocks = new ArrayList<>();
+    List<BlockPos> voidBlocks = new ArrayList<>();
 
     @Override
     public void onUpdate() {
@@ -51,18 +52,9 @@ public class VoidESP extends Module {
 
         voidBlocks.clear();
 
-        final Vec3i playerPos = new Vec3i(mc.player.posX, mc.player.posY, mc.player.posZ);
-
-        for (int x = (int) (playerPos.getX() - range.getValue()); x < playerPos.getX() + range.getValue(); x++) {
-            for (int z = (int) (playerPos.getZ() - range.getValue()); z < playerPos.getZ() + range.getValue(); z++) {
-                for (int y = (int) (playerPos.getY() + range.getValue()); y > playerPos.getY() - range.getValue(); y--) {
-                    final BlockPos blockPos = new BlockPos(x, y, z);
-
-                    if (HoleUtil.isVoidHole(blockPos))
-                        voidBlocks.add(blockPos);
-                }
-            }
-        }
+        BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.isVoidHole(blockPos)).forEach(blockPos -> {
+            voidBlocks.add(blockPos);
+        });
     }
 
     @SubscribeEvent

@@ -4,10 +4,7 @@ import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.combat.autocrystal.AutoCrystalAlgorithm;
-import me.linus.momentum.module.modules.combat.autocrystal.modes.AStar;
-import me.linus.momentum.module.modules.combat.autocrystal.modes.BreadthFirst;
-import me.linus.momentum.module.modules.combat.autocrystal.modes.DepthFirst;
-import me.linus.momentum.module.modules.combat.autocrystal.modes.MiniMax;
+import me.linus.momentum.module.modules.combat.autocrystal.modes.*;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.keybind.SubKeybind;
@@ -28,7 +25,8 @@ import java.util.Random;
 
 /**
  * @author linustouchtips
- * @since 01/08/2021
+ * @since 11/24/2020
+ * @updated 01/08/2021
  */
 
 public class AutoCrystal extends Module {
@@ -94,7 +92,7 @@ public class AutoCrystal extends Module {
     public static SubCheckbox taiwanTick = new SubCheckbox(calculations, "Taiwan-Tick", false);
 
     public static Checkbox logic = new Checkbox("Logic", true);
-    public static SubMode logicMode = new SubMode(logic, "Crystal Logic", "Break -> Place", "Place -> Break");
+    public static SubMode logicMode = new SubMode(logic, "Crystal Logic", "Break -> Place", "Place -> Break", "BreakBreak -> Place");
     public static SubMode blockCalc = new SubMode(logic, "Block Logic", "Normal", "1.13+");
 
     public static Checkbox renderCrystal = new Checkbox("Render", true);
@@ -173,6 +171,11 @@ public class AutoCrystal extends Module {
             case 1:
                 algorithmMode.placeCrystal();
                 algorithmMode.breakCrystal();
+                break;
+            case 2:
+                algorithmMode.breakCrystal();
+                algorithmMode.breakCrystal();
+                algorithmMode.placeCrystal();
                 break;
         }
     }

@@ -10,6 +10,7 @@ import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.world.HoleUtil;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -79,6 +80,11 @@ public class AStar extends AutoCrystalAlgorithm {
                     entity.attackEntityFrom(DamageSource.causeExplosionDamage(new Explosion(mc.world, crystal, crystal.posX, crystal.posY, crystal.posZ, 6.0f, false, true)), 8);
             });
         }
+
+        breakTimer.reset();
+
+        if (!AutoCrystal.multiPlace.getValue() || (AutoCrystal.multiPlaceInHole.getValue() && HoleUtil.isInHole(mc.player)))
+            return;
     }
 
     @Override
@@ -92,6 +98,12 @@ public class AStar extends AutoCrystalAlgorithm {
             for (BlockPos calculatedPos : CrystalUtil.getCrystalBlocks(mc.player, AutoCrystal.placeRange.getValue(), AutoCrystal.prediction.getValue(), AutoCrystal.blockCalc.getValue())) {
                 float calculatedTargetDamage = AutoCrystal.placeCalc.getValue() == 0 ? CrystalUtil.getDamage(new Vec3d(calculatedPos.add(0.5, 1, 0.5)), tempPlayer) : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX(), calculatedPos.getY() + 1, calculatedPos.getZ()), tempPlayer);
                 float calculatedSelfDamage = mc.player.isCreative() ? 0 : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5), mc.player);
+
+                if (calculatedTargetDamage <= tempDamage + AutoCrystal.resetThreshold.getValue() && calculatedTargetDamage > tempDamage) {
+                    tempDamage = placeDamage;
+                    tempPos = placePos;
+                    continue;
+                }
 
                 if (calculatedTargetDamage < AutoCrystal.minDamage.getValue())
                     continue;

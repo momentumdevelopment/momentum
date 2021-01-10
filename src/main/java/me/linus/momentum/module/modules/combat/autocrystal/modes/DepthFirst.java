@@ -80,6 +80,11 @@ public class DepthFirst extends AutoCrystalAlgorithm {
                     entity.attackEntityFrom(DamageSource.causeExplosionDamage(new Explosion(mc.world, crystal, crystal.posX, crystal.posY, crystal.posZ, 6.0f, false, true)), 8);
             });
         }
+
+        breakTimer.reset();
+
+        if (!AutoCrystal.multiPlace.getValue() || (AutoCrystal.multiPlaceInHole.getValue() && HoleUtil.isInHole(mc.player)))
+            return;
     }
 
     @Override
