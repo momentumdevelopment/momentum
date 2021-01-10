@@ -73,6 +73,7 @@ public class BlockUtil implements MixinInterface {
         final Block block = blockState.getBlock();
         return block.getBlockHardness(blockState, mc.world, pos) != -1;
     }
+
     public static List<BlockPos> getNearbyBlocks(EntityPlayer player, double blockRange, boolean motion) {
         List<BlockPos> nearbyBlocks = new ArrayList<>();
         int range = (int) MathUtil.roundDouble(blockRange, 0);
@@ -86,25 +87,5 @@ public class BlockUtil implements MixinInterface {
                     nearbyBlocks.add(player.getPosition().add(x, y, z));
 
         return nearbyBlocks;
-    }
-
-    public static List<BlockPos> getSphere(BlockPos loc, float r, int h, boolean hollow, boolean sphere, int plus_y) {
-        List<BlockPos> blocks = new ArrayList<>();
-        int cx = loc.getX();
-        int cy = loc.getY();
-        int cz = loc.getZ();
-        for (int x = cx - (int) r; x <= cx + r; x++) {
-            for (int z = cz - (int) r; z <= cz + r; z++) {
-                for (int y = (sphere ? cy - (int) r : cy); y < (sphere ? cy + r : cy + h); y++) {
-                    double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
-                    if (dist < r * r && !(hollow && dist < (r - 1) * (r - 1))) {
-                        BlockPos l = new BlockPos(x, y + plus_y, z);
-                        blocks.add(l);
-                    }
-                }
-            }
-        }
-
-        return blocks;
     }
 }

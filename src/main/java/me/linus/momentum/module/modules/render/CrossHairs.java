@@ -42,7 +42,7 @@ public class CrossHairs extends Module {
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
-        if (hitTimer.toReach(300, Timer.Format.System))
+        if (hitTimer.reach(300, Timer.Format.System))
             RenderUtil.drawHitMarkers(new Color((int) r.getValue(),(int) g.getValue(),(int)  b.getValue()));
     }
 }

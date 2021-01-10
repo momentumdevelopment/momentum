@@ -54,25 +54,17 @@ public class AntiCrystal extends Module {
     }
 
     public void onUpdate() {
-        if (nullCheck()) return;
+        if (nullCheck())
+            return;
 
-        EntityEnderCrystal entityEnderCrystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream()
-                .filter(entity -> entity != null)
-                .filter(entity -> entity instanceof EntityEnderCrystal)
-                .filter(entity -> mc.player.getDistance(entity) <= placeRange.getValue())
-                .filter(entity -> !hasPressurePlate((EntityEnderCrystal) entity))
-                .min(Comparator.comparing(entity -> mc.player.getDistance(entity)))
-                .orElse(null);
+        EntityEnderCrystal entityEnderCrystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity != null).filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> mc.player.getDistance(entity) <= placeRange.getValue()).filter(entity -> !hasPressurePlate((EntityEnderCrystal) entity)).min(Comparator.comparing(entity -> mc.player.getDistance(entity))).orElse(null);
 
         if (entityEnderCrystal != null) {
-            if (pressurePlateSlot != -1) {
-                mc.player.inventory.currentItem = pressurePlateSlot;
-            }
+            InventoryUtil.switchToSlot(Blocks.WOODEN_PRESSURE_PLATE);
 
             if (placeTimer.passed((long) (placeDelay.getValue() * 100), Timer.Format.System)) {
-                if (mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(Blocks.WOODEN_PRESSURE_PLATE)) {
+                if (InventoryUtil.getHeldItem(Item.getItemFromBlock(Blocks.WOODEN_PRESSURE_PLATE)))
                     mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(entityEnderCrystal.getPosition(), EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
-                }
 
                 placeTimer.reset();
             }

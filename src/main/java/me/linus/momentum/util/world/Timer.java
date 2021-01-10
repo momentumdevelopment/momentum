@@ -14,10 +14,6 @@ public class Timer implements MixinInterface {
         this.time = -1L;
     }
 
-    /**
-     * system
-     */
-
     public long getMS(long time) {
         return time / 1000000L;
     }
@@ -33,15 +29,7 @@ public class Timer implements MixinInterface {
         return true;
     }
 
-    public boolean sleep(long time) {
-        if ((System.nanoTime() / 1000000L - time) >= time) {
-            this.reset();
-            return true;
-        }
-
-        return false;
-    }
-    public boolean toReach(long time, Format format) {
+    public boolean reach(long time, Format format) {
         switch (format) {
             case System:
                 return this.getMS(System.nanoTime() - this.time) <= time;
@@ -50,6 +38,15 @@ public class Timer implements MixinInterface {
         }
 
         return true;
+    }
+
+    public boolean sleep(long time) {
+        if ((System.nanoTime() / 1000000L - time) >= time) {
+            this.reset();
+            return true;
+        }
+
+        return false;
     }
 
     public void reset() {

@@ -1,11 +1,11 @@
-package me.linus.momentum.module.modules.combat.autocrystal.modes;
+package me.linus.momentum.module.modules.combat.autocrystal.algorithms;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.module.modules.combat.AutoCrystal;
 import me.linus.momentum.module.modules.combat.autocrystal.AutoCrystalAlgorithm;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.Pair;
 import me.linus.momentum.util.combat.CrystalUtil;
-import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.player.rotation.RotationUtil;
@@ -33,7 +33,7 @@ import java.util.List;
  * @since 01/08/2021
  */
 
-public class DepthFirst extends AutoCrystalAlgorithm {
+public class MiniMax extends AutoCrystalAlgorithm {
 
     Timer breakTimer = new Timer();
     Timer placeTimer = new Timer();
@@ -43,10 +43,7 @@ public class DepthFirst extends AutoCrystalAlgorithm {
     public void breakCrystal() {
         this.crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> CrystalUtil.attackCheck(entity, AutoCrystal.breakMode.getValue(), AutoCrystal.breakRange.getValue(), placedCrystals)).min(Comparator.comparing(c -> mc.player.getDistance(c))).orElse(null);
 
-        if (this.crystal != null && breakTimer.passed((long) AutoCrystal.breakDelay.getValue(), Timer.Format.System)) {
-            if (this.crystal.getDistance(mc.player) > (!mc.player.canEntityBeSeen(this.crystal) ? AutoCrystal.wallRange.getValue() : AutoCrystal.breakRange.getValue()))
-                return;
-
+        if (this.crystal != null && breakTimer.passed((long) AutoCrystal.breakDelay.getValue(), Timer.Format.System) && mc.player.getDistance(crystal) <= AutoCrystal.breakRange.getValue()) {
             if (AutoCrystal.pause.getValue() && PlayerUtil.getHealth() <= AutoCrystal.pauseHealth.getValue() && (AutoCrystal.pauseMode.getValue() == 1 || AutoCrystal.pauseMode.getValue() == 2))
                 return;
 
@@ -89,60 +86,51 @@ public class DepthFirst extends AutoCrystalAlgorithm {
 
     @Override
     public void placeCrystal() {
-        double tempDamage = 0;
+        List<Pair<Float, BlockPos>> selfDamage = new ArrayList<>();
+        List<Pair<Float, BlockPos>> targetDamage = new ArrayList<>();
         BlockPos tempPos = null;
+        double tempDamage = 0;
 
         for (EntityPlayer tempPlayer : WorldUtil.getNearbyPlayers(AutoCrystal.enemyRange.getValue())) {
             for (BlockPos calculatedPos : CrystalUtil.getCrystalBlocks(mc.player, AutoCrystal.placeRange.getValue(), AutoCrystal.prediction.getValue(), AutoCrystal.blockCalc.getValue())) {
-                if (AutoCrystal.verifyCalc.getValue() && mc.player.getDistanceSq(calculatedPos) > MathUtil.square(AutoCrystal.breakRange.getValue()) || mc.player.getDistanceSq(calculatedPos) > 52.6 && AutoCrystal.pastDistance.getValue())
+                if (!RotationUtil.canBlockBeSeen(calculatedPos) && mc.player.getDistanceSq(calculatedPos) > MathUtil.square(AutoCrystal.wallRange.getValue()))
                     continue;
 
-                double calculatedDamage = AutoCrystal.placeCalc.getValue() == 0 ? CrystalUtil.getDamage(new Vec3d(calculatedPos.add(0.5, 1, 0.5)), tempPlayer) : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX(), calculatedPos.getY() + 1, calculatedPos.getZ()), tempPlayer);
+                float calculatedTargetDamage = AutoCrystal.placeCalc.getValue() == 0 ? CrystalUtil.getDamage(new Vec3d(calculatedPos.add(0.5, 1, 0.5)), tempPlayer) : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX(), calculatedPos.getY() + 1, calculatedPos.getZ()), tempPlayer);
+                float calculatedSelfDamage = mc.player.isCreative() ? 0 : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5), mc.player);
 
-                double minCalculatedDamage = AutoCrystal.minDamage.getValue();
-                if (EnemyUtil.getHealth(tempPlayer) <= AutoCrystal.facePlaceHealth.getValue() || HoleUtil.isInHole(tempPlayer) && AutoCrystal.facePlaceHole.getValue() || EnemyUtil.getArmor(tempPlayer, AutoCrystal.armorMelt.getValue(), AutoCrystal.armorDurability.getValue()))
-                    minCalculatedDamage = 2;
-
-                if (calculatedDamage < minCalculatedDamage || calculatedDamage < tempDamage)
+                if (calculatedTargetDamage < AutoCrystal.minDamage.getValue())
                     continue;
 
-                if (calculatedDamage <= tempDamage + AutoCrystal.resetThreshold.getValue() && calculatedDamage > tempDamage) {
-                    tempDamage = placeDamage;
-                    tempPos = placePos;
-                    continue;
-                }
-
-                double selfDamage = mc.player.isCreative() ? 0 : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5), mc.player);
-                if (PlayerUtil.getHealth() - selfDamage <= AutoCrystal.pauseHealth.getValue() && AutoCrystal.pause.getValue() && (AutoCrystal.pauseMode.getValue() == 0 || AutoCrystal.pauseMode.getValue() == 2))
+                if (PlayerUtil.getHealth() - calculatedSelfDamage <= AutoCrystal.pauseHealth.getValue())
                     continue;
 
-                if (selfDamage > calculatedDamage)
-                    continue;
+                targetDamage.add(new Pair<>(calculatedTargetDamage, calculatedPos));
+                selfDamage.add(new Pair<>(calculatedSelfDamage, calculatedPos));
 
-                if (tempPlayer != null && calculatedDamage != 0) {
-                    tempDamage = calculatedDamage;
-                    tempPos = calculatedPos;
-                    currentTarget = tempPlayer;
-                }
+                tempPos = targetDamage.stream().max(Comparator.comparing(damage -> damage.getKey())).get().getValue();
+                tempDamage = calculatedTargetDamage;
             }
+            
+            this.currentTarget = tempPlayer;
         }
 
         if (tempPos != null && tempDamage != 0) {
-            placeDamage = tempDamage;
-            placePos = tempPos;
+            this.placePos = tempPos;
+            this.placeDamage = tempDamage;
         }
 
         if (AutoCrystal.autoSwitch.getValue())
             InventoryUtil.switchToSlot(Items.END_CRYSTAL);
 
-        if (placeTimer.passed((long) AutoCrystal.placeDelay.getValue(), Timer.Format.System) && AutoCrystal.place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && placePos != null) {
-            CrystalUtil.placeCrystal(placePos, CrystalUtil.getEnumFacing(AutoCrystal.rayTrace.getValue(), placePos), AutoCrystal.packetPlace.getValue());
-            placedCrystals.add(placePos);
+        if (placeTimer.passed((long) AutoCrystal.placeDelay.getValue(), Timer.Format.System) && AutoCrystal.place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && this.placePos != null) {
+            CrystalUtil.placeCrystal(this.placePos, CrystalUtil.getEnumFacing(AutoCrystal.rayTrace.getValue(), this.placePos), AutoCrystal.packetPlace.getValue());
+            placedCrystals.add(this.placePos);
         }
 
         placeTimer.reset();
     }
-
+    
     @Override
     public void renderPlacement() {
         if (AutoCrystal.renderCrystal.getValue() && this.placePos != null) {

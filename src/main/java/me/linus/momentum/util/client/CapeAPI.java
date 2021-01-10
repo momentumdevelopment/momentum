@@ -22,6 +22,7 @@ public class CapeAPI implements MixinInterface {
             URL cache = new URL("https://raw.githubusercontent.com/linustouchtips/momentum-resources/master/capes.json");
             BufferedReader in = new BufferedReader(new InputStreamReader(cache.openStream()));
             String inputLine;
+
             while ((inputLine = in.readLine()) != null)
                 uuids.add(UUID.fromString(inputLine));
         } catch(Exception e) {

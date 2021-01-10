@@ -2,13 +2,14 @@ package me.linus.momentum.command.commands;
 
 import baritone.api.BaritoneAPI;
 import me.linus.momentum.command.Command;
+import me.linus.momentum.mixin.MixinInterface;
 
 /**
  * @author linustouchtips
  * @since 12/01/2020
  */
 
-public class Cancel extends Command {
+public class Cancel extends Command implements MixinInterface {
     public Cancel() {
         super("cancel");
     }

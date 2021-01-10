@@ -7,6 +7,9 @@ import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import net.minecraft.init.Blocks;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
 /**
@@ -14,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
  * @since 12/19/2020
  */
 
-// TODO: make an auto mode for this
+// TODO: make an aura mode for this
 public class Web extends Module {
     public Web() {
         super("Web", Category.COMBAT, "Places webs at your feet");
@@ -46,9 +49,14 @@ public class Web extends Module {
         if (autoSwitch.getValue())
             InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.WEB));
 
-        BlockUtil.placeBlock(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ), rotate.getValue());
+        mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(mc.player.getPosition(), EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
 
         if (disable.getValue())
             this.disable();
+    }
+
+    @Override
+    public String getHUDData() {
+        return " " + mode.getMode(mode.getValue());
     }
 }

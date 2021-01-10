@@ -77,7 +77,7 @@ public class Milo extends Module {
             return;
         }
 
-        BlockPos goalPos = getHoles(20).stream().min(Comparator.comparing(c -> mc.player.getDistanceSq(c))).orElse(null);
+        BlockPos goalPos = getHoles().stream().min(Comparator.comparing(c -> mc.player.getDistanceSq(c))).orElse(null);
 
         if (goalPos != null && lookingForHoles)
             BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(new GoalBlock(goalPos));
@@ -86,10 +86,8 @@ public class Milo extends Module {
             BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(new GoalBlock(null));
     }
 
-    public List<BlockPos> getHoles(double range) {
-        NonNullList<BlockPos> positions = NonNullList.create();
-        positions.addAll(BlockUtil.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range, (int) range, false, true, 0).stream().filter(HoleUtil::isHole).collect(Collectors.toList()));
-        return positions;
+    private List<BlockPos> getHoles() {
+        return BlockUtil.getNearbyBlocks(mc.player, 20, false).stream().filter(blockPos -> HoleUtil.isHole(blockPos)).collect(Collectors.toList());
     }
 
     public boolean playerCheck() {

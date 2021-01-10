@@ -1,4 +1,4 @@
-package me.linus.momentum.module.modules.combat.autocrystal.modes;
+package me.linus.momentum.module.modules.combat.autocrystal.algorithms;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.module.modules.combat.AutoCrystal;
@@ -33,7 +33,7 @@ import java.util.List;
  * @since 01/08/2021
  */
 
-public class BreadthFirst extends AutoCrystalAlgorithm {
+public class DepthFirst extends AutoCrystalAlgorithm {
 
     Timer breakTimer = new Timer();
     Timer placeTimer = new Timer();
@@ -43,11 +43,8 @@ public class BreadthFirst extends AutoCrystalAlgorithm {
     public void breakCrystal() {
         this.crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> CrystalUtil.attackCheck(entity, AutoCrystal.breakMode.getValue(), AutoCrystal.breakRange.getValue(), placedCrystals)).min(Comparator.comparing(c -> mc.player.getDistance(c))).orElse(null);
 
-        if (this.crystal != null && breakTimer.passed((long) AutoCrystal.breakDelay.getValue(), Timer.Format.System)) {
-            if (this.crystal.getDistance(mc.player) > (!mc.player.canEntityBeSeen(this.crystal) ? AutoCrystal.wallRange.getValue() : AutoCrystal.breakRange.getValue()))
-                return;
-
-            if (AutoCrystal.pause.getValue() && PlayerUtil.getHealth() <= AutoCrystal.pauseHealth.getValue() && (AutoCrystal.pauseMode.getValue() == 1 || AutoCrystal.pauseMode.getValue() == 2))
+        if (this.crystal != null && breakTimer.passed((long) AutoCrystal.breakDelay.getValue(), Timer.Format.System) && mc.player.getDistance(crystal) <= AutoCrystal.breakRange.getValue()) {
+           if (AutoCrystal.pause.getValue() && PlayerUtil.getHealth() <= AutoCrystal.pauseHealth.getValue() && (AutoCrystal.pauseMode.getValue() == 1 || AutoCrystal.pauseMode.getValue() == 2))
                 return;
 
             if (AutoCrystal.closePlacements.getValue() && mc.player.getDistance(this.crystal) < 1.5)
@@ -93,9 +90,10 @@ public class BreadthFirst extends AutoCrystalAlgorithm {
         BlockPos tempPos = null;
 
         for (EntityPlayer tempPlayer : WorldUtil.getNearbyPlayers(AutoCrystal.enemyRange.getValue())) {
-            List<BlockPos> crystalBlocks = CrystalUtil.getCrystalBlocks(mc.player, AutoCrystal.placeRange.getValue(), AutoCrystal.prediction.getValue(), AutoCrystal.blockCalc.getValue());
-            crystalBlocks.sort((blockPos1, blockPos2) -> Double.compare(blockPos2.getDistance((int) mc.player.posX, (int) mc.player.posY, (int) mc.player.posZ), blockPos1.getDistance((int) mc.player.posX, (int) mc.player.posY, (int) mc.player.posZ)));
-            for (BlockPos calculatedPos : crystalBlocks) {
+            for (BlockPos calculatedPos : CrystalUtil.getCrystalBlocks(mc.player, AutoCrystal.placeRange.getValue(), AutoCrystal.prediction.getValue(), AutoCrystal.blockCalc.getValue())) {
+                if (!RotationUtil.canBlockBeSeen(calculatedPos) && mc.player.getDistanceSq(calculatedPos) > MathUtil.square(AutoCrystal.wallRange.getValue()))
+                    continue;
+
                 if (AutoCrystal.verifyCalc.getValue() && mc.player.getDistanceSq(calculatedPos) > MathUtil.square(AutoCrystal.breakRange.getValue()) || mc.player.getDistanceSq(calculatedPos) > 52.6 && AutoCrystal.pastDistance.getValue())
                     continue;
 

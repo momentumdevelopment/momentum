@@ -7,6 +7,8 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.scoreboard.Team;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.EXTPackedDepthStencil;
 import org.lwjgl.opengl.GL11;
@@ -76,6 +78,14 @@ public class ESPUtil implements MixinInterface {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glPopAttrib();
+    }
+
+    public static void drawGlow(Entity entity, String teamName, TextFormatting color) {
+        Team team = mc.world.getScoreboard().getTeamNames().contains(teamName) ? mc.world.getScoreboard().getTeam(teamName) : mc.world.getScoreboard().createTeam(teamName);
+        mc.world.getScoreboard().addPlayerToTeam("entity", team.getName());
+        mc.world.getScoreboard().getTeam(team.getName()).setColor(color);
+
+        entity.setGlowing(true);
     }
 
     /**

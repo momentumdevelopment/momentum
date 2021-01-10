@@ -1,4 +1,4 @@
-package me.linus.momentum.module.modules.combat.autocrystal.modes;
+package me.linus.momentum.module.modules.combat.autocrystal.algorithms;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.module.modules.combat.AutoCrystal;
@@ -30,10 +30,10 @@ import java.util.List;
 
 /**
  * @author linustouchtips
- * @since 01/08/2021
+ * @since 01/09/2021
  */
 
-public class MiniMax extends AutoCrystalAlgorithm {
+public class AStar extends AutoCrystalAlgorithm {
 
     Timer breakTimer = new Timer();
     Timer placeTimer = new Timer();
@@ -43,10 +43,7 @@ public class MiniMax extends AutoCrystalAlgorithm {
     public void breakCrystal() {
         this.crystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> CrystalUtil.attackCheck(entity, AutoCrystal.breakMode.getValue(), AutoCrystal.breakRange.getValue(), placedCrystals)).min(Comparator.comparing(c -> mc.player.getDistance(c))).orElse(null);
 
-        if (this.crystal != null && breakTimer.passed((long) AutoCrystal.breakDelay.getValue(), Timer.Format.System)) {
-            if (this.crystal.getDistance(mc.player) > (!mc.player.canEntityBeSeen(this.crystal) ? AutoCrystal.wallRange.getValue() : AutoCrystal.breakRange.getValue()))
-                return;
-
+        if (this.crystal != null && breakTimer.passed((long) AutoCrystal.breakDelay.getValue(), Timer.Format.System) && mc.player.getDistance(crystal) <= AutoCrystal.breakRange.getValue()) {
             if (AutoCrystal.pause.getValue() && PlayerUtil.getHealth() <= AutoCrystal.pauseHealth.getValue() && (AutoCrystal.pauseMode.getValue() == 1 || AutoCrystal.pauseMode.getValue() == 2))
                 return;
 
@@ -96,8 +93,17 @@ public class MiniMax extends AutoCrystalAlgorithm {
 
         for (EntityPlayer tempPlayer : WorldUtil.getNearbyPlayers(AutoCrystal.enemyRange.getValue())) {
             for (BlockPos calculatedPos : CrystalUtil.getCrystalBlocks(mc.player, AutoCrystal.placeRange.getValue(), AutoCrystal.prediction.getValue(), AutoCrystal.blockCalc.getValue())) {
+                if (!RotationUtil.canBlockBeSeen(calculatedPos) && mc.player.getDistanceSq(calculatedPos) > MathUtil.square(AutoCrystal.wallRange.getValue()))
+                    continue;
+
                 float calculatedTargetDamage = AutoCrystal.placeCalc.getValue() == 0 ? CrystalUtil.getDamage(new Vec3d(calculatedPos.add(0.5, 1, 0.5)), tempPlayer) : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX(), calculatedPos.getY() + 1, calculatedPos.getZ()), tempPlayer);
                 float calculatedSelfDamage = mc.player.isCreative() ? 0 : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5), mc.player);
+
+                if (calculatedTargetDamage <= tempDamage + AutoCrystal.resetThreshold.getValue() && calculatedTargetDamage > tempDamage) {
+                    tempDamage = placeDamage;
+                    tempPos = placePos;
+                    continue;
+                }
 
                 if (calculatedTargetDamage < AutoCrystal.minDamage.getValue())
                     continue;
@@ -108,10 +114,10 @@ public class MiniMax extends AutoCrystalAlgorithm {
                 targetDamage.add(new Pair<>(calculatedTargetDamage, calculatedPos));
                 selfDamage.add(new Pair<>(calculatedSelfDamage, calculatedPos));
 
-                tempPos = targetDamage.stream().max(Comparator.comparing(damage -> damage.getKey())).get().getValue();
-                tempDamage = calculatedTargetDamage;
+                tempPos = targetDamage.stream().max(Comparator.comparing(damage -> getHeuristic(damage.getKey(), damage.getValue()))).get().getValue();
+                tempDamage = getHeuristic(calculatedTargetDamage, tempPos);
             }
-            
+
             this.currentTarget = tempPlayer;
         }
 
@@ -130,7 +136,14 @@ public class MiniMax extends AutoCrystalAlgorithm {
 
         placeTimer.reset();
     }
-    
+
+    public double getHeuristic(double damage, BlockPos blockPos) {
+        if (currentTarget != null)
+            return damage - currentTarget.getDistanceSq(blockPos);
+        else
+            return damage;
+    }
+
     @Override
     public void renderPlacement() {
         if (AutoCrystal.renderCrystal.getValue() && this.placePos != null) {

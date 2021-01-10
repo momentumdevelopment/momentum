@@ -6,6 +6,7 @@ import me.linus.momentum.util.client.friend.FriendManager;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.GameType;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +38,7 @@ public class WorldUtil implements MixinInterface {
             entity.setHealth(mc.player.getHealth() + mc.player.getAbsorptionAmount());
 
         mc.world.addEntityToWorld(69420, entity);
+        entity.setGameType(GameType.SURVIVAL);
     }
 
     /**

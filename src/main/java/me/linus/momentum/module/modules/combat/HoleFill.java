@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author yoink
@@ -59,7 +60,7 @@ public class HoleFill extends Module {
         if (nullCheck())
             return;
 
-        List<BlockPos> blocks = HoleUtil.getHoles(range.getValue());
+        List<BlockPos> blocks = getHoles();
 
         for (BlockPos block : blocks)
             blocks.removeIf(blockPos -> PlayerUtil.inPlayer(block));
@@ -78,6 +79,12 @@ public class HoleFill extends Module {
         BlockUtil.placeBlock(blocks.get(0), rotate.getValue());
     }
 
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent eventRender) {
+        if (renderBlock != null)
+            RenderUtil.drawBoxBlockPos(renderBlock, 0, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+    }
+
     private Block getItem() {
         switch (mode.getValue()) {
             case 0:
@@ -91,9 +98,7 @@ public class HoleFill extends Module {
         return Blocks.OBSIDIAN;
     }
 
-    @SubscribeEvent
-    public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        if (renderBlock != null)
-            RenderUtil.drawBoxBlockPos(renderBlock, 0, new Color((int) r.getValue(), (int) g.getValue(),  (int) b.getValue(), (int) a.getValue()));
+    private List<BlockPos> getHoles() {
+        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.isHole(blockPos)).collect(Collectors.toList());
     }
 }

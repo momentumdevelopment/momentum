@@ -57,8 +57,8 @@ public class AutoTrap extends Module {
         addSetting(color);
     }
 
-    private final ArrayList<BlockPos> renderBlocks = new ArrayList<>();
-    private boolean hasPlaced;
+    final ArrayList<BlockPos> renderBlocks = new ArrayList<>();
+    boolean hasPlaced;
 
     @Override
     public void onEnable() {

@@ -56,6 +56,7 @@ public class HoleESP extends Module {
     public static SubSlider bRockBlue = new SubSlider(bedrockColor, "Blue", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider bRockAlpha = new SubSlider(bedrockColor, "Alpha", 0.0D, 45.0D, 255.0D, 0);
 
+    public static Checkbox doubles = new Checkbox("Doubles", true);
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 1.5D, 3.0D, 2);
     public static Slider lineAlpha = new Slider("Line Alpha", 0.0D, 144.0D, 255.0D, 0);
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 20.0D, 0);
@@ -66,6 +67,8 @@ public class HoleESP extends Module {
         addSetting(outline);
         addSetting(obsidianColor);
         addSetting(bedrockColor);
+        addSetting(doubles);
+        addSetting(lineWidth);
         addSetting(lineAlpha);
         addSetting(range);
     }
@@ -77,31 +80,27 @@ public class HoleESP extends Module {
     }
 
     public void renderMain(Color obbyColor, Color bRockColor) {
-        findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= MathUtil.square(range.getValue())).forEach(hole -> {
+        findObsidianHoles().stream().forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
                         RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor);
                         break;
                     case 1:
-                        RenderUtil.drawGlowBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor);
-                        break;
                 }
             });
 
-        findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= MathUtil.square(range.getValue())).forEach(hole -> {
+        findBedRockHoles().stream().forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
                         RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor);
                         break;
                     case 1:
-                        RenderUtil.drawGlowBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor);
-                        break;
                 }
             });
     }
 
     public void renderOutline(Color obbyColor, Color bRockColor) {
-        findObsidianHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= MathUtil.square(range.getValue())).forEach(hole -> {
+        findObsidianHoles().stream().forEach(hole -> {
                 switch (outline.getValue()) {
                     case 0:
                         GL11.glLineWidth((float) lineWidth.getValue());
@@ -112,7 +111,7 @@ public class HoleESP extends Module {
                 }
             });
 
-            findBedRockHoles().stream().filter(hole -> mc.player.getDistanceSq(hole) <= MathUtil.square(range.getValue())).forEach(hole -> {
+            findBedRockHoles().stream().forEach(hole -> {
                 switch (outline.getValue()) {
                     case 0:
                         GL11.glLineWidth((float) lineWidth.getValue());
@@ -125,15 +124,11 @@ public class HoleESP extends Module {
     }
 
     private List<BlockPos> findObsidianHoles() {
-        NonNullList positions = NonNullList.create();
-        positions.addAll(BlockUtil.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(HoleUtil::IsObbyHole).collect(Collectors.toList()));
-        return positions;
+        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.IsObbyHole(blockPos)).collect(Collectors.toList());
     }
 
     private List<BlockPos> findBedRockHoles() {
-        NonNullList positions = NonNullList.create();
-        positions.addAll(BlockUtil.getSphere(new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ)), (int) range.getValue(), (int) range.getValue(), false, true, 0).stream().filter(HoleUtil::IsBRockHole).collect(Collectors.toList()));
-        return positions;
+        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.IsBRockHole(blockPos)).collect(Collectors.toList());
     }
 
     @Override

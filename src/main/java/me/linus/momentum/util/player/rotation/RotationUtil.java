@@ -149,6 +149,10 @@ public class RotationUtil implements MixinInterface {
         return RenderUtil.camera.isBoundingBoxInFrustum(entity.getEntityBoundingBox());
     }
 
+    public static boolean canBlockBeSeen(final BlockPos blockPos) {
+        return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
+    }
+
     public static Vec3d direction(float yaw) {
         return new Vec3d(Math.cos(MathUtil.degToRad(yaw + 90f)), 0, Math.sin(MathUtil.degToRad(yaw + 90f)));
     }
