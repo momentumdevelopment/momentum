@@ -27,12 +27,12 @@ import java.util.List;
 
 public class BlockUtil implements MixinInterface {
 
-    public static void placeBlock(final BlockPos pos, boolean rotate) {
-        for (final EnumFacing enumFacing : EnumFacing.values()) {
+    public static void placeBlock(BlockPos pos, boolean rotate) {
+        for (EnumFacing enumFacing : EnumFacing.values()) {
             if (!mc.world.getBlockState(pos.offset(enumFacing)).getBlock().equals(Blocks.AIR) && !EntityUtil.isIntercepted(pos)) {
-                final Vec3d vec = new Vec3d(pos.getX() + 0.5D + (double) enumFacing.getFrontOffsetX() * 0.5D, pos.getY() + 0.5D + (double) enumFacing.getFrontOffsetY() * 0.5D, pos.getZ() + 0.5D + (double) enumFacing.getFrontOffsetZ() * 0.5D);
+                Vec3d vec = new Vec3d(pos.getX() + 0.5D + (double) enumFacing.getFrontOffsetX() * 0.5D, pos.getY() + 0.5D + (double) enumFacing.getFrontOffsetY() * 0.5D, pos.getZ() + 0.5D + (double) enumFacing.getFrontOffsetZ() * 0.5D);
 
-                final float[] old = new float[] {
+                float[] old = new float[] {
                         mc.player.rotationYaw, mc.player.rotationPitch
                 };
 
@@ -56,8 +56,8 @@ public class BlockUtil implements MixinInterface {
         return mc.world.getBlockState(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ)).getBlock().equals(Blocks.OBSIDIAN) || isInterceptedByOther(pos) || InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) == -1;
     }
 
-    public static boolean isInterceptedByOther(final BlockPos pos) {
-        for (final Entity entity : mc.world.loadedEntityList) {
+    public static boolean isInterceptedByOther(BlockPos pos) {
+        for (Entity entity : mc.world.loadedEntityList) {
             if (entity.equals(mc.player))
                 continue;
 
@@ -69,8 +69,8 @@ public class BlockUtil implements MixinInterface {
     }
 
     public static boolean canBreak(BlockPos pos) {
-        final IBlockState blockState = mc.world.getBlockState(pos);
-        final Block block = blockState.getBlock();
+        IBlockState blockState = mc.world.getBlockState(pos);
+        Block block = blockState.getBlock();
         return block.getBlockHardness(blockState, mc.world, pos) != -1;
     }
 

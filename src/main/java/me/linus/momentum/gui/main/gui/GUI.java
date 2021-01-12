@@ -13,14 +13,14 @@ import java.io.IOException;
  */
 
 public class GUI extends GuiScreen {
-	
+
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		for (Window w : Window.windows) {
 			w.mouseWheelListen();
 			GlStateManager.enableTexture2D();
-			w.drawGui(mouseX, mouseY);
+			w.drawGui(mouseX, mouseY, partialTicks);
 		}
 
 		GUIUtil.mouseListen(mouseX, mouseY);
@@ -31,7 +31,7 @@ public class GUI extends GuiScreen {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		if (mouseButton == 0) {
 			for (Window w : Window.windows)
-				w.lclickListen();
+				w.lclickListen(mouseX, mouseY, mouseButton);
 
 			GUIUtil.lclickListen();
 		}
@@ -45,7 +45,7 @@ public class GUI extends GuiScreen {
 		super.mouseReleased(mouseX, mouseY, state);
 		if (state == 0) {
 			for (Window w : Window.windows)
-				w.releaseListen();
+				w.releaseListen(mouseX, mouseY, state);
 
 			GUIUtil.releaseListen();
 		}

@@ -84,7 +84,7 @@ public class Outline extends ESPMode {
 
         ESPUtil.renderThree();
         ESPUtil.renderFour();
-        ESPUtil.setColor(new Color((int) ESP.r.getValue() / 255.0f, (int) ESP.g.getValue() / 255.0f, (int) ESP.b.getValue() / 255.0f, 1.0f));
+        ESPUtil.setColor(ColorUtil.getEntityColor(entity));
 
         if (entity.shouldShowBottom())
             modelEnderCrystal.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);

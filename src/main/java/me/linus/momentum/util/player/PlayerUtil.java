@@ -27,6 +27,14 @@ public class PlayerUtil implements MixinInterface {
         return mc.player.getHealth() + mc.player.getAbsorptionAmount();
     }
 
+    public static boolean isEating() {
+        return InventoryUtil.getHeldItem(Items.GOLDEN_APPLE) && mc.player.isHandActive();
+    }
+
+    public static boolean isMining() {
+        return InventoryUtil.getHeldItem(Items.DIAMOND_PICKAXE) && mc.player.isHandActive();
+    }
+
     public static void attackEntity(Entity entity) {
         if (mc.player.getCooledAttackStrength(0) >= 1) {
             mc.playerController.attackEntity(mc.player, entity);
@@ -34,24 +42,14 @@ public class PlayerUtil implements MixinInterface {
         }
     }
 
-    public static int getArmorDurability() {
-        int totalDurability = 0;
-
-        for (ItemStack itemStack : mc.player.inventory.armorInventory)
-            totalDurability = totalDurability + itemStack.getItemDamage();
-
-        return totalDurability;
-    }
-
     public static boolean inPlayer(BlockPos pos) {
-        AxisAlignedBB axisAlignedBB = new AxisAlignedBB(pos);
-        return axisAlignedBB.intersects(mc.player.getEntityBoundingBox());
+        return new AxisAlignedBB(pos).intersects(mc.player.getEntityBoundingBox());
     }
 
     public static boolean isTrapped() {
         BlockPos playerPos = new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
 
-        final BlockPos[] trapPos = {
+        BlockPos[] trapPos = {
                 playerPos.down(),
                 playerPos.up().up(),
                 playerPos.north(),
@@ -72,19 +70,6 @@ public class PlayerUtil implements MixinInterface {
         }
 
         return true;
-    }
-
-    public static boolean getArmor(EntityPlayer target, double durability) {
-        for (ItemStack stack : target.getArmorInventoryList()) {
-            if (stack == null || stack.getItem() == Items.AIR)
-                return false;
-
-            final float armorDurability = ((float) (stack.getMaxDamage() - stack.getItemDamage()) / (float) stack.getMaxDamage()) * 100.0f;
-            if (durability >= armorDurability)
-                return true;
-        }
-
-        return false;
     }
 
     public static Vec3d getCenter(double posX, double posY, double posZ) {

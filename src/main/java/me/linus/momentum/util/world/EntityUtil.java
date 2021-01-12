@@ -1,6 +1,7 @@
 package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.friend.FriendManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -97,10 +98,6 @@ public class EntityUtil implements MixinInterface {
         return getInterpolatedAmount(entity, ticks, ticks, ticks);
     }
 
-    public static Vec3d getInterpolatedAmount(final Entity entity, final Vec3d vec) {
-        return getInterpolatedAmount(entity, vec.x, vec.y, vec.z);
-    }
-
     public static double calculateDistanceWithPartialTicks(final double originalPos, final double finalPos, final float renderPartialTicks) {
         return finalPos + (originalPos - finalPos) * mc.getRenderPartialTicks();
     }
@@ -110,9 +107,6 @@ public class EntityUtil implements MixinInterface {
     }
 
     public static double getDistance(double x, double y, double z, double finalX, double finalY, double finalZ) {
-        double interpolationX = x - finalX;
-        double interpolationY = y - finalY;
-        double interpolationZ = z - finalZ;
-        return MathHelper.sqrt(interpolationX * interpolationX + interpolationY * interpolationY + interpolationZ * interpolationZ);
+        return MathHelper.sqrt(MathUtil.square(x - finalX) + MathUtil.square(y - finalY) + MathUtil.square(z - finalZ));
     }
 }

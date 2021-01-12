@@ -5,11 +5,11 @@ import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.combat.autocrystal.AutoCrystalAlgorithm;
 import me.linus.momentum.module.modules.combat.autocrystal.algorithms.AStar;
-import me.linus.momentum.module.modules.combat.autocrystal.algorithms.BreadthFirst;
 import me.linus.momentum.module.modules.combat.autocrystal.algorithms.DepthFirst;
 import me.linus.momentum.module.modules.combat.autocrystal.algorithms.MiniMax;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
@@ -24,6 +24,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -53,7 +54,7 @@ public class AutoCrystal extends Module {
     public static SubMode breakHand = new SubMode(explode, "BreakHand", "MainHand", "OffHand", "Both", "MultiHand");
 
     public static Checkbox place = new Checkbox("Place", true);
-    public static SubMode algorithm = new SubMode(place, "Algorithm", "MiniMax", "Depth-First", "Breadth-First", "A*");
+    public static SubMode algorithm = new SubMode(place, "Algorithm", "MiniMax", "Depth-First", "A*");
     public static SubSlider placeRange = new SubSlider(place, "Place Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider enemyRange = new SubSlider(place, "Enemy Range", 0.0D, 5.0D, 15.0D, 1);
     public static SubSlider wallRange = new SubSlider(place, "Walls Range", 0.0D, 3.0D, 7.0D, 1);
@@ -78,9 +79,10 @@ public class AutoCrystal extends Module {
     public static SubMode pauseMode = new SubMode(pause, "Mode", "Place", "Break", "Both");
     public static SubSlider pauseHealth = new SubSlider(pause, "Pause Health", 0.0D, 7.0D, 36.0D, 0);
     public static SubCheckbox pastDistance = new SubCheckbox(pause, "Past Damage Distance", false);
+    public static SubCheckbox closePlacements = new SubCheckbox(pause, "CloseBreak", false);
+    public static SubCheckbox friendProtect = new SubCheckbox(pause, "Friend Protect", true);
     public static SubCheckbox whenMining = new SubCheckbox(pause, "When Mining", false);
     public static SubCheckbox whenEating = new SubCheckbox(pause, "When Eating", false);
-    public static SubCheckbox closePlacements = new SubCheckbox(pause, "Close Placements", false);
 
     public static Checkbox facePlace = new Checkbox("FacePlace", true);
     public static SubSlider facePlaceHealth = new SubSlider(facePlace, "FacePlace Health", 0.0D, 16.0D, 36.0D, 0);
@@ -100,10 +102,7 @@ public class AutoCrystal extends Module {
     public static SubMode blockCalc = new SubMode(logic, "Block Logic", "Normal", "1.13+");
 
     public static Checkbox renderCrystal = new Checkbox("Render", true);
-    public static SubSlider r = new SubSlider(renderCrystal, "Red", 0.0D, 250.0D, 255.0D, 0);
-    public static SubSlider g = new SubSlider(renderCrystal, "Green", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider b = new SubSlider(renderCrystal, "Blue", 0.0D, 250.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(renderCrystal, "Alpha", 0.0D, 50.0D, 255.0D, 0);
+    public static SubColor colorPicker = new SubColor(renderCrystal, new Color(250, 0, 250, 50));
     public static SubCheckbox renderDamage = new SubCheckbox(renderCrystal, "Render Damage", true);
     public static SubCheckbox outline = new SubCheckbox(renderCrystal, "Outline", false);
 
@@ -142,9 +141,6 @@ public class AutoCrystal extends Module {
                 algorithmMode = new DepthFirst();
                 break;
             case 2:
-                algorithmMode = new BreadthFirst();
-                break;
-            case 3:
                 algorithmMode = new AStar();
                 break;
         }

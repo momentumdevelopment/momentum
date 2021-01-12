@@ -16,6 +16,8 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.awt.*;
+
 /**
  * @author linustouchtips
  * @since 01/06/2021
@@ -62,7 +64,7 @@ public class WireFrame extends ESPMode {
         GL11.glEnable(2848);
         GL11.glEnable(3042);
         GL11.glBlendFunc(770, 771);
-        GL11.glColor4f((int) ESP.r.getValue() / 255.0f, (int) ESP.g.getValue() / 255.0f, (int) ESP.b.getValue() / 255.0f, (int) ESP.a.getValue() / 255.0f);
+        ESPUtil.setColor(ColorUtil.getEntityColor(entity));
         GL11.glLineWidth((float) ESP.lineWidth.getValue());
 
         if (entity.shouldShowBottom())

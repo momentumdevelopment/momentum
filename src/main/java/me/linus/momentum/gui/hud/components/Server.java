@@ -24,7 +24,7 @@ public class Server extends HUDComponent {
         else
             server = "SinglePlayer";
 
-        FontUtil.drawString(server, this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+        FontUtil.drawString(server, this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
 
         width = Momentum.fontManager.getCustomFont().getStringWidth(server) + 2;
     }

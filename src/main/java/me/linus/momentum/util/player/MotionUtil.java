@@ -1,6 +1,7 @@
 package me.linus.momentum.util.player;
 
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.world.Timer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
@@ -15,12 +16,9 @@ import java.text.DecimalFormat;
  */
 
 public class MotionUtil implements MixinInterface {
-    static DecimalFormat formatter = new DecimalFormat("#.#");
-    static float roundedForward = getRoundedMovementInput(mc.player.movementInput.moveForward);
-    static float roundedStrafing = getRoundedMovementInput(mc.player.movementInput.moveStrafe);
-    private static double prevPosX;
-    private static double prevPosZ;
-    private static Timer timer = new Timer();
+    static double prevPosX;
+    static double prevPosZ;
+    static Timer timer = new Timer();
 
     public static boolean isMoving() {
         return (mc.player.moveForward != 0.0D || mc.player.moveStrafing != 0.0D);
@@ -31,8 +29,8 @@ public class MotionUtil implements MixinInterface {
     }
 
     public static double calcMoveYaw(float yawIn) {
-        float moveForward = roundedForward;
-        float moveString = roundedStrafing;
+        float moveForward = getRoundedMovementInput(mc.player.movementInput.moveForward);
+        float moveString = getRoundedMovementInput(mc.player.movementInput.moveStrafe);
 
         float strafe = 90 * moveString;
         if (moveForward != 0f)
@@ -49,7 +47,7 @@ public class MotionUtil implements MixinInterface {
         return Math.toRadians(yaw);
     }
 
-    private static float getRoundedMovementInput(Float input) {
+    static float getRoundedMovementInput(Float input) {
         if (input > 0)
             input = 1f;
         else if (input < 0)
@@ -68,10 +66,9 @@ public class MotionUtil implements MixinInterface {
 
     public static double getBaseMoveSpeed() {
         double baseSpeed = 0.2873;
-        if (mc.player != null && mc.player.isPotionActive(Potion.getPotionById(1))) {
-            int amplifier = mc.player.getActivePotionEffect(Potion.getPotionById(1)).getAmplifier();
-            baseSpeed *= 1.0 + 0.2 * (amplifier + 1);
-        }
+
+        if (mc.player != null && mc.player.isPotionActive(Potion.getPotionById(1)))
+            baseSpeed *= 1.0 + 0.2 * (mc.player.getActivePotionEffect(Potion.getPotionById(1)).getAmplifier() + 1);
 
         return baseSpeed;
     }
@@ -112,25 +109,16 @@ public class MotionUtil implements MixinInterface {
             prevPosZ = mc.player.prevPosZ;
         }
 
-        double deltaX = mc.player.posX - prevPosX;
-        double deltaZ = mc.player.posZ - prevPosZ;
-
-        float distance = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
-
-        double KMH = Math.floor((distance / 1000.0f) / (0.05f / 3600.0f));
-
-        String formattedString = formatter.format(KMH);
+        String formattedString = new DecimalFormat("#.#").format(MathUtil.roundAvoid((MathHelper.sqrt(MathUtil.square(mc.player.posX - prevPosX) + MathUtil.square(mc.player.posZ - prevPosZ)) / 1000.0f) / (0.05f / 3600.0f), 1));
 
         if (!formattedString.contains("."))
             formattedString += ".0";
 
-        String bps = " " + formattedString + TextFormatting.GRAY + "km/h";
-
-        return bps;
+        return " " + formattedString + TextFormatting.GRAY + "km/h";
     }
 
     public String format(double input) {
-        String result = formatter.format(input);
+        String result = new DecimalFormat("#.#").format(input);
 
         if (!result.contains("."))
             result += ".0";

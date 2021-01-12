@@ -3,9 +3,12 @@ package me.linus.momentum.util.client;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.client.Colors;
+import me.linus.momentum.module.modules.render.ESP;
+import me.linus.momentum.module.modules.render.StorageESP;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
@@ -29,7 +32,7 @@ public abstract class ColorUtil implements MixinInterface {
 		int red = rgb >> 16 & 255;
 		int green = rgb >> 8 & 255;
 		int blue = rgb & 255;
-		int color = toRGBA(red, green, blue, (int) Colors.a.getValue());
+		int color = toRGBA(red, green, blue, (int) Colors.clientPicker.getAlpha());
 		return color;
 	}
 
@@ -59,14 +62,6 @@ public abstract class ColorUtil implements MixinInterface {
 		return (r << 16) + (g << 8) + (b << 0) + (a << 24);
 	}
 
-	public static void hexColor(int hexColor) {
-		float red = (hexColor >> 16 & 0xFF) / 255.0F;
-		float green = (hexColor >> 8 & 0xFF) / 255.0F;
-		float blue = (hexColor & 0xFF) / 255.0F;
-		float alpha = (hexColor >> 24 & 0xFF) / 255.0F;
-		GL11.glColor4f(red, green, blue, alpha);
-	}
-
 	/**
 	 * color by variable
 	 */
@@ -92,13 +87,17 @@ public abstract class ColorUtil implements MixinInterface {
 
 	public static Color getEntityColor(Entity e) {
 		if (EntityUtil.isPassive(e))
-			return new Color(0, 200, 0);
+			return ESP.animalPicker.getColor();
 		if (EntityUtil.isHostileMob(e))
-			return new Color(131, 19, 199);
+			return ESP.mobsPicker.getColor();
 		if (FriendManager.isFriend(e.getName()))
 			return new Color(85, 231, 215);
+		if (EntityUtil.isVehicle(e))
+			return ESP.vehiclePicker.getColor();
+		if (e instanceof EntityEnderCrystal)
+			return ESP.crystalPicker.getColor();
 		else
-			return new Color(215, 46, 46);
+			return ESP.playerPicker.getColor();
 	}
 
 	public static Color getHealthColor(float health) {
@@ -113,24 +112,23 @@ public abstract class ColorUtil implements MixinInterface {
 		else
 			return new Color(44, 186, 19);
 	}
-
-	public static Color getStorageColor(TileEntity tileEntity, int alpha) {
+	public static Color getStorageColor(TileEntity tileEntity) {
 		if (tileEntity instanceof TileEntityChest)
-			return new Color(0, 207, 244, alpha);
+			return StorageESP.chestPicker.getColor();
 		else if (tileEntity instanceof TileEntityEnderChest)
-			return new Color(150, 0, 244, alpha);
+			return StorageESP.enderPicker.getColor();
 		else if (tileEntity instanceof TileEntityHopper)
-			return new Color(217, 132, 71, alpha);
+			return StorageESP.hopperPicker.getColor();
 		else if (tileEntity instanceof TileEntityDropper)
-			return new Color(102, 102, 102, alpha);
+			return StorageESP.dropperPicker.getColor();
 		else if (tileEntity instanceof TileEntityFurnace)
-			return new Color(102, 102, 102, alpha);
+			return StorageESP.furnacePicker.getColor();
 		else if (tileEntity instanceof TileEntityBed)
-			return new Color(215, 37, 37, alpha);
+			return StorageESP.bedPicker.getColor();
 		else if (tileEntity instanceof TileEntityShulkerBox)
-			return new Color(195, 73, 227, alpha);
+			return StorageESP.shulkerPicker.getColor();
 		else
-			return new Color(255, 255, 255, alpha);
+			return new Color(255, 255, 255, 255);
 	}
 
 	public static TextFormatting getHealthText(float health) {

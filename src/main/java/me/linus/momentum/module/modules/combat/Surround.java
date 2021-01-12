@@ -2,6 +2,7 @@ package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
@@ -46,10 +47,7 @@ public class Surround extends Module {
     private static final Checkbox chorusSave = new Checkbox("Chorus Save", false);
 
     public static Checkbox renderSurround = new Checkbox("Render", true);
-    public static SubSlider r = new SubSlider(renderSurround, "Red", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider g = new SubSlider(renderSurround, "Green", 0.0D, 255.0D, 255.0D, 0);
-    public static SubSlider b = new SubSlider(renderSurround, "Blue", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(renderSurround, "Alpha", 0.0D, 40.0D, 255.0D, 0);
+    public static SubColor colorPicker = new SubColor(renderSurround, new Color(255, 0, 0, 55));
 
     @Override
     public void setup() {
@@ -157,24 +155,24 @@ public class Surround extends Module {
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (renderSurround.getValue()) {
             if (northBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(northBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(northBlockPos, 0, colorPicker.getColor());
             else if (northBlockPos != null)
-                RenderUtil.drawBoxBlockPos(northBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(northBlockPos, 0, new Color(255, 0, 0, colorPicker.getColor().getAlpha()));
 
             if (westBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(westBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(westBlockPos, 0, colorPicker.getColor());
             else if (westBlockPos != null)
-                RenderUtil.drawBoxBlockPos(westBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(westBlockPos, 0, new Color(255, 0, 0, colorPicker.getColor().getAlpha()));
 
             if (southBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(southBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(southBlockPos, 0, colorPicker.getColor());
             else if (southBlockPos != null)
-                RenderUtil.drawBoxBlockPos(southBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(southBlockPos, 0, new Color(255, 0, 0, colorPicker.getAlpha()));
 
             if (eastBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(eastBlockPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(eastBlockPos, 0, colorPicker.getColor());
             else if (eastBlockPos != null)
-                RenderUtil.drawBoxBlockPos(eastBlockPos, 0, new Color(255, 0, 0, (int) a.getValue()));
+                RenderUtil.drawBoxBlockPos(eastBlockPos, 0, new Color(255, 0, 0, colorPicker.getColor().getAlpha()));
         }
     }
 

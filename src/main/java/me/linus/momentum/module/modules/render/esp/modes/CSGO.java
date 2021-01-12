@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.render.esp.modes;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.util.client.ColorUtil;
+import me.linus.momentum.util.render.ESPUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
@@ -14,6 +15,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.awt.*;
 
 /**
  * @author linustouchtips
@@ -36,7 +39,7 @@ public class CSGO extends ESPMode {
             GL11.glDisable(2929);
             GL11.glDepthMask(false);
             GL11.glEnable(10754);
-            GL11.glColor4f(ColorUtil.getEntityColor(entitylivingbaseIn).getRed() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getGreen() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getBlue() / 255.0f, (int) ESP.a.getValue() / 255.0f);
+            GL11.glColor4f(ColorUtil.getEntityColor(entitylivingbaseIn).getRed() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getGreen() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getBlue() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getBlue() / 255.0f);
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             GL11.glEnable(2929);
             GL11.glDepthMask(true);
@@ -69,7 +72,7 @@ public class CSGO extends ESPMode {
         GL11.glEnable(2848);
         GL11.glEnable(3042);
         GL11.glBlendFunc(770, 771);
-        GL11.glColor4f((int) ESP.r.getValue() / 255.0f, (int) ESP.g.getValue() / 255.0f, (int) ESP.b.getValue() / 255.0f, (int) ESP.a.getValue() / 255.0f);
+        ESPUtil.setColor(ColorUtil.getEntityColor(entity));
 
         if (entity.shouldShowBottom())
             modelEnderCrystal.render(entity, 0.0f, rotation * 3.0f, rotationMoved * 0.2f, 0.0f, 0.0f, 0.0625f);

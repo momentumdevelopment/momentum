@@ -3,6 +3,8 @@ package me.linus.momentum.gui.theme;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.util.client.ColorUtil;
 
+import java.awt.*;
+
 /**
  * @author bon & linustouchtips
  * @since 12/17/20
@@ -20,7 +22,7 @@ public class ThemeColor {
 		GRAY = ColorUtil.toRGBA(112, 112, 112, 255);
 		BLACK = ColorUtil.toRGBA(0, 0, 0, 70);
 		DARKBLACK = ColorUtil.toRGBA(0, 0, 0, 120);
-		BRIGHT = ColorUtil.toRGBA((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), 255);
+		BRIGHT = ColorUtil.toRGBA(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getGreen(), Colors.clientPicker.getColor().getBlue(), 255);
 
 		if (Colors.rainbow.getValue()) {
 			if (Colors.gradient.getValue())
@@ -33,6 +35,6 @@ public class ThemeColor {
 		}
 
 		else if (!Colors.rainbow.getValue())
-			COLOR = ColorUtil.toRGBA((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), (int) Colors.a.getValue());
+			COLOR = ColorUtil.toRGBA(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getGreen(), Colors.clientPicker.getColor().getBlue(), Colors.clientPicker.getColor().getAlpha());
 	}
 }

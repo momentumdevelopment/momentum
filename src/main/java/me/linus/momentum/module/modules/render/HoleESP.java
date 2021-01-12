@@ -2,24 +2,14 @@ package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.combat.CrystalUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtil;
-import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.world.HoleUtil;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
@@ -38,23 +28,17 @@ public class HoleESP extends Module {
         super("HoleESP", Category.RENDER, "Highlights safe holes to stand in while crystalling");
     }
 
-    private static final Mode main = new Mode("Main", "Fill", "Glow", "None");
-    private static final SubSlider mainHeight = new SubSlider(main, "Height", -1.0D, 0.1D, 2.0D, 1);
+    public static final Mode main = new Mode("Main", "Fill", "Glow", "None");
+    public static final SubSlider mainHeight = new SubSlider(main, "Height", -1.0D, 0.1D, 2.0D, 1);
 
-    private static final Mode outline = new Mode("Outline", "WireFrame", "None");
-    private static final SubSlider outlineHeight = new SubSlider(outline, "Height", -1.0D, 0.1D, 2.0D, 1);
+    public static final Mode outline = new Mode("Outline", "WireFrame", "None");
+    public static final SubSlider outlineHeight = new SubSlider(outline, "Height", -1.0D, 0.1D, 2.0D, 1);
 
     public static Checkbox obsidianColor = new Checkbox("Obsidian Color", true);
-    public static SubSlider obbyRed = new SubSlider(obsidianColor, "Red", 0.0D, 93.0D, 255.0D, 0);
-    public static SubSlider obbyGreen = new SubSlider(obsidianColor, "Green", 0.0D, 235.0D, 255.0D, 0);
-    public static SubSlider obbyBlue = new SubSlider(obsidianColor, "Blue", 0.0D, 240.0D, 255.0D, 0);
-    public static SubSlider obbyAlpha = new SubSlider(obsidianColor, "Alpha", 0.0D, 45.0D, 255.0D, 0);
+    public static SubColor obsidianPicker = new SubColor(obsidianColor, new Color(93, 235, 240, 45));
 
     public static Checkbox bedrockColor = new Checkbox("Bedrock Color", true);
-    public static SubSlider bRockRed = new SubSlider(bedrockColor, "Red", 0.0D, 144.0D, 255.0D, 0);
-    public static SubSlider bRockGreen = new SubSlider(bedrockColor, "Green", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider bRockBlue = new SubSlider(bedrockColor, "Blue", 0.0D, 255.0D, 255.0D, 0);
-    public static SubSlider bRockAlpha = new SubSlider(bedrockColor, "Alpha", 0.0D, 45.0D, 255.0D, 0);
+    public static SubColor bedrockPicker = new SubColor(bedrockColor, new Color(144, 0, 255, 45));
 
     public static Checkbox doubles = new Checkbox("Doubles", true);
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 1.5D, 3.0D, 2);
@@ -75,8 +59,8 @@ public class HoleESP extends Module {
     
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent renderEvent) {
-        renderMain(new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), (int) obbyAlpha.getValue()), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), (int) bRockAlpha.getValue()));
-        renderOutline(new Color((int) obbyRed.getValue(), (int) obbyGreen.getValue(), (int) obbyBlue.getValue(), (int) lineAlpha.getValue()), new Color((int) bRockRed.getValue(), (int) bRockGreen.getValue(), (int) bRockBlue.getValue(), (int) lineAlpha.getValue()));
+        renderMain(obsidianPicker.getColor(), bedrockPicker.getColor());
+        renderOutline(obsidianPicker.getColor(), bedrockPicker.getColor());
     }
 
     public void renderMain(Color obbyColor, Color bRockColor) {
@@ -123,12 +107,12 @@ public class HoleESP extends Module {
         });
     }
 
-    private List<BlockPos> findObsidianHoles() {
-        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.IsObbyHole(blockPos)).collect(Collectors.toList());
+    List<BlockPos> findObsidianHoles() {
+        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.IsObsidianHole(blockPos)).collect(Collectors.toList());
     }
 
-    private List<BlockPos> findBedRockHoles() {
-        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.IsBRockHole(blockPos)).collect(Collectors.toList());
+    List<BlockPos> findBedRockHoles() {
+        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.IsBedRockHole(blockPos)).collect(Collectors.toList());
     }
 
     @Override

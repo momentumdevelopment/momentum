@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.hud.HUD;
 import me.linus.momentum.gui.theme.ThemeColor;
@@ -36,7 +35,7 @@ public class Notifications extends HUDComponent {
     public void renderComponent() {
         if (mc.currentScreen instanceof HUD) {
             if (NotificationManager.notifications.isEmpty()) {
-                width = Momentum.fontManager.getCustomFont().getStringWidth("This is an example notification!");
+                width = (int) FontUtil.getStringWidth("This is an example notification!");
                 height = mc.fontRenderer.FONT_HEIGHT;
 
                 GuiScreen.drawRect(this.x - 22, this.y - 5, (int) (this.x + FontUtil.getStringWidth("This is an example notification!") + 3), this.y + mc.fontRenderer.FONT_HEIGHT + 5, new Color(0, 0, 0, 70).getRGB());
@@ -50,7 +49,7 @@ public class Notifications extends HUDComponent {
                 GlStateManager.disableAlpha();
                 GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
 
-                FontUtil.drawString("This is an example notification!", this.x, this.y - 1, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+                FontUtil.drawString("This is an example notification!", this.x, this.y - 1, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
                 return;
             }
         }
@@ -90,7 +89,7 @@ public class Notifications extends HUDComponent {
             GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
             GlStateManager.popMatrix();
 
-            FontUtil.drawString(continuedNotification.getMessage(), this.x + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+            FontUtil.drawString(continuedNotification.getMessage(), this.x + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
 
             currY -= 13;
 

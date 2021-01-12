@@ -5,7 +5,9 @@ import me.linus.momentum.module.modules.combat.AutoCrystal;
 import me.linus.momentum.module.modules.combat.autocrystal.AutoCrystalAlgorithm;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.Pair;
+import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.CrystalUtil;
+import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.player.rotation.RotationUtil;
@@ -46,6 +48,13 @@ public class AStar extends AutoCrystalAlgorithm {
         if (this.crystal != null && breakTimer.passed((long) AutoCrystal.breakDelay.getValue(), Timer.Format.System) && mc.player.getDistance(crystal) <= AutoCrystal.breakRange.getValue()) {
             if (AutoCrystal.pause.getValue() && PlayerUtil.getHealth() <= AutoCrystal.pauseHealth.getValue() && (AutoCrystal.pauseMode.getValue() == 1 || AutoCrystal.pauseMode.getValue() == 2))
                 return;
+
+            if (PlayerUtil.isEating() && AutoCrystal.whenEating.getValue() || PlayerUtil.isMining() && AutoCrystal.whenMining.getValue())
+                return;
+
+            for (EntityPlayer friend : WorldUtil.getNearbyPlayers(AutoCrystal.breakRange.getValue()))
+                if (FriendManager.isFriend(friend.getName()) && FriendManager.isFriendModuleEnabled() && CrystalUtil.getDamage(new Vec3d(crystal.posX, crystal.posY, crystal.posZ), friend) > EnemyUtil.getHealth(friend) && AutoCrystal.friendProtect.getValue())
+                    return;
 
             if (AutoCrystal.closePlacements.getValue() && mc.player.getDistance(this.crystal) < 1.5)
                 return;
@@ -138,19 +147,16 @@ public class AStar extends AutoCrystalAlgorithm {
     }
 
     public double getHeuristic(double damage, BlockPos blockPos) {
-        if (currentTarget != null)
-            return damage - currentTarget.getDistanceSq(blockPos);
-        else
-            return damage;
+        return (currentTarget != null) ? damage - currentTarget.getDistanceSq(blockPos) : damage;
     }
 
     @Override
     public void renderPlacement() {
         if (AutoCrystal.renderCrystal.getValue() && this.placePos != null) {
-            RenderUtil.drawBoxBlockPos(this.placePos, 0, new Color((int) AutoCrystal.r.getValue(), (int) AutoCrystal.g.getValue(), (int) AutoCrystal.b.getValue(), (int) AutoCrystal.a.getValue()));
+            RenderUtil.drawBoxBlockPos(this.placePos, 0, AutoCrystal.colorPicker.getColor());
 
             if (AutoCrystal.outline.getValue())
-                RenderUtil.drawBoundingBoxBlockPos(this.placePos, 0, new Color((int) AutoCrystal.r.getValue(), (int) AutoCrystal.g.getValue(), (int) AutoCrystal.b.getValue(), 144));
+                RenderUtil.drawBoundingBoxBlockPos(this.placePos, 0, new Color(AutoCrystal.colorPicker.getColor().getRed(), AutoCrystal.colorPicker.getColor().getGreen(), AutoCrystal.colorPicker.getColor().getBlue(), 144));
 
             if (AutoCrystal.renderDamage.getValue())
                 RenderUtil.drawNametagFromBlockPos(placePos, String.valueOf(MathUtil.roundAvoid(placeDamage, 1)));

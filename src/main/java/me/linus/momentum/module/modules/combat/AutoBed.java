@@ -4,6 +4,7 @@ import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MessageUtil;
@@ -71,10 +72,7 @@ public class AutoBed extends Module {
     public static SubMode logicMode = new SubMode(logic, "Logic", "Break -> Place", "Place -> Break");
 
     public static Checkbox renderBed = new Checkbox("Render", true);
-    public static SubSlider r = new SubSlider(renderBed, "Red", 0.0D, 250.0D, 255.0D, 0);
-    public static SubSlider g = new SubSlider(renderBed, "Green", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider b = new SubSlider(renderBed, "Blue", 0.0D, 250.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(renderBed, "Alpha", 0.0D, 50.0D, 255.0D, 0);
+    public static SubColor colorPicker = new SubColor(renderBed, new Color(255, 0, 0, 55));
 
     @Override
     public void setup() {
@@ -210,8 +208,8 @@ public class AutoBed extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (currentBlock != null && currentTarget != null && renderBed.getValue()) {
-            RenderUtil.drawBoundingBoxBlockPos(currentBlock, -0.5, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
-            RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x + 1, currentBlock.y, currentBlock.z), -0.5, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+            RenderUtil.drawBoundingBoxBlockPos(currentBlock, -0.5, colorPicker.getColor());
+            RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x + 1, currentBlock.y, currentBlock.z), -0.5, colorPicker.getColor());
         }
     }
 

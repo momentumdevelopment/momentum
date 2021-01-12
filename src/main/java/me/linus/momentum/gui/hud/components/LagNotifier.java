@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.hud.HUD;
@@ -40,15 +39,15 @@ public class LagNotifier extends HUDComponent {
         float seconds = ((System.currentTimeMillis() - lagTimer.time) / 1000.0f) % 60.0f;
 
         if (mc.currentScreen instanceof HUD)
-            FontUtil.drawString("Server has stopped responding for X seconds!", this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+            FontUtil.drawString("Server has stopped responding for X seconds!", this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
 
         if (seconds < threshHold.getValue())
             return;
 
         if (!(mc.currentScreen instanceof HUD))
-            FontUtil.drawString("Server has stopped responding for " + new DecimalFormat("#.#").format(seconds) + " seconds!", this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+            FontUtil.drawString("Server has stopped responding for " + new DecimalFormat("#.#").format(seconds) + " seconds!", this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
 
-        width = Momentum.fontManager.getCustomFont().getStringWidth("Server has stopped responding for X.X seconds!");
+        width = (int) FontUtil.getStringWidth("Server has stopped responding for X seconds!");
     }
 
     @SubscribeEvent

@@ -59,7 +59,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 	}
 
 	@Override
-	public void drawModules(List<Module> modules, int x, int y) {
+	public void drawModules(List<Module> modules, int x, int y, int mouseX, int mouseY, float partialTicks) {
 		boost = 0;
 		for(Module m : modules) {
 			if (GUIUtil.mouseOver(x, y + height + 1 + (boost * height), (x + width) - 1, y + height*2 + (boost * height))) {

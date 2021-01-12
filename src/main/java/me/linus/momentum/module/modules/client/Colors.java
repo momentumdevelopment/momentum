@@ -3,8 +3,11 @@ package me.linus.momentum.module.modules.client;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
+
+import java.awt.*;
 
 /**
  * @author bon & linustouchtips
@@ -23,19 +26,14 @@ public class Colors extends Module {
 	public static SubSlider brightness = new SubSlider(rainbow, "Brightness", 0.0D, 0.8D, 1.0D, 2);
 	public static SubSlider difference = new SubSlider(rainbow, "Difference", 1.0D, 30.0D, 100.0D, 0);
 	public static SubSlider speed = new SubSlider(rainbow, "Speed", 1.0D, 30.0D, 100.0D, 0);
-	
-	public static Slider r = new Slider("Red", 0.0D, 220.0D, 255.0D, 0);
-	public static Slider g = new Slider("Green", 0.0D, 20.0D, 255.0D, 0);
-	public static Slider b = new Slider("Blue", 0.0D, 220.0D, 255.0D, 0);
-	public static Slider a = new Slider("Alpha", 0.0D, 130.0D, 255.0D, 0);
-	
+
+	public static Checkbox clientColor = new Checkbox("Color", true);
+	public static SubColor clientPicker = new SubColor(clientColor, new Color(220, 20, 220, 130));
+
 	@Override
 	public void setup() {
 		addSetting(rainbow);
-		addSetting(r);
-		addSetting(g);
-		addSetting(b);
-		addSetting(a);
+		addSetting(clientColor);
 	}
 
 	@Override

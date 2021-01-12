@@ -5,6 +5,7 @@ import me.linus.momentum.gui.theme.themes.DarkTheme;
 import me.linus.momentum.gui.theme.themes.DefaultTheme;
 import me.linus.momentum.module.Module;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +16,9 @@ import java.util.List;
 
 public abstract class Theme {
 	
-	private final String name;
-	private final int width;
-	private final int height;
+	String name;
+	int width;
+	int height;
 	
 	public Theme(String name, int width, int height) {
 		this.name = name;
@@ -26,12 +27,11 @@ public abstract class Theme {
 	}
 	
 	public static final List<Theme> themes = new ArrayList<>();
-	
 	public abstract void updateColors();
 
 	public abstract void drawTitles(String name, int left, int top);
 
-	public abstract void drawModules(List<Module> modules, int left, int top);
+	public abstract void drawModules(List<Module> modules, int left, int top, int mouseX, int mouseY, float partialTicks);
 
 	public abstract void drawHUDModules(List<HUDComponent> modules, int left, int top);
 	

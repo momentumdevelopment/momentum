@@ -7,6 +7,8 @@ import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 
+import java.awt.*;
+
 /**
  * @author linustouchtips
  * @since 01/03/2021
@@ -15,20 +17,12 @@ import me.linus.momentum.setting.slider.Slider;
 public class SubColor extends SubSetting {
 
     private Setting parent;
-    private String name;
-    private double red;
-    private double green;
-    private double blue;
-    private int alpha;
+    private Color color;
     private boolean opened;
 
-    public SubColor(Setting parent, String name, double red, double green, double blue, int alpha) {
-        this.name = name;
+    public SubColor(Setting parent, Color color) {
         this.parent = parent;
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
-        this.alpha = alpha;
+        this.color = color;
         this.opened = false;
 
         if (parent instanceof Checkbox) {
@@ -56,31 +50,28 @@ public class SubColor extends SubSetting {
         return this.parent;
     }
 
-    public String getName() {
-        return this.name;
+    public Color getColor() {
+        return this.color;
     }
 
-    public double getRed() {
-        return this.red;
+    public int getRed() {
+        return this.color.getRed();
     }
 
-    public double getGreen() {
-        return this.green;
+    public int getGreen() {
+        return this.color.getRed();
     }
 
-    public double getBlue() {
-        return this.blue;
+    public int getBlue() {
+        return this.color.getRed();
     }
 
     public int getAlpha() {
-        return this.alpha;
+        return this.color.getAlpha();
     }
 
-    public void setColor(int red, int green, int blue, int alpha) {
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
-        this.alpha = alpha;
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public void toggleState() {

@@ -7,6 +7,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.client.notification.Notification;
 import me.linus.momentum.util.client.notification.NotificationManager;
@@ -53,7 +54,7 @@ public class Notifier extends Module {
         if (nullCheck())
             return;
 
-        if (armor.getValue() && PlayerUtil.getArmor(mc.player, 15)) {
+        if (armor.getValue() && EnemyUtil.getArmor(mc.player) < 15) {
             if (armorTimer.passed((long) armorDelay.getValue(), Timer.Format.System)) {
                 armorTimer.reset();
 

@@ -2,8 +2,8 @@ package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.init.Blocks;
@@ -29,10 +29,7 @@ public class BurrowESP extends Module {
     public static Checkbox outline = new Checkbox("Outline", false);
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static SubSlider r = new SubSlider(color, "Red", 0.0D, 255.0D, 255.0D, 0);
-    public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 30.0D, 255.0D, 0);
+    public static SubColor colorPicker = new SubColor(color, new Color(255, 0, 0, 55));
 
     @Override
     public void setup() {
@@ -56,10 +53,10 @@ public class BurrowESP extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         for (BlockPos burrowPos : burrowList) {
-            RenderUtil.drawBoxBlockPos(burrowPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), (int) a.getValue()));
+            RenderUtil.drawBoxBlockPos(burrowPos, 0, colorPicker.getColor());
 
             if (outline.getValue())
-                RenderUtil.drawBoundingBoxBlockPos(burrowPos, 0, new Color((int) r.getValue(), (int) g.getValue(), (int) b.getValue(), 144));
+                RenderUtil.drawBoundingBoxBlockPos(burrowPos, 0, new Color(colorPicker.getColor().getRed(), colorPicker.getColor().getGreen(), colorPicker.getColor().getBlue(), 144));
         }
     }
 }

@@ -61,7 +61,7 @@ public class ItemPreview extends Module {
                 int width = (int) Math.max(144, FontUtil.getStringWidth(itemStack.getDisplayName())+3);
 
                 mc.getRenderItem().zLevel = 300.0F;
-                GuiScreen.drawRect(x1 - 4, y1 - 9, x1 + width + 1, y1 + 5, new Color((int) Colors.r.getValue(), (int) Colors.g.getValue(), (int) Colors.b.getValue(), 164).getRGB());
+                GuiScreen.drawRect(x1 - 4, y1 - 9, x1 + width + 1, y1 + 5, new Color((int) Colors.clientPicker.getRed(), (int) Colors.clientPicker.getGreen(), (int) Colors.clientPicker.getBlue(), 164).getRGB());
                 GuiScreen.drawRect(x1 - 4, y1 + 5, x1 + width + 1, y1 + height + 3, new Color(0, 0, 0, 144).getRGB());
                 Momentum.fontManager.getCustomFont().drawStringWithShadow(itemStack.getDisplayName(), x1 - 2, y1 - 8, new Color(255, 255, 255).getRGB());
 

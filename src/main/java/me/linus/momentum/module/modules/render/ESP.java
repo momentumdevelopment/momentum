@@ -4,13 +4,14 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.module.modules.render.esp.modes.*;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.setting.slider.SubSlider;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.awt.*;
 
 /**
  * @author linustouchtips
@@ -24,25 +25,33 @@ public class ESP extends Module {
     }
 
     public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "Wire-Frame", "CS:GO", "Normal", "Textured", "Box");
-    public static SubCheckbox players = new SubCheckbox(mode, "Players", true);
-    public static SubCheckbox animals = new SubCheckbox(mode, "Animals", true);
-    public static SubCheckbox mobs = new SubCheckbox(mode, "Mobs", true);
-    public static SubCheckbox vehicles = new SubCheckbox(mode, "Vehicles", true);
-    public static SubCheckbox crystals = new SubCheckbox(mode, "Crystals", true);
+
+    public static Checkbox players = new Checkbox("Players", true);
+    public static SubColor playerPicker = new SubColor(players, new Color(215, 46, 46));
+
+    public static Checkbox animals = new Checkbox("Animals", true);
+    public static SubColor animalPicker = new SubColor(animals, new Color(0, 200, 0));
+
+    public static Checkbox mobs = new Checkbox("Mobs", true);
+    public static SubColor mobsPicker = new SubColor(mobs, new Color(131, 19, 199));
+
+    public static Checkbox vehicles = new Checkbox("Vehicles", true);
+    public static SubColor vehiclePicker = new SubColor(vehicles, new Color(199, 103, 19));
+
+    public static Checkbox crystals = new Checkbox("Crystals", true);
+    public static SubColor crystalPicker = new SubColor(crystals, new Color(199, 19, 139));
 
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 2.5D, 5.0D, 1);
-
-    public static Checkbox color = new Checkbox("Color", true);
-    public static SubSlider r = new SubSlider(color, "Red", 0.0D, 255.0D, 255.0D, 0);
-    public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider a = new SubSlider(color, "Alpha", 0.0D, 144.0D, 255.0D, 0);
 
     @Override
     public void setup() {
         addSetting(mode);
+        addSetting(players);
+        addSetting(animals);
+        addSetting(mobs);
+        addSetting(vehicles);
+        addSetting(crystals);
         addSetting(lineWidth);
-        addSetting(color);
     }
 
     public static ESPMode espMode;
@@ -92,7 +101,14 @@ public class ESP extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        espMode.drawESP();
+        if (nullCheck())
+            return;
+
+        try {
+            espMode.drawESP();
+        } catch (Exception e) {
+
+        }
 
         for (Entity entity : mc.world.loadedEntityList) {
             if (entity.isGlowing() && !(mode.getValue() == 1))

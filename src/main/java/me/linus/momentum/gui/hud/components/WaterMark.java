@@ -33,7 +33,7 @@ public class WaterMark extends HUDComponent {
 		FontUtil.drawString("Momentum " + TextFormatting.WHITE + Momentum.VERSION, this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
 		GlStateManager.popMatrix();
 
-		width = (int) (scale.getValue() * Momentum.fontManager.getCustomFont().getStringWidth("Momentum " + TextFormatting.WHITE + Momentum.VERSION) + 2);
+		width = (int) (scale.getValue() * FontUtil.getStringWidth("Momentum " + TextFormatting.WHITE + Momentum.VERSION) + 2);
 		height = (int) (scale.getValue() * (mc.fontRenderer.FONT_HEIGHT + 3));
 	}
 }

@@ -5,6 +5,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.init.Items;
@@ -42,7 +43,7 @@ public class QuickEXP extends Module {
         if (nullCheck())
             return;
 
-        if (stopEXP.getValue() && 0 < PlayerUtil.getArmorDurability())
+        if (stopEXP.getValue() && EnemyUtil.getArmor(mc.player) == 100)
             return;
 
         if (InventoryUtil.getHeldItem(Items.EXPERIENCE_BOTTLE))

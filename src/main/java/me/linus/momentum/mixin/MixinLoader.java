@@ -14,9 +14,9 @@ import java.util.Map;
  */
 
 @IFMLLoadingPlugin.MCVersion(ForgeVersion.mcVersion)
-public class MixinLoader implements IFMLLoadingPlugin
-{
-	@SuppressWarnings("unused")
+public class MixinLoader implements IFMLLoadingPlugin {
+
+    @SuppressWarnings("unused")
 	private static boolean isObfuscatedEnvironment = false;
 	
     public MixinLoader() {

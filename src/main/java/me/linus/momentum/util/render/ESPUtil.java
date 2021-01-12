@@ -81,6 +81,9 @@ public class ESPUtil implements MixinInterface {
     }
 
     public static void drawGlow(Entity entity, String teamName, TextFormatting color) {
+        if (mc.player == null || mc.world == null)
+            return;
+
         Team team = mc.world.getScoreboard().getTeamNames().contains(teamName) ? mc.world.getScoreboard().getTeam(teamName) : mc.world.getScoreboard().createTeam(teamName);
         mc.world.getScoreboard().addPlayerToTeam("entity", team.getName());
         mc.world.getScoreboard().getTeam(team.getName()).setColor(color);

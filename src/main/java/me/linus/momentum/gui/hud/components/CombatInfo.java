@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
@@ -27,7 +26,7 @@ public class CombatInfo extends HUDComponent {
         FontUtil.drawString("AT:" + getEnabled(ModuleManager.getModuleByName("AutoTrap")), this.x, this.y + 33, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
         FontUtil.drawString("SP:" + getEnabled(ModuleManager.getModuleByName("Speed")), this.x, this.y + 44, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
 
-        width = Momentum.fontManager.getCustomFont().getStringWidth("AC: OFF") + 2;
+        width = (int) (FontUtil.getStringWidth("AC: OFF") + 2);
         height = 56;
     }
 

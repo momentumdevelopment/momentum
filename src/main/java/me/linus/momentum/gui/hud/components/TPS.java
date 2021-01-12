@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.HUDEditor;
@@ -21,6 +20,6 @@ public class TPS extends HUDComponent {
     @Override
     public void renderComponent() {
         FontUtil.drawString("TPS " + TextFormatting.WHITE + TickUtil.TPS, this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
-        width = Momentum.fontManager.getCustomFont().getStringWidth(TickUtil.TPS + " TPS") + 2;
+        width = (int) (FontUtil.getStringWidth(TickUtil.TPS + " TPS") + 2);
     }
 }
