@@ -1,6 +1,8 @@
 package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
+import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.color.SubColor;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
@@ -15,6 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Cylinder;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +29,14 @@ import java.util.List;
 public class Trajectories extends Module {
     public Trajectories() {
         super("Trajectories", Category.RENDER, "Shows the flight path of throwable objects");
+    }
+
+    public static Checkbox color = new Checkbox("Color", true);
+    public static SubColor colorPicker = new SubColor(color, new Color(0, 255, 255, 255));
+    
+    @Override
+    public void setup() {
+        addSetting(color);
     }
 
     @SubscribeEvent
@@ -81,9 +92,9 @@ public class Trajectories extends Module {
         GL11.glLineWidth(2);
 
         if (power > 0.6f)
-            GlStateManager.color(0.0f, 1.0f, 1.0f, 1.0f);
+            GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255, colorPicker.getColor().getBlue() / 255, colorPicker.getColor().getAlpha() / 255);
         else
-            GlStateManager.color(0.0f, 1.0f, 1.0f, 1.0f);
+            GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255, colorPicker.getColor().getBlue() / 255, colorPicker.getColor().getAlpha() / 255);
 
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         float size = (float) ((item instanceof ItemBow) ? 0.3 : 0.25);
@@ -119,7 +130,7 @@ public class Trajectories extends Module {
             }
 
             if (landingOnEntity != null)
-                GlStateManager.color(0.0f, 1.0f, 1.0f, 1.0f);
+                GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255, colorPicker.getColor().getBlue() / 255, colorPicker.getColor().getAlpha() / 255);
 
             posX += motionX;
             posY += motionY;
@@ -150,11 +161,11 @@ public class Trajectories extends Module {
             c.setDrawStyle(100011);
 
             if (landingOnEntity != null) {
-                GlStateManager.color(0.0f, 1.0f, 1.0f, 1.0f);
+                GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255, colorPicker.getColor().getBlue() / 255, colorPicker.getColor().getAlpha() / 255);
                 GL11.glLineWidth(2.5f);
                 c.draw(0.6f, 0.3f, 0.0f, 4, 1);
                 GL11.glLineWidth(0.1f);
-                GlStateManager.color(0.0f, 1.0f, 1.0f, 1.0f);
+                GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255, colorPicker.getColor().getBlue() / 255, colorPicker.getColor().getAlpha() / 255);
             }
 
             c.draw(0.6f, 0.3f, 0.0f, 4, 1);
@@ -185,9 +196,8 @@ public class Trajectories extends Module {
 
         for (int x = chunkMinX; x <= chunkMaxX; ++x) {
             for (int z = chunkMinZ; z <= chunkMaxZ; ++z) {
-                if (mc.world.getChunkProvider().getLoadedChunk(x, z) != null) {
+                if (mc.world.getChunkProvider().getLoadedChunk(x, z) != null) 
                     mc.world.getChunkFromChunkCoords(x, z).getEntitiesWithinAABBForEntity(mc.player, bb, list, null);
-                }
             }
         }
 

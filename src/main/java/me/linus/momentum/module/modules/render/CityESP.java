@@ -5,7 +5,8 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.combat.EnemyUtil;
-import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.render.builder.RenderBuilder;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -53,11 +54,7 @@ public class CityESP extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        for (BlockPos cityPos : cityBlocks) {
-            RenderUtil.drawBoxBlockPos(cityPos, 0, colorPicker.getColor());
-
-            if (outline.getValue())
-                RenderUtil.drawBoundingBoxBlockPos(cityPos, 0, new Color(colorPicker.getColor().getRed(), colorPicker.getColor().getGreen(), colorPicker.getColor().getBlue(), 144));
-        }
+        for (BlockPos cityPos : cityBlocks)
+            RenderUtil.drawBoxBlockPos(cityPos, 0, colorPicker.getColor(), outline.getValue() ? RenderBuilder.renderMode.Both : RenderBuilder.renderMode.Fill);
     }
 }

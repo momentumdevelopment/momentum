@@ -10,7 +10,8 @@ import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.player.rotation.RotationUtil;
-import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.render.builder.RenderBuilder;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import me.linus.momentum.util.world.HoleUtil;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.world.WorldUtil;
@@ -153,10 +154,7 @@ public class DepthFirst extends AutoCrystalAlgorithm {
     @Override
     public void renderPlacement() {
         if (AutoCrystal.renderCrystal.getValue() && this.placePos != null) {
-            RenderUtil.drawBoxBlockPos(this.placePos, 0, AutoCrystal.colorPicker.getColor());
-
-            if (AutoCrystal.outline.getValue())
-                RenderUtil.drawBoundingBoxBlockPos(this.placePos, 0, new Color(AutoCrystal.colorPicker.getColor().getRed(), AutoCrystal.colorPicker.getColor().getGreen(), AutoCrystal.colorPicker.getColor().getBlue(), 144));
+            RenderUtil.drawBoxBlockPos(this.placePos, 0, AutoCrystal.colorPicker.getColor(), AutoCrystal.outline.getValue() ? RenderBuilder.renderMode.Both : RenderBuilder.renderMode.Fill);
 
             if (AutoCrystal.renderDamage.getValue())
                 RenderUtil.drawNametagFromBlockPos(placePos, String.valueOf(MathUtil.roundAvoid(placeDamage, 1)));

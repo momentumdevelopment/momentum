@@ -22,10 +22,10 @@ public class Burrow extends Module {
         super("Burrow", Category.COMBAT, "Rubberbands you into a block");
     }
 
-    private static final Mode mode = new Mode("Mode", "Rubberband", "Teleport", "Clip");
-    private static final Checkbox rotate = new Checkbox("Rotate", true);
-    private static final Checkbox centerPlayer = new Checkbox("Center", false);
-    private static final Checkbox onGround = new Checkbox("On Ground", false);
+    public static Mode mode = new Mode("Mode", "Rubberband", "Teleport", "Clip");
+    public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static Checkbox centerPlayer = new Checkbox("Center", false);
+    public static Checkbox onGround = new Checkbox("On Ground", false);
 
     @Override
     public void setup() {

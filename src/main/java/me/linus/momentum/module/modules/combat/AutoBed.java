@@ -4,10 +4,12 @@ import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.color.ColorCheckbox;
 import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.BedUtil;
@@ -17,7 +19,7 @@ import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.player.rotation.Rotation;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.world.*;
-import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -208,8 +210,8 @@ public class AutoBed extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (currentBlock != null && currentTarget != null && renderBed.getValue()) {
-            RenderUtil.drawBoundingBoxBlockPos(currentBlock, -0.5, colorPicker.getColor());
-            RenderUtil.drawBoundingBoxBlockPos(new BlockPos(currentBlock.x + 1, currentBlock.y, currentBlock.z), -0.5, colorPicker.getColor());
+            RenderUtil.drawBoxBlockPos(currentBlock, -0.5, colorPicker.getColor(), RenderBuilder.renderMode.Outline);
+            RenderUtil.drawBoxBlockPos(new BlockPos(currentBlock.x + 1, currentBlock.y, currentBlock.z), -0.5, colorPicker.getColor(), RenderBuilder.renderMode.Outline);
         }
     }
 

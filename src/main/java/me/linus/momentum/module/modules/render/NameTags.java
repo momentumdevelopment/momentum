@@ -4,15 +4,15 @@ import me.linus.momentum.Momentum;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.FontUtil;
-import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.enchantment.Enchantment;
@@ -26,6 +26,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -41,17 +42,20 @@ public class NameTags extends Module {
         super("NameTags", Category.RENDER, "Draws useful information at player's heads");
     }
 
-    private static Checkbox health = new Checkbox("Health", true);
-    private static Checkbox ping = new Checkbox("Ping", true);
-    private static Checkbox gamemode = new Checkbox("GameMode", false);
-    private static Checkbox armor = new Checkbox("Armor", true);
-    private static Checkbox item = new Checkbox("Items", true);
-    private static Checkbox enchants = new Checkbox("Enchants", true);
-    private static Checkbox background = new Checkbox("Background", true);
-    private static Checkbox onlyInViewFrustrum = new Checkbox("View Frustrum", true);
+    public static Checkbox health = new Checkbox("Health", true);
+    public static Checkbox ping = new Checkbox("Ping", true);
+    public static Checkbox gamemode = new Checkbox("GameMode", false);
+    public static Checkbox armor = new Checkbox("Armor", true);
+    public static Checkbox item = new Checkbox("Items", true);
+    public static Checkbox enchants = new Checkbox("Enchants", true);
+    
+    public static Checkbox background = new Checkbox("Background", true);
+    public static SubColor colorPicker = new SubColor(background, new Color(0, 0, 0, 70));
+    
+    public static Checkbox onlyInViewFrustrum = new Checkbox("View Frustrum", true);
 
     public static Slider scale = new Slider("Scale", 0.0D, 2.0D, 10.0D, 1);
-    private static SubCheckbox scaleByDistance = new SubCheckbox(scale, "Scale By Distance", true);
+    public static SubCheckbox scaleByDistance = new SubCheckbox(scale, "Scale By Distance", true);
 
     @Override
     public void setup() {
@@ -156,7 +160,7 @@ public class NameTags extends Module {
         });
     }
 
-    private String getEnchantName(Enchantment enchantment, int translated) {
+    public String getEnchantName(Enchantment enchantment, int translated) {
         if (enchants.getValue()) {
             if (enchantment.getTranslatedName(translated).contains("Vanish"))
                 return TextFormatting.RED + "Van";
@@ -180,7 +184,7 @@ public class NameTags extends Module {
         return "";
     }
 
-    private void renderItemEnchantments(ItemStack itemStack, int x, int y) {
+    public void renderItemEnchantments(ItemStack itemStack, int x, int y) {
         if (enchants.getValue()) {
             GlStateManager.scale(0.5f, 0.5f, 0.5f);
             Iterator<Enchantment> iterator2;
@@ -205,7 +209,7 @@ public class NameTags extends Module {
         }
     }
 
-    private void renderItemStack(ItemStack itemStack, int x, int y, int scaled) {
+    public void renderItemStack(ItemStack itemStack, int x, int y, int scaled) {
         if (item.getValue()) {
             GlStateManager.pushMatrix();
             GlStateManager.depthMask(true);
@@ -230,7 +234,7 @@ public class NameTags extends Module {
         }
     }
 
-    private String generateNameTag(EntityPlayer entityPlayer) {
+    public String generateNameTag(EntityPlayer entityPlayer) {
         try {
             return generateName(entityPlayer) + generateGamemode(entityPlayer) + ColorUtil.getPingText(mc.getConnection().getPlayerInfo(entityPlayer.getUniqueID()).getResponseTime()) + generatePing(entityPlayer) + ColorUtil.getHealthText(EnemyUtil.getHealth(entityPlayer)) + generateHealth(entityPlayer);
         } catch (Exception e) {

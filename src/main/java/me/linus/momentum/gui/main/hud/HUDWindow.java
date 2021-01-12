@@ -50,12 +50,12 @@ public class HUDWindow implements MixinInterface {
 	
 	private void mouseListen() {
 		if (dragging) {
-			x = GUIUtil.mX - (lastmX - x);
-			y = GUIUtil.mY - (lastmY - y);
+			x = GUIUtil.mouseX - (lastmX - x);
+			y = GUIUtil.mouseY - (lastmY - y);
 		}
 
-		lastmX = GUIUtil.mX;
-		lastmY = GUIUtil.mY;
+		lastmX = GUIUtil.mouseX;
+		lastmY = GUIUtil.mouseY;
 	}
 	
 	private void reset() {

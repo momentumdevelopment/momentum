@@ -11,6 +11,7 @@ import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.color.ColorCheckbox;
 import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.keybind.SubKeybind;
@@ -141,7 +142,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
                             }
 
                             if (!(ss instanceof SubColor))
-                                GuiScreen.drawRect(x + 4, y + ((boost - 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
+                                GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
                 }
@@ -180,7 +181,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
                             }
 
                             if (!(ss instanceof SubColor))
-                                GuiScreen.drawRect(x + 4, y + ((boost - 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
+                                GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
                 }
@@ -219,7 +220,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
                             }
 
                             if (!(ss instanceof SubColor))
-                                GuiScreen.drawRect(x + 4, y + ((boost - 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
+                                GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
                 }
@@ -258,7 +259,26 @@ public class DefaultTheme extends Theme implements MixinInterface {
                             }
 
                             if (!(ss instanceof SubColor))
-                                GuiScreen.drawRect(x + 4, y + ((boost - 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
+                                GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
+                        }
+                    }
+                }
+
+                if (s instanceof ColorCheckbox) {
+                    ColorCheckbox c = (ColorCheckbox) s;
+                    drawColorCheckbox(c, x, y);
+                    for (SubSetting ss : c.getSubSettings()) {
+                        if (c.isOpened()) {
+                            boost++;
+
+                            if (ss instanceof SubColor) {
+                                SubColor sc = (SubColor) ss;
+                                drawColorPicker(sc, x, y, mouseX, mouseY);
+                                boost += 9;
+                            }
+
+                            if (!(ss instanceof SubColor))
+                                GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
                 }
@@ -370,7 +390,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width), (y + height) + height + (boost * height))) {
             color = 0xCC383838;
             if (GUIUtil.lheld) {
-                int percentError = (GUIUtil.mX - (x + 4)) * 100 / (((x) + width) - (x + 4));
+                int percentError = (GUIUtil.mouseX - (x + 4)) * 100 / (((x) + width) - (x + 4));
                 sl.setValue(MathUtil.roundDouble(percentError * ((sl.getMaxValue() - sl.getMinValue()) / 100.0D) + sl.getMinValue(), sl.getRoundingScale()));
             }
         }
@@ -405,7 +425,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         if (GUIUtil.mouseOver(x + 8, y + height + (boost * height) + 2, (x + width), (y + height) + height + (boost * height))) {
             color = 0xCC383838;
             if (GUIUtil.lheld) {
-                int percentError = (GUIUtil.mX - (x + 8)) * 100 / (((x) + width) - (x + 8));
+                int percentError = (GUIUtil.mouseX - (x + 8)) * 100 / (((x) + width) - (x + 8));
                 ssl.setValue(MathUtil.roundDouble(percentError * ((ssl.getMaxValue() - ssl.getMinValue()) / 100.0D) + ssl.getMinValue(), ssl.getRoundingScale()));
             }
         }
@@ -478,6 +498,25 @@ public class DefaultTheme extends Theme implements MixinInterface {
             FontUtil.drawString(skb.getName() + ": " + (skb.getKey() == -2 ? "None" : Keyboard.getKeyName(skb.getKey())), x + 7, (y + height) + 4 + (boost * height), -1);
         else
             FontUtil.drawString("Listening...", x + 7, (y + height) + 4 + (boost * height), -1);
+    }
+
+    public static void drawColorCheckbox(ColorCheckbox cc, int x, int y) {
+        int color = 0xCC232323;
+        if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
+            color = 0xCC383838;
+            if (GUIUtil.ldown)
+                cc.toggleValue();
+
+            if (GUIUtil.rdown)
+                cc.toggleState();
+        }
+
+        GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0x99202020);
+        GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), cc.getChecked() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color);
+        FontUtil.drawString(cc.getName(), x + 7, (y + height) + 4 + (boost * height), -1);
+
+        if (cc.hasSubSettings())
+            GuiScreen.drawRect(x + width - 4, y + height + (boost * height) + 2, x + width - 1, (y + height) + height + (boost * height) - 3, cc.getColor().getRGB());
     }
 
     public static void drawColorPicker(SubColor sc, int x, int y, int mouseX, int mouseY) {

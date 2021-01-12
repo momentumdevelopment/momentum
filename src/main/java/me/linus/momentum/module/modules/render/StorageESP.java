@@ -7,7 +7,8 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.render.builder.RenderBuilder;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.tileentity.*;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -25,7 +26,7 @@ public class StorageESP extends Module {
         super("StorageESP", Category.RENDER, "Highlights containers");
     }
 
-    public static Mode mode = new Mode("Mode", "Outline", "Fill", "Both");
+    public static Mode mode = new Mode("Mode", "Shader", "Outline", "Fill", "Both");
 
     public static final Checkbox chests = new Checkbox("Chests", true);
     public static SubColor chestPicker = new SubColor(chests, new Color(46, 83, 215));
@@ -73,21 +74,24 @@ public class StorageESP extends Module {
         renderTileEntities();
     }
 
+    public void renderShaderTileEntities() {
+
+    }
+
     public void renderTileEntities() {
         mc.world.loadedTileEntityList.stream().filter(tileEntity -> mc.player.getDistanceSq(tileEntity.getPos()) <= MathUtil.square(range.getValue())).forEach(tileEntity -> {
             if (tileEntity instanceof TileEntityChest && chests.getValue() || (tileEntity instanceof TileEntityEnderChest && enderChests.getValue()) || (tileEntity instanceof TileEntityHopper && hoppers.getValue()) || (tileEntity instanceof TileEntityFurnace && furnaces.getValue()) || (tileEntity instanceof TileEntityBed && beds.getValue() || (tileEntity instanceof TileEntityDropper && droppers.getValue()) || (tileEntity instanceof TileEntityShulkerBox && shulkers.getValue()))) {
                 switch (mode.getValue()) {
-                    case 0:
-                        GlStateManager.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoundingBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity));
-                        break;
                     case 1:
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity));
+                        GlStateManager.glLineWidth((float) lineWidth.getValue());
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderBuilder.renderMode.Outline);
                         break;
                     case 2:
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderBuilder.renderMode.Fill);
+                        break;
+                    case 3:
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoundingBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity));
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity));
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderBuilder.renderMode.Both);
                         break;
                 }
             }

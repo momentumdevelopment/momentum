@@ -6,7 +6,8 @@ import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.render.builder.RenderBuilder;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.HoleUtil;
 import net.minecraft.util.math.BlockPos;
@@ -67,7 +68,7 @@ public class HoleESP extends Module {
         findObsidianHoles().stream().forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
-                        RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor);
+                        RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Fill);
                         break;
                     case 1:
                 }
@@ -76,7 +77,7 @@ public class HoleESP extends Module {
         findBedRockHoles().stream().forEach(hole -> {
                 switch (main.getValue()) {
                     case 0:
-                        RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor);
+                        RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Fill);
                         break;
                     case 1:
                 }
@@ -88,7 +89,7 @@ public class HoleESP extends Module {
                 switch (outline.getValue()) {
                     case 0:
                         GL11.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoundingBoxBlockPos(hole, outlineHeight.getValue() - 1, obbyColor);
+                        RenderUtil.drawBoxBlockPos(hole, outlineHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Outline);
                         break;
                     case 1:
                         break;
@@ -99,7 +100,7 @@ public class HoleESP extends Module {
                 switch (outline.getValue()) {
                     case 0:
                         GL11.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoundingBoxBlockPos(hole, outlineHeight.getValue() - 1, bRockColor);
+                        RenderUtil.drawBoxBlockPos(hole, outlineHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Outline);
                         break;
                     case 1:
                         break;

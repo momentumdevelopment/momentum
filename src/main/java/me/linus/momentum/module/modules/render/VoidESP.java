@@ -4,7 +4,8 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.render.builder.RenderBuilder;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.HoleUtil;
 import net.minecraft.util.math.BlockPos;
@@ -54,11 +55,7 @@ public class VoidESP extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        for (BlockPos voidPos : voidBlocks) {
-            RenderUtil.drawBoxBlockPos(voidPos, 0, colorPicker.getColor());
-
-            if (outline.getValue())
-                RenderUtil.drawBoundingBoxBlockPos(voidPos, 0, new Color(colorPicker.getColor().getRed(), colorPicker.getColor().getGreen(), colorPicker.getColor().getBlue(), 144));
-        }
+        for (BlockPos voidPos : voidBlocks)
+            RenderUtil.drawBoxBlockPos(voidPos, 0, colorPicker.getColor(), outline.getValue() ? RenderBuilder.renderMode.Both : RenderBuilder.renderMode.Fill);
     }
 }

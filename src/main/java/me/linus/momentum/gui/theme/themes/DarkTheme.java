@@ -247,7 +247,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		
 		if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width), (y + height) + height + (boost * height))) {
 			if (GUIUtil.lheld) {
-				int percentError = (GUIUtil.mX - (x + 4)) * 100 / (((x) + width) - (x + 4));
+				int percentError = (GUIUtil.mouseX - (x + 4)) * 100 / (((x) + width) - (x + 4));
 				sl.setValue(MathUtil.roundDouble(percentError * ((sl.getMaxValue() - sl.getMinValue()) / 100.0D) + sl.getMinValue(), sl.getRoundingScale()));
 			}
 		}
@@ -281,7 +281,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		
 		if (GUIUtil.mouseOver(x + 8, y + height + (boost * height) + 2, (x + width), (y + height) + height + (boost * height))) {
 			if (GUIUtil.lheld) {
-				int percentError = (GUIUtil.mX - (x + 8)) * 100 / (((x) + width) - (x + 8));
+				int percentError = (GUIUtil.mouseX - (x + 8)) * 100 / (((x) + width) - (x + 8));
 				ssl.setValue(MathUtil.roundDouble(percentError * ((ssl.getMaxValue() - ssl.getMinValue()) / 100.0D) + ssl.getMinValue(), ssl.getRoundingScale()));
 			}
 		}

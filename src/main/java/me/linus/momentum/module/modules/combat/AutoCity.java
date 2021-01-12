@@ -5,7 +5,8 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
-import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.render.builder.RenderBuilder;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -97,7 +98,7 @@ public class AutoCity extends Module {
     @SubscribeEvent
     public void onWorldRender(RenderWorldLastEvent eventRender) {
         if (breakTarget != null)
-            RenderUtil.drawBoxBlockPos(breakTarget, 0, new Color(0, 255, 0, 50));
+            RenderUtil.drawBoxBlockPos(breakTarget, 0, new Color(0, 255, 0, 50), RenderBuilder.renderMode.Fill);
     }
 
     @Override

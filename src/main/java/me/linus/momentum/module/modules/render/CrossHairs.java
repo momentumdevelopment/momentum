@@ -3,9 +3,9 @@ package me.linus.momentum.module.modules.render;
 import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.util.world.Timer;
-import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -23,9 +23,7 @@ public class CrossHairs extends Module {
     }
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static SubSlider r = new SubSlider(color, "Red", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider g = new SubSlider(color, "Green", 0.0D, 255.0D, 255.0D, 0);
-    public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
+    public static SubColor colorPicker = new SubColor(color, new Color(0, 255,  0, 255));
 
     @Override
     public void setup() {
@@ -43,6 +41,6 @@ public class CrossHairs extends Module {
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
         if (hitTimer.reach(300, Timer.Format.System))
-            RenderUtil.drawHitMarkers(new Color((int) r.getValue(),(int) g.getValue(),(int)  b.getValue()));
+            RenderUtil.drawHitMarkers(colorPicker.getColor());
     }
 }

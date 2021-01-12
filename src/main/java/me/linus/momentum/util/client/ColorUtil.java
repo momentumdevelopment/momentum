@@ -5,10 +5,12 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.StorageESP;
+import me.linus.momentum.module.modules.render.Tracers;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
@@ -100,6 +102,21 @@ public abstract class ColorUtil implements MixinInterface {
 			return ESP.playerPicker.getColor();
 	}
 
+	public static Color getTracerColor(Entity e) {
+		if (EntityUtil.isPassive(e))
+			return Tracers.animalPicker.getColor();
+		if (EntityUtil.isHostileMob(e))
+			return Tracers.mobsPicker.getColor();
+		if (FriendManager.isFriend(e.getName()))
+			return new Color(85, 231, 215);
+		if (e instanceof EntityItem)
+			return Tracers.itemsPicker.getColor();
+		if (e instanceof EntityEnderCrystal)
+			return Tracers.crystalPicker.getColor();
+		else
+			return Tracers.playerPicker.getColor();
+	}
+
 	public static Color getHealthColor(float health) {
 		if (health <= 4)
 			return new Color(200, 0, 0);
@@ -112,6 +129,7 @@ public abstract class ColorUtil implements MixinInterface {
 		else
 			return new Color(44, 186, 19);
 	}
+
 	public static Color getStorageColor(TileEntity tileEntity) {
 		if (tileEntity instanceof TileEntityChest)
 			return StorageESP.chestPicker.getColor();

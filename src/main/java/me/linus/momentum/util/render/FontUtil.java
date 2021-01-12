@@ -46,7 +46,7 @@ public class FontUtil implements MixinInterface {
             return awtClientFont;
         } catch (Exception e) {
             e.printStackTrace();
-            return new Font("default", 0, (int)size);
+            return new Font("default", 0, (int) size);
         }
     }
 
@@ -82,10 +82,6 @@ public class FontUtil implements MixinInterface {
                 mc.fontRenderer.drawString(text, (int) x, (int) y, color);
         }
     }
-
-    /**
-     * font info
-     */
 
     public static float getStringWidth(String text) {
         if (ModuleManager.getModuleByName("Font").isEnabled())

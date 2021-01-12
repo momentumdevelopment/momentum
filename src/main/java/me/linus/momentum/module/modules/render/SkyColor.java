@@ -2,13 +2,11 @@ package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.checkbox.SubCheckbox;
-import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.ColorUtil;
+import me.linus.momentum.setting.color.SubColor;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.awt.*;
 
 /**
  * @author linustouchtips
@@ -21,30 +19,18 @@ public class SkyColor extends Module {
     }
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static SubSlider r = new SubSlider(color, "Red", 0.0D, 250.0D, 255.0D, 0);
-    public static SubSlider g = new SubSlider(color, "Green", 0.0D, 0.0D, 255.0D, 0);
-    public static SubSlider b = new SubSlider(color, "Blue", 0.0D, 0.0D, 255.0D, 0);
-    public static SubCheckbox rainbow = new SubCheckbox(color, "Rainbow", false);
+    public static SubColor colorPicker = new SubColor(color, new Color(255, 0, 0, 255));
 
     @Override
     public void setup() {
         addSetting(color);
     }
 
-    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onFogRender(EntityViewRenderEvent.FogColors event) {
-        if (rainbow.getValue()) {
-            event.setRed(ColorUtil.staticRainbow().getRed() / 255f);
-            event.setGreen(ColorUtil.staticRainbow().getBlue() / 255f);
-            event.setBlue(ColorUtil.staticRainbow().getGreen() / 255f);
-        }
-
-        else {
-            event.setRed((float) (r.getValue() / 255f));
-            event.setGreen((float) (g.getValue() / 255f));
-            event.setBlue((float) (b.getValue() / 255f));
-        }
+        event.setRed(colorPicker.getColor().getRed() / 255f);
+        event.setGreen(colorPicker.getColor().getGreen() / 255f);
+        event.setBlue(colorPicker.getColor().getBlue() / 255f);
     }
 
     @SubscribeEvent

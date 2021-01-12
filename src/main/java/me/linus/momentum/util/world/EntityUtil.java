@@ -31,10 +31,6 @@ import net.minecraft.util.math.Vec3d;
 
 public class EntityUtil implements MixinInterface {
 
-    /**
-     * entity classifier checks
-     */
-
     public static boolean isPassive(Entity e) {
         if (e instanceof EntityWolf && ((EntityWolf) e).isAngry())
             return false;
@@ -73,10 +69,6 @@ public class EntityUtil implements MixinInterface {
 
         return false;
     }
-
-    /**
-     * interpolations
-     */
 
     public static Vec3d interpolateEntity(final Entity entity, final float n) {
         return new Vec3d(entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * n, entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * n, entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * n);

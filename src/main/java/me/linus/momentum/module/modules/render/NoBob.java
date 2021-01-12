@@ -13,7 +13,7 @@ public class NoBob extends Module {
         super("NoBob", Category.RENDER, "Prevents the bobbing animation");
     }
 
-    private static final Mode mode = new Mode("Mode", "Vanilla", "Settings");
+    public static Mode mode = new Mode("Mode", "Vanilla", "Settings");
 
     @Override
     public void setup() {
@@ -25,9 +25,13 @@ public class NoBob extends Module {
         if (nullCheck())
             return;
 
-        if (mode.getValue() == 0)
-            mc.player.distanceWalkedModified = 4.0f;
-        else
-            mc.gameSettings.viewBobbing = false;
+        switch (mode.getValue()) {
+            case 0:
+                mc.player.distanceWalkedModified = 4.0f;
+                break;
+            case 1:
+                mc.gameSettings.viewBobbing = false;
+                break;
+        }
     }
 }

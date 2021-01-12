@@ -11,7 +11,7 @@ import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.config.ConfigManager;
-import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.init.SoundEvents;

@@ -39,7 +39,7 @@ public class HoleUtil implements MixinInterface {
     }
 
     public static boolean isVoidHole(BlockPos blockPos) {
-        return mc.player.dimension == -1 ? (blockPos.getY() == 0 || blockPos.getY() == 255) && mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR) : blockPos.getY() == 0 && mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR);
+        return mc.player.dimension == -1 ? (blockPos.getY() == 0 || blockPos.getY() == 126) && mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR) : blockPos.getY() == 0 && mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR);
     }
 
     public static boolean IsObsidianHole(BlockPos blockPos) {
