@@ -7,10 +7,13 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.render.ESPUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.builder.RenderUtil;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -74,8 +77,30 @@ public class StorageESP extends Module {
         renderTileEntities();
     }
 
-    public void renderShaderTileEntities() {
+    public static void renderShaderTileEntities(TileEntitySpecialRenderer<TileEntity> tileentityspecialrenderer, TileEntity tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage, float renderOffset) {
+        AxisAlignedBB bb = new AxisAlignedBB(tileEntityIn.getPos().getX() - mc.getRenderManager().viewerPosX, tileEntityIn.getPos().getY() - mc.getRenderManager().viewerPosY, tileEntityIn.getPos().getZ() - mc.getRenderManager().viewerPosZ, tileEntityIn.getPos().getX() + 1 - mc.getRenderManager().viewerPosX, tileEntityIn.getPos().getY() + 1 - mc.getRenderManager().viewerPosY, tileEntityIn.getPos().getZ() + 1 - mc.getRenderManager().viewerPosZ);
 
+        RenderUtil.camera.setPosition(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
+
+        if (!RenderUtil.camera.isBoundingBoxInFrustum(new AxisAlignedBB(bb.minX + mc.getRenderManager().viewerPosX, bb.minY + mc.getRenderManager().viewerPosY, bb.minZ + mc.getRenderManager().viewerPosZ, bb.maxX + mc.getRenderManager().viewerPosX, bb.maxY + mc.getRenderManager().viewerPosY, bb.maxZ + mc.getRenderManager().viewerPosZ)))
+            return;
+
+        if ((tileEntityIn instanceof TileEntityChest && chests.getValue()) || (tileEntityIn instanceof TileEntityShulkerBox && shulkers.getValue()) || (tileEntityIn instanceof TileEntityEnderChest && enderChests.getValue()) || (tileEntityIn instanceof TileEntityChest && chests.getValue()) || (tileEntityIn instanceof TileEntityDropper && droppers.getValue()) || (tileEntityIn instanceof TileEntityHopper && hoppers.getValue()) || (tileEntityIn instanceof TileEntityFurnace && furnaces.getValue() || (tileEntityIn instanceof TileEntityBed && beds.getValue()))) {
+            GlStateManager.pushMatrix();
+            ESPUtil.setColor(ColorUtil.getStorageColor(tileEntityIn));
+            tileentityspecialrenderer.render(tileEntityIn, x, y, z, partialTicks, destroyStage, renderOffset);
+            ESPUtil.renderOne((float) lineWidth.getValue());
+            tileentityspecialrenderer.render(tileEntityIn, x, y, z, partialTicks, destroyStage, renderOffset);
+            ESPUtil.renderTwo();
+            tileentityspecialrenderer.render(tileEntityIn, x, y, z, partialTicks, destroyStage, renderOffset);
+            ESPUtil.renderThree();
+            ESPUtil.renderFour();
+            ESPUtil.setColor(ColorUtil.getStorageColor(tileEntityIn));
+            tileentityspecialrenderer.render(tileEntityIn, x, y, z, partialTicks, destroyStage, renderOffset);
+            ESPUtil.renderFive();
+            ESPUtil.setColor(Color.WHITE);
+            GlStateManager.popMatrix();
+        }
     }
 
     public void renderTileEntities() {

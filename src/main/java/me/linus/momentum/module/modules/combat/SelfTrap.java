@@ -50,7 +50,7 @@ public class SelfTrap extends Module {
         addSetting(color);
     }
 
-    final ArrayList<BlockPos> renderBlocks = new ArrayList<>();
+    BlockPos placeBlock;
     boolean hasPlaced;
 
     @Override
@@ -61,11 +61,6 @@ public class SelfTrap extends Module {
         super.onEnable();
 
         hasPlaced = false;
-    }
-
-    @Override
-    public void onDisable() {
-        renderBlocks.clear();
     }
 
     @Override
@@ -85,7 +80,7 @@ public class SelfTrap extends Module {
                 InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
 
                 BlockUtil.placeBlock(blockPos, rotate.getValue());
-                renderBlocks.add(blockPos);
+                placeBlock = blockPos;
                 blocksPlaced++;
 
                 if (blocksPlaced == blocksPerTick.getValue())
@@ -99,8 +94,7 @@ public class SelfTrap extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        for (BlockPos renderBlock : renderBlocks)
-            RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
+        RenderUtil.drawBoxBlockPos(placeBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
     }
 
     public List<Vec3d> getTrap() {

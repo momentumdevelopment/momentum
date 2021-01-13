@@ -23,18 +23,18 @@ public class Offhand extends Module {
         super("Offhand", Category.COMBAT, "Switches items in the offhand to a totem when low on health");
     }
 
-    public static final Mode mode = new Mode("Mode", "Crystal", "Gapple", "Bed", "Chorus", "Totem");
-    public static final Mode fallbackMode = new Mode("Fallback", "Crystal", "Gapple", "Bed", "Chorus", "Totem");
-    public static final Slider health = new Slider("Health", 0.1, 16.0, 36.0, 1);
+    public static Mode mode = new Mode("Mode", "Crystal", "Gapple", "Bed", "Chorus", "Totem");
+    public static Mode fallbackMode = new Mode("Fallback", "Crystal", "Gapple", "Bed", "Chorus", "Totem");
+    public static Slider health = new Slider("Health", 0.1, 16.0, 36.0, 1);
 
-    private static final Checkbox checks = new Checkbox("Checks", true);
-    private static final SubCheckbox caFunction = new SubCheckbox(checks, "AutoCrystal", false);
-    private static final SubCheckbox elytraCheck = new SubCheckbox(checks, "Elytra", false);
-    private static final SubCheckbox fallCheck = new SubCheckbox(checks, "Falling", false);
+    private static Checkbox checks = new Checkbox("Checks", true);
+    private static SubCheckbox caFunction = new SubCheckbox(checks, "AutoCrystal", false);
+    private static SubCheckbox elytraCheck = new SubCheckbox(checks, "Elytra", false);
+    private static SubCheckbox fallCheck = new SubCheckbox(checks, "Falling", false);
 
-    public static final Checkbox swordGap = new Checkbox("Sword Gapple", true);
-    public static final Checkbox forceGap = new Checkbox("Force Gapple", false);
-    public static final Checkbox hotbar = new Checkbox("Search Hotbar", false);
+    public static Checkbox swordGap = new Checkbox("Sword Gapple", true);
+    public static Checkbox forceGap = new Checkbox("Force Gapple", false);
+    public static Checkbox hotbar = new Checkbox("Search Hotbar", false);
 
     @Override
     public void setup() {

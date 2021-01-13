@@ -55,7 +55,7 @@ public class AutoTrap extends Module {
         addSetting(color);
     }
 
-    final ArrayList<BlockPos> renderBlocks = new ArrayList<>();
+    BlockPos placeBlock;
     boolean hasPlaced;
 
     @Override
@@ -89,8 +89,8 @@ public class AutoTrap extends Module {
                         InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
 
                     BlockUtil.placeBlock(blockPos, rotate.getValue());
+                    placeBlock = blockPos;
                     MessageUtil.sendClientMessage("Trapping " + target.getName() + "!");
-                    renderBlocks.add(blockPos);
 
                     blocksPlaced++;
 
@@ -106,8 +106,7 @@ public class AutoTrap extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        for (BlockPos renderBlock : renderBlocks)
-            RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
+        RenderUtil.drawBoxBlockPos(placeBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
     }
 
     public List<Vec3d> getTrap() {

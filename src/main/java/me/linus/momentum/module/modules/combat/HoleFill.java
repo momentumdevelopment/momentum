@@ -96,7 +96,7 @@ public class HoleFill extends Module {
         return Blocks.OBSIDIAN;
     }
 
-    private List<BlockPos> getHoles() {
+    List<BlockPos> getHoles() {
         return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.isHole(blockPos)).collect(Collectors.toList());
     }
 }

@@ -35,6 +35,7 @@ public class HUDComponentManager implements MixinInterface {
             new Ping(),
             new PlayerViewer(),
             new PotionEffects(),
+            new Radar(),
             new Server(),
             new Speed(),
             new TabGUI(),

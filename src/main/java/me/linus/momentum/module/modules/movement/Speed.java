@@ -26,7 +26,7 @@ public class Speed extends Module {
         super("Speed", Category.MOVEMENT, "Allows you to go faster");
     }
 
-    private static final Mode mode = new Mode("Mode", "SmoothHop", "MomentumHop", "StrictHop", "Y-Port");
+    private static final Mode mode = new Mode("Mode", "SmoothHop", "GainHop", "StrictHop", "Y-Port");
     private static SubKeybind modeKey = new SubKeybind(mode, "ModeSwitch Key", -2);
     private static final SubCheckbox strict = new SubCheckbox(mode, "Strict", false);
     private static final SubCheckbox enableStep = new SubCheckbox(mode, "Use Step", false);

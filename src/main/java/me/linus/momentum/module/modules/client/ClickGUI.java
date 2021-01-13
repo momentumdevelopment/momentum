@@ -12,7 +12,7 @@ import org.lwjgl.input.Keyboard;
 
 /**
  * @author bon & linustouchtips
- * @since 11/16/20
+ * @since 11/16/2020
  */
 
 public class ClickGUI extends Module {
@@ -31,20 +31,17 @@ public class ClickGUI extends Module {
 	public static SubSlider snapSub = new SubSlider(snapSlider, "Snap Distance", 1.0D, 5.0D, 10.0D, 0);
 	
 	public static Mode theme = new Mode("Theme", "Default", "Velocity");
-	public static Mode font = new Mode("Font", "Lato", "Ubuntu", "Verdana", "Comfortaa", "Comic Sans", "Minecraft");
 	
 	public static GUI clickGui = new GUI();
 	
-	
 	@Override
 	public void setup() {
-		addSetting(font);
+		addSetting(theme);
+		addSetting(snapSlider);
 		addSetting(scrollSpeed);
 		addSetting(speed);
 		addSetting(blurEffect);
 		addSetting(allowOverflow);
-		addSetting(snapSlider);
-		addSetting(theme);
 	}
 	
 	@Override

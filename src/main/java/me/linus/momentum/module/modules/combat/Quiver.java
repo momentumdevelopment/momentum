@@ -28,7 +28,7 @@ public class Quiver extends Module {
         super("Quiver", Category.COMBAT, "Shoots arrows at you");
     }
 
-    private static final Mode mode = new Mode("Mode", "Automatic", "Manual");
+    public static Mode mode = new Mode("Mode", "Automatic", "Manual");
     public static SubCheckbox speed = new SubCheckbox(mode, "Speed", true);
     public static SubCheckbox strength = new SubCheckbox(mode, "Strength", true);
 
@@ -128,7 +128,7 @@ public class Quiver extends Module {
         }
     }
 
-    private int getBowCharge() {
+    public int getBowCharge() {
         if (randomVariation == 0)
             randomVariation = 1;
 

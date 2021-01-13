@@ -22,7 +22,8 @@
       "MixinRenderLivingBase",
       "MixinGuiScreen",
       "MixinMovementInputFromOptions",
-      "MixinRenderPlayer"
+      "MixinRenderPlayer",
+      "MixinTileEntityRendererDispatcher"
     ],
 
     "client": [
