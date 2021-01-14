@@ -1,16 +1,13 @@
 # Momentum
 
 todo:
-- rewrite packet fly (phase good, but rubberbanding, also modified from salhack so gay)
 - rewrite holefill (paste from dream)
 
 fix:
-- mixin priority
+- fps drops
 
 ideas:
 - bot (cpvp? elytra?)
 - console for gui
 
-
-
-hacked by meh
+hacked by meh and also floppa aswell i guess 
