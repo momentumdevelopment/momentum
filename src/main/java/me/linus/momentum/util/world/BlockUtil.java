@@ -53,25 +53,20 @@ public class BlockUtil implements MixinInterface {
     }
 
     public static boolean isCollidedBlocks(BlockPos pos) {
-        return mc.world.getBlockState(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ)).getBlock().equals(Blocks.OBSIDIAN) || isInterceptedByOther(pos) || InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) == -1;
+        return mc.world.getBlockState(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ)).getBlock().equals(Blocks.OBSIDIAN) || isInterceptedBlockPos(pos) || InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) == -1;
     }
 
-    public static boolean isInterceptedByOther(BlockPos pos) {
-        for (Entity entity : mc.world.loadedEntityList) {
-            if (entity.equals(mc.player))
-                continue;
+    public static boolean isInterceptedBlockPos(BlockPos pos) {
+        mc.world.loadedEntityList.stream().filter(entity -> entity != mc.player).forEach(entity -> {
+            if (!new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox()))
+                return;
+        });
 
-            if (new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox()))
-                return true;
-        }
-
-        return false;
+        return true;
     }
 
     public static boolean canBreak(BlockPos pos) {
-        IBlockState blockState = mc.world.getBlockState(pos);
-        Block block = blockState.getBlock();
-        return block.getBlockHardness(blockState, mc.world, pos) != -1;
+        return mc.world.getBlockState(pos).getBlock().getBlockHardness(mc.world.getBlockState(pos), mc.world, pos) != -1;
     }
 
     public static List<BlockPos> getNearbyBlocks(EntityPlayer player, double blockRange, boolean motion) {

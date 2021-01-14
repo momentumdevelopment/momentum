@@ -40,7 +40,6 @@ public class MixinTileEntityRendererDispatcher {
                     tileentityspecialrenderer.renderTileEntityFast(tileEntityIn, x, y, z, partialTicks, destroyStage, p_192854_10_, batchBuffer.getBuffer());
                 else
                     tileentityspecialrenderer.render(tileEntityIn, x, y, z, partialTicks, destroyStage, p_192854_10_);
-
             } catch (Throwable throwable) {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering Block Entity");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Block Entity Details");

@@ -24,7 +24,7 @@ public class Radar extends HUDComponent {
     @Override
     public void renderComponent() {
         Render2DUtil.drawFilledCircle(this.x, this.y, 50, new Color(100, 100, 100, 90).getRGB());
-        Render2DUtil.drawFilledCircle(this.x, this.y, 2, -1);
+        Render2DUtil.drawFilledCircle(this.x, this.y, 1, -1);
 
         mc.world.loadedEntityList.stream().filter(entity -> mc.player != entity).forEach(entity -> {
             double xDistance = mc.player.posX - entity.posX;

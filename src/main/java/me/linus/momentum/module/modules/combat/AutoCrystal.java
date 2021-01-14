@@ -4,9 +4,7 @@ import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.combat.autocrystal.AutoCrystalAlgorithm;
-import me.linus.momentum.module.modules.combat.autocrystal.algorithms.AStar;
-import me.linus.momentum.module.modules.combat.autocrystal.algorithms.DepthFirst;
-import me.linus.momentum.module.modules.combat.autocrystal.algorithms.MiniMax;
+import me.linus.momentum.module.modules.combat.autocrystal.algorithms.*;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.SubColor;
@@ -54,7 +52,7 @@ public class AutoCrystal extends Module {
     public static SubMode breakHand = new SubMode(explode, "BreakHand", "MainHand", "OffHand", "Both", "MultiHand");
 
     public static Checkbox place = new Checkbox("Place", true);
-    public static SubMode algorithm = new SubMode(place, "Algorithm", "MiniMax", "Depth-First", "A*");
+    public static SubMode algorithm = new SubMode(place, "Algorithm", "MiniMax", "Depth-First", "A*", "Atomic");
     public static SubSlider placeRange = new SubSlider(place, "Place Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider enemyRange = new SubSlider(place, "Enemy Range", 0.0D, 5.0D, 15.0D, 1);
     public static SubSlider wallRange = new SubSlider(place, "Walls Range", 0.0D, 3.0D, 7.0D, 1);

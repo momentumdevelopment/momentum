@@ -13,4 +13,8 @@ import java.util.List;
 public class NotificationManager implements MixinInterface {
 
     public static List<Notification> notifications = new ArrayList<>();
+
+    public static List<Notification> getNotification() {
+        return notifications;
+    }
 }

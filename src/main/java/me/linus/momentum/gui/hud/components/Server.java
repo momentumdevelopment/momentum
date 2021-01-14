@@ -18,14 +18,7 @@ public class Server extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        String server;
-        if (!mc.isSingleplayer())
-            server = mc.getCurrentServerData().serverIP;
-        else
-            server = "SinglePlayer";
-
-        FontUtil.drawString(server, this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
-
-        width = Momentum.fontManager.getCustomFont().getStringWidth(server) + 2;
+        FontUtil.drawString(!mc.isSingleplayer() ? mc.getCurrentServerData().serverIP : "SinglePlayer", this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
+        width = Momentum.fontManager.getCustomFont().getStringWidth(!mc.isSingleplayer() ? mc.getCurrentServerData().serverIP : "SinglePlayer") + 2;
     }
 }

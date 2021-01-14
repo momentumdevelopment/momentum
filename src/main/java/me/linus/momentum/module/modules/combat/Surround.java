@@ -34,18 +34,18 @@ public class Surround extends Module {
         super("Surround", Category.COMBAT, "Surrounds your feet with obsidian");
     }
 
-    private static final Mode mode = new Mode("Mode", "Standard", "Full", "Anti-City");
-    private static final Mode disable = new Mode("Disable", "Jump", "Completion", "Never");
-    private static final Mode centerPlayer = new Mode("Center", "Teleport", "NCP", "None");
+    public static Mode mode = new Mode("Mode", "Standard", "Full", "Anti-City");
+    public static Mode disable = new Mode("Disable", "Jump", "Completion", "Never");
+    public static Mode centerPlayer = new Mode("Center", "Teleport", "NCP", "None");
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
 
-    private static final Checkbox timeout = new Checkbox("Timeout", true);
+    public static Checkbox timeout = new Checkbox("Timeout", true);
     public static SubSlider timeoutTick = new SubSlider(timeout, "Timeout Ticks", 1.0D, 15.0D, 20.0D, 1);
 
-    private static final Checkbox rotate = new Checkbox("Rotate", true);
-    private static final Checkbox onlyObsidian = new Checkbox("Only Obsidian", true);
-    private static final Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
-    private static final Checkbox chorusSave = new Checkbox("Chorus Save", false);
+    public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static Checkbox onlyObsidian = new Checkbox("Only Obsidian", true);
+    public static Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
+    public static Checkbox chorusSave = new Checkbox("Chorus Save", false);
 
     public static Checkbox renderSurround = new Checkbox("Render", true);
     public static SubColor colorPicker = new SubColor(renderSurround, new Color(255, 0, 0, 55));
@@ -103,7 +103,7 @@ public class Surround extends Module {
         if (nullCheck())
             return;
 
-        final Vec3d vec3d = EntityUtil.getInterpolatedPos(mc.player, 0);
+        Vec3d vec3d = EntityUtil.getInterpolatedPos(mc.player, 0);
         northBlockPos = new BlockPos(vec3d).north();
         southBlockPos = new BlockPos(vec3d).south();
         eastBlockPos = new BlockPos(vec3d).east();
@@ -191,7 +191,7 @@ public class Surround extends Module {
         return standardSurround;
     }
 
-    private final List<Vec3d> standardSurround = new ArrayList<>(Arrays.asList(
+    public List<Vec3d> standardSurround = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, 0),
             new Vec3d(1, 0, 0),
             new Vec3d(-1, 0, 0),
@@ -199,7 +199,7 @@ public class Surround extends Module {
             new Vec3d(0, 0, -1)
     ));
 
-    private final List<Vec3d> fullSurround = new ArrayList<>(Arrays.asList(
+    public List<Vec3d> fullSurround = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, 0),
             new Vec3d(1, -1, 0),
             new Vec3d(0, -1, 1),
@@ -211,7 +211,7 @@ public class Surround extends Module {
             new Vec3d(0, 0, -1)
     ));
 
-    private final List<Vec3d> antiCitySurround = new ArrayList<>(Arrays.asList(
+    public List<Vec3d> antiCitySurround = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, 0),
             new Vec3d(1, 0, 0),
             new Vec3d(-1, 0, 0),

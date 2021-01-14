@@ -31,11 +31,11 @@ public class SelfTrap extends Module {
         super("SelfTrap", Category.COMBAT, "Automatically traps yourself");
     }
 
-    private static final Mode mode = new Mode("Mode", "Head", "Anti-FacePlace", "Full");
+    public static Mode mode = new Mode("Mode", "Head", "Anti-FacePlace", "Full");
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
-    private static final Checkbox rotate = new Checkbox("Rotate", true);
-    private static final Checkbox disable = new Checkbox("Disables", false);
+    private static Checkbox rotate = new Checkbox("Rotate", true);
+    private static Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubColor colorPicker = new SubColor(color, new Color(109, 231, 217, 121));
@@ -94,7 +94,8 @@ public class SelfTrap extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        RenderUtil.drawBoxBlockPos(placeBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
+        if (placeBlock != null)
+            RenderUtil.drawBoxBlockPos(placeBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
     }
 
     public List<Vec3d> getTrap() {
@@ -110,18 +111,18 @@ public class SelfTrap extends Module {
         return headTrap;
     }
 
-    private final List<Vec3d> headTrap = new ArrayList<>(Arrays.asList(
+    private List<Vec3d> headTrap = new ArrayList<>(Arrays.asList(
             new Vec3d(0, 2, 0)
     ));
 
-    private final List<Vec3d> faceTrap = new ArrayList<>(Arrays.asList(
+    private List<Vec3d> faceTrap = new ArrayList<>(Arrays.asList(
             new Vec3d(0, 1, -1),
             new Vec3d(1, 1, 0),
             new Vec3d(0, 1, 1),
             new Vec3d(-1, 1, 0)
     ));
 
-    private final List<Vec3d> fullTrap = new ArrayList<>(Arrays.asList(
+    private List<Vec3d> fullTrap = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, -1),
             new Vec3d(1, -1, 0),
             new Vec3d(0, -1, 1),

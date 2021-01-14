@@ -6,6 +6,7 @@ import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
+import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
@@ -36,15 +37,15 @@ import java.util.List;
 public class DarkTheme extends Theme implements MixinInterface {
 	public static int boost = 0;
 	
-	public static final String name = "Default";
-	public static final int width = 105;
-	public static final int height = 14;
+	public static String name = "Dark";
+	public static int width = 105;
+	public static int height = 14;
 	
 	public DarkTheme() {
 		super(name, width, height);
 	}
 	
-	private static final FontRenderer font = mc.fontRenderer;
+	private static FontRenderer font = mc.fontRenderer;
 	
 	@Override
 	public void updateColors() {
@@ -55,7 +56,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 	public void drawTitles(String name, int x, int y) {
 		GuiScreen.drawRect(x, y, (x + width), y + height, 0xCC000000);
 		GuiScreen.drawRect(x - 1, y - 1, x + width + 1, y, 0xFF202020);
-		drawTextWithShadow(name, (x + ((x + width) - x) / 2 - (ClickGUI.font.getValue() == 1 ? Momentum.fontManager.getCustomFont().getStringWidth(name) : font.getStringWidth(name)) / 2), y + 3, -1);
+		drawTextWithShadow(name, (x + ((x + width) - x) / 2 - (ModuleManager.getModuleByName("Font").isEnabled() ? Momentum.fontManager.getCustomFont().getStringWidth(name) : font.getStringWidth(name)) / 2), y + 3, -1);
 	}
 
 	@Override
@@ -224,7 +225,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), 0xCC232323);
 		drawTextWithShadow(m.getName(), x + 7, (y + height) + 4 + (boost * height), -1);
-		drawTextWithShadow(m.getMode(m.getValue()), x + (ClickGUI.font.getValue() == 1 ? 10 : 14) + font.getStringWidth(m.getName()), (y + height) + 4 + (boost * height), 0xFF767676);
+		drawTextWithShadow(m.getMode(m.getValue()), x + (ModuleManager.getModuleByName("Font").isEnabled() ? 10 : 14) + font.getStringWidth(m.getName()), (y + height) + 4 + (boost * height), 0xFF767676);
 
 		if (m.hasSubSettings())
 			drawText("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
@@ -239,7 +240,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), 0xCC232323);
 		drawTextWithShadow(sm.getName(), x + 12, (y + height) + 4 + (boost * height), -1);
-		drawTextWithShadow(sm.getMode(sm.getValue()), x + (ClickGUI.font.getValue() == 1 ? 12 : 16) + font.getStringWidth(sm.getName()), (y + height) + 4 + (boost * height), 0xFF767676);
+		drawTextWithShadow(sm.getMode(sm.getValue()), x + (ModuleManager.getModuleByName("Font").isEnabled() ? 12 : 16) + font.getStringWidth(sm.getName()), (y + height) + 4 + (boost * height), 0xFF767676);
 	}
 	
 	private static void drawSlider(Slider sl, int x, int y) {
@@ -270,7 +271,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), 0xCC232323);
 		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, x + 4 + (rectAdd > width - 1 ? (width - 5) : rectAdd), (y + height) + height + (boost * height), (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR));
 		drawTextWithShadow(sl.getName(), x + 6, (y + height) + 4 + (boost * height), -1);
-		drawTextWithShadow(Double.toString(sl.getValue()), x + font.getStringWidth(sl.getName()) + (ClickGUI.font.getValue() == 1 ? 8 : 12), (y + height) + 4 + (boost * height), 0xFF767676);
+		drawTextWithShadow(Double.toString(sl.getValue()), x + font.getStringWidth(sl.getName()) + (ModuleManager.getModuleByName("Font").isEnabled() ? 8 : 12), (y + height) + 4 + (boost * height), 0xFF767676);
 
 		if (sl.hasSubSettings())
 			drawText("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
@@ -304,7 +305,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), 0xCC232323);
 		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, x + 8 + (rectAdd > width ? (width-8) : rectAdd), (y + height) + height + (boost * height), (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR));
 		drawTextWithShadow(ssl.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
-		drawTextWithShadow(Double.toString(ssl.getValue()), x + font.getStringWidth(ssl.getName()) + (ClickGUI.font.getValue() == 1 ? 8 : 12), (y + height) + 4 + (boost * height), 0xFF767676);
+		drawTextWithShadow(Double.toString(ssl.getValue()), x + font.getStringWidth(ssl.getName()) + (ModuleManager.getModuleByName("Font").isEnabled() ? 8 : 12), (y + height) + 4 + (boost * height), 0xFF767676);
 	}
 	
 	public static void drawBind(Module m, int key, int x, int y) {
@@ -328,7 +329,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 
 		if (!m.isBinding()) {
 			drawTextWithShadow("Keybind", x + 7, (y + height) + 4 + (boost * height), -1);
-			drawTextWithShadow(m.getKeybind().getDisplayName().equalsIgnoreCase("NONE") ? "None" : m.getKeybind().getDisplayName(), x + (ClickGUI.font.getValue() == 1 ? 6 : 10) + font.getStringWidth("Keybind") + 3, (y + height) + 4 + (boost * height), 0xFF767676);
+			drawTextWithShadow(m.getKeybind().getDisplayName().equalsIgnoreCase("NONE") ? "None" : m.getKeybind().getDisplayName(), x + (ModuleManager.getModuleByName("Font").isEnabled() ? 6 : 10) + font.getStringWidth("Keybind") + 3, (y + height) + 4 + (boost * height), 0xFF767676);
 		}
 
 		else

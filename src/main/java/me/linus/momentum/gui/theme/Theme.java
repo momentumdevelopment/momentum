@@ -27,6 +27,7 @@ public abstract class Theme {
 	}
 	
 	public static final List<Theme> themes = new ArrayList<>();
+
 	public abstract void updateColors();
 
 	public abstract void drawTitles(String name, int left, int top);

@@ -53,7 +53,7 @@ public class EntityUtil implements MixinInterface {
         return entity instanceof EntityPigZombie || entity instanceof EntityWolf || entity instanceof EntityEnderman;
     }
 
-    public static boolean isLiving(final Entity e) {
+    public static boolean isLiving(Entity e) {
         return e instanceof EntityLivingBase;
     }
 
@@ -61,8 +61,8 @@ public class EntityUtil implements MixinInterface {
         return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(entity.posX, entity.posY, entity.posZ), false, true, false) == null;
     }
 
-    public static boolean isIntercepted(final BlockPos pos) {
-        for (final Entity entity : mc.world.loadedEntityList) {
+    public static boolean isIntercepted(BlockPos pos) {
+        for (Entity entity : mc.world.loadedEntityList) {
             if (new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox()))
                 return true;
         }
@@ -70,7 +70,7 @@ public class EntityUtil implements MixinInterface {
         return false;
     }
 
-    public static Vec3d interpolateEntity(final Entity entity, final float n) {
+    public static Vec3d interpolateEntity(Entity entity, float n) {
         return new Vec3d(entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * n, entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * n, entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * n);
     }
 
@@ -78,24 +78,24 @@ public class EntityUtil implements MixinInterface {
         return new Vec3d(entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) time, entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) time, entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) time);
     }
 
-    public static Vec3d getInterpolatedPos(final Entity entity, final float ticks) {
+    public static Vec3d getInterpolatedPos(Entity entity, float ticks) {
         return new Vec3d(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ).add(getInterpolatedAmount(entity, ticks));
     }
 
-    public static Vec3d getInterpolatedAmount(final Entity entity, final double x, final double y, final double z) {
+    public static Vec3d getInterpolatedAmount(Entity entity, double x, double y, double z) {
         return new Vec3d((entity.posX - entity.lastTickPosX) * x, (entity.posY - entity.lastTickPosY) * y, (entity.posZ - entity.lastTickPosZ) * z);
     }
 
-    public static Vec3d getInterpolatedAmount(final Entity entity, final double ticks) {
+    public static Vec3d getInterpolatedAmount(Entity entity, double ticks) {
         return getInterpolatedAmount(entity, ticks, ticks, ticks);
     }
 
-    public static double calculateDistanceWithPartialTicks(final double originalPos, final double finalPos, final float renderPartialTicks) {
+    public static double calculateDistanceWithPartialTicks(double originalPos, double finalPos, float renderPartialTicks) {
         return finalPos + (originalPos - finalPos) * mc.getRenderPartialTicks();
     }
 
-    public static Vec3d interpolateEntityByTicks(final Entity entity, float renderPartialTicks) {
-        return new Vec3d (calculateDistanceWithPartialTicks(entity.posX, entity.lastTickPosX, renderPartialTicks) - mc.getRenderManager().renderPosX, calculateDistanceWithPartialTicks(entity.posY, entity.lastTickPosY, renderPartialTicks) - mc.getRenderManager().renderPosY, calculateDistanceWithPartialTicks(entity.posZ, entity.lastTickPosZ, renderPartialTicks) - mc.getRenderManager().renderPosZ);
+    public static Vec3d interpolateEntityByTicks(Entity entity, float renderPartialTicks) {
+        return new Vec3d(calculateDistanceWithPartialTicks(entity.posX, entity.lastTickPosX, renderPartialTicks) - mc.getRenderManager().renderPosX, calculateDistanceWithPartialTicks(entity.posY, entity.lastTickPosY, renderPartialTicks) - mc.getRenderManager().renderPosY, calculateDistanceWithPartialTicks(entity.posZ, entity.lastTickPosZ, renderPartialTicks) - mc.getRenderManager().renderPosZ);
     }
 
     public static double getDistance(double x, double y, double z, double finalX, double finalY, double finalZ) {

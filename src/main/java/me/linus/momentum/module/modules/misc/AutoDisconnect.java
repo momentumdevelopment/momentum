@@ -22,7 +22,7 @@ public class AutoDisconnect extends Module {
     public static Slider health = new Slider("Health", 0.0D, 7.0D, 36.0D, 0);
     public static Checkbox noTotems = new Checkbox("No Totems", false);
     public static Checkbox visualRange = new Checkbox("Player in Range", false);
-    private static Keybind disconnectKey = new Keybind("Disconnect Key", -2);
+    public static Keybind disconnectKey = new Keybind("Disconnect Key", -2);
 
     @Override
     public void setup() {

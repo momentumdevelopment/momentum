@@ -37,12 +37,12 @@ public class Aura extends Module {
         super("Aura", Category.COMBAT, "Attacks entities");
     }
 
-    private static final Mode mode = new Mode("Mode", "Closest", "Priority", "Armor");
+    public static Mode mode = new Mode("Mode", "Closest", "Priority", "Armor");
 
     public static Checkbox attackCheck = new Checkbox("Attack Check", true);
-    private static final SubCheckbox players = new SubCheckbox(attackCheck, "Players", true);
-    private static final SubCheckbox animals = new SubCheckbox(attackCheck, "Animals", true);
-    private static final SubCheckbox mobs = new SubCheckbox(attackCheck, "Mobs", true);
+    public static SubCheckbox players = new SubCheckbox(attackCheck, "Players", true);
+    public static SubCheckbox animals = new SubCheckbox(attackCheck, "Animals", true);
+    public static SubCheckbox mobs = new SubCheckbox(attackCheck, "Mobs", true);
 
     public static Checkbox delay = new Checkbox("Delay", true);
     public static SubCheckbox useTicks = new SubCheckbox(delay, "Use Ticks", true);
@@ -52,9 +52,9 @@ public class Aura extends Module {
     public static Checkbox armorMelt = new Checkbox("Armor Melt", false);
 
     public static Mode weaponCheck = new Mode("Weapon", "Swing", "Damage");
-    private static final SubCheckbox autoSwitch = new SubCheckbox(weaponCheck, "Auto Switch", true);
-    private static final SubCheckbox swordOnly = new SubCheckbox(weaponCheck, "Sword Only", true);
-    private static final SubCheckbox thirtyTwoKOnly = new SubCheckbox(weaponCheck, "32K Only", false);
+    public static SubCheckbox autoSwitch = new SubCheckbox(weaponCheck, "Auto Switch", true);
+    public static SubCheckbox swordOnly = new SubCheckbox(weaponCheck, "Sword Only", true);
+    public static SubCheckbox thirtyTwoKOnly = new SubCheckbox(weaponCheck, "32K Only", false);
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubCheckbox cannotSee = new SubCheckbox(pause, "Target Cannot be Seen", false);

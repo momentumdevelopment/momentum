@@ -73,6 +73,6 @@ public class Render2DUtil implements MixinInterface {
         GL11.glDisable(3042);
         GL11.glRotatef(e.rotationYaw, 0F, 0F, 1.0F);
 
-        GL11.glPopMatrix( );
+        GL11.glPopMatrix();
     }
 }

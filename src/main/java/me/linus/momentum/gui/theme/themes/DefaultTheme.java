@@ -6,6 +6,7 @@ import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
+import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
@@ -23,6 +24,7 @@ import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
+import me.linus.momentum.util.world.Timer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -46,9 +48,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
     public static String name = "Default";
     public static int width = 105;
     public static int height = 14;
-    public static boolean pickingColor;
-    public static boolean pickingHue;
-    public static boolean pickingAlpha;
 
     public static Color finalColor;
     public static float finalAlpha = 0.2f;
@@ -65,7 +64,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
     @Override
     public void drawTitles(String name, int x, int y) {
         GuiScreen.drawRect(x - 2, y, (x + width + 2), y + height, ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR);
-        FontUtil.drawString(name, (x + ((x + width) - x) / 2 - (ClickGUI.font.getValue() == 1 ? Momentum.fontManager.getCustomFont().getStringWidth(name) : mc.fontRenderer.getStringWidth(name)) / 2), y + 3, -1);
+        FontUtil.drawString(name, (x + ((x + width) - x) / 2 - (ModuleManager.getModuleByName("Font").isEnabled() ? Momentum.fontManager.getCustomFont().getStringWidth(name) : mc.fontRenderer.getStringWidth(name)) / 2), y + 3, -1);
     }
 
     @Override
@@ -371,6 +370,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
     private static void drawSubMode(SubMode sm, int x, int y) {
         int color = 0xCC232323;
+
         if (GUIUtil.mouseOver(x + 8, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
             color = 0xCC383838;
 
@@ -592,12 +592,26 @@ public class DefaultTheme extends Theme implements MixinInterface {
                 subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[0], subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[1], subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[2]
         };
 
+        boolean pickingColor = false;
+        boolean pickingHue = false;
+        boolean pickingAlpha = false;
+
         int pickerWidth = 100;
         int pickerHeight = 100;
         int hueSliderWidth = pickerWidth + 3;
         int hueSliderHeight = 10;
         int alphaSliderWidth = pickerWidth;
         int alphaSliderHeight = 10;
+
+        if (GUIUtil.lheld && GUIUtil.mouseOver(pickerX, pickerY, pickerX + pickerWidth, pickerY + pickerHeight))
+            pickingColor = true;
+        if (GUIUtil.lheld && GUIUtil.mouseOver(hueSliderX, hueSliderY, hueSliderX + hueSliderWidth, hueSliderY + hueSliderHeight))
+            pickingHue = true;
+        if (GUIUtil.lheld && GUIUtil.mouseOver(alphaSliderX, alphaSliderY, alphaSliderX + alphaSliderWidth, alphaSliderY + alphaSliderHeight))
+            pickingAlpha = true;
+
+        if (!GUIUtil.lheld)
+            pickingColor = pickingHue = pickingAlpha = false;
 
         if (pickingHue) {
             if (hueSliderWidth > hueSliderHeight) {
@@ -645,16 +659,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
         int cursorY = (int) ((pickerY + pickerHeight) - color[2] * pickerHeight);
         GuiScreen.drawRect(cursorX - 2, cursorY - 2, cursorX + 2, cursorY + 2, -1);
         finalColor = alphaIntegrate(new Color(Color.HSBtoRGB(color[0], color[1], color[2])), finalAlpha);
-
-        if (GUIUtil.lheld && GUIUtil.mouseOver(pickerX, pickerY, pickerX + pickerWidth, pickerY + pickerHeight))
-            pickingColor = true;
-        if (GUIUtil.lheld && GUIUtil.mouseOver(hueSliderX, hueSliderY, hueSliderX + hueSliderWidth, hueSliderY + hueSliderHeight))
-            pickingHue = true;
-        if (GUIUtil.lheld && GUIUtil.mouseOver(alphaSliderX, alphaSliderY, alphaSliderX + alphaSliderWidth, alphaSliderY + alphaSliderHeight))
-            pickingAlpha = true;
-        
-        if (!GUIUtil.lheld)
-            pickingColor = pickingHue = pickingAlpha = false;
     }
 
     public static void drawPickerBase(int pickerX, int pickerY, int pickerWidth, int pickerHeight, float red, float green, float blue, float alpha) {
@@ -720,6 +724,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
     public static void drawAlphaSlider(int x, int y, int width, int height, float red, float green, float blue, float alpha) {
         boolean left = true;
         int checkerBoardSquareSize = height / 2;
+
         for (int squareIndex = -checkerBoardSquareSize; squareIndex < width; squareIndex += checkerBoardSquareSize) {
             if (!left) {
                 GuiScreen.drawRect(x + squareIndex, y, x + squareIndex + checkerBoardSquareSize, y + height, 0xFFFFFFFF);

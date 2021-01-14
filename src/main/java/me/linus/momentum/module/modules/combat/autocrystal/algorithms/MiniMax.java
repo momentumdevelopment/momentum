@@ -26,7 +26,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -109,7 +108,11 @@ public class MiniMax extends AutoCrystalAlgorithm {
                 float calculatedTargetDamage = AutoCrystal.placeCalc.getValue() == 0 ? CrystalUtil.getDamage(new Vec3d(calculatedPos.add(0.5, 1, 0.5)), tempPlayer) : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX(), calculatedPos.getY() + 1, calculatedPos.getZ()), tempPlayer);
                 float calculatedSelfDamage = mc.player.isCreative() ? 0 : CrystalUtil.getDamage(new Vec3d(calculatedPos.getX() + 0.5, calculatedPos.getY() + 1, calculatedPos.getZ() + 0.5), mc.player);
 
-                if (calculatedTargetDamage < AutoCrystal.minDamage.getValue())
+                double minCalculatedDamage = AutoCrystal.minDamage.getValue();
+                if (EnemyUtil.getHealth(tempPlayer) <= AutoCrystal.facePlaceHealth.getValue() || HoleUtil.isInHole(tempPlayer) && AutoCrystal.facePlaceHole.getValue() || EnemyUtil.getArmor(tempPlayer, AutoCrystal.armorMelt.getValue(), AutoCrystal.armorDurability.getValue()))
+                    minCalculatedDamage = 2;
+
+                if (calculatedTargetDamage < minCalculatedDamage || calculatedTargetDamage < tempDamage)
                     continue;
 
                 if (PlayerUtil.getHealth() - calculatedSelfDamage <= AutoCrystal.pauseHealth.getValue())

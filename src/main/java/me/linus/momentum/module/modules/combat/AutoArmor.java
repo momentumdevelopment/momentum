@@ -21,7 +21,7 @@ public class AutoArmor extends Module {
         super("AutoArmor", Category.COMBAT, "Automatically replaces armor");
     }
 
-    private static final Slider delay = new Slider("Delay", 0.0D, 2.0D, 10.0D, 0);
+    public static Slider delay = new Slider("Delay", 0.0D, 2.0D, 10.0D, 0);
     public static Checkbox curse = new Checkbox("Ignore Curse", true);
     public static Checkbox elytra = new Checkbox("Prefer Elytra", false);
 
@@ -66,16 +66,14 @@ public class AutoArmor extends Module {
             if (stack == null || !(stack.getItem() instanceof ItemArmor))
                 continue;
 
-            int armorType = ((ItemArmor) stack.getItem()).armorType.ordinal() - 2;
-
-            if (armorType == 2 && mc.player.inventory.armorItemInSlot(armorType).getItem().equals(Items.ELYTRA) && elytra.getValue())
+            if (((ItemArmor) stack.getItem()).armorType.ordinal() - 2 == 2 && mc.player.inventory.armorItemInSlot(((ItemArmor) stack.getItem()).armorType.ordinal() - 2).getItem().equals(Items.ELYTRA) && elytra.getValue())
                 continue;
 
             int armorValue = ((ItemArmor) stack.getItem()).damageReduceAmount;
 
-            if (armorValue > bestArmorValues[armorType]) {
-                bestArmorSlots[armorType] = slot;
-                bestArmorValues[armorType] = armorValue;
+            if (armorValue > bestArmorValues[((ItemArmor) stack.getItem()).armorType.ordinal() - 2]) {
+                bestArmorSlots[((ItemArmor) stack.getItem()).armorType.ordinal() - 2] = slot;
+                bestArmorValues[((ItemArmor) stack.getItem()).armorType.ordinal() - 2] = armorValue;
             }
         }
 

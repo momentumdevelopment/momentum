@@ -22,10 +22,6 @@ public class InventoryUtil implements MixinInterface {
         return mc.player.getHeldItemMainhand().getItem().equals(item) || mc.player.getHeldItemOffhand().getItem().equals(item);
     }
 
-    /**
-     * item movement
-     */
-
     public static void switchToSlot(int slot) {
         if (slot != -1 && mc.player.inventory.currentItem != slot)
             mc.player.inventory.currentItem = slot;
@@ -83,10 +79,6 @@ public class InventoryUtil implements MixinInterface {
             moveItemToOffhand(slot);
     }
 
-    /**
-     * item slot
-     */
-
     public static int getHotbarItemSlot(Item item) {
         for (int i = 0; i < 9; i++) {
             if (mc.player.inventory.getStackInSlot(i).getItem() == item)
@@ -125,18 +117,10 @@ public class InventoryUtil implements MixinInterface {
         return -1;
     }
 
-    /**
-     * item count
-     */
-
     public static int getItemCount(Item item) {
         int count = mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == item).mapToInt(ItemStack::getCount).sum();
         return count;
     }
-
-    /**
-     * item checks
-     */
 
     public static boolean Is32k(ItemStack stack) {
         if (stack.getEnchantmentTagList() != null) {

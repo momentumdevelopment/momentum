@@ -19,10 +19,10 @@ public class AntiLag extends Module {
         super("AntiLag", Category.MISC, "Prevents particles from lagging your game");
     }
 
-    private static final Checkbox particles = new Checkbox("Particles", true);
-    private static final Checkbox fireworks = new Checkbox("Fireworks", true);
-    private static final Checkbox offhand = new Checkbox("Offhand", true);
-    private static final Checkbox slime = new Checkbox("Slime", false);
+    public static Checkbox particles = new Checkbox("Particles", true);
+    public static Checkbox fireworks = new Checkbox("Fireworks", true);
+    public static Checkbox offhand = new Checkbox("Offhand", true);
+    public static Checkbox slime = new Checkbox("Slime", false);
 
     @Override
     public void setup() {

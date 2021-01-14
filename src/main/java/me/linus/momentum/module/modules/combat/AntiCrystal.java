@@ -35,13 +35,12 @@ public class AntiCrystal extends Module {
 
     @Override
     public void setup() {
-        this.addSetting(placeRange);
-        this.addSetting(placeDelay);
+        addSetting(placeRange);
+        addSetting(placeDelay);
     }
 
-    private int pressurePlateSlot;
-
-    private Timer placeTimer = new Timer();
+    int pressurePlateSlot;
+    Timer placeTimer = new Timer();
 
     @Override
     public void onEnable() {

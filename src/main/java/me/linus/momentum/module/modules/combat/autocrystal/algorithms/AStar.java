@@ -26,7 +26,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -115,7 +114,11 @@ public class AStar extends AutoCrystalAlgorithm {
                     continue;
                 }
 
-                if (calculatedTargetDamage < AutoCrystal.minDamage.getValue())
+                double minCalculatedDamage = AutoCrystal.minDamage.getValue();
+                if (EnemyUtil.getHealth(tempPlayer) <= AutoCrystal.facePlaceHealth.getValue() || HoleUtil.isInHole(tempPlayer) && AutoCrystal.facePlaceHole.getValue() || EnemyUtil.getArmor(tempPlayer, AutoCrystal.armorMelt.getValue(), AutoCrystal.armorDurability.getValue()))
+                    minCalculatedDamage = 2;
+
+                if (calculatedTargetDamage < minCalculatedDamage || calculatedTargetDamage < tempDamage)
                     continue;
 
                 if (PlayerUtil.getHealth() - calculatedSelfDamage <= AutoCrystal.pauseHealth.getValue())

@@ -32,11 +32,11 @@ public class HoleFill extends Module {
         super("HoleFill", Category.COMBAT, "Automatically fills in nearby holes");
     }
 
-    private static final Mode mode = new Mode("Mode", "Obsidian", "Ender Chest", "Web");
+    public static Mode mode = new Mode("Mode", "Obsidian", "Ender Chest", "Web");
     public static Slider range = new Slider("Range", 0.0D, 2.0D, 10.0D, 0);
-    private static final Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
-    private static final Checkbox rotate = new Checkbox("Rotate", true);
-    private static final Checkbox disable = new Checkbox("Disables", false);
+    public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
+    public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubColor colorPicker = new SubColor(color, new Color(255, 0, 0, 55));
@@ -83,7 +83,7 @@ public class HoleFill extends Module {
             RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
     }
 
-    private Block getItem() {
+    public Block getItem() {
         switch (mode.getValue()) {
             case 0:
                 return Blocks.OBSIDIAN;

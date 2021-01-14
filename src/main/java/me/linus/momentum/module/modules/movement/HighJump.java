@@ -15,11 +15,13 @@ public class HighJump extends Module {
         super("HighJump", Category.MOVEMENT, "Allows you to jump higher");
     }
 
-    private static final Checkbox packet = new Checkbox("Packet", true);
+    public static Checkbox horse = new Checkbox("Horse", true);
+    public static Checkbox packet = new Checkbox("Packet", true);
     public static Slider height = new Slider("Height", 0.0D, 1.5D, 10.0D, 1);
 
     @Override
     public void setup() {
+        addSetting(horse);
         addSetting(packet);
         addSetting(height);
     }
@@ -28,6 +30,9 @@ public class HighJump extends Module {
     public void onUpdate() {
         if (nullCheck())
             return;
+
+        if (horse.getValue())
+            mc.player.horseJumpPower = 1;
 
         if (mc.gameSettings.keyBindJump.isPressed()) {
             mc.player.motionY = height.getValue();

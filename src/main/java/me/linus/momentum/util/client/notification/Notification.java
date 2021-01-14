@@ -9,21 +9,19 @@ import me.linus.momentum.util.world.Timer;
 
 public class Notification {
 
-    private final String message;
-    private final long completionTime;
+    private String message;
     public float remainingAnimation = -1.0f;
 
     Timer completionTimer = new Timer();
 
     public Notification(String message) {
         this.message = message;
-        this.completionTime = 2500;
 
         completionTimer.reset();
     }
 
     public boolean isComplete() {
-        return completionTimer.passed(completionTime, Timer.Format.System);
+        return completionTimer.passed(2500, Timer.Format.System);
     }
 
     public String getMessage() {

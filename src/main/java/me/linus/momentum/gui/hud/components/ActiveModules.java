@@ -28,8 +28,8 @@ public class ActiveModules extends HUDComponent {
         super("ActiveModules", 200, 2);
     }
 
-    private static final Mode mode = new Mode("Mode", "AlphaStep", "Rainbow", "Rainbow-Static", "Category", "Static");
-    private static final Checkbox background = new Checkbox("Background", false);
+    public static Mode mode = new Mode("Mode", "AlphaStep", "Rainbow", "Rainbow-Static", "Category", "Static");
+    public static Checkbox background = new Checkbox("Background", false);
 
     @Override
     public void setup() {
@@ -37,7 +37,7 @@ public class ActiveModules extends HUDComponent {
         addSetting(background);
     }
 
-    private int count;
+    int count;
 
     @Override
     public void renderComponent() {
@@ -90,7 +90,7 @@ public class ActiveModules extends HUDComponent {
     public int generateColor(Module mod) {
         switch (mode.getValue()) {
             case 0:
-                return ColorUtil.alphaStep(new Color((int) Colors.clientPicker.getRed(), (int) Colors.clientPicker.getGreen(), (int) Colors.clientPicker.getBlue()), 50, (count * 2) + 10).getRGB();
+                return ColorUtil.alphaStep(new Color(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getGreen(), Colors.clientPicker.getColor().getBlue()), 50, (count * 2) + 10).getRGB();
             case 1:
                 return ColorUtil.staticRainbow().getRGB();
             case 2:
