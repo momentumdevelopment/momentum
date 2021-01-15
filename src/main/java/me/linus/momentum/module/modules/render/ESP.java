@@ -22,7 +22,6 @@ import java.awt.*;
 public class ESP extends Module {
     public ESP() {
         super("ESP", Category.RENDER, "Highlights entities");
-        this.enable();
     }
 
     public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "Wire-Frame", "CS:GO", "Normal", "Textured", "Box");

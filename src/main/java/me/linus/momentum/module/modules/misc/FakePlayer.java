@@ -1,14 +1,10 @@
 package me.linus.momentum.module.modules.misc;
 
-import com.mojang.authlib.GameProfile;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.world.WorldUtil;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
-
-import java.util.UUID;
 
 /**
  * @author linustouchtips

@@ -37,7 +37,7 @@ public class Aura extends Module {
         super("Aura", Category.COMBAT, "Attacks entities");
     }
 
-    public static Mode mode = new Mode("Mode", "Closest", "Priority", "Armor");
+    public static Mode mode = new Mode("Mode", "Closest", "Health", "Armor");
 
     public static Checkbox attackCheck = new Checkbox("Attack Check", true);
     public static SubCheckbox players = new SubCheckbox(attackCheck, "Players", true);
