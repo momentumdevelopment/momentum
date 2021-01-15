@@ -18,8 +18,8 @@ public class Rotation extends Module {
         super("Rotation", Category.MOVEMENT, "Locks player rotation");
     }
 
-    private static final Checkbox playerYaw = new Checkbox("Yaw", true);
-    private static final Checkbox playerPitch = new Checkbox("Pitch", true);
+    public static Checkbox playerYaw = new Checkbox("Yaw", true);
+    public static Checkbox playerPitch = new Checkbox("Pitch", true);
 
     @Override
     public void setup() {
@@ -27,21 +27,10 @@ public class Rotation extends Module {
         addSetting(playerPitch);
     }
 
-    BlockPos northBlockPos;
-    BlockPos southBlockPos;
-    BlockPos eastBlockPos;
-    BlockPos westBlockPos;
-
     @Override
     public void onUpdate() {
         if (nullCheck())
             return;
-
-        Vec3d vec3d = EntityUtil.getInterpolatedPos(mc.player, 0);
-        northBlockPos = new BlockPos(vec3d).north();
-        southBlockPos = new BlockPos(vec3d).south();
-        eastBlockPos = new BlockPos(vec3d).east();
-        westBlockPos = new BlockPos(vec3d).west();
 
         int angle = 360 / 4;
 

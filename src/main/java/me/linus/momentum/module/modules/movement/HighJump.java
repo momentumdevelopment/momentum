@@ -15,15 +15,15 @@ public class HighJump extends Module {
         super("HighJump", Category.MOVEMENT, "Allows you to jump higher");
     }
 
-    public static Checkbox horse = new Checkbox("Horse", true);
-    public static Checkbox packet = new Checkbox("Packet", true);
     public static Slider height = new Slider("Height", 0.0D, 1.5D, 10.0D, 1);
+    public static Checkbox packet = new Checkbox("Packet", true);
+    public static Checkbox horse = new Checkbox("Horse", true);
 
     @Override
     public void setup() {
-        addSetting(horse);
-        addSetting(packet);
         addSetting(height);
+        addSetting(packet);
+        addSetting(horse);
     }
 
     @Override

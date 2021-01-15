@@ -39,7 +39,7 @@ public class Blink extends Module {
             return;
 
         if (playerModel.getValue())
-            WorldUtil.createFakePlayer(entity, true, true, true);
+            WorldUtil.createFakePlayer(true,null, true, true, true);
 
         MessageUtil.sendClientMessage("Cancelling all player packets!");
     }

@@ -191,7 +191,7 @@ public class Surround extends Module {
         return standardSurround;
     }
 
-    public List<Vec3d> standardSurround = new ArrayList<>(Arrays.asList(
+    List<Vec3d> standardSurround = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, 0),
             new Vec3d(1, 0, 0),
             new Vec3d(-1, 0, 0),
@@ -199,7 +199,7 @@ public class Surround extends Module {
             new Vec3d(0, 0, -1)
     ));
 
-    public List<Vec3d> fullSurround = new ArrayList<>(Arrays.asList(
+    List<Vec3d> fullSurround = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, 0),
             new Vec3d(1, -1, 0),
             new Vec3d(0, -1, 1),
@@ -211,7 +211,7 @@ public class Surround extends Module {
             new Vec3d(0, 0, -1)
     ));
 
-    public List<Vec3d> antiCitySurround = new ArrayList<>(Arrays.asList(
+    List<Vec3d> antiCitySurround = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, 0),
             new Vec3d(1, 0, 0),
             new Vec3d(-1, 0, 0),

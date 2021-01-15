@@ -18,7 +18,7 @@ public class NoRotate  extends Module {
         super("NoRotate", Category.PLAYER, "Prevents the server from rotating you");
     }
 
-    private static final Checkbox strict = new Checkbox("NCP Strict", false);
+    public static Checkbox strict = new Checkbox("NCP Strict", false);
 
     @Override
     public void setup() {

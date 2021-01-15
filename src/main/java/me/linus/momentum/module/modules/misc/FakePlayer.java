@@ -20,7 +20,7 @@ public class FakePlayer extends Module {
         super("FakePlayer", Category.MISC, "Creates a fake motionless player");
     }
 
-    private static final Mode name = new Mode("Name", "linustouchtips24", "popbob", "Fit", "GrandOlive", "S8N", "Papa_Quill");
+    public static Mode name = new Mode("Name", "GrandOlive", "popbob", "Fit", "S8N", "Papa_Quill", "linustouchtips24");
     public static Checkbox inventory = new Checkbox("Copy Inventory", true);
     public static Checkbox angles = new Checkbox("Copy Angles", true);
 
@@ -31,23 +31,29 @@ public class FakePlayer extends Module {
         addSetting(angles);
     }
 
+    String fakeName = "GrandOlive";
+
     public void onEnable() {
         if (nullCheck())
             return;
 
-        String fakeName = "None";
+        WorldUtil.createFakePlayer(false, fakeName, inventory.getValue(), angles.getValue(), true);
+        MessageUtil.sendClientMessage("Spawning fake player!");
+    }
+
+    @Override
+    public void onUpdate() {
+        if (nullCheck())
+            return;
+
         switch (name.getValue()) {
-            case 0:
-                fakeName = "linustouchtips24";
-                break;
             case 1:
-                fakeName = "popbob";
                 break;
             case 2:
-                fakeName = "Fit";
+                fakeName = "popbob";
                 break;
             case 3:
-                fakeName = "GrandOlive";
+                fakeName = "Fit";
                 break;
             case 4:
                 fakeName = "S8N";
@@ -55,10 +61,10 @@ public class FakePlayer extends Module {
             case 5:
                 fakeName = "Papa_Quill";
                 break;
+            case 0:
+                fakeName = "linustouchtips24";
+                break;
         }
-
-        WorldUtil.createFakePlayer(new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("873e2766-9254-49bc-89d7-5d4d585ad29d"), fakeName)), inventory.getValue(), angles.getValue(), true);
-        MessageUtil.sendClientMessage("Spawning fake player!");
     }
 
     @Override
