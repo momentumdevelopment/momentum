@@ -17,7 +17,7 @@ public class AntiAim extends Module {
         super("AntiAim", Category.PLAYER, "Makes you a harder target");
     }
 
-    private static final Mode mode = new Mode("Mode", "Spin", "HeadSpin");
+    public static Mode mode = new Mode("Mode", "Spin", "HeadSpin");
     public static Slider speed = new Slider("Speed", 0.0D, 20.0D, 50.0D, 1);
 
     @Override

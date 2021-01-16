@@ -56,8 +56,8 @@ public class Notifications extends HUDComponent {
                 if (notification.remainingAnimation > FontUtil.getStringWidth(notification.getMessage()) && !notification.isComplete())
                     notification.remainingAnimation = FontUtil.getStringWidth(notification.getMessage());
                 
-                GuiScreen.drawRect(this.x - 2, this.y - 2 + (count * 14), (int) (this.x + FontUtil.getStringWidth(notification.getMessage())), (int) (this.y + FontUtil.getFontHeight()) + (count * 14), new Color(0, 0, 0, 120).getRGB());
-                FontUtil.drawString(notification.getMessage(), this.x, this.y + (count * 14), -1);
+                GuiScreen.drawRect(this.x - 2, this.y - 2 - (count * 14), (int) (this.x + FontUtil.getStringWidth(notification.getMessage())), (int) (this.y + FontUtil.getFontHeight()) - (count * 14), new Color(0, 0, 0, 120).getRGB());
+                FontUtil.drawString(notification.getMessage(), this.x, this.y - (count * 14), -1);
 
                 count++;
             });

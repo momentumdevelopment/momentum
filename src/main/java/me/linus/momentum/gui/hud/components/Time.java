@@ -20,8 +20,7 @@ public class Time extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        final String time = new SimpleDateFormat("h:mm a").format(new Date());
-        FontUtil.drawString(time, this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
-        width = (int) (FontUtil.getStringWidth(time) + 2);
+        FontUtil.drawString(new SimpleDateFormat("h:mm a").format(new Date()), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
+        width = (int) (FontUtil.getStringWidth(new SimpleDateFormat("h:mm a").format(new Date())) + 2);
     }
 }

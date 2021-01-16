@@ -34,8 +34,8 @@ public class SelfTrap extends Module {
     public static Mode mode = new Mode("Mode", "Head", "Anti-FacePlace", "Full");
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
-    private static Checkbox rotate = new Checkbox("Rotate", true);
-    private static Checkbox disable = new Checkbox("Disables", false);
+    public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubColor colorPicker = new SubColor(color, new Color(109, 231, 217, 121));
@@ -111,18 +111,18 @@ public class SelfTrap extends Module {
         return headTrap;
     }
 
-    private List<Vec3d> headTrap = new ArrayList<>(Arrays.asList(
+    List<Vec3d> headTrap = new ArrayList<>(Arrays.asList(
             new Vec3d(0, 2, 0)
     ));
 
-    private List<Vec3d> faceTrap = new ArrayList<>(Arrays.asList(
+    List<Vec3d> faceTrap = new ArrayList<>(Arrays.asList(
             new Vec3d(0, 1, -1),
             new Vec3d(1, 1, 0),
             new Vec3d(0, 1, 1),
             new Vec3d(-1, 1, 0)
     ));
 
-    private List<Vec3d> fullTrap = new ArrayList<>(Arrays.asList(
+    List<Vec3d> fullTrap = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, -1),
             new Vec3d(1, -1, 0),
             new Vec3d(0, -1, 1),

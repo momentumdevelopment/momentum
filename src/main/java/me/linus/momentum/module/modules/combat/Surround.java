@@ -48,7 +48,7 @@ public class Surround extends Module {
     public static Checkbox chorusSave = new Checkbox("Chorus Save", false);
 
     public static Checkbox renderSurround = new Checkbox("Render", true);
-    public static SubColor colorPicker = new SubColor(renderSurround, new Color(255, 0, 0, 55));
+    public static SubColor colorPicker = new SubColor(renderSurround, new Color(0, 255, 0, 55));
 
     @Override
     public void setup() {
@@ -67,11 +67,7 @@ public class Surround extends Module {
     boolean hasPlaced;
     Vec3d center = Vec3d.ZERO;
     int blocksPlaced = 0;
-
-    BlockPos northBlockPos;
-    BlockPos southBlockPos;
-    BlockPos eastBlockPos;
-    BlockPos westBlockPos;
+    BlockPos renderBlock;
 
     @Override
     public void onEnable() {
@@ -104,10 +100,6 @@ public class Surround extends Module {
             return;
 
         Vec3d vec3d = EntityUtil.getInterpolatedPos(mc.player, 0);
-        northBlockPos = new BlockPos(vec3d).north();
-        southBlockPos = new BlockPos(vec3d).south();
-        eastBlockPos = new BlockPos(vec3d).east();
-        westBlockPos = new BlockPos(vec3d).west();
 
         switch (disable.getValue()) {
             case 0:
@@ -144,6 +136,7 @@ public class Surround extends Module {
                     InventoryUtil.switchToSlot(InventoryUtil.getAnyBlockInHotbar());
 
                 BlockUtil.placeBlock(blockPos, rotate.getValue());
+                renderBlock = blockPos;
                 InventoryUtil.switchToSlot(oldInventorySlot);
                 blocksPlaced++;
 
@@ -155,27 +148,8 @@ public class Surround extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        if (renderSurround.getValue()) {
-            if (northBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(northBlockPos, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
-            else if (northBlockPos != null)
-                RenderUtil.drawBoxBlockPos(northBlockPos, 0, new Color(255, 0, 0, colorPicker.getColor().getAlpha()), RenderBuilder.renderMode.Fill);
-
-            if (westBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(westBlockPos, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
-            else if (westBlockPos != null)
-                RenderUtil.drawBoxBlockPos(westBlockPos, 0, new Color(255, 0, 0, colorPicker.getColor().getAlpha()), RenderBuilder.renderMode.Fill);
-
-            if (southBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(southBlockPos, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
-            else if (southBlockPos != null)
-                RenderUtil.drawBoxBlockPos(southBlockPos, 0, new Color(255, 0, 0, colorPicker.getAlpha()), RenderBuilder.renderMode.Fill);
-
-            if (eastBlockPos != null && (mc.world.getBlockState(southBlockPos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(southBlockPos).getBlock() == Blocks.BEDROCK))
-                RenderUtil.drawBoxBlockPos(eastBlockPos, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
-            else if (eastBlockPos != null)
-                RenderUtil.drawBoxBlockPos(eastBlockPos, 0, new Color(255, 0, 0, colorPicker.getColor().getAlpha()), RenderBuilder.renderMode.Fill);
-        }
+        if (renderSurround.getValue() && renderBlock != null)
+            RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Outline);
     }
 
     public List<Vec3d> getSurround() {
@@ -191,7 +165,7 @@ public class Surround extends Module {
         return standardSurround;
     }
 
-    public List<Vec3d> standardSurround = new ArrayList<>(Arrays.asList(
+    List<Vec3d> standardSurround = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, 0),
             new Vec3d(1, 0, 0),
             new Vec3d(-1, 0, 0),
@@ -199,7 +173,7 @@ public class Surround extends Module {
             new Vec3d(0, 0, -1)
     ));
 
-    public List<Vec3d> fullSurround = new ArrayList<>(Arrays.asList(
+    List<Vec3d> fullSurround = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, 0),
             new Vec3d(1, -1, 0),
             new Vec3d(0, -1, 1),
@@ -211,7 +185,7 @@ public class Surround extends Module {
             new Vec3d(0, 0, -1)
     ));
 
-    public List<Vec3d> antiCitySurround = new ArrayList<>(Arrays.asList(
+    List<Vec3d> antiCitySurround = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, 0),
             new Vec3d(1, 0, 0),
             new Vec3d(-1, 0, 0),

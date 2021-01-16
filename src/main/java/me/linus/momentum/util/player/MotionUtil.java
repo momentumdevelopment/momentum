@@ -25,7 +25,7 @@ public class MotionUtil implements MixinInterface {
     }
 
     public static boolean hasMotion() {
-        return mc.player.motionX != 0.0 && mc.player.motionZ != 0.0 && mc.player.motionY != 0.0;
+        return mc.player.motionX != 0.0 || mc.player.motionZ != 0.0 || mc.player.motionY != 0.0;
     }
 
     public static double calcMoveYaw(float yawIn) {

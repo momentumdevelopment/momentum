@@ -26,7 +26,7 @@ public class NoSlow extends Module {
         super("NoSlow", Category.MOVEMENT, "Allows you to move at normal speeds when using an item");
     }
 
-    private static final Mode mode = new Mode("Mode", "Normal", "2b2t");
+    public static Mode mode = new Mode("Mode", "Normal", "2b2t");
     public static Checkbox inventoryMove = new Checkbox("Inventory Move", true);
     public static SubCheckbox guiMove = new SubCheckbox(inventoryMove, "Custom GUI's", true);
 
@@ -43,12 +43,9 @@ public class NoSlow extends Module {
         if (nullCheck())
             return;
 
-        if (mode.getValue() == 1) {
-            Item item = mc.player.getActiveItemStack().getItem();
-            if (sneaking && ((!mc.player.isHandActive() && item instanceof ItemFood || item instanceof ItemBow || item instanceof ItemPotion) || (!(item instanceof ItemFood) || !(item instanceof ItemBow) || !(item instanceof ItemPotion)))) {
-                mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
-                sneaking = false;
-            }
+        if (sneaking && ((!mc.player.isHandActive() && mc.player.getActiveItemStack().getItem() instanceof ItemFood || mc.player.getActiveItemStack().getItem() instanceof ItemBow || mc.player.getActiveItemStack().getItem() instanceof ItemPotion) || (!(mc.player.getActiveItemStack().getItem() instanceof ItemFood) || !(mc.player.getActiveItemStack().getItem() instanceof ItemBow) || !(mc.player.getActiveItemStack().getItem() instanceof ItemPotion))) && mode.getValue() == 1) {
+            mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
+            sneaking = false;
         }
 
         if (mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat) && inventoryMove.getValue()) {
@@ -77,21 +74,17 @@ public class NoSlow extends Module {
 
     @SubscribeEvent
     public void onUseItem(LivingEntityUseItemEvent event) {
-        if (mode.getValue() == 1) {
-            if (!sneaking) {
-                mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
-                sneaking = true;
-            }
+        if (!sneaking && mode.getValue() == 1) {
+            mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
+            sneaking = true;
         }
     }
 
     @SubscribeEvent
     public void onInputUpdate(InputUpdateEvent event) {
-        if (mode.getValue() == 0) {
-            if (mc.player.isHandActive() && !mc.player.isRiding()) {
-                event.getMovementInput().moveStrafe *= 5;
-                event.getMovementInput().moveForward *= 5;
-            }
+        if (mc.player.isHandActive() && !mc.player.isRiding() && mode.getValue() == 0) {
+            event.getMovementInput().moveStrafe *= 5;
+            event.getMovementInput().moveForward *= 5;
         }
     }
 }

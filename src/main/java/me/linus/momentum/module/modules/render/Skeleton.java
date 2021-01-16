@@ -33,7 +33,7 @@ public class Skeleton extends Module {
     public static SubSlider blue = new SubSlider(color, "Blue", 0.0D, 255.0D, 255.0D, 0);
     public static SubSlider alpha = new SubSlider(color, "Alpha", 0.0D, 255.0D, 255.0D, 0);
 
-    private static final Slider lineWidth = new Slider("Line Width", 0.0D, 1.0D, 5.0D, 1);
+    public static Slider lineWidth = new Slider("Line Width", 0.0D, 1.0D, 5.0D, 1);
 
     @Override
     public void setup() {

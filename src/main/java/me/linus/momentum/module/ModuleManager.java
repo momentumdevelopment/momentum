@@ -63,6 +63,7 @@ public class ModuleManager implements MixinInterface {
 			new Blink(),
 			new ExtraSlots(),
 			new FastPlace(),
+			new FreeCam(),
 			new HandProgress(),
 			new LiquidInteract(),
 			new NoEntityTrace(),

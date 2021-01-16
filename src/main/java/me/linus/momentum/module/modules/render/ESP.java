@@ -22,7 +22,6 @@ import java.awt.*;
 public class ESP extends Module {
     public ESP() {
         super("ESP", Category.RENDER, "Highlights entities");
-        this.enable();
     }
 
     public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "Wire-Frame", "CS:GO", "Normal", "Textured", "Box");
@@ -35,6 +34,9 @@ public class ESP extends Module {
 
     public static Checkbox mobs = new Checkbox("Mobs", true);
     public static SubColor mobsPicker = new SubColor(mobs, new Color(131, 19, 199));
+
+    public static Checkbox items = new Checkbox("Items", true);
+    public static SubColor itemsPicker = new SubColor(items, new Color(199, 196, 19));
 
     public static Checkbox vehicles = new Checkbox("Vehicles", true);
     public static SubColor vehiclePicker = new SubColor(vehicles, new Color(199, 103, 19));

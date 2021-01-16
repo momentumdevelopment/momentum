@@ -30,8 +30,8 @@ public class AntiCrystal extends Module {
         super("AntiCrystal", Category.COMBAT, "Minimises crystal damage with pressure plates");
     }
 
-    public static final Slider placeRange = new Slider("Place Range", 0.0, 5.5, 10.0, 1);
-    public static final Slider placeDelay = new Slider("Place Delay", 0, 2, 20, 1);
+    public static Slider placeRange = new Slider("Place Range", 0.0, 5.5, 10.0, 1);
+    public static Slider placeDelay = new Slider("Place Delay", 0, 2, 20, 1);
 
     @Override
     public void setup() {

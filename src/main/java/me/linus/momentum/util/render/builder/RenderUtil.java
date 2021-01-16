@@ -225,44 +225,4 @@ public class RenderUtil implements MixinInterface {
         GlStateManager.enableTexture2D();
         GlStateManager.popMatrix();
     }
-
-    /**
-     * 2D rendering
-     */
-
-    public static void drawHitMarkers(Color color) {
-        ScaledResolution resolution = new ScaledResolution(mc);
-        drawLine(resolution.getScaledWidth() / 2.0F - 4.0F, resolution.getScaledHeight() / 2.0F - 4.0F, resolution.getScaledWidth() / 2.0F - 8.0F, resolution.getScaledHeight() / 2.0F - 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
-        drawLine(resolution.getScaledWidth() / 2.0F + 4.0F, resolution.getScaledHeight() / 2.0F - 4.0F, resolution.getScaledWidth() / 2.0F + 8.0F, resolution.getScaledHeight() / 2.0F - 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
-        drawLine(resolution.getScaledWidth() / 2.0F - 4.0F, resolution.getScaledHeight() / 2.0F + 4.0F, resolution.getScaledWidth() / 2.0F - 8.0F, resolution.getScaledHeight() / 2.0F + 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
-        drawLine(resolution.getScaledWidth() / 2.0F + 4.0F, resolution.getScaledHeight() / 2.0F + 4.0F, resolution.getScaledWidth() / 2.0F + 8.0F, resolution.getScaledHeight() / 2.0F + 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
-    }
-
-    public static void drawLine(float x, float y, float x1, float y1, float thickness, int hex) {
-        float red = (hex >> 16 & 0xFF) / 255.0F;
-        float green = (hex >> 8 & 0xFF) / 255.0F;
-        float blue = (hex & 0xFF) / 255.0F;
-        float alpha = (hex >> 24 & 0xFF) / 255.0F;
-        GlStateManager.pushMatrix();
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlpha();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.shadeModel(7425);
-        GL11.glLineWidth(thickness);
-        GL11.glEnable(2848);
-        GL11.glHint(3154, 4354);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(3, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos(x, y, 0.0D).color(red, green, blue, alpha).endVertex();
-        bufferbuilder.pos(x1, y1, 0.0D).color(red, green, blue, alpha).endVertex();
-        tessellator.draw();
-        GlStateManager.shadeModel(7424);
-        GL11.glDisable(2848);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
-        GlStateManager.popMatrix();
-    }
 }

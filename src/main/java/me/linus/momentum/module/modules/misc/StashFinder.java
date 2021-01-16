@@ -37,12 +37,12 @@ public class StashFinder extends Module {
         super("StashFinder", Category.MISC, "Automatically finds stashes and logs them");
     }
 
-    private static final Mode mode = new Mode("Mode", "Find", "Log", "Both");
-    private static final Checkbox chests = new Checkbox("Chests", true);
-    private static final Checkbox shulkers = new Checkbox("Shulkers", true);
+    public static Mode mode = new Mode("Mode", "Find", "Log", "Both");
+    public static Checkbox chests = new Checkbox("Chests", true);
+    public static Checkbox shulkers = new Checkbox("Shulkers", true);
 
-    private static final Checkbox rotate = new Checkbox("Rotate", true);
-    private static final SubSlider delay = new SubSlider(rotate, "Delay Before Rotate", 0.0D, 120.0D, 600.0D, 0);
+    public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static SubSlider delay = new SubSlider(rotate, "Delay Before Rotate", 0.0D, 120.0D, 600.0D, 0);
 
     @Override
     public void setup() {

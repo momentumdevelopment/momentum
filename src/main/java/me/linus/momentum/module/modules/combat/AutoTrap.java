@@ -32,13 +32,13 @@ public class AutoTrap extends Module {
         super("AutoTrap", Category.COMBAT, "Automatically traps nearby players");
     }
 
-    private static final Mode mode = new Mode("Mode", "Full", "City", "Bed");
+    public static Mode mode = new Mode("Mode", "Full", "City", "Bed");
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
-    private static final Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
-    private static final Checkbox rotate = new Checkbox("Rotate", true);
-    private static final Checkbox disable = new Checkbox("Disables", true);
+    public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
+    public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static Checkbox disable = new Checkbox("Disables", true);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubColor colorPicker = new SubColor(color, new Color(255, 0, 0, 55));
@@ -79,7 +79,7 @@ public class AutoTrap extends Module {
         int blocksPlaced = 0;
 
         for (Vec3d autoTrapBox : getTrap()) {
-            final EntityPlayer target = WorldUtil.getClosestPlayer(range.getValue());
+            EntityPlayer target = WorldUtil.getClosestPlayer(range.getValue());
 
             if (target != null) {
                 BlockPos blockPos = new BlockPos(autoTrapBox.add(target.getPositionVector()));
@@ -123,7 +123,7 @@ public class AutoTrap extends Module {
         return fullTrap;
     }
 
-    private final List<Vec3d> fullTrap = new ArrayList<>(Arrays.asList(
+     List<Vec3d> fullTrap = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, -1),
             new Vec3d(1, -1, 0),
             new Vec3d(0, -1, 1),
@@ -141,7 +141,7 @@ public class AutoTrap extends Module {
             new Vec3d(0, 2, 0)
     ));
 
-    private final List<Vec3d> cityTrap = new ArrayList<>(Arrays.asList(
+    List<Vec3d> cityTrap = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, -1),
             new Vec3d(1, -1, 0),
             new Vec3d(0, -1, 1),
@@ -159,7 +159,7 @@ public class AutoTrap extends Module {
             new Vec3d(0, 2, 0)
     ));
 
-    private final List<Vec3d> bedTrap = new ArrayList<>(Arrays.asList(
+    List<Vec3d> bedTrap = new ArrayList<>(Arrays.asList(
             new Vec3d(0, 0, -1),
             new Vec3d(1, 0, 0),
             new Vec3d(0, 0, 1),

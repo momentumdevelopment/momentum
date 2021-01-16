@@ -40,7 +40,7 @@ public class Quiver extends Module {
         addSetting(toggle);
     }
 
-    private int randomVariation;
+     int randomVariation;
 
     public void onUpdate() {
         PotionEffect speedEffect = mc.player.getActivePotionEffect(Potion.getPotionById(1));
@@ -94,7 +94,7 @@ public class Quiver extends Module {
             this.disable();
     }
 
-    private boolean isArrowInInventory(String type) {
+     boolean isArrowInInventory(String type) {
         boolean inInv = false;
         for (int i = 0; i < 36; i++) {
             ItemStack itemStack = mc.player.inventory.getStackInSlot(i);
@@ -110,7 +110,7 @@ public class Quiver extends Module {
         return inInv;
     }
 
-    private void switchArrow(int oldSlot) {
+     void switchArrow(int oldSlot) {
         MessageUtil.sendClientMessage("Switching arrows!");
         int bowSlot = mc.player.inventory.currentItem;
         int placeSlot = bowSlot +1;

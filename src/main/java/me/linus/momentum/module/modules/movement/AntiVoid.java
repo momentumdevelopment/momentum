@@ -15,7 +15,7 @@ public class AntiVoid extends Module {
         super("AntiVoid", Category.MOVEMENT, "Pulls you out of the void");
     }
 
-    private static final Mode mode = new Mode("Mode", "Float", "Freeze", "SlowFall");
+    public static Mode mode = new Mode("Mode", "Float", "Freeze", "SlowFall");
 
     @Override
     public void setup() {
