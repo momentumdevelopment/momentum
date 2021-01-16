@@ -35,22 +35,6 @@ compileJava {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-minecraft {
-    version = "1.12.2-14.23.5.2845"
-    runDir = "run"
-    mappings = "snapshot_20171003"
-    coreMod = 'me.linus.momentum.mixin.MixinLoader'
-    makeObfSourceJar = false
-}
-
-jar.manifest.attributes(
-        'FMLCorePluginContainsFMLMod': true,
-        'FMLCorePlugin': 'me.linus.momentum.mixin.MixinLoader',
-        'ForceLoadAsMod': true,
-        'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-        'FMLAT': 'momentum_at.cfg'
-)
-
 repositories {
     jcenter()
     mavenCentral()
@@ -83,30 +67,12 @@ dependencies {
     compile group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.1'
 }
 
-mixin {
-    add sourceSets.main, 'mixins.momentum.refmap.json'
-}
-
-shadowJar {
-    dependencies {
-        include(dependency('org.spongepowered:mixin'))
-        include(dependency('cabaletta:baritone-api'))
-        include(dependency('org.slick2d:slick2d-core'))
-        include(dependency('club.minnced:java-discord-rpc:2.0.1'))
-    }
-
-    exclude 'dummyThing'
-    exclude 'LICENSE.txt'
-    classifier = ''
-}
-
-build.dependsOn(shadowJar)
-
-reobf {
-    shadowJar {
-        mappingType = 'SEARGE'
-        classpath = sourceSets.main.compileClasspath
-    }
+minecraft {
+    version = "1.12.2-14.23.5.2845"
+    runDir = "run"
+    mappings = "snapshot_20171003"
+    coreMod = 'me.linus.momentum.mixin.MixinLoader'
+    makeObfSourceJar = false
 }
 
 processResources {
@@ -124,3 +90,38 @@ processResources {
 
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
+
+mixin {
+    defaultObfuscationEnv searge
+    add sourceSets.main, 'mixins.momentum.refmap.json'
+}
+
+jar.manifest.attributes(
+        'FMLCorePluginContainsFMLMod': true,
+        'FMLCorePlugin': 'me.linus.momentum.mixin.MixinLoader',
+        'ForceLoadAsMod': true,
+        'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+        'FMLAT': 'momentum_at.cfg'
+)
+
+shadowJar {
+    dependencies {
+        include(dependency('org.spongepowered:mixin'))
+        include(dependency('cabaletta:baritone-api'))
+        include(dependency('org.slick2d:slick2d-core'))
+        include(dependency('club.minnced:java-discord-rpc:2.0.1'))
+    }
+
+    exclude 'dummyThing'
+    exclude 'LICENSE.txt'
+    classifier = ''
+}
+
+reobf {
+    shadowJar {
+        mappingType = 'SEARGE'
+        classpath = sourceSets.main.compileClasspath
+    }
+}
+
+build.dependsOn(shadowJar)
