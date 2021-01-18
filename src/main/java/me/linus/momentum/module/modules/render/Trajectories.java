@@ -33,7 +33,7 @@ public class Trajectories extends Module {
 
     public static Checkbox color = new Checkbox("Color", true);
     public static SubColor colorPicker = new SubColor(color, new Color(0, 255, 255, 255));
-    
+
     @Override
     public void setup() {
         addSetting(color);
@@ -196,7 +196,7 @@ public class Trajectories extends Module {
 
         for (int x = chunkMinX; x <= chunkMaxX; ++x) {
             for (int z = chunkMinZ; z <= chunkMaxZ; ++z) {
-                if (mc.world.getChunkProvider().getLoadedChunk(x, z) != null) 
+                if (mc.world.getChunkProvider().getLoadedChunk(x, z) != null)
                     mc.world.getChunkFromChunkCoords(x, z).getEntitiesWithinAABBForEntity(mc.player, bb, list, null);
             }
         }

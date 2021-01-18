@@ -1,10 +1,10 @@
 package me.linus.momentum.util.combat;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,8 +20,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.*;
 import net.minecraft.world.Explosion;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
@@ -31,27 +31,50 @@ import java.util.stream.Collectors;
 
 public class CrystalUtil implements MixinInterface {
 
-    public static List<BlockPos> getCrystalBlocks(EntityPlayer player, double placeRange, boolean prediction, int blockCalc) {
-        return BlockUtil.getNearbyBlocks(player, placeRange, prediction).stream().filter(blockPos -> (blockCalc == 0 ? CrystalUtil.canPlaceCrystal(blockPos) : CrystalUtil.canPlaceThirteenCrystal(blockPos)) && mc.player.getDistanceSq(blockPos) <= (MathUtil.square(placeRange))).collect(Collectors.toList());
+    public static List<BlockPos> crystalBlocks(EntityPlayer entityPlayer, double placeRange, boolean prediction, int blockCalc) {
+        return BlockUtil.getNearbyBlocks(entityPlayer, placeRange, prediction).stream().filter(blockCalc == 0 ? CrystalUtil::canPlaceCrystal : CrystalUtil::canPlaceThirteenCrystal).collect(Collectors.toList());
     }
 
-    public static float getDamage(Vec3d pos, EntityPlayer entity) {
-        double power = (1.0D - (entity.getDistance(pos.x, pos.y, pos.z) / 12.0D)) * entity.world.getBlockDensity(pos, entity.getEntityBoundingBox());
-        float damage = (float) ((int) ((power * power + power) / 2.0D * 7.0D * 12.0D + 1.0D));
+    public static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
+        if (mc.player.capabilities.isCreativeMode)
+            return 0;
 
-        damage *= (mc.world.getDifficulty().getDifficultyId() == 0 ? 0 : (mc.world.getDifficulty().getDifficultyId() == 2 ? 1 : (mc.world.getDifficulty().getDifficultyId() == 1 ? 0.5f : 1.5f)));
+        double factor = (1.0 - entity.getDistance(posX, posY, posZ) / 12.0f) * entity.world.getBlockDensity(new Vec3d(posX, posY, posZ), entity.getEntityBoundingBox());
+        float calculatedDamage = (float) (int) ((factor * factor + factor) / 2.0 * 7.0 * 12.0f + 1.0);
+        double damage = 1.0;
 
-        return getReduction(entity, damage, new Explosion(mc.world, null, pos.x, pos.y, pos.z, 6F, false, true));
+        if (entity instanceof EntityLivingBase)
+            damage = getBlastReduction((EntityLivingBase) entity, getDamageMultiplied(calculatedDamage), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
+
+        return (float) damage;
     }
 
-    public static float getReduction(EntityPlayer player, float damage, Explosion explosion) {
-        damage = CombatRules.getDamageAfterAbsorb(damage, (float) player.getTotalArmorValue(), (float) player.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
-        damage *= (1.0F - (float) EnchantmentHelper.getEnchantmentModifierDamage(player.getArmorInventoryList(), DamageSource.causeExplosionDamage(explosion)) / 25.0F);
+    public static float getBlastReduction(EntityLivingBase entity, float damage, Explosion explosion) {
+        if (entity instanceof EntityPlayer) {
+            damage = CombatRules.getDamageAfterAbsorb(damage, (float) entity.getTotalArmorValue(), (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
+            damage *= 1.0f - MathHelper.clamp((float) EnchantmentHelper.getEnchantmentModifierDamage(entity.getArmorInventoryList(), DamageSource.causeExplosionDamage(explosion)), 0.0f, 20.0f) / 25.0f;
 
-        if (player.isPotionActive(Potion.getPotionById(11)))
-            damage -= damage / 4;
+            if (entity.isPotionActive(Potion.getPotionById(11)))
+                damage -= damage / 4.0f;
 
+            return damage;
+        }
+
+        damage = CombatRules.getDamageAfterAbsorb(damage, (float) entity.getTotalArmorValue(), (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
         return damage;
+    }
+
+    private static float getDamageMultiplied(float damage) {
+        int diff = mc.world.getDifficulty().getDifficultyId();
+        return damage * ((diff == 0) ? 0.0f : ((diff == 2) ? 1.0f : ((diff == 1) ? 0.5f : 1.5f)));
+    }
+
+    public static boolean canBlockBeSeen(BlockPos blockPos) {
+        return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
+    }
+
+    public static BlockPos getPlayerPos() {
+        return new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
     }
 
     public static void attackCrystal(EntityEnderCrystal crystal, boolean packet) {
@@ -62,21 +85,20 @@ public class CrystalUtil implements MixinInterface {
     }
 
     public static boolean attackCheck(Entity crystal, int mode, double breakRange, List<BlockPos> placedCrystals) {
-        AtomicBoolean attack = new AtomicBoolean(false);
+        if (!(crystal instanceof EntityEnderCrystal))
+            return false;
 
-        if (crystal instanceof EntityEnderCrystal) {
-            switch (mode) {
-                case 0:
-                    attack.set(true);
-                case 1:
-                    placedCrystals.stream().forEach(placePos -> {
-                        if (placePos != null && placePos.getDistance((int) crystal.posX, (int) crystal.posY, (int) crystal.posZ) <= breakRange)
-                            attack.set(true);
-                    });
-            }
+        switch (mode) {
+            case 0:
+                return true;
+            case 1:
+                for (BlockPos placePos : new ArrayList<>(placedCrystals)) {
+                    if (placePos != null && placePos.getDistance((int) crystal.posX, (int) crystal.posY, (int) crystal.posZ) <= breakRange)
+                        return true;
+                }
         }
 
-        return attack.get();
+        return false;
     }
 
     public static void swingArm(int mode) {
@@ -109,32 +131,31 @@ public class CrystalUtil implements MixinInterface {
 
     public static void placeCrystal(BlockPos placePos, EnumFacing enumFacing, boolean packet) {
         if (packet)
-            mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(placePos, enumFacing, mc.player.getHeldItemOffhand().getItem().equals(Items.END_CRYSTAL) ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
+            mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(placePos, enumFacing, mc.player.getHeldItemOffhand().equals(Items.END_CRYSTAL) ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
         else
-            mc.playerController.processRightClickBlock(mc.player, mc.world, placePos, enumFacing, new Vec3d(0, 0, 0), mc.player.getHeldItemOffhand().getItem().equals(Items.END_CRYSTAL) ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+            mc.playerController.processRightClickBlock(mc.player, mc.world, placePos, enumFacing, new Vec3d(0, 0, 0), mc.player.getHeldItemOffhand().equals(Items.END_CRYSTAL) ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
     }
 
-    public static EnumFacing getEnumFacing(boolean rayTrace, BlockPos blockPos) {
-        RayTraceResult result = mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX() + 0.5, blockPos.getY() - 0.5, blockPos.getZ() + 0.5));
+    public static EnumFacing getEnumFacing(boolean rayTrace, BlockPos finalPos) {
+        RayTraceResult result = mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(finalPos.getX() + 0.5, finalPos.getY() - 0.5, finalPos.getZ() + 0.5));
+        EnumFacing enumFacing = null;
 
-        if (blockPos.getY() == 255)
-            return EnumFacing.DOWN;
+        if (rayTrace) {
+            if (result == null || result.sideHit == null)
+                return null;
 
-        if (rayTrace)
-          return (result.equals(null) || result.sideHit.equals(null)) ? EnumFacing.UP : result.sideHit;
+            else
+                enumFacing = result.sideHit;
+        }
 
-        return EnumFacing.UP;
+        return enumFacing;
     }
 
     public static boolean canPlaceCrystal(BlockPos blockPos) {
-        BlockPos boost = blockPos.add(0, 1, 0);
-        BlockPos boost2 = blockPos.add(0, 2, 0);
-        return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getBlockState(boost).getBlock() == Blocks.AIR && mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
+        return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getBlockState(blockPos.add(0, 1, 0)).getBlock() == Blocks.AIR && mc.world.getBlockState(blockPos.add(0, 2, 0)).getBlock() == Blocks.AIR && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 1, 0))).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 2, 0))).isEmpty();
     }
 
     public static boolean canPlaceThirteenCrystal(BlockPos blockPos) {
-        BlockPos boost = blockPos.add(0, 1, 0);
-        BlockPos boost2 = blockPos.add(0, 2, 0);
-        return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
+        return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 1, 0))).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 2, 0))).isEmpty();
     }
 }

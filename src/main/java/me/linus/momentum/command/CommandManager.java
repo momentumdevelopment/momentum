@@ -33,8 +33,7 @@ public class CommandManager {
             new Config(),
             new Cancel(),
             new Peek(),
-            new Drawn(),
-            new Client()
+            new Drawn()
     );
 
     public static List<Command> getCommands() {

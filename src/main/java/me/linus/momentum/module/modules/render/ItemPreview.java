@@ -80,7 +80,7 @@ public class ItemPreview extends Module {
                     mc.getRenderItem().renderItemAndEffectIntoGUI(stack, iX, iY);
                     mc.getRenderItem().renderItemOverlayIntoGUI(mc.fontRenderer, stack, iX, iY, null);
                 }
-                
+
                 RenderHelper.disableStandardItemLighting();
                 mc.getRenderItem().zLevel = 0.0F;
 

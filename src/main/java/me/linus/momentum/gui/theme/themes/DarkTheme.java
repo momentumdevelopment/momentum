@@ -36,22 +36,22 @@ import java.util.List;
 
 public class DarkTheme extends Theme implements MixinInterface {
 	public static int boost = 0;
-	
+
 	public static String name = "Dark";
 	public static int width = 105;
 	public static int height = 14;
-	
+
 	public DarkTheme() {
 		super(name, width, height);
 	}
-	
+
 	private static FontRenderer font = mc.fontRenderer;
-	
+
 	@Override
 	public void updateColors() {
 		ThemeColor.updateColors();
 	}
-	
+
 	@Override
 	public void drawTitles(String name, int x, int y) {
 		GuiScreen.drawRect(x, y, (x + width), y + height, 0xCC000000);
@@ -64,9 +64,9 @@ public class DarkTheme extends Theme implements MixinInterface {
 		boost = 0;
 		for(Module m : modules) {
 			if (GUIUtil.mouseOver(x, y + height + 1 + (boost * height), (x + width) - 1, y + height*2 + (boost * height))) {
-				if (GUIUtil.ldown) 
+				if (GUIUtil.ldown)
 					m.toggle();
-				
+
 				if (GUIUtil.rdown) {
 					m.toggleState();
 				}
@@ -75,7 +75,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 			GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 			GuiScreen.drawRect(x + 1, y + height + (boost * height) + 1, (x + width) - 1, y + height*2 + (boost * height), m.isEnabled() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : 0xCC232323);
 			drawTextWithShadow(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
-			
+
 			if (m.hasSettings())
 				drawText("...", (x + width) - 12, y + 1 + height + (boost * height), -1);
 
@@ -84,7 +84,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 					drawDropdown(m, x, y);
 
 				if (!m.hasSettings()) boost++;
-					drawBind(m, GUIUtil.keydown, x, y);
+				drawBind(m, GUIUtil.keydown, x, y);
 			}
 
 			boost++;
@@ -95,7 +95,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		GuiScreen.drawRect(x - 1, y + height + (boost * height) + 1, x + width + 1, y + height + (boost * height) + 2, 0xFF202020);
 		GuiScreen.drawRect(x - 1, y + height + (boost * height), x + width + 1, y + height + (boost * height) + 1, 0x99202020);
 	}
-	
+
 	public static void drawDropdown(Module m, int x, int y) {
 		for (Setting s : m.getSettings()) {
 			boost++;
@@ -201,7 +201,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		if (checkbox.hasSubSettings())
 			drawText("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
 	}
-	
+
 	private static void drawSubCheckbox(SubCheckbox sc, int x, int y) {
 		if (GUIUtil.mouseOver(x + 8, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
 			if (GUIUtil.ldown)
@@ -212,7 +212,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), sc.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : 0xCC232323);
 		drawTextWithShadow(sc.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
 	}
-	
+
 	private static void drawMode(Mode m, int x, int y) {
 		if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
 			if (GUIUtil.ldown)
@@ -230,7 +230,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		if (m.hasSubSettings())
 			drawText("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
 	}
-	
+
 	private static void drawSubMode(SubMode sm, int x, int y) {
 		if (GUIUtil.mouseOver(x + 8, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
 			if (GUIUtil.ldown)
@@ -242,24 +242,24 @@ public class DarkTheme extends Theme implements MixinInterface {
 		drawTextWithShadow(sm.getName(), x + 12, (y + height) + 4 + (boost * height), -1);
 		drawTextWithShadow(sm.getMode(sm.getValue()), x + (ModuleManager.getModuleByName("Font").isEnabled() ? 12 : 16) + font.getStringWidth(sm.getName()), (y + height) + 4 + (boost * height), 0xFF767676);
 	}
-	
+
 	private static void drawSlider(Slider sl, int x, int y) {
 		int rectAdd = (int) MathHelper.clamp((((x - 2) + width) - (x + 3)) * ((sl.getValue() - sl.getMinValue()) / (sl.getMaxValue() - sl.getMinValue())), 0.0D, (((x + 3) + width) - (x)));
-		
+
 		if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width), (y + height) + height + (boost * height))) {
 			if (GUIUtil.lheld) {
-				int percentError = (GUIUtil.mouseX - (x + 4)) * 100 / (((x) + width) - (x + 4));
+				int percentError = (GUIUtil.mX - (x + 4)) * 100 / (((x) + width) - (x + 4));
 				sl.setValue(MathUtil.roundDouble(percentError * ((sl.getMaxValue() - sl.getMinValue()) / 100.0D) + sl.getMinValue(), sl.getRoundingScale()));
 			}
 		}
-		
+
 		if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (int) (x + ClickGUI.snapSub.getValue()), (y + height) + height + (boost * height))) {
 			if (ClickGUI.snapSlider.getValue() && GUIUtil.lheld) {
 				rectAdd = 0;
 				sl.setValue(sl.getMinValue());
 			}
 		}
-		
+
 		if (GUIUtil.mouseOver((int) ((x + 4 + width) - ClickGUI.snapSub.getValue()), y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
 			if (ClickGUI.snapSlider.getValue() && GUIUtil.lheld) {
 				rectAdd = ((x + 4 + width) - (x + 4));
@@ -276,24 +276,24 @@ public class DarkTheme extends Theme implements MixinInterface {
 		if (sl.hasSubSettings())
 			drawText("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
 	}
-	
+
 	private static void drawSubSlider(SubSlider ssl, int x, int y) {
 		int rectAdd = (int) MathHelper.clamp((((x - 2) + width) - (x + 7)) * ((ssl.getValue() - ssl.getMinValue()) / (ssl.getMaxValue() - ssl.getMinValue())), 0.0D, (((x + 7) + width) - (x)));
-		
+
 		if (GUIUtil.mouseOver(x + 8, y + height + (boost * height) + 2, (x + width), (y + height) + height + (boost * height))) {
 			if (GUIUtil.lheld) {
-				int percentError = (GUIUtil.mouseX - (x + 8)) * 100 / (((x) + width) - (x + 8));
+				int percentError = (GUIUtil.mX - (x + 8)) * 100 / (((x) + width) - (x + 8));
 				ssl.setValue(MathUtil.roundDouble(percentError * ((ssl.getMaxValue() - ssl.getMinValue()) / 100.0D) + ssl.getMinValue(), ssl.getRoundingScale()));
 			}
 		}
-		
+
 		if (GUIUtil.mouseOver(x + 8, y + height + (boost * height) + 2, (int) (x + ClickGUI.snapSub.getValue()), (y + height) + height + (boost * height))) {
 			if (ClickGUI.snapSlider.getValue() && GUIUtil.lheld) {
 				rectAdd = 0;
 				ssl.setValue(ssl.getMinValue());
 			}
 		}
-		
+
 		if (GUIUtil.mouseOver((int) ((x + 8 + width) - ClickGUI.snapSub.getValue()), y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
 			if (ClickGUI.snapSlider.getValue() && GUIUtil.lheld) {
 				rectAdd = ((x + 8 + width) - (x + 8));
@@ -307,7 +307,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		drawTextWithShadow(ssl.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
 		drawTextWithShadow(Double.toString(ssl.getValue()), x + font.getStringWidth(ssl.getName()) + (ModuleManager.getModuleByName("Font").isEnabled() ? 8 : 12), (y + height) + 4 + (boost * height), 0xFF767676);
 	}
-	
+
 	public static void drawBind(Module m, int key, int x, int y) {
 		if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
 			if (GUIUtil.ldown) {

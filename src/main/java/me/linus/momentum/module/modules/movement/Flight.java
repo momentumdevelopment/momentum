@@ -15,7 +15,7 @@ public class Flight extends Module {
         super("Flight", Category.MOVEMENT, "Allows you to fly");
     }
 
-    public static Mode mode = new Mode("Mode", "Creative", "Vanilla");
+    private static final Mode mode = new Mode("Mode", "Creative", "Vanilla");
     public static Slider hSpeed = new Slider("Horizontal Speed", 0.0D, 1.0D, 3.0D, 1);
     public static Slider ySpeed = new Slider("Vertical Speed", 0.0D, 1.0D, 3.0D, 1);
 
@@ -52,7 +52,6 @@ public class Flight extends Module {
                 mc.player.capabilities.setFlySpeed((float) (hSpeed.getValue() / 23));
                 mc.player.capabilities.isFlying = true;
                 mc.player.capabilities.allowFlying = true;
-                break;
         }
     }
 

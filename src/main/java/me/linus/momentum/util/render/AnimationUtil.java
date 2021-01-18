@@ -1,7 +1,7 @@
 package me.linus.momentum.util.render;
 
 /**
- * @author https://github.com/Memeszz/Aurora-public/blob/master/src/main/java/me/memeszz/aurora/util/render/Animation.java
+ * @author memessz
  * @since 12/17/2020
  */
 

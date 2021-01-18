@@ -29,11 +29,11 @@ public class ClickGUI extends Module {
 
 	public static Checkbox snapSlider = new Checkbox("Slider Snap", true);
 	public static SubSlider snapSub = new SubSlider(snapSlider, "Snap Distance", 1.0D, 5.0D, 10.0D, 0);
-	
+
 	public static Mode theme = new Mode("Theme", "Default", "Dark");
-	
+
 	public static GUI clickGui = new GUI();
-	
+
 	@Override
 	public void setup() {
 		addSetting(theme);
@@ -43,7 +43,7 @@ public class ClickGUI extends Module {
 		addSetting(blurEffect);
 		addSetting(allowOverflow);
 	}
-	
+
 	@Override
 	public void onEnable() {
 		if (nullCheck())

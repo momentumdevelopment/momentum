@@ -14,7 +14,7 @@ public class Textured extends ESPMode {
     @Override
     public void drawESPPre(double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo info) {
         GL11.glEnable(32823);
-        GL11.glPolygonOffset(1.0f, -1000000.0f);
+        GL11.glPolygonOffset(1.0f, -1100000.0f);
     }
 
     @Override

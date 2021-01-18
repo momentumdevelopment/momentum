@@ -123,7 +123,7 @@ public class AutoTrap extends Module {
         return fullTrap;
     }
 
-     List<Vec3d> fullTrap = new ArrayList<>(Arrays.asList(
+    List<Vec3d> fullTrap = new ArrayList<>(Arrays.asList(
             new Vec3d(0, -1, -1),
             new Vec3d(1, -1, 0),
             new Vec3d(0, -1, 1),

@@ -18,7 +18,7 @@ public class Rubberband extends Module {
         super("Rubberband", Category.PLAYER, "Triggers a manual rubberband");
     }
 
-    public static Mode mode = new Mode("Mode", "Teleport", "Jump", "Packet", "Explosion");
+    private static final Mode mode = new Mode("Mode", "Teleport", "Jump", "Packet", "Explosion");
     public static Slider distance = new Slider("Distance", 0.0D, 4.0D, 20.0D, 1);
 
     @Override

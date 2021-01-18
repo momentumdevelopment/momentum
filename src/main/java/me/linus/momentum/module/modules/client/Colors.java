@@ -19,7 +19,7 @@ public class Colors extends Module {
 		super("Colors", Category.CLIENT, "The client-wide color scheme.");
 		this.enable();
 	}
-	
+
 	public static Checkbox rainbow = new Checkbox("Rainbow", false);
 	public static SubCheckbox gradient = new SubCheckbox(rainbow, "Gradient", true);
 	public static SubSlider saturation = new SubSlider(rainbow, "Saturation", 0.0D, 0.8D, 1.0D, 2);

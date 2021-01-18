@@ -113,7 +113,7 @@ public class Surround extends Module {
             case 2:
                 if (timeout.getValue() && mode.getValue() != 2)
                     if (mc.player.ticksExisted % timeoutTick.getValue() == 0)
-                            this.disable();
+                        this.disable();
                 break;
         }
 
@@ -149,7 +149,7 @@ public class Surround extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (renderSurround.getValue() && renderBlock != null)
-            RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Outline);
+            RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
     }
 
     public List<Vec3d> getSurround() {

@@ -5,9 +5,10 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
+import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemExpBottle;
 import net.minecraft.network.play.client.CPacketPlayer;
 import org.lwjgl.input.Keyboard;
 
@@ -21,11 +22,11 @@ public class QuickEXP extends Module {
         super("QuickEXP", Category.COMBAT, "Throws EXP much faster");
     }
 
-    public static Mode mode = new Mode("Mode", "Packet", "AutoMend", "Throw");
-    public static Slider delay = new Slider("Throw Delay", 0.0D, 0.0D, 4.0D, 0);
-    public static Checkbox stopEXP = new Checkbox("Stop EXP", false);
-    public static Checkbox footEXP = new Checkbox("FootEXP", true);
-    public static Keybind mendKey = new Keybind("Mend Key", -2);
+    private static Mode mode = new Mode("Mode", "Packet", "AutoMend", "Throw");
+    private static Slider delay = new Slider("Throw Delay", 0.0D, 0.0D, 4.0D, 0);
+    private static Checkbox stopEXP = new Checkbox("Stop EXP", true);
+    private static Checkbox footEXP = new Checkbox("FootEXP", true);
+    private static Keybind mendKey = new Keybind("Mend Key", -2);
 
     @Override
     public void setup() {
@@ -41,13 +42,13 @@ public class QuickEXP extends Module {
         if (nullCheck())
             return;
 
-        if (stopEXP.getValue() && EnemyUtil.getArmor(mc.player) == 100)
+        if (stopEXP.getValue() && 0 < PlayerUtil.getArmorDurability())
             return;
 
         if (InventoryUtil.getHeldItem(Items.EXPERIENCE_BOTTLE))
             mc.rightClickDelayTimer = (int) delay.getValue();
 
-        if (Keyboard.isKeyDown(mendKey.getKey())) {
+        if (Keyboard.isKeyDown(mendKey.getKey()) && (mode.getValue() == 0 || mode.getValue() == 1)) {
             switch (mode.getValue()) {
                 case 1:
                     InventoryUtil.switchToSlot(Items.EXPERIENCE_BOTTLE);

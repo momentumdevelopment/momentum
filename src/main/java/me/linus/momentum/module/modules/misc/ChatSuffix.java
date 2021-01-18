@@ -1,6 +1,5 @@
 package me.linus.momentum.module.modules.misc;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.util.client.MessageUtil;
@@ -17,13 +16,15 @@ public class ChatSuffix extends Module {
 		super("ChatSuffix", Category.MISC, "Appends a chat suffix to messages");
 	}
 
+	public String suffix = "momentum";
+
 	@SubscribeEvent
 	public void onPacketSend(PacketSendEvent event) {
 		if (event.getPacket() instanceof CPacketChatMessage) {
 			if (((CPacketChatMessage) event.getPacket()).getMessage().startsWith("/") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("!") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("$") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("?") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith(".") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith(","))
 				return;
 
-			String newMessage = ((CPacketChatMessage) event.getPacket()).getMessage() + " \u23d0 " + MessageUtil.toUnicode(Momentum.NAME);
+			String newMessage = ((CPacketChatMessage) event.getPacket()).getMessage() + " \u23d0 " + MessageUtil.toUnicode(suffix);
 			((CPacketChatMessage) event.getPacket()).message = newMessage;
 		}
 	}

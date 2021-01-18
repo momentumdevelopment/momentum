@@ -25,6 +25,7 @@ public class HUDEditor extends Module {
 	}
 	
 	public static HUD hudEditor = new HUD();
+	public static int boost = 0;
 	
 	@Override
 	public void onEnable() {
@@ -33,6 +34,11 @@ public class HUDEditor extends Module {
 
 		super.onEnable();
 		mc.displayGuiScreen(hudEditor);
+	}
+	
+	@SubscribeEvent
+	public void onRender(RenderGameOverlayEvent.Text event) {
+		// boost = 0;
 	}
 }
 	

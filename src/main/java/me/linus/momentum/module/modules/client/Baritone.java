@@ -19,10 +19,10 @@ public class Baritone extends Module {
         super("Baritone", Category.CLIENT, "Settings for Baritone");
         this.enable();
     }
-    
+
     public static Checkbox path = new Checkbox("Render Path", true);
     public static SubColor pathPicker = new SubColor(path, new Color(255, 0, 255));
-    
+
     public static Checkbox goal = new Checkbox("Render Goal", true);
     public static SubColor goalPicker = new SubColor(goal, new Color(0, 255, 255));
 

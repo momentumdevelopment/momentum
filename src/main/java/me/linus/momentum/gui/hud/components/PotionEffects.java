@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.world.TickUtil;
@@ -51,9 +52,9 @@ public class PotionEffects extends HUDComponent {
                 count++;
 
                 if (this.x < screenWidth)
-                    width = (int) FontUtil.getStringWidth(potionString);
+                    width = Momentum.fontManager.getCustomFont().getStringWidth(potionString);
                 else
-                    width = (int) -FontUtil.getStringWidth(potionString);
+                    width = -Momentum.fontManager.getCustomFont().getStringWidth(potionString);
 
                 height = (mc.fontRenderer.FONT_HEIGHT + 3) * count;
             });

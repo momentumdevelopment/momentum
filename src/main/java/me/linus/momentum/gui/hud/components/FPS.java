@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.HUDEditor;
@@ -18,7 +19,7 @@ public class FPS extends HUDComponent {
         super("FPS", 2, 13);
     }
 
-    public static Checkbox average = new Checkbox("Average", false);
+    private static final Checkbox average = new Checkbox("Average", false);
 
     @Override
     public void setup() {
@@ -28,6 +29,6 @@ public class FPS extends HUDComponent {
     @Override
     public void renderComponent() {
         FontUtil.drawString("FPS" + TextFormatting.WHITE + " " + Minecraft.getDebugFPS(), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
-        width = (int) (FontUtil.getStringWidth(Minecraft.getDebugFPS() + " FPS") + 2);
+        width = Momentum.fontManager.getCustomFont().getStringWidth(Minecraft.getDebugFPS() + " FPS") + 2;
     }
 }

@@ -18,4 +18,5 @@ public interface MixinInterface {
 	 */
 	
 	Minecraft mc = Minecraft.getMinecraft();
+	
 }

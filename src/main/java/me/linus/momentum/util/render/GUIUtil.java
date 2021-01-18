@@ -7,20 +7,28 @@ package me.linus.momentum.util.render;
 
 public class GUIUtil {
 	
-	public static int mouseX;
-	public static int mouseY;
+	public static int mX;
+	public static int mY;
 	public static int keydown;
 	public static boolean ldown;
 	public static boolean lheld;
 	public static boolean rdown;
+
+	/**
+	 * mouse hover
+	 */
 	
 	public static boolean mouseOver(int minX, int minY, int maxX, int maxY) {
-		return mouseX >= minX && mouseY >= minY && mouseX <= maxX && mouseY <= maxY;
+		return mX >= minX && mY >= minY && mX <= maxX && mY <= maxY;
 	}
+
+	/**
+	 * event listen
+	 */
 	
-	public static void mouseListen(int mX, int mY) {
-		mouseX = mX;
-		mouseY = mY;
+	public static void mouseListen(int mouseX, int mouseY) {
+		mX = mouseX;
+		mY = mouseY;
 		ldown = false;
 		rdown = false;
 		keydown = -1;
@@ -42,4 +50,5 @@ public class GUIUtil {
 	public static void keyListen(int key) {
 		keydown = key;
 	}
+	
 }

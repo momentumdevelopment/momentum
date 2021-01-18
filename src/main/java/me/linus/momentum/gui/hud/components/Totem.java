@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.HUDEditor;
@@ -21,6 +22,6 @@ public class Totem extends HUDComponent {
     @Override
     public void renderComponent() {
         FontUtil.drawString("Totems: " + TextFormatting.WHITE + InventoryUtil.getItemCount(Items.TOTEM_OF_UNDYING), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
-        width = (int) (FontUtil.getStringWidth("Totems: " + InventoryUtil.getItemCount(Items.TOTEM_OF_UNDYING)) + 2);
+        width = Momentum.fontManager.getCustomFont().getStringWidth("Totems: " + InventoryUtil.getItemCount(Items.TOTEM_OF_UNDYING)) + 2;
     }
 }

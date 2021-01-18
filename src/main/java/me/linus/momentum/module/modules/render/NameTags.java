@@ -48,10 +48,10 @@ public class NameTags extends Module {
     public static Checkbox armor = new Checkbox("Armor", true);
     public static Checkbox item = new Checkbox("Items", true);
     public static Checkbox enchants = new Checkbox("Enchants", true);
-    
+
     public static Checkbox background = new Checkbox("Background", true);
     public static SubColor colorPicker = new SubColor(background, new Color(0, 0, 0, 70));
-    
+
     public static Checkbox onlyInViewFrustrum = new Checkbox("View Frustrum", true);
 
     public static Slider scale = new Slider("Scale", 0.0D, 2.0D, 10.0D, 1);

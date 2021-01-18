@@ -3,7 +3,6 @@ package me.linus.momentum.module.modules.misc;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.world.Timer;
 
 /**
  * @author linustouchtips
@@ -15,9 +14,9 @@ public class AntiAFK extends Module {
         super("AntiAFK", Category.MISC, "Prevents you from getting kicked for being AFK");
     }
 
-    public static Slider delay = new Slider("Delay", 0.0D, 50.0D, 100.0D, 0);
-    public static Checkbox jump = new Checkbox("Jump", true);
-    public static Checkbox chat = new Checkbox("Chat", false);
+    private static final Slider delay = new Slider("Delay", 0.0D, 50.0D, 100.0D, 0);
+    private static final Checkbox jump = new Checkbox("Jump", true);
+    private static final Checkbox chat = new Checkbox("Chat", false);
 
     @Override
     public void setup() {
@@ -26,11 +25,9 @@ public class AntiAFK extends Module {
         addSetting(chat);
     }
 
-    Timer afkTimer = new Timer();
-
     @Override
     public void onUpdate() {
-        if (afkTimer.passed((long) delay.getValue(), Timer.Format.Ticks)) {
+        if (mc.player.ticksExisted % delay.getValue() == 0) {
             if (jump.getValue())
                 mc.player.jump();
 

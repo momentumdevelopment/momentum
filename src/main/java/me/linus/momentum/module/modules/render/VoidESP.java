@@ -48,9 +48,9 @@ public class VoidESP extends Module {
 
         voidBlocks.clear();
 
-        BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.isVoidHole(blockPos)).forEach(blockPos -> {
-            voidBlocks.add(blockPos);
-        });
+        BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.isVoidHole(blockPos)).forEach(blockPos ->
+            voidBlocks.add(blockPos)
+        );
     }
 
     @SubscribeEvent

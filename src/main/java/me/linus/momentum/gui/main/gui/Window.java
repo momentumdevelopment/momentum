@@ -20,16 +20,16 @@ import java.util.List;
  */
 
 public class Window implements MixinInterface {
-	
+
 	public int x;
 	public int y;
 
 	boolean ldown;
 	boolean rdown;
 	boolean dragging;
-	
+
 	int currentTheme;
-	
+
 	int lastmX;
 	int lastmY;
 	final String name;
@@ -44,7 +44,7 @@ public class Window implements MixinInterface {
 		this.category = category;
 		this.modules = ModuleManager.getModulesInCategory(category);
 	}
-	
+
 	public static void initGui() {
 		windows.add(new Window(Category.COMBAT.getName(), 18, 22, Category.COMBAT));
 		windows.add(new Window(Category.PLAYER.getName(), 128, 22, Category.PLAYER));
@@ -54,10 +54,10 @@ public class Window implements MixinInterface {
 		windows.add(new Window(Category.CLIENT.getName(), 568, 22, Category.CLIENT));
 		windows.add(new Window(Category.BOT.getName(), 568, 258, Category.BOT));
 	}
-	
+
 	public void drawGui(int mouseX, int mouseY, float partialTicks) {
 		mouseListen();
-		
+
 		currentTheme = ClickGUI.theme.getValue();
 		Theme current = Theme.getTheme(currentTheme);
 		current.drawTitles(name, x, y);
@@ -84,23 +84,23 @@ public class Window implements MixinInterface {
 		if (y < 0)
 			this.y = 0;
 	}
-	
+
 	void mouseListen() {
 		if (dragging) {
-			x = GUIUtil.mouseX - (lastmX - x);
-			y = GUIUtil.mouseY - (lastmY - y);
+			x = GUIUtil.mX - (lastmX - x);
+			y = GUIUtil.mY - (lastmY - y);
 		}
 
-		lastmX = GUIUtil.mouseX;
-		lastmY = GUIUtil.mouseY;
+		lastmX = GUIUtil.mX;
+		lastmY = GUIUtil.mY;
 
 	}
-	
+
 	void reset() {
 		ldown = false;
 		rdown = false;
 	}
-	
+
 	public void lclickListen(int mouseX, int mouseY, int mouseButton) throws IOException {
 		Theme current = Theme.getTheme(currentTheme);
 
@@ -119,7 +119,7 @@ public class Window implements MixinInterface {
 				windows.setY((int) (windows.getY() + ClickGUI.scrollSpeed.getValue()));
 		}
 	}
-	
+
 	public void releaseListen(int mouseX, int mouseY, int state) {
 		ldown = false;
 		dragging = false;

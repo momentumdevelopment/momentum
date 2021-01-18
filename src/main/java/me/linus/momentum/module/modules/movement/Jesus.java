@@ -17,9 +17,9 @@ public class Jesus extends Module {
         super("Jesus", Category.MOVEMENT, "Allows you to walk on water");
     }
 
-    public static Mode mode = new Mode("Mode", "Normal", "Packet", "Push", "Freeze");
+    private static final Mode mode = new Mode("Mode", "Normal", "Packet", "Push", "Freeze");
     public static Slider offset = new Slider("Offset", 0.0D, 0.2D, 1.0D, 2);
-    public static Slider delay = new Slider("Delay", 0.0D, 2.0D, 10.0D, 0);
+    private static final Slider delay = new Slider("Delay", 0.0D, 2.0D, 10.0D, 0);
 
     @Override
     public void setup() {

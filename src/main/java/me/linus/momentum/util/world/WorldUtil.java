@@ -1,17 +1,13 @@
 package me.linus.momentum.util.world;
 
-import com.mojang.authlib.GameProfile;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.util.client.friend.FriendManager;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.GameType;
 
-import javax.annotation.Nullable;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -21,8 +17,12 @@ import java.util.stream.Collectors;
 
 public class WorldUtil implements MixinInterface {
 
-    public static void createFakePlayer(boolean player, @Nullable String name, boolean copyInventory, boolean copyAngles, boolean health) {
-        EntityOtherPlayerMP entity = player ? new EntityOtherPlayerMP(mc.world, mc.getSession().getProfile()) : new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("873e2766-9254-49bc-89d7-5d4d585ad29d"), name));
+    /**
+     * fakeplayers
+     */
+
+    public static void createFakePlayer(EntityOtherPlayerMP entity, boolean copyInventory, boolean copyAngles, boolean health) {
+        entity = new EntityOtherPlayerMP(mc.world, mc.getSession().getProfile());
         entity.copyLocationAndAnglesFrom(mc.player);
 
         if (copyInventory)
@@ -37,8 +37,11 @@ public class WorldUtil implements MixinInterface {
             entity.setHealth(mc.player.getHealth() + mc.player.getAbsorptionAmount());
 
         mc.world.addEntityToWorld(69420, entity);
-        entity.setGameType(GameType.SURVIVAL);
     }
+
+    /**
+     * loaded player list
+     */
 
     public static EntityPlayer getClosestPlayer(double range) {
         if (mc.world.getLoadedEntityList().size() == 0)
@@ -64,7 +67,6 @@ public class WorldUtil implements MixinInterface {
 
         return nearbyPlayers;
     }
-
     public static void disconnectFromWorld(Module module) {
         module.disable();
         mc.world.sendQuittingDisconnectingPacket();

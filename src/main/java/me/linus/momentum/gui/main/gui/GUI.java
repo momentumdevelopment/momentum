@@ -25,7 +25,7 @@ public class GUI extends GuiScreen {
 
 		GUIUtil.mouseListen(mouseX, mouseY);
 	}
-	
+
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
@@ -39,7 +39,7 @@ public class GUI extends GuiScreen {
 		if (mouseButton == 1)
 			GUIUtil.rclickListen();
 	}
-	
+
 	@Override
 	public void mouseReleased(int mouseX, int mouseY, int state) {
 		super.mouseReleased(mouseX, mouseY, state);
@@ -50,13 +50,13 @@ public class GUI extends GuiScreen {
 			GUIUtil.releaseListen();
 		}
 	}
-	
+
 	@Override
 	public void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
 		GUIUtil.keyListen(keyCode);
 	}
-	
+
 	@Override
 	public void onGuiClosed() {
 		try {
@@ -68,7 +68,7 @@ public class GUI extends GuiScreen {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public boolean doesGuiPauseGame() {
 		return false;

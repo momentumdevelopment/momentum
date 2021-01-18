@@ -14,7 +14,7 @@ public class AirJump extends Module {
         super("AirJump", Category.MOVEMENT, "Allows you to jump in the air");
     }
 
-    public static Checkbox packet = new Checkbox("Packet", true);
+    private static final Checkbox packet = new Checkbox("Packet", true);
 
     @Override
     public void setup() {

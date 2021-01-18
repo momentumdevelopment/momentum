@@ -4,12 +4,9 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.player.InventoryUtil;
-import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.init.Blocks;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
 /**
@@ -17,16 +14,16 @@ import net.minecraft.util.math.BlockPos;
  * @since 12/19/2020
  */
 
-// TODO: make an aura mode for this
+// TODO: make an auto mode for this
 public class Web extends Module {
     public Web() {
         super("Web", Category.COMBAT, "Places webs at your feet");
     }
 
-    public static Mode mode = new Mode("Mode", "Self", "Aura");
-    public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
-    public static Checkbox rotate = new Checkbox("Rotate", true);
-    public static Checkbox disable = new Checkbox("Disables", true);
+    private static final Mode mode = new Mode("Mode", "Self", "Aura");
+    private static final Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
+    private static final Checkbox rotate = new Checkbox("Rotate", true);
+    private static final Checkbox disable = new Checkbox("Disables", true);
 
     @Override
     public void setup() {
@@ -49,14 +46,9 @@ public class Web extends Module {
         if (autoSwitch.getValue())
             InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.WEB));
 
-        mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(new BlockPos(PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ)), EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
+        BlockUtil.placeBlock(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ), rotate.getValue());
 
         if (disable.getValue())
             this.disable();
-    }
-
-    @Override
-    public String getHUDData() {
-        return " " + mode.getMode(mode.getValue());
     }
 }

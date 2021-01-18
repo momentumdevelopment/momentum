@@ -4,8 +4,8 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.world.Timer;
+import me.linus.momentum.util.player.InventoryUtil;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -30,17 +30,18 @@ public class AntiCrystal extends Module {
         super("AntiCrystal", Category.COMBAT, "Minimises crystal damage with pressure plates");
     }
 
-    public static Slider placeRange = new Slider("Place Range", 0.0, 5.5, 10.0, 1);
-    public static Slider placeDelay = new Slider("Place Delay", 0, 2, 20, 1);
+    public static final Slider placeRange = new Slider("Place Range", 0.0, 5.5, 10.0, 1);
+    public static final Slider placeDelay = new Slider("Place Delay", 0, 2, 20, 1);
 
     @Override
     public void setup() {
-        addSetting(placeRange);
-        addSetting(placeDelay);
+        this.addSetting(placeRange);
+        this.addSetting(placeDelay);
     }
 
-    int pressurePlateSlot;
-    Timer placeTimer = new Timer();
+    private int pressurePlateSlot;
+
+    private Timer placeTimer = new Timer();
 
     @Override
     public void onEnable() {
@@ -53,17 +54,25 @@ public class AntiCrystal extends Module {
     }
 
     public void onUpdate() {
-        if (nullCheck())
-            return;
+        if (nullCheck()) return;
 
-        EntityEnderCrystal entityEnderCrystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity != null).filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> mc.player.getDistance(entity) <= placeRange.getValue()).filter(entity -> !hasPressurePlate((EntityEnderCrystal) entity)).min(Comparator.comparing(entity -> mc.player.getDistance(entity))).orElse(null);
+        EntityEnderCrystal entityEnderCrystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream()
+                .filter(entity -> entity != null)
+                .filter(entity -> entity instanceof EntityEnderCrystal)
+                .filter(entity -> mc.player.getDistance(entity) <= placeRange.getValue())
+                .filter(entity -> !hasPressurePlate((EntityEnderCrystal) entity))
+                .min(Comparator.comparing(entity -> mc.player.getDistance(entity)))
+                .orElse(null);
 
         if (entityEnderCrystal != null) {
-            InventoryUtil.switchToSlot(Blocks.WOODEN_PRESSURE_PLATE);
+            if (pressurePlateSlot != -1) {
+                mc.player.inventory.currentItem = pressurePlateSlot;
+            }
 
             if (placeTimer.passed((long) (placeDelay.getValue() * 100), Timer.Format.System)) {
-                if (InventoryUtil.getHeldItem(Item.getItemFromBlock(Blocks.WOODEN_PRESSURE_PLATE)))
+                if (mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(Blocks.WOODEN_PRESSURE_PLATE)) {
                     mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(entityEnderCrystal.getPosition(), EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
+                }
 
                 placeTimer.reset();
             }

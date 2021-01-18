@@ -66,7 +66,7 @@ public class HoleFill extends Module {
         if (blocks.size() == 0) {
             if (disable.getValue())
                 disable();
-                return;
+            return;
         }
 
         renderBlock = blocks.get(0);

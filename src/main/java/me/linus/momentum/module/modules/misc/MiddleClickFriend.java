@@ -18,7 +18,7 @@ public class MiddleClickFriend extends Module {
         super("MiddleClickFriend", Category.MISC, "Adds players to your friends list when you middle click them");
     }
 
-    boolean hasClicked = false;
+    private boolean hasClicked = false;
 
     public void onUpdate() {
         if (nullCheck())
@@ -32,7 +32,7 @@ public class MiddleClickFriend extends Module {
         if (!hasClicked) {
             hasClicked = true;
 
-            RayTraceResult result = mc.objectMouseOver;
+            final RayTraceResult result = mc.objectMouseOver;
 
             if (result == null || result.typeOfHit != RayTraceResult.Type.ENTITY || !(result.entityHit instanceof EntityPlayer))
                 return;

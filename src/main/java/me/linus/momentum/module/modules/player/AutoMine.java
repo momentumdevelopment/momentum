@@ -16,7 +16,7 @@ public class AutoMine extends Module {
         super("AutoMine", Category.PLAYER, "Automatically mines blocks in your crosshairs");
     }
 
-    public static Mode mode = new Mode("Mode", "Auto-Tunnel", "Frenzy");
+    private static final Mode mode = new Mode("Mode", "Auto-Tunnel", "Frenzy");
     public static SubSlider delay = new SubSlider(mode, "Rotate Delay", 0.0D, 5.0D, 50.0D, 1);
 
     @Override

@@ -52,7 +52,7 @@ public class Timer implements MixinInterface {
     public void reset() {
         this.time = System.nanoTime();
     }
-    
+
     public enum Format {
         System,
         Ticks

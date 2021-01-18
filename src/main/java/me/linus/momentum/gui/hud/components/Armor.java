@@ -15,6 +15,8 @@ public class Armor extends HUDComponent {
         super("Armor", 200, 200);
     }
 
+    static final RenderItem itemRender = mc.getRenderItem();
+
     @Override
     public void renderComponent() {
         GlStateManager.enableTexture2D();
@@ -26,10 +28,10 @@ public class Armor extends HUDComponent {
                 continue;
 
             int x = ((9 - iteration) * 14);
-            mc.getRenderItem().zLevel = 200.0f;
-            mc.getRenderItem().renderItemAndEffectIntoGUI(is, (this.x - 70) + x , this.y);
-            mc.getRenderItem().renderItemOverlayIntoGUI(mc.fontRenderer, is, (this.x - 70) + x, this.y, "");
-            mc.getRenderItem().zLevel = 0.0f;
+            itemRender.zLevel = 200.0f;
+            itemRender.renderItemAndEffectIntoGUI(is, (this.x - 70) + x , this.y);
+            itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, is, (this.x - 70) + x, this.y, "");
+            itemRender.zLevel = 0.0f;
             width = x - 8;
             height = 17;
         }

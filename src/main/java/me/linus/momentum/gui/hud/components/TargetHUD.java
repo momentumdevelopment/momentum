@@ -37,7 +37,7 @@ public class TargetHUD extends HUDComponent {
             height = 90;
         }
 
-        public RenderItem itemRender = mc.getRenderItem();
+        public final RenderItem itemRender = mc.getRenderItem();
 
         String playerinfo;
         TextFormatting playercolor;

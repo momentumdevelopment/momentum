@@ -37,7 +37,6 @@ public class ModuleManager implements MixinInterface {
 
 			// combat
 			new AimBot(),
-			new AntiCrystal(),
 			new Aura(),
 			new AutoArmor(),
 			new AutoBed(),
@@ -56,6 +55,7 @@ public class ModuleManager implements MixinInterface {
 			new Surround(),
 			new Trigger(),
 			new Web(),
+			new AntiCrystal(),
 
 			// player
 			new AntiHunger(),
@@ -63,7 +63,6 @@ public class ModuleManager implements MixinInterface {
 			new Blink(),
 			new ExtraSlots(),
 			new FastPlace(),
-			new FreeCam(),
 			new HandProgress(),
 			new LiquidInteract(),
 			new NoEntityTrace(),
@@ -88,6 +87,7 @@ public class ModuleManager implements MixinInterface {
 			new ColoredText(),
 			new DiscordRPC(),
 			new EnableMessage(),
+			new EntityAlert(),
 			new FakeGameMode(),
 			new FakePlayer(),
 			new MiddleClickFriend(),
@@ -186,7 +186,7 @@ public class ModuleManager implements MixinInterface {
 		ModuleManager.onFastUpdate();
 	}
 
-	// TODO: add null checks to every override so the try catch in this is unnecessary
+	// TODO: add null checks to every override so the try catch in this is unneccesary
 	public static void onUpdate() {
 		for (Module m : modules) {
 			try {

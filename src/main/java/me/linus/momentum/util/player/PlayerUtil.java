@@ -27,12 +27,11 @@ public class PlayerUtil implements MixinInterface {
         return mc.player.getHealth() + mc.player.getAbsorptionAmount();
     }
 
-    public static boolean isEating() {
-        return InventoryUtil.getHeldItem(Items.GOLDEN_APPLE) && mc.player.isHandActive();
-    }
+    public static BlockPos getLocalPlayerPosFloored() {
+        if (mc.player == null)
+            return BlockPos.ORIGIN;
 
-    public static boolean isMining() {
-        return InventoryUtil.getHeldItem(Items.DIAMOND_PICKAXE) && mc.player.isHandActive();
+        return new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
     }
 
     public static void attackEntity(Entity entity) {
@@ -42,14 +41,24 @@ public class PlayerUtil implements MixinInterface {
         }
     }
 
+    public static int getArmorDurability() {
+        int totalDurability = 0;
+
+        for (ItemStack itemStack : mc.player.inventory.armorInventory)
+            totalDurability = totalDurability + itemStack.getItemDamage();
+
+        return totalDurability;
+    }
+
     public static boolean inPlayer(BlockPos pos) {
-        return new AxisAlignedBB(pos).intersects(mc.player.getEntityBoundingBox());
+        AxisAlignedBB axisAlignedBB = new AxisAlignedBB(pos);
+        return axisAlignedBB.intersects(mc.player.getEntityBoundingBox());
     }
 
     public static boolean isTrapped() {
-        BlockPos playerPos = new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
+        BlockPos playerPos = getLocalPlayerPosFloored();
 
-        BlockPos[] trapPos = {
+        final BlockPos[] trapPos = {
                 playerPos.down(),
                 playerPos.up().up(),
                 playerPos.north(),
@@ -72,8 +81,24 @@ public class PlayerUtil implements MixinInterface {
         return true;
     }
 
+    public static boolean getArmor(EntityPlayer target, double durability) {
+        for (ItemStack stack : target.getArmorInventoryList()) {
+            if (stack == null || stack.getItem() == Items.AIR)
+                return false;
+
+            final float armorDurability = ((float) (stack.getMaxDamage() - stack.getItemDamage()) / (float) stack.getMaxDamage()) * 100.0f;
+            if (durability >= armorDurability)
+                return true;
+        }
+
+        return false;
+    }
+
     public static Vec3d getCenter(double posX, double posY, double posZ) {
-        return new Vec3d(Math.floor(posX) + 0.5D, Math.floor(posY), Math.floor(posZ) + 0.5D);
+        double x = Math.floor(posX) + 0.5D;
+        double y = Math.floor(posY);
+        double z = Math.floor(posZ) + 0.5D;
+        return new Vec3d(x, y, z);
     }
 
     public static boolean isInLiquid() {

@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author max/xcc8
+ * @author max
  * @since 12/17/2020
  */
 
@@ -21,7 +21,7 @@ public class ChatLogger extends Module {
         super("ChatLogger", Category.MISC, "Logs chat to a file");
     }
 
-    public static Checkbox numbers = new Checkbox("Only Numbers", false);
+    public static final Checkbox numbers = new Checkbox("Only Numbers", false);
 
     @Override
     public void setup() {

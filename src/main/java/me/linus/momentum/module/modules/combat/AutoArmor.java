@@ -3,7 +3,6 @@ package me.linus.momentum.module.modules.combat;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.world.Timer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.init.Items;
@@ -21,7 +20,7 @@ public class AutoArmor extends Module {
         super("AutoArmor", Category.COMBAT, "Automatically replaces armor");
     }
 
-    public static Slider delay = new Slider("Delay", 0.0D, 2.0D, 10.0D, 0);
+    private static final Slider delay = new Slider("Delay", 0.0D, 2.0D, 10.0D, 0);
     public static Checkbox curse = new Checkbox("Ignore Curse", true);
     public static Checkbox elytra = new Checkbox("Prefer Elytra", false);
 
@@ -32,14 +31,12 @@ public class AutoArmor extends Module {
         addSetting(elytra);
     }
 
-    Timer armorTimer = new Timer();
-
     @Override
     public void onUpdate() {
         if (nullCheck())
             return;
 
-        if (armorTimer.passed((long) delay.getValue(), Timer.Format.Ticks))
+        if (mc.player.ticksExisted % delay.getValue() == 0)
             return;
 
         if (mc.currentScreen instanceof GuiContainer && !(mc.currentScreen instanceof InventoryEffectRenderer))
@@ -66,14 +63,17 @@ public class AutoArmor extends Module {
             if (stack == null || !(stack.getItem() instanceof ItemArmor))
                 continue;
 
-            if (((ItemArmor) stack.getItem()).armorType.ordinal() - 2 == 2 && mc.player.inventory.armorItemInSlot(((ItemArmor) stack.getItem()).armorType.ordinal() - 2).getItem().equals(Items.ELYTRA) && elytra.getValue())
+            ItemArmor armor = (ItemArmor) stack.getItem();
+            int armorType = armor.armorType.ordinal() - 2;
+
+            if (armorType == 2 && mc.player.inventory.armorItemInSlot(armorType).getItem().equals(Items.ELYTRA) && elytra.getValue())
                 continue;
 
-            int armorValue = ((ItemArmor) stack.getItem()).damageReduceAmount;
+            int armorValue = armor.damageReduceAmount;
 
-            if (armorValue > bestArmorValues[((ItemArmor) stack.getItem()).armorType.ordinal() - 2]) {
-                bestArmorSlots[((ItemArmor) stack.getItem()).armorType.ordinal() - 2] = slot;
-                bestArmorValues[((ItemArmor) stack.getItem()).armorType.ordinal() - 2] = armorValue;
+            if (armorValue > bestArmorValues[armorType]) {
+                bestArmorSlots[armorType] = slot;
+                bestArmorValues[armorType] = armorValue;
             }
         }
 
@@ -83,7 +83,8 @@ public class AutoArmor extends Module {
             if (slot == -1)
                 continue;
 
-            if (mc.player.inventory.armorItemInSlot(armorType) == null || mc.player.inventory.armorItemInSlot(armorType) != ItemStack.EMPTY || mc.player.inventory.getFirstEmptyStack() != -1) {
+            ItemStack oldArmor = mc.player.inventory.armorItemInSlot(armorType);
+            if (oldArmor == null || oldArmor != ItemStack.EMPTY || mc.player.inventory.getFirstEmptyStack() != -1) {
                 if (slot < 9)
                     slot += 36;
 

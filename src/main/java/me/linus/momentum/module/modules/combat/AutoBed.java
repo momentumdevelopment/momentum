@@ -4,7 +4,6 @@ import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
-import me.linus.momentum.setting.color.ColorCheckbox;
 import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
@@ -89,7 +88,7 @@ public class AutoBed extends Module {
     Timer placeTimer = new Timer();
 
     Entity currentTarget = null;
-    
+
     Rotation bedRotation;
 
     BlockPos currentBlock = null;
@@ -217,9 +216,6 @@ public class AutoBed extends Module {
 
     @Override
     public String getHUDData() {
-        if (currentTarget != null)
-            return " " + currentTarget.getName();
-        else
-            return " None";
+        return (currentTarget != null) ? " " + currentTarget.getName() : " None";
     }
 }

@@ -39,15 +39,15 @@ public class Scaffold extends Module {
         super("Scaffold", Category.MOVEMENT, "Rapidly places blocks underneath you");
     }
 
-    public static Mode mode = new Mode("Mode", "Tower", "Static");
-    public static Checkbox swing = new Checkbox("Swing Arm", false);
-    public static Checkbox bSwitch = new Checkbox("Switch", false);
-    public static Checkbox center = new Checkbox("Center", false);
-    public static Checkbox keepY = new Checkbox("KeepYLevel", false);
-    public static Checkbox sprint = new Checkbox("UseSprint", true);
-    public static Checkbox replenishBlocks = new Checkbox("ReplenishBlocks", true);
-    public static Checkbox down = new Checkbox("Down", false);
-    public static Slider expand = new Slider("Expand", 1.0, 1.0, 6.0, 0);
+    private static final Mode mode = new Mode("Mode", "Tower", "Static");
+    private static final Checkbox swing = new Checkbox("Swing Arm", false);
+    private static final Checkbox bSwitch = new Checkbox("Switch", false);
+    private static final Checkbox center = new Checkbox("Center", false);
+    private static final Checkbox keepY = new Checkbox("KeepYLevel", false);
+    private static final Checkbox sprint = new Checkbox("UseSprint", true);
+    private static final Checkbox replenishBlocks = new Checkbox("ReplenishBlocks", true);
+    private static final Checkbox down = new Checkbox("Down", false);
+    private static final Slider expand = new Slider("Expand", 1.0, 1.0, 6.0, 0);
 
     @Override
     public void setup() {

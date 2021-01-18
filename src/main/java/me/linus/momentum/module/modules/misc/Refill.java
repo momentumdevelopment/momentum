@@ -23,15 +23,15 @@ public class Refill extends Module {
         super("Refill", Category.MISC, "Refills items in your hotbar");
     }
 
-    int delayStep = 0;
+    private int delayStep = 0;
 
-    static Map<Integer, ItemStack> getInventory() {
+    private static Map<Integer, ItemStack> getInventory() {
         return getInventorySlots(9, 35);
     }
-    static Map<Integer, ItemStack> getHotbar() {
+    private static Map<Integer, ItemStack> getHotbar() {
         return getInventorySlots(36, 44);
     }
-    static Map<Integer, ItemStack> getInventorySlots(int current, int last) {
+    private static Map<Integer, ItemStack> getInventorySlots(int current, int last) {
         Map<Integer, ItemStack> fullInventorySlots = new HashMap<>();
 
         while (current <= last) {
@@ -71,7 +71,7 @@ public class Refill extends Module {
         mc.playerController.windowClick(0, inventorySlot, 0, ClickType.PICKUP, mc.player);
     }
 
-    Pair<Integer, Integer> findReplenishableHotbarSlot() {
+    private Pair<Integer, Integer> findReplenishableHotbarSlot() {
 
         Pair<Integer, Integer> returnPair = null;
 
@@ -100,7 +100,7 @@ public class Refill extends Module {
         return returnPair;
     }
 
-    int findCompatibleInventorySlot(ItemStack hotbarStack) {
+    private int findCompatibleInventorySlot(ItemStack hotbarStack) {
 
         int inventorySlot = -1;
         int smallestStackSize = 999;
@@ -124,7 +124,7 @@ public class Refill extends Module {
         } return inventorySlot;
     }
 
-    boolean isCompatibleStacks(ItemStack stack1, ItemStack stack2) {
+    private boolean isCompatibleStacks(ItemStack stack1, ItemStack stack2) {
 
         if (!stack1.getItem().equals(stack2.getItem())) {
             return false;

@@ -49,7 +49,7 @@ public class TabGUI extends HUDComponent {
             GuiScreen.drawRect(this.x + 89, this.y + 2 + (currentModuleHovered * 15), this.x + 163, this.y + 2 + ((currentModuleHovered + 1) * 15), ThemeColor.COLOR);
         }
 
-        GuiScreen.drawRect(this.x + 2, this.y + 2 + (currentHovered * 15), this.x + 83, this.y + 2 + ((currentHovered + 1) * 15), ThemeColor.COLOR);
+        GuiScreen.drawRect(this.x + 2, this.y + 2 + (currentHovered * 15), this.x + 83, this.y + 2 + ((currentHovered + 1) * 15), new Color(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getBlue(), Colors.clientPicker.getColor().getGreen(), 110).getRGB());
 
         if (hoveringModules)
             for (Module module : ModuleManager.getModulesInCategory(categories[currentHovered])) {

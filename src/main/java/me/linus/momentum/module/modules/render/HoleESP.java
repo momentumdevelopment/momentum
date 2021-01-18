@@ -57,7 +57,7 @@ public class HoleESP extends Module {
         addSetting(lineAlpha);
         addSetting(range);
     }
-    
+
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent renderEvent) {
         renderMain(obsidianPicker.getColor(), bedrockPicker.getColor());
@@ -66,54 +66,54 @@ public class HoleESP extends Module {
 
     public void renderMain(Color obbyColor, Color bRockColor) {
         findObsidianHoles().stream().forEach(hole -> {
-                switch (main.getValue()) {
-                    case 0:
-                        RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Fill);
-                        break;
-                    case 1:
-                }
-            });
+            switch (main.getValue()) {
+                case 0:
+                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Fill);
+                    break;
+                case 1:
+            }
+        });
 
         findBedRockHoles().stream().forEach(hole -> {
-                switch (main.getValue()) {
-                    case 0:
-                        RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Fill);
-                        break;
-                    case 1:
-                }
-            });
+            switch (main.getValue()) {
+                case 0:
+                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Fill);
+                    break;
+                case 1:
+            }
+        });
     }
 
     public void renderOutline(Color obbyColor, Color bRockColor) {
         findObsidianHoles().stream().forEach(hole -> {
-                switch (outline.getValue()) {
-                    case 0:
-                        GL11.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoxBlockPos(hole, outlineHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Outline);
-                        break;
-                    case 1:
-                        break;
-                }
-            });
+            switch (outline.getValue()) {
+                case 0:
+                    GL11.glLineWidth((float) lineWidth.getValue());
+                    RenderUtil.drawBoxBlockPos(hole, outlineHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Outline);
+                    break;
+                case 1:
+                    break;
+            }
+        });
 
-            findBedRockHoles().stream().forEach(hole -> {
-                switch (outline.getValue()) {
-                    case 0:
-                        GL11.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoxBlockPos(hole, outlineHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Outline);
-                        break;
-                    case 1:
-                        break;
-                }
+        findBedRockHoles().stream().forEach(hole -> {
+            switch (outline.getValue()) {
+                case 0:
+                    GL11.glLineWidth((float) lineWidth.getValue());
+                    RenderUtil.drawBoxBlockPos(hole, outlineHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Outline);
+                    break;
+                case 1:
+                    break;
+            }
         });
     }
 
     List<BlockPos> findObsidianHoles() {
-        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.IsObsidianHole(blockPos)).collect(Collectors.toList());
+        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.isObsidianHole(blockPos)).collect(Collectors.toList());
     }
 
     List<BlockPos> findBedRockHoles() {
-        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.IsBedRockHole(blockPos)).collect(Collectors.toList());
+        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.isBedRockHole(blockPos)).collect(Collectors.toList());
     }
 
     @Override

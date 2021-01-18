@@ -9,6 +9,7 @@ import me.linus.momentum.util.player.InventoryUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
@@ -28,7 +29,7 @@ public class Quiver extends Module {
         super("Quiver", Category.COMBAT, "Shoots arrows at you");
     }
 
-    public static Mode mode = new Mode("Mode", "Automatic", "Manual");
+    private static final Mode mode = new Mode("Mode", "Automatic", "Manual");
     public static SubCheckbox speed = new SubCheckbox(mode, "Speed", true);
     public static SubCheckbox strength = new SubCheckbox(mode, "Strength", true);
 
@@ -40,7 +41,7 @@ public class Quiver extends Module {
         addSetting(toggle);
     }
 
-     int randomVariation;
+    private int randomVariation;
 
     public void onUpdate() {
         PotionEffect speedEffect = mc.player.getActivePotionEffect(Potion.getPotionById(1));
@@ -94,7 +95,7 @@ public class Quiver extends Module {
             this.disable();
     }
 
-     boolean isArrowInInventory(String type) {
+    private boolean isArrowInInventory(String type) {
         boolean inInv = false;
         for (int i = 0; i < 36; i++) {
             ItemStack itemStack = mc.player.inventory.getStackInSlot(i);
@@ -110,7 +111,7 @@ public class Quiver extends Module {
         return inInv;
     }
 
-     void switchArrow(int oldSlot) {
+    private void switchArrow(int oldSlot) {
         MessageUtil.sendClientMessage("Switching arrows!");
         int bowSlot = mc.player.inventory.currentItem;
         int placeSlot = bowSlot +1;
@@ -128,7 +129,7 @@ public class Quiver extends Module {
         }
     }
 
-    public int getBowCharge() {
+    private int getBowCharge() {
         if (randomVariation == 0)
             randomVariation = 1;
 

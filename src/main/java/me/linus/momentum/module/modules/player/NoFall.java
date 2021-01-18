@@ -15,7 +15,7 @@ public class NoFall extends Module {
         super("NoFall", Category.PLAYER, "Prevents fall damage");
     }
 
-    long last = 0;
+    private long last = 0;
 
     @Override
     public void onUpdate() {
@@ -23,7 +23,8 @@ public class NoFall extends Module {
             return;
 
         if (mc.player.fallDistance >= 5 && System.currentTimeMillis() - last > 100) {
-            RayTraceResult result = mc.world.rayTraceBlocks(mc.player.getPositionVector(), mc.player.getPositionVector().addVector(0, -13.33f, 0), true, true, false);
+            Vec3d posVec = mc.player.getPositionVector();
+            RayTraceResult result = mc.world.rayTraceBlocks(posVec, posVec.addVector(0, -13.33f, 0), true, true, false);
             if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK) {
                 mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, mc.player.onGround));
                 mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX + mc.player.motionX, -1000.0, mc.player.posZ + mc.player.motionZ, mc.player.onGround));

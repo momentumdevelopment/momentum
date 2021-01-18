@@ -20,11 +20,11 @@ public class Step extends Module {
         super("Step", Category.MOVEMENT, "Increases player step height");
     }
 
-    public static Mode mode = new Mode("Mode", "Normal", "Spider", "Vanilla");
+    private static final Mode mode = new Mode("Mode", "Normal", "Spider", "Vanilla");
     public static Slider height = new Slider("Height", 0.0D, 2.0D, 5.0D, 1);
 
     public static Checkbox useTimer = new Checkbox("Use Timer", false);
-    public static SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.1D, 1.1D, 2.0D, 2);
+    private static final SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.1D, 1.1D, 2.0D, 2);
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubCheckbox sneakPause = new SubCheckbox(pause, "When Sneaking", true);

@@ -37,12 +37,12 @@ public class StashFinder extends Module {
         super("StashFinder", Category.MISC, "Automatically finds stashes and logs them");
     }
 
-    public static Mode mode = new Mode("Mode", "Find", "Log", "Both");
-    public static Checkbox chests = new Checkbox("Chests", true);
-    public static Checkbox shulkers = new Checkbox("Shulkers", true);
+    private static final Mode mode = new Mode("Mode", "Find", "Log", "Both");
+    private static final Checkbox chests = new Checkbox("Chests", true);
+    private static final Checkbox shulkers = new Checkbox("Shulkers", true);
 
-    public static Checkbox rotate = new Checkbox("Rotate", true);
-    public static SubSlider delay = new SubSlider(rotate, "Delay Before Rotate", 0.0D, 120.0D, 600.0D, 0);
+    private static final Checkbox rotate = new Checkbox("Rotate", true);
+    private static final SubSlider delay = new SubSlider(rotate, "Delay Before Rotate", 0.0D, 120.0D, 600.0D, 0);
 
     @Override
     public void setup() {
@@ -53,7 +53,7 @@ public class StashFinder extends Module {
     }
 
     Timer timer = new Timer();
-    boolean stop = false;
+    private boolean stop = false;
 
     @Override
     public void onEnable() {
@@ -89,17 +89,17 @@ public class StashFinder extends Module {
             return;
 
         if (mc.player.isElytraFlying()) {
-            if (rotate.getValue() && timer.passed((long) (1000 * delay.getValue()), Timer.Format.System)) {
+            if (rotate.getValue() && timer.passed((long) (1000 * delay.getValue()), Timer.Format.System))
                 MessageUtil.sendClientMessage("No stashes found! Rotated you 90 degrees!");
                 mc.player.rotationYaw += 90f;
-            }
 
             timer.reset();
 
             RotationUtil.resetYaw(ElytraFlight.rotationNCP.getValue());
 
-            if (mc.player.posY <= 120)
+            if (mc.player.posY <= 120) {
                 KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.getKeyCode(), true);
+            }
 
             KeyBinding.setKeyBindState(mc.gameSettings.keyBindForward.getKeyCode(), true);
         }

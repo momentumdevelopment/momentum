@@ -2,7 +2,6 @@ package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
-import me.linus.momentum.setting.slider.Slider;
 
 /**
  * @author linustouchtips
@@ -14,20 +13,16 @@ public class Weather extends Module {
         super("Weather", Category.RENDER, "Allows you to control weather client-side");
     }
 
-    public static Mode mode = new Mode("Mode", "Clear", "Rain", "Thunder");
-    public static Slider time = new Slider("Timer", 0.0D, 6000.0D, 24000.0D, 0);
+    private static final Mode mode = new Mode("Mode", "Clear", "Rain", "Thunder");
 
     @Override
     public void setup() {
         addSetting(mode);
-        addSetting(time);
     }
 
     public void onUpdate() {
         if (nullCheck())
             return;
-
-        mc.world.setWorldTime((long) time.getValue());
 
         switch (mode.getValue()) {
             case 0:

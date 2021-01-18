@@ -16,7 +16,7 @@ public class Timer extends Module {
     }
 
     public static Slider ticks = new Slider("Ticks", 0.1D, 4.0D, 20.0D, 1);
-    public static Checkbox sync = new Checkbox("TPS Sync", false);
+    private static final Checkbox sync = new Checkbox("TPS Sync", false);
 
     @Override
     public void setup() {
@@ -25,16 +25,16 @@ public class Timer extends Module {
     }
 
     @Override
+    public void onDisable() {
+        mc.timer.tickLength = 50;
+    }
+
+    @Override
     public void onUpdate() {
         if (!sync.getValue())
             mc.timer.tickLength = (float) (50.0f / ticks.getValue());
         else
             mc.timer.tickLength = 50.0f / (TickUtil.TPS / 20);
-    }
-
-    @Override
-    public void onDisable() {
-        mc.timer.tickLength = 50;
     }
 
     @Override

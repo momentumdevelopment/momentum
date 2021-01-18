@@ -56,22 +56,4 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
             if (!(ESP.mode.getValue() == 3) || !(ESP.mode.getValue() == 4) || !ModuleManager.getModuleByName("ESP").isEnabled())
                 mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
     }
-
-    @Inject(method={"doRender"}, at={@At(value="HEAD")})
-    public void doRenderPre(T entity, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo info) {
-        try {
-            ESP.espMode.drawESPPre(x, y, z, entityYaw, partialTicks, info);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Inject(method={"doRender"}, at={@At(value="RETURN")})
-    public void doRenderPost(T entity, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo info) {
-        try {
-            ESP.espMode.drawESPPost(x, y, z, entityYaw, partialTicks, info);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

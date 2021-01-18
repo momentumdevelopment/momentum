@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
@@ -17,9 +18,9 @@ public class Coordinates extends HUDComponent {
         super("Coordinates", 2, 350);
     }
 
-    public static Mode mode = new Mode("Mode", "Normal", "In-Line");
-    public static Checkbox overWorld = new Checkbox("OverWorld", true);
-    public static Checkbox nether = new Checkbox("Nether", true);
+    private static final Mode mode = new Mode("Mode", "Normal", "In-Line");
+    private static final Checkbox overWorld = new Checkbox("OverWorld", true);
+    private static final Checkbox nether = new Checkbox("Nether", true);
 
     @Override
     public void setup() {
@@ -47,7 +48,7 @@ public class Coordinates extends HUDComponent {
         else
             FontUtil.drawString((overWorld.getValue() ? overWorldCoords : "") + " " + (nether.getValue() ? netherCoords : ""), this.x, this.y, -1);
 
-        width = (int) (FontUtil.getStringWidth(mode.getValue() == 0 ? overWorldCoords : overWorldCoords + " " + netherCoords) + 2);
+        width = Momentum.fontManager.getCustomFont().getStringWidth(mode.getValue() == 0 ? overWorldCoords : overWorldCoords + " " + netherCoords) + 2;
         height = mode.getValue() == 0 ? (mc.fontRenderer.FONT_HEIGHT * 2) + 4 : mc.fontRenderer.FONT_HEIGHT + 4;
     }
 }

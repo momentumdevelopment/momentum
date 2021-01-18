@@ -12,7 +12,6 @@ import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
-import me.linus.momentum.setting.color.ColorCheckbox;
 import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.keybind.SubKeybind;
@@ -24,7 +23,6 @@ import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
-import me.linus.momentum.util.world.Timer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -262,25 +260,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
                         }
                     }
                 }
-
-                if (s instanceof ColorCheckbox) {
-                    ColorCheckbox c = (ColorCheckbox) s;
-                    drawColorCheckbox(c, x, y);
-                    for (SubSetting ss : c.getSubSettings()) {
-                        if (c.isOpened()) {
-                            boost++;
-
-                            if (ss instanceof SubColor) {
-                                SubColor sc = (SubColor) ss;
-                                drawColorPicker(sc, x, y, mouseX, mouseY);
-                                boost += 9;
-                            }
-
-                            if (!(ss instanceof SubColor))
-                                GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
-                        }
-                    }
-                }
             }
         }
 
@@ -390,7 +369,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width), (y + height) + height + (boost * height))) {
             color = 0xCC383838;
             if (GUIUtil.lheld) {
-                int percentError = (GUIUtil.mouseX - (x + 4)) * 100 / (((x) + width) - (x + 4));
+                int percentError = (GUIUtil.mX - (x + 4)) * 100 / (((x) + width) - (x + 4));
                 sl.setValue(MathUtil.roundDouble(percentError * ((sl.getMaxValue() - sl.getMinValue()) / 100.0D) + sl.getMinValue(), sl.getRoundingScale()));
             }
         }
@@ -425,7 +404,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         if (GUIUtil.mouseOver(x + 8, y + height + (boost * height) + 2, (x + width), (y + height) + height + (boost * height))) {
             color = 0xCC383838;
             if (GUIUtil.lheld) {
-                int percentError = (GUIUtil.mouseX - (x + 8)) * 100 / (((x) + width) - (x + 8));
+                int percentError = (GUIUtil.mX - (x + 8)) * 100 / (((x) + width) - (x + 8));
                 ssl.setValue(MathUtil.roundDouble(percentError * ((ssl.getMaxValue() - ssl.getMinValue()) / 100.0D) + ssl.getMinValue(), ssl.getRoundingScale()));
             }
         }
@@ -498,25 +477,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
             FontUtil.drawString(skb.getName() + ": " + (skb.getKey() == -2 ? "None" : Keyboard.getKeyName(skb.getKey())), x + 7, (y + height) + 4 + (boost * height), -1);
         else
             FontUtil.drawString("Listening...", x + 7, (y + height) + 4 + (boost * height), -1);
-    }
-
-    public static void drawColorCheckbox(ColorCheckbox cc, int x, int y) {
-        int color = 0xCC232323;
-        if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
-            color = 0xCC383838;
-            if (GUIUtil.ldown)
-                cc.toggleValue();
-
-            if (GUIUtil.rdown)
-                cc.toggleState();
-        }
-
-        GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0x99202020);
-        GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), cc.getChecked() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color);
-        FontUtil.drawString(cc.getName(), x + 7, (y + height) + 4 + (boost * height), -1);
-
-        if (cc.hasSubSettings())
-            GuiScreen.drawRect(x + width - 4, y + height + (boost * height) + 2, x + width - 1, (y + height) + height + (boost * height) - 3, cc.getColor().getRGB());
     }
 
     public static void drawColorPicker(SubColor sc, int x, int y, int mouseX, int mouseY) {
@@ -654,7 +614,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         drawPickerBase(pickerX, pickerY, pickerWidth, pickerHeight, selectedRed, selectedGreen, selectedBlue, finalAlpha);
         drawHueSlider(hueSliderX, hueSliderY, hueSliderWidth, hueSliderHeight, color[0]);
         drawAlphaSlider(alphaSliderX, alphaSliderY, alphaSliderWidth, alphaSliderHeight, selectedRed, selectedGreen, selectedBlue, finalAlpha);
-        
+
         int cursorX = (int) (pickerX + color[1] * pickerWidth);
         int cursorY = (int) ((pickerY + pickerHeight) - color[2] * pickerHeight);
         GuiScreen.drawRect(cursorX - 2, cursorY - 2, cursorX + 2, cursorY + 2, -1);
@@ -692,22 +652,22 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
     public static void drawHueSlider(int x, int y, int width, int height, float hue) {
         int step = 0;
-        
+
         if (height > width) {
             GuiScreen.drawRect(x, y, x + width, y + 4, 0xFFFF0000);
             y += 4;
-            
+
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
                 int previousStep = Color.HSBtoRGB((float) step/6, 1.0f, 1.0f);
                 int nextStep = Color.HSBtoRGB((float) (step+1)/6, 1.0f, 1.0f);
                 drawGradientRect(x, y + step * (height/6), x + width, y + (step+1) * (height/6), previousStep, nextStep);
                 step++;
             }
-            
+
             int sliderMinY = (int) (y + (height * hue)) - 4;
             GuiScreen.drawRect(x, sliderMinY - 1, x+width, sliderMinY + 1, -1);
-        } 
-        
+        }
+
         else {
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
                 int previousStep = Color.HSBtoRGB((float) step/6, 1.0f, 1.0f);
@@ -715,7 +675,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
                 gradient(x + step * (width/6), y, x + (step+1) * (width/6), y + height, previousStep, nextStep, true);
                 step++;
             }
-            
+
             int sliderMinX = (int) (x + (width * hue));
             GuiScreen.drawRect(sliderMinX - 1, y, sliderMinX + 1, y + height, -1);
         }
@@ -772,9 +732,9 @@ public class DefaultTheme extends Theme implements MixinInterface {
             GL11.glShadeModel(GL11.GL_FLAT);
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             GL11.glDisable(GL11.GL_BLEND);
-        } 
-        
-        else 
+        }
+
+        else
             drawGradientRect(minX, minY, maxX, maxY, startColor, endColor);
     }
 

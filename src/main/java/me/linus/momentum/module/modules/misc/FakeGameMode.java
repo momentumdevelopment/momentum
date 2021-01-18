@@ -15,7 +15,7 @@ public class FakeGameMode extends Module {
         super("FakeGameMode", Category.MISC, "Changes gamemode to creative client-side");
     }
 
-    public static Mode mode = new Mode("Mode", "Creative", "Spectator", "Adventure");
+    private static final Mode mode = new Mode("Mode", "Creative", "Spectator", "Adventure");
 
     @Override
     public void setup() {
