@@ -77,7 +77,6 @@ public class ModuleManager implements MixinInterface {
 
 			// misc
 			new AntiAFK(),
-			new AntiLag(),
 			new AntiPacketKick(),
 			new AutoDisconnect(),
 			new AutoFish(),
@@ -87,7 +86,6 @@ public class ModuleManager implements MixinInterface {
 			new ColoredText(),
 			new DiscordRPC(),
 			new EnableMessage(),
-			new EntityAlert(),
 			new FakeGameMode(),
 			new FakePlayer(),
 			new MiddleClickFriend(),

@@ -76,16 +76,16 @@ public class NameTags extends Module {
 
         List<EntityPlayer> nametagEntities = new ArrayList<>();
 
-        mc.world.playerEntities.stream().filter(entity -> entity instanceof EntityPlayer && EntityUtil.isLiving(entity) && entity != mc.getRenderViewEntity()).forEach(e -> {
+        mc.world.playerEntities.stream().filter(entity -> entity instanceof EntityPlayer && EntityUtil.isLiving(entity) && entity != mc.getRenderViewEntity()).forEach(entityPlayer -> {
             RenderUtil.camera.setPosition(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
 
-            if (!RenderUtil.camera.isBoundingBoxInFrustum(e.getEntityBoundingBox()) && onlyInViewFrustrum.getValue())
+            if (!mc.player.canEntityBeSeen(entityPlayer) && onlyInViewFrustrum.getValue())
                 return;
 
-            nametagEntities.add(e);
+            nametagEntities.add(entityPlayer);
         });
 
-        nametagEntities.sort((p1, p2) -> Double.compare(p2.getDistance(mc.getRenderViewEntity()), p1.getDistance(mc.getRenderViewEntity())));
+        nametagEntities.sort((entity1, entity2) -> Double.compare(entity2.getDistance(mc.getRenderViewEntity()), entity1.getDistance(mc.getRenderViewEntity())));
         nametagEntities.stream().forEach(entityPlayer -> {
             Entity entity2 = mc.getRenderViewEntity();
 

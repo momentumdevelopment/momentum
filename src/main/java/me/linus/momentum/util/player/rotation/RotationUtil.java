@@ -92,14 +92,13 @@ public class RotationUtil implements MixinInterface {
     public static void updateRotations(Rotation spoofRotation, int mode) {
        switch (mode) {
             case 0:
-            case 1:
                 mc.player.rotationYawHead = spoofRotation.yaw;
                 break;
-            case 2:
+            case 1:
                 mc.player.rotationYaw = spoofRotation.yaw;
                 mc.player.rotationPitch = spoofRotation.pitch;
                 break;
-            case 3:
+            case 2:
                 break;
         }
     }
@@ -107,10 +106,6 @@ public class RotationUtil implements MixinInterface {
     public static void resetRotation(RotationEvent event) {
         event.setYaw(mc.player.rotationYaw);
         event.setPitch(mc.player.rotationPitch);
-    }
-
-    public static float[] getPositionAngles(BlockPos blockPos) {
-        return MathUtil.calcAngle(new Vec3d(blockPos.x, blockPos.y, blockPos.z), new Vec3d(blockPos.x, blockPos.y, blockPos.z));
     }
 
     public static float[] getAngles(Entity entity) {
@@ -144,10 +139,6 @@ public class RotationUtil implements MixinInterface {
     /**
      * player directions
      */
-
-    public static boolean isInViewFrustrum(Entity entity) {
-        return RenderUtil.camera.isBoundingBoxInFrustum(entity.getEntityBoundingBox());
-    }
 
     public static Vec3d direction(float yaw) {
         return new Vec3d(Math.cos(MathUtil.degToRad(yaw + 90f)), 0, Math.sin(MathUtil.degToRad(yaw + 90f)));

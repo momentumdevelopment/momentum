@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.hud.HUD;
 import me.linus.momentum.gui.theme.ThemeColor;
@@ -29,77 +28,40 @@ public class Notifications extends HUDComponent {
         this.toggle();
     }
 
-    private static final ResourceLocation widget = new ResourceLocation("momentum:widget_icon.png");
-    private static final ResourceLocation totem = new ResourceLocation("momentum:totem_icon.png");
+    int count;
 
     @Override
     public void renderComponent() {
+        count = 0;
         if (mc.currentScreen instanceof HUD) {
-            if (NotificationManager.notifications.isEmpty()) {
-                width = Momentum.fontManager.getCustomFont().getStringWidth("This is an example notification!");
-                height = mc.fontRenderer.FONT_HEIGHT;
-
-                GuiScreen.drawRect(this.x - 22, this.y - 5, (int) (this.x + FontUtil.getStringWidth("This is an example notification!") + 3), this.y + mc.fontRenderer.FONT_HEIGHT + 5, new Color(0, 0, 0, 70).getRGB());
-
-                GlStateManager.enableAlpha();
-                mc.getTextureManager().bindTexture(widget);
-                GlStateManager.color(1, 1, 1, 1);
-                GL11.glPushMatrix();
-                GuiScreen.drawScaledCustomSizeModalRect(this.x - 20, this.y - 4, 0,0,512,512,16,16,512,512);
-                GL11.glPopMatrix();
-                GlStateManager.disableAlpha();
-                GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
-
-                FontUtil.drawString("This is an example notification!", this.x, this.y - 1, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
-                return;
-            }
+            GuiScreen.drawRect(this.x - 2, this.y - 2, (int) (this.x + FontUtil.getStringWidth("This is an example notification!")), (int) (this.y + FontUtil.getFontHeight()), new Color(0, 0, 0, 120).getRGB());
+            FontUtil.drawString("This is an example notification!", this.x, this.y, -1);
+            width = (int) FontUtil.getStringWidth("This is an example notification!");
+            height = (int) FontUtil.getFontHeight();
         }
 
-        Iterator<Notification> notifications = NotificationManager.notifications.iterator();
-        float maxWidth = 0f;
+        else {
+            NotificationManager.getNotification().stream().forEach(notification -> {
+                NotificationManager.getNotification().removeIf(continuedNotification -> continuedNotification.isComplete());
 
-        while (notifications.hasNext()) {
-            Notification continuedNotification = notifications.next();
+                if (notification.remainingAnimation < FontUtil.getStringWidth(notification.getMessage()) && !notification.isComplete())
+                    notification.remainingAnimation = AnimationUtil.moveTowards(notification.remainingAnimation, FontUtil.getStringWidth(notification.getMessage()) + 1, (float) (0.01f + ClickGUI.speed.getValue() / 30), 0.1f);
 
-            if (continuedNotification.isComplete())
-                NotificationManager.notifications.remove(continuedNotification);
+                else if (notification.remainingAnimation > 1.5f && notification.isComplete())
+                    notification.remainingAnimation = AnimationUtil.moveTowards(notification.remainingAnimation, -1.5f, (float) (0.01f + ClickGUI.speed.getValue() / 30), 0.1f);
 
-            float width = FontUtil.getStringWidth(continuedNotification.getMessage());
-            int currY = this.y;
+                else if (notification.remainingAnimation <= 1.5f && notification.isComplete())
+                    notification.remainingAnimation = -1f;
 
-            if (continuedNotification.remainingAnimation < width && !continuedNotification.isComplete())
-                continuedNotification.remainingAnimation = AnimationUtil.moveTowards(continuedNotification.remainingAnimation, width + 1, (float) (0.01f + ClickGUI.speed.getValue() / 30), 0.1f);
+                if (notification.remainingAnimation > FontUtil.getStringWidth(notification.getMessage()) && !notification.isComplete())
+                    notification.remainingAnimation = FontUtil.getStringWidth(notification.getMessage());
 
-            else if (continuedNotification.remainingAnimation > 1.5f && continuedNotification.isComplete())
-                continuedNotification.remainingAnimation = AnimationUtil.moveTowards(continuedNotification.remainingAnimation, -1.5f, (float) (0.01f + ClickGUI.speed.getValue() / 30), 0.1f);
+                GuiScreen.drawRect(this.x - 2, this.y - 2 - (count * 14), (int) (this.x + FontUtil.getStringWidth(notification.getMessage())), (int) (this.y + FontUtil.getFontHeight()) - (count * 14), new Color(0, 0, 0, 120).getRGB());
+                FontUtil.drawString(notification.getMessage(), this.x, this.y - (count * 14), -1);
 
-            else if (continuedNotification.remainingAnimation <= 1.5f && continuedNotification.isComplete())
-                continuedNotification.remainingAnimation = -1f;
-
-            if (continuedNotification.remainingAnimation > width && !continuedNotification.isComplete())
-                continuedNotification.remainingAnimation = width;
-
-            GuiScreen.drawRect((int) (this.x - continuedNotification.remainingAnimation) + 63, currY - 5 - (13 * NotificationManager.notifications.size()), (int) (this.x + width + 111 - continuedNotification.remainingAnimation), currY + mc.fontRenderer.FONT_HEIGHT + 5  - (13 * NotificationManager.notifications.size()), new Color(0, 0, 0, 70).getRGB());
-
-            GlStateManager.pushMatrix();
-            GlStateManager.enableAlpha();
-            mc.getTextureManager().bindTexture(widget);
-            GlStateManager.color(1, 1, 1, 1);
-            GuiScreen.drawScaledCustomSizeModalRect((int) (this.x - continuedNotification.remainingAnimation) + 65, this.y - 4 - (13 * NotificationManager.notifications.size()), 0,0,512,512,16,16,512,512);
-            GlStateManager.disableAlpha();
-            GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
-            GlStateManager.popMatrix();
-
-            FontUtil.drawString(continuedNotification.getMessage(), this.x + 98 - continuedNotification.remainingAnimation, currY - (13 * NotificationManager.notifications.size()), HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
-
-            currY -= 13;
-
-            if (width > maxWidth)
-                maxWidth = width;
+                count++;
+            });
         }
-
-        height = mc.fontRenderer.FONT_HEIGHT;
-        width = (int) maxWidth;
     }
 
     @Override

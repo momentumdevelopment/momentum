@@ -1,4 +1,4 @@
-package me.linus.momentum.util.combat;
+package me.linus.momentum.util.combat.crystal;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.world.BlockUtil;

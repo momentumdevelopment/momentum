@@ -1,18 +1,21 @@
 package me.linus.momentum.module.modules.misc;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
-import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.world.Timer;
+import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.client.notification.Notification;
 import me.linus.momentum.util.client.notification.NotificationManager;
-import me.linus.momentum.util.player.PlayerUtil;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.passive.EntityDonkey;
+import net.minecraft.entity.passive.EntityLlama;
+import net.minecraft.entity.passive.EntityMule;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -28,37 +31,60 @@ public class Notifier extends Module {
         super("Notifier", Category.MISC, "Notifies you for various things");
     }
 
-    private static final Checkbox events = new Checkbox("Events", true);
-    private static final SubCheckbox totem = new SubCheckbox(events,"Totem Pop", true);
-    private static final SubCheckbox armor = new SubCheckbox(events,"Armor", true);
-    private static final SubCheckbox visualRange = new SubCheckbox(events,"Visual Range", false);
+    public static Checkbox totem = new Checkbox("Totem Pop", true);
+    public static Checkbox armor = new Checkbox("Armor", true);
+    public static Checkbox visualRange = new Checkbox("Visual Range", false);
 
-    private static final Checkbox delays = new Checkbox("Delays", true);
-    private static final SubSlider armorDelay = new SubSlider(delays, "Armor Delay", 5000, 8000, 10000, 0);
-    private static final SubSlider visualRangeDelay = new SubSlider(delays, "VisualRng Delay", 5000, 8000, 10000, 0);
+    public static Checkbox entityAlert = new Checkbox("Entity Alert", false);
+    public static SubCheckbox donkeys = new SubCheckbox(entityAlert, "Donkeys", true);
+    public static SubCheckbox llamas = new SubCheckbox(entityAlert, "Llamas", true);
+    public static SubCheckbox mules = new SubCheckbox(entityAlert, "Mules", true);
 
     @Override
     public void setup() {
-        addSetting(events);
-        addSetting(delays);
+        addSetting(totem);
+        addSetting(armor);
+        addSetting(visualRange);
+        addSetting(entityAlert);
     }
 
-    private final HashMap<String, Integer> totemPopContainer = new HashMap<>();
+    HashMap<String, Integer> totemPopContainer = new HashMap<>();
+    int count = 1;
 
     @Override
     public void onUpdate() {
         if (nullCheck())
             return;
 
-        if (armor.getValue() && PlayerUtil.getArmor(mc.player, 15)) {
+        if (armor.getValue() && mc.player.getArmorInventoryList() != null && EnemyUtil.getArmor(mc.player) < 15) {
             NotificationManager.notifications.add(new Notification("Your armor durability is getting low!"));
             MessageUtil.sendClientMessage("Your armor durability is getting low!");
         }
 
-        for (EntityPlayer player : mc.world.playerEntities) {
+        mc.world.loadedEntityList.forEach(entity -> {
+            if (entity instanceof EntityDonkey && donkeys.getValue()) {
+                NotificationManager.notifications.add(new Notification("Found a donkey at [" + Math.round(entity.lastTickPosX) + ", " + Math.round(entity.lastTickPosY) + ", " + Math.round(entity.lastTickPosZ) + "]"));
+                MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "donkey " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
+                mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
+            }
+
+            if (entity instanceof EntityLlama && llamas.getValue()) {
+                NotificationManager.notifications.add(new Notification("Found a llama at [" + Math.round(entity.lastTickPosX) + ", " + Math.round(entity.lastTickPosY) + ", " + Math.round(entity.lastTickPosZ) + "]"));
+                MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "llama " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
+                mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
+            }
+
+            if (entity instanceof EntityMule && mules.getValue()) {
+                NotificationManager.notifications.add(new Notification("Found a mule at [" + Math.round(entity.lastTickPosX) + ", " + Math.round(entity.lastTickPosY) + ", " + Math.round(entity.lastTickPosZ) + "]"));
+                MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "mule " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
+                mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
+            }
+        });
+
+        mc.world.playerEntities.stream().forEach(player -> {
             if (totem.getValue()) {
                 if (!totemPopContainer.containsKey(player.getName()))
-                    continue;
+                    return;
 
                 if (player.isDead || player.getHealth() <= 0.0f) {
                     int count = totemPopContainer.get(player.getName()).intValue();
@@ -81,25 +107,20 @@ public class Notifier extends Module {
                     MessageUtil.sendClientMessage(player.getName() + "has entered your visual range!");
                 }
             }
-        }
+        });
     }
 
     @SubscribeEvent
     public void onPacketRecieve(PacketReceiveEvent event) {
         if (event.getPacket() instanceof SPacketEntityStatus && totem.getValue()) {
-            SPacketEntityStatus packet = (SPacketEntityStatus) event.getPacket();
-            if (packet.getOpCode() == 35) {
-                Entity entity = packet.getEntity(mc.world);
+            if (((SPacketEntityStatus) event.getPacket()).getOpCode() == 35) {
+                Entity entity = ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world);
 
                 if (entity == null)
                     return;
 
-                int count = 1;
-
-                if (totemPopContainer.containsKey(entity.getName())) {
-                    count = totemPopContainer.get(entity.getName()).intValue();
+                if (totemPopContainer.containsKey(entity.getName()))
                     totemPopContainer.put(entity.getName(), count++);
-                }
 
                 else
                     totemPopContainer.put(entity.getName(), count);
