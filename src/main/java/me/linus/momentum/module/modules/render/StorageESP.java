@@ -29,7 +29,7 @@ public class StorageESP extends Module {
         super("StorageESP", Category.RENDER, "Highlights containers");
     }
 
-    public static Mode mode = new Mode("Mode", "Shader", "Outline", "Fill", "Both");
+    public static Mode mode = new Mode("Mode", "Outline", "Fill", "Both");
 
     public static Checkbox chests = new Checkbox("Chests", true);
     public static SubColor chestPicker = new SubColor(chests, new Color(46, 83, 215));
@@ -107,14 +107,14 @@ public class StorageESP extends Module {
         mc.world.loadedTileEntityList.stream().filter(tileEntity -> mc.player.getDistanceSq(tileEntity.getPos()) <= MathUtil.square(range.getValue())).forEach(tileEntity -> {
             if (tileEntity instanceof TileEntityChest && chests.getValue() || (tileEntity instanceof TileEntityEnderChest && enderChests.getValue()) || (tileEntity instanceof TileEntityHopper && hoppers.getValue()) || (tileEntity instanceof TileEntityFurnace && furnaces.getValue()) || (tileEntity instanceof TileEntityBed && beds.getValue() || (tileEntity instanceof TileEntityDropper && droppers.getValue()) || (tileEntity instanceof TileEntityShulkerBox && shulkers.getValue()))) {
                 switch (mode.getValue()) {
-                    case 1:
+                    case 0:
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
                         RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderBuilder.renderMode.Outline);
                         break;
-                    case 2:
+                    case 1:
                         RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderBuilder.renderMode.Fill);
                         break;
-                    case 3:
+                    case 2:
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
                         RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderBuilder.renderMode.Both);
                         break;

@@ -68,10 +68,12 @@ public class BlockUtil implements MixinInterface {
         return false;
     }
 
+    public static boolean canBlockBeSeen(BlockPos blockPos) {
+        return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
+    }
+
     public static boolean canBreak(BlockPos pos) {
-        final IBlockState blockState = mc.world.getBlockState(pos);
-        final Block block = blockState.getBlock();
-        return block.getBlockHardness(blockState, mc.world, pos) != -1;
+        return mc.world.getBlockState(pos).getBlock().getBlockHardness(mc.world.getBlockState(pos), mc.world, pos) != -1;
     }
 
     public static List<BlockPos> getNearbyBlocks(EntityPlayer player, double blockRange, boolean motion) {

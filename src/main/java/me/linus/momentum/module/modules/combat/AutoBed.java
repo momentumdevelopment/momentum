@@ -51,7 +51,7 @@ public class AutoBed extends Module {
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 20.0D, 60.0D, 0);
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubCheckbox unload = new SubCheckbox(explode, "Unload Bed", false);
-    public static SubMode rotate = new SubMode(explode, "Rotate", "Packet", "Face", "Legit", "None");
+    public static SubMode rotate = new SubMode(explode, "Rotate", "Packet", "Legit", "None");
 
     public static Checkbox place = new Checkbox("Place", true);
     public static SubMode placeTimerMode = new SubMode(place, "Delay Mode", "Custom", "Ticks");

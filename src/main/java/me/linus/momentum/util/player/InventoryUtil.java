@@ -124,18 +124,13 @@ public class InventoryUtil implements MixinInterface {
 
     public static boolean Is32k(ItemStack stack) {
         if (stack.getEnchantmentTagList() != null) {
-            final NBTTagList tags = stack.getEnchantmentTagList();
-            for (int i = 0; i < tags.tagCount(); i++) {
-                final NBTTagCompound tagCompound = tags.getCompoundTagAt(i);
-
-                if (tagCompound != null && Enchantment.getEnchantmentByID(tagCompound.getByte("id")) != null) {
-                    final Enchantment enchantment = Enchantment.getEnchantmentByID(tagCompound.getShort("id"));
-                    final short lvl = tagCompound.getShort("lvl");
-                    if (enchantment != null) {
-                        if (enchantment.isCurse())
+            for (int i = 0; i < stack.getEnchantmentTagList().tagCount(); i++) {
+                if (stack.getEnchantmentTagList().getCompoundTagAt(i)!= null && Enchantment.getEnchantmentByID(stack.getEnchantmentTagList().getCompoundTagAt(i).getByte("id")) != null) {
+                    if (Enchantment.getEnchantmentByID(stack.getEnchantmentTagList().getCompoundTagAt(i).getShort("id")) != null) {
+                        if (Enchantment.getEnchantmentByID(stack.getEnchantmentTagList().getCompoundTagAt(i).getShort("id")).isCurse())
                             continue;
 
-                        if (lvl >= 1000)
+                        if (stack.getEnchantmentTagList().getCompoundTagAt(i).getShort("lvl") >= 1000)
                             return true;
                     }
                 }

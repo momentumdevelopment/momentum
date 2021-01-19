@@ -31,52 +31,6 @@ import java.util.stream.Collectors;
 
 public class CrystalUtil implements MixinInterface {
 
-    public static List<BlockPos> crystalBlocks(EntityPlayer entityPlayer, double placeRange, boolean prediction, int blockCalc) {
-        return BlockUtil.getNearbyBlocks(entityPlayer, placeRange, prediction).stream().filter(blockCalc == 0 ? CrystalUtil::canPlaceCrystal : CrystalUtil::canPlaceThirteenCrystal).collect(Collectors.toList());
-    }
-
-    public static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
-        if (mc.player.capabilities.isCreativeMode)
-            return 0;
-
-        double factor = (1.0 - entity.getDistance(posX, posY, posZ) / 12.0f) * entity.world.getBlockDensity(new Vec3d(posX, posY, posZ), entity.getEntityBoundingBox());
-        float calculatedDamage = (float) (int) ((factor * factor + factor) / 2.0 * 7.0 * 12.0f + 1.0);
-        double damage = 1.0;
-
-        if (entity instanceof EntityLivingBase)
-            damage = getBlastReduction((EntityLivingBase) entity, getDamageMultiplied(calculatedDamage), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
-
-        return (float) damage;
-    }
-
-    public static float getBlastReduction(EntityLivingBase entity, float damage, Explosion explosion) {
-        if (entity instanceof EntityPlayer) {
-            damage = CombatRules.getDamageAfterAbsorb(damage, (float) entity.getTotalArmorValue(), (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
-            damage *= 1.0f - MathHelper.clamp((float) EnchantmentHelper.getEnchantmentModifierDamage(entity.getArmorInventoryList(), DamageSource.causeExplosionDamage(explosion)), 0.0f, 20.0f) / 25.0f;
-
-            if (entity.isPotionActive(Potion.getPotionById(11)))
-                damage -= damage / 4.0f;
-
-            return damage;
-        }
-
-        damage = CombatRules.getDamageAfterAbsorb(damage, (float) entity.getTotalArmorValue(), (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
-        return damage;
-    }
-
-    private static float getDamageMultiplied(float damage) {
-        int diff = mc.world.getDifficulty().getDifficultyId();
-        return damage * ((diff == 0) ? 0.0f : ((diff == 2) ? 1.0f : ((diff == 1) ? 0.5f : 1.5f)));
-    }
-
-    public static boolean canBlockBeSeen(BlockPos blockPos) {
-        return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
-    }
-
-    public static BlockPos getPlayerPos() {
-        return new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
-    }
-
     public static void attackCrystal(EntityEnderCrystal crystal, boolean packet) {
         if (packet)
             mc.player.connection.sendPacket(new CPacketUseEntity(crystal));
@@ -131,24 +85,22 @@ public class CrystalUtil implements MixinInterface {
 
     public static void placeCrystal(BlockPos placePos, EnumFacing enumFacing, boolean packet) {
         if (packet)
-            mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(placePos, enumFacing, mc.player.getHeldItemOffhand().equals(Items.END_CRYSTAL) ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
+            mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(placePos, enumFacing, mc.player.getHeldItemOffhand().getItem().equals(Items.END_CRYSTAL) ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
         else
-            mc.playerController.processRightClickBlock(mc.player, mc.world, placePos, enumFacing, new Vec3d(0, 0, 0), mc.player.getHeldItemOffhand().equals(Items.END_CRYSTAL) ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+            mc.playerController.processRightClickBlock(mc.player, mc.world, placePos, enumFacing, new Vec3d(0, 0, 0), mc.player.getHeldItemOffhand().getItem().equals(Items.END_CRYSTAL) ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
     }
 
-    public static EnumFacing getEnumFacing(boolean rayTrace, BlockPos finalPos) {
-        RayTraceResult result = mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(finalPos.getX() + 0.5, finalPos.getY() - 0.5, finalPos.getZ() + 0.5));
-        EnumFacing enumFacing = null;
+    public static EnumFacing getEnumFacing(boolean rayTrace, BlockPos placePosition) {
+        RayTraceResult result = mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(placePosition.getX() + 0.5, placePosition.getY() - 0.5, placePosition.getZ() + 0.5));
+
+        if (placePosition.getY() == 255)
+            return EnumFacing.DOWN;
 
         if (rayTrace) {
-            if (result == null || result.sideHit == null)
-                return null;
-
-            else
-                enumFacing = result.sideHit;
+            return (result == null || result.sideHit == null) ? EnumFacing.UP : result.sideHit;
         }
 
-        return enumFacing;
+        return EnumFacing.UP;
     }
 
     public static boolean canPlaceCrystal(BlockPos blockPos) {
@@ -157,5 +109,51 @@ public class CrystalUtil implements MixinInterface {
 
     public static boolean canPlaceThirteenCrystal(BlockPos blockPos) {
         return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 1, 0))).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 2, 0))).isEmpty();
+    }
+
+    public static List<BlockPos> crystalBlocks(EntityPlayer entityPlayer, double placeRange, boolean prediction, int blockCalc) {
+        return BlockUtil.getNearbyBlocks(entityPlayer, placeRange, prediction).stream().filter(blockCalc == 0 ? CrystalUtil::canPlaceCrystal : CrystalUtil::canPlaceThirteenCrystal).collect(Collectors.toList());
+    }
+
+    public static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
+        if (mc.player.capabilities.isCreativeMode)
+            return 0;
+
+        double factor = (1.0 - entity.getDistance(posX, posY, posZ) / 12.0f) * entity.world.getBlockDensity(new Vec3d(posX, posY, posZ), entity.getEntityBoundingBox());
+        float calculatedDamage = (float) (int) ((factor * factor + factor) / 2.0 * 7.0 * 12.0f + 1.0);
+        double damage = 1.0;
+
+        if (entity instanceof EntityLivingBase)
+            damage = getBlastReduction((EntityLivingBase) entity, calculatedDamage * ((mc.world.getDifficulty().getDifficultyId() == 0) ? 0.0f : ((mc.world.getDifficulty().getDifficultyId() == 2) ? 1.0f : ((mc.world.getDifficulty().getDifficultyId() == 1) ? 0.5f : 1.5f))), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
+
+        return (float) damage;
+    }
+
+    public static float getBlastReduction(EntityLivingBase entity, float damage, Explosion explosion) {
+        if (entity instanceof EntityPlayer) {
+            damage = CombatRules.getDamageAfterAbsorb(damage, (float) entity.getTotalArmorValue(), (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
+            damage *= 1.0f - MathHelper.clamp((float) EnchantmentHelper.getEnchantmentModifierDamage(entity.getArmorInventoryList(), DamageSource.causeExplosionDamage(explosion)), 0.0f, 20.0f) / 25.0f;
+
+            if (entity.isPotionActive(Potion.getPotionById(11)))
+                damage -= damage / 4.0f;
+
+            return damage;
+        }
+
+        damage = CombatRules.getDamageAfterAbsorb(damage, (float) entity.getTotalArmorValue(), (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
+        return damage;
+    }
+
+    public static double getHeuristic(BlockPos placePos, double targetDamage, double selfDamage, int mode) {
+        switch (mode) {
+            case 0:
+                return targetDamage;
+            case 1:
+                return targetDamage - selfDamage;
+            case 2:
+                return targetDamage - (selfDamage + mc.player.getDistance(placePos.x, placePos.y, placePos.z));
+        }
+
+        return 0;
     }
 }

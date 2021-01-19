@@ -13,7 +13,7 @@ public class SkinBlinker extends Module {
         super("SkinBlinker", Category.MISC, "Switches skin model parts");
     }
 
-    static final EnumPlayerModelParts[] PARTS_HORIZONTAL;
+    static EnumPlayerModelParts[] PARTS_HORIZONTAL;
 
     @Override
     public void onUpdate() {

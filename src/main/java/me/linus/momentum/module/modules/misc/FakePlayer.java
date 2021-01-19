@@ -20,12 +20,14 @@ public class FakePlayer extends Module {
         super("FakePlayer", Category.MISC, "Creates a fake motionless player");
     }
 
-    private static final Mode name = new Mode("Name", "linustouchtips24", "popbob", "Fit", "GrandOlive", "S8N", "Papa_Quill");
+    public static  Mode mode = new Mode("Mode", "Single", "Multi");
+    public static  Mode name = new Mode("Name", "linustouchtips24", "popbob", "Fit", "GrandOlive", "S8N", "Papa_Quill");
     public static Checkbox inventory = new Checkbox("Copy Inventory", true);
     public static Checkbox angles = new Checkbox("Copy Angles", true);
 
     @Override
     public void setup() {
+        addSetting(mode);
         addSetting(name);
         addSetting(inventory);
         addSetting(angles);
@@ -57,8 +59,14 @@ public class FakePlayer extends Module {
                 break;
         }
 
-        WorldUtil.createFakePlayer(new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("873e2766-9254-49bc-89d7-5d4d585ad29d"), fakeName)), inventory.getValue(), angles.getValue(), true);
-        MessageUtil.sendClientMessage("Spawning fake player!");
+        switch (mode.getValue()) {
+            case 0:
+                WorldUtil.createFakePlayer(new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("873e2766-9254-49bc-89d7-5d4d585ad29d"), fakeName)), inventory.getValue(), angles.getValue(), true);
+                break;
+            case 1:
+        }
+        
+        MessageUtil.sendClientMessage("Spawning fake player(s)!");
     }
 
     @Override

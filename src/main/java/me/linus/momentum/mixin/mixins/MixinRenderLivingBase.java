@@ -47,7 +47,7 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
             if ((ESP.mode.getValue() == 3) || (ESP.mode.getValue() == 4) && ModuleManager.getModuleByName("ESP").isEnabled())
                 GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
 
-            if (NoRender.transparentModel(entitylivingbaseIn) && ModuleManager.getModuleByName("NoRender").isEnabled() && NoRender.noCluster.getValue())
+            if (mc.player.getDistance(entitylivingbaseIn) < 1 && ModuleManager.getModuleByName("NoRender").isEnabled() && NoRender.noCluster.getValue())
                 GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
 
             if (ModuleManager.getModuleByName("ESP").isEnabled())

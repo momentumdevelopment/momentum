@@ -14,9 +14,9 @@ public class AntiAFK extends Module {
         super("AntiAFK", Category.MISC, "Prevents you from getting kicked for being AFK");
     }
 
-    private static final Slider delay = new Slider("Delay", 0.0D, 50.0D, 100.0D, 0);
-    private static final Checkbox jump = new Checkbox("Jump", true);
-    private static final Checkbox chat = new Checkbox("Chat", false);
+    public static Slider delay = new Slider("Delay", 0.0D, 50.0D, 100.0D, 0);
+    public static Checkbox jump = new Checkbox("Jump", true);
+    public static Checkbox chat = new Checkbox("Chat", false);
 
     @Override
     public void setup() {

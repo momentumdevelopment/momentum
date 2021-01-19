@@ -16,7 +16,7 @@ public class ThemeColor {
 
 	public static void updateColors() {
 		GRAY = ColorUtil.toRGBA(112, 112, 112, 255);
-		BRIGHT = ColorUtil.toRGBA((int) Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getBlue(), Colors.clientPicker.getColor().getGreen(), 255);
+		BRIGHT = ColorUtil.toRGBA(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getGreen(), Colors.clientPicker.getColor().getBlue(), 255);
 
 		if (Colors.rainbow.getValue()) {
 			if (Colors.gradient.getValue())
@@ -29,6 +29,6 @@ public class ThemeColor {
 		}
 
 		else if (!Colors.rainbow.getValue())
-			COLOR = ColorUtil.toRGBA(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getBlue(), Colors.clientPicker.getColor().getGreen(), Colors.clientPicker.getColor().getAlpha());
+			COLOR = ColorUtil.toRGBA(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getGreen(), Colors.clientPicker.getColor().getBlue(), Colors.clientPicker.getColor().getAlpha());
 	}
 }

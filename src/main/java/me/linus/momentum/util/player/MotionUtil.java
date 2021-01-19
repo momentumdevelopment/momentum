@@ -16,12 +16,13 @@ import java.text.DecimalFormat;
  */
 
 public class MotionUtil implements MixinInterface {
+    
     static DecimalFormat formatter = new DecimalFormat("#.#");
     static float roundedForward = getRoundedMovementInput(mc.player.movementInput.moveForward);
     static float roundedStrafing = getRoundedMovementInput(mc.player.movementInput.moveStrafe);
-    private static double prevPosX;
-    private static double prevPosZ;
-    private static Timer timer = new Timer();
+    static double prevPosX;
+    static double prevPosZ;
+    static Timer timer = new Timer();
 
     public static boolean isMoving() {
         return (mc.player.moveForward != 0.0D || mc.player.moveStrafing != 0.0D);
@@ -50,7 +51,7 @@ public class MotionUtil implements MixinInterface {
         return Math.toRadians(yaw);
     }
 
-    private static float getRoundedMovementInput(Float input) {
+    static float getRoundedMovementInput(Float input) {
         if (input > 0)
             input = 1f;
         else if (input < 0)

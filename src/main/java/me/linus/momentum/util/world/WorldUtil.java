@@ -17,10 +17,6 @@ import java.util.stream.Collectors;
 
 public class WorldUtil implements MixinInterface {
 
-    /**
-     * fakeplayers
-     */
-
     public static void createFakePlayer(EntityOtherPlayerMP entity, boolean copyInventory, boolean copyAngles, boolean health) {
         entity = new EntityOtherPlayerMP(mc.world, mc.getSession().getProfile());
         entity.copyLocationAndAnglesFrom(mc.player);
@@ -38,10 +34,6 @@ public class WorldUtil implements MixinInterface {
 
         mc.world.addEntityToWorld(69420, entity);
     }
-
-    /**
-     * loaded player list
-     */
 
     public static EntityPlayer getClosestPlayer(double range) {
         if (mc.world.getLoadedEntityList().size() == 0)
@@ -67,6 +59,15 @@ public class WorldUtil implements MixinInterface {
 
         return nearbyPlayers;
     }
+
+    public static List<EntityPlayer> getNearbyFriends(double range) {
+        if (mc.world.getLoadedEntityList().size() == 0)
+            return null;
+
+        List<EntityPlayer> nearbyFriends = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !entityPlayer.isDead).filter(entityPlayer -> FriendManager.isFriend(entityPlayer.getName())).collect(Collectors.toList());
+        return nearbyFriends;
+    }
+
     public static void disconnectFromWorld(Module module) {
         module.disable();
         mc.world.sendQuittingDisconnectingPacket();

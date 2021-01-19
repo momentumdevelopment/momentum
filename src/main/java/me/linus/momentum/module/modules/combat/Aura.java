@@ -62,7 +62,7 @@ public class Aura extends Module {
     public static SubCheckbox holePause = new SubCheckbox(pause, "When not in Hole", false);
     public static SubCheckbox eatPause = new SubCheckbox(pause, "When Eating", false);
 
-    public static Mode rotate = new Mode("Rotate", "Packet", "Face", "Legit", "None");
+    public static Mode rotate = new Mode("Rotate", "Packet", "Legit", "None");
     public static SubCheckbox spoof = new SubCheckbox(rotate, "Spoof Angles", false);
 
     public static Slider range = new Slider("Range", 0.0D, 6.0D, 10.0D, 0);
@@ -129,7 +129,7 @@ public class Aura extends Module {
         if (crystalPause.getValue() && (ModuleManager.getModuleByName("AutoCrystal").isEnabled() || mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal))
             return;
 
-        if (eatPause.getValue() && (mc.player.getHeldItemMainhand().getItem() instanceof ItemFood))
+        if (PlayerUtil.isEating() && eatPause.getValue() )
             return;
 
         if (holePause.getValue() && !HoleUtil.isInHole(mc.player))

@@ -21,7 +21,7 @@ public class ChatLogger extends Module {
         super("ChatLogger", Category.MISC, "Logs chat to a file");
     }
 
-    public static final Checkbox numbers = new Checkbox("Only Numbers", false);
+    public static  Checkbox numbers = new Checkbox("Only Numbers", false);
 
     @Override
     public void setup() {

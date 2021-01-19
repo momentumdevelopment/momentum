@@ -47,7 +47,6 @@ import java.util.stream.Collectors;
  * @since 11/24/2020
  */
 
-// TODO: fix placement calc
 public class AutoCrystal extends Module {
     public AutoCrystal() {
         super("AutoCrystal", Category.COMBAT, "Automatically places and explodes crystals");
@@ -58,10 +57,10 @@ public class AutoCrystal extends Module {
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 20.0D, 60.0D, 0);
     public static SubSlider breakAttempts = new SubSlider(explode, "Break Attempts", 0.0D, 1.0D, 5.0D, 0);
+    public static SubCheckbox packetBreak = new SubCheckbox(explode, "Packet Break", true);
     public static SubCheckbox walls = new SubCheckbox(explode, "Through Walls", true);
     public static SubCheckbox syncBreak = new SubCheckbox(explode, "Sync Break", true);
     public static SubCheckbox unload = new SubCheckbox(explode, "Unload Crystal", true);
-    public static SubCheckbox packetBreak = new SubCheckbox(explode, "Packet Break", true);
     public static SubCheckbox damageSync = new SubCheckbox(explode, "Damage Sync", false);
     public static SubCheckbox antiWeakness = new SubCheckbox(explode, "Anti-Weakness", false);
     public static SubMode breakHand = new SubMode(explode, "BreakHand", "MainHand", "OffHand", "Both", "GhostHand");
@@ -88,8 +87,8 @@ public class AutoCrystal extends Module {
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubMode pauseMode = new SubMode(pause, "Mode", "Place", "Break", "Both");
+    public static SubMode friendProtect = new SubMode(pause, "Friend Protect", "None", "Place", "Break");
     public static SubSlider pauseHealth = new SubSlider(pause, "Pause Health", 0.0D, 7.0D, 36.0D, 0);
-    public static SubCheckbox pastDistance = new SubCheckbox(pause, "Past Damage Distance", false);
     public static SubCheckbox whenMining = new SubCheckbox(pause, "When Mining", false);
     public static SubCheckbox whenEating = new SubCheckbox(pause, "When Eating", false);
     public static SubCheckbox closePlacements = new SubCheckbox(pause, "Close Placements", false);
@@ -98,13 +97,12 @@ public class AutoCrystal extends Module {
     public static SubSlider facePlaceHealth = new SubSlider(facePlace, "FacePlace Health", 0.0D, 16.0D, 36.0D, 0);
     public static SubCheckbox armorMelt = new SubCheckbox(facePlace, "Armor Melt", false);
     public static SubSlider armorDurability = new SubSlider(facePlace, "Armor Durability", 0.0D, 15.0D, 100.0D, 0);
-    public static SubCheckbox facePlaceInHole = new SubCheckbox(facePlace, "FacePlace in Hole", false);
+    public static SubCheckbox facePlaceInHole = new SubCheckbox(facePlace, "FacePlace HoleCampers", false);
     public static SubKeybind forceFaceplace = new SubKeybind(facePlace, "Force FacePlace", -2);
 
     public static Checkbox calculations = new Checkbox("Calculations", true);
-    public static SubMode placeCalc = new SubMode(calculations, "Place Calculation", "Ideal", "Actual");
-    public static SubMode verifyCalc = new SubMode(calculations, "Verify Calculation", "None", "Check");
-    public static SubMode damageCalc = new SubMode(calculations, "Damage Calculation", "Full", "Semi");
+    public static SubMode heuristic = new SubMode(calculations, "Heuristic", "Damage", "MiniMax", "Atomic");
+    public static SubCheckbox verifyPlace = new SubCheckbox(calculations, "Verify Placements", false);
     public static SubCheckbox taiwanTick = new SubCheckbox(calculations, "Taiwan-Tick", false);
 
     public static Checkbox logic = new Checkbox("Logic", true);
@@ -113,8 +111,8 @@ public class AutoCrystal extends Module {
 
     public static Checkbox renderCrystal = new Checkbox("Render", true);
     public static SubColor colorPicker = new SubColor(renderCrystal, new Color(250, 0, 250, 50));
+    public static SubMode renderMode = new SubMode(renderCrystal, "Mode", "Fill", "Outline", "Both");
     public static SubCheckbox renderDamage = new SubCheckbox(renderCrystal, "Render Damage", true);
-    public static SubCheckbox outline = new SubCheckbox(renderCrystal, "Outline", false);
 
     @Override
     public void setup() {
@@ -134,7 +132,7 @@ public class AutoCrystal extends Module {
     EntityPlayer currentTarget = null;
     EntityEnderCrystal crystal = null;
     Rotation crystalRotation = null;
-    CrystalPosition nodePostion = new CrystalPosition(null, 0, 0);
+    CrystalPosition crystalPosition = new CrystalPosition(BlockPos.ORIGIN, 0, 0);
     List<BlockPos> placedCrystals = new ArrayList<>();
 
     @Override
@@ -159,7 +157,7 @@ public class AutoCrystal extends Module {
         if (nullCheck())
             return;
 
-        if (currentTarget != null && (!FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled()) && rotationTimer.passed((long) rotateDelay.getValue(), Timer.Format.System)) {
+        if (currentTarget != null && rotationTimer.passed((long) rotateDelay.getValue(), Timer.Format.System)) {
             if (!mc.player.canEntityBeSeen(currentTarget) && onlyInViewFrustrum.getValue())
                 return;
 
@@ -168,6 +166,9 @@ public class AutoCrystal extends Module {
             RotationUtil.updateRotations(crystalRotation, rotateMode.getValue());
             rotationTimer.reset();
         }
+
+        if (PlayerUtil.isEating() && whenEating.getValue() || PlayerUtil.isMining() && whenEating.getValue())
+            return;
 
         if (!taiwanTick.getValue())
             autoCrystal();
@@ -208,6 +209,10 @@ public class AutoCrystal extends Module {
             if (closePlacements.getValue() && mc.player.getDistance(crystal) < 1.5)
                 return;
 
+            for (EntityPlayer friend : WorldUtil.getNearbyFriends(placeRange.getValue()))
+                if (EnemyUtil.getHealth(friend) - (CrystalUtil.calculateDamage(crystal.posX + 0.5, crystal.posY + 1, crystal.posZ + 0.5, friend)) <= pauseHealth.getValue() && friendProtect.getValue() == 0)
+                    return;
+
             if (antiWeakness.getValue() && mc.player.isPotionActive(MobEffects.WEAKNESS))
                 InventoryUtil.switchToSlot(Items.DIAMOND_SWORD);
 
@@ -217,7 +222,7 @@ public class AutoCrystal extends Module {
 
             CrystalUtil.swingArm(breakHand.getValue());
             if (syncBreak.getValue())
-                mc.world.removeEntityFromWorld(crystal.entityId);
+                crystal.setDead();
 
             if (unload.getValue()) {
                 mc.world.removeAllEntities();
@@ -237,43 +242,45 @@ public class AutoCrystal extends Module {
     }
 
     public void placeCrystal() {
-        CrystalPosition tempCrystalPostion = new CrystalPosition(null, 0, 0);
+        CrystalPosition tempPosition = new CrystalPosition(BlockPos.ORIGIN, 0, 0);
 
-        for (EntityPlayer tempPlayer : WorldUtil.getNearbyPlayers(enemyRange.getValue())) {
+        for (EntityPlayer calculatedPlayer : WorldUtil.getNearbyPlayers(enemyRange.getValue())) {
             for (BlockPos calculatedPosition : CrystalUtil.crystalBlocks(mc.player, placeRange.getValue(), prediction.getValue(), blockCalc.getValue())) {
-                if (!CrystalUtil.canBlockBeSeen(calculatedPosition) && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(wallRange.getValue()))
+                if (!BlockUtil.canBlockBeSeen(calculatedPosition) && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(wallRange.getValue()))
                     continue;
 
-                double calculatedTargetDamage = (placeCalc.getValue() == 1) ? CrystalUtil.calculateDamage(calculatedPosition.getX(), calculatedPosition.getY() + 1, calculatedPosition.getZ(), tempPlayer) : CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, tempPlayer);
-                double calculatedSelfDamage = mc.player.capabilities.isCreativeMode ? 0 : CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, mc.player);
+                double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, calculatedPlayer);
+                double calculatedSelfDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, mc.player);
+                double heuristicDamage = CrystalUtil.getHeuristic(calculatedPosition, calculatedTargetDamage, calculatedSelfDamage, heuristic.getValue());
 
-                double minDamagePlace = minDamage.getValue();
-                if (EnemyUtil.getArmor(tempPlayer, armorMelt.getValue(), armorDurability.getValue()) || EnemyUtil.getHealth(tempPlayer) > facePlaceHealth.getValue() || HoleUtil.isInHole(tempPlayer) && facePlaceInHole.getValue())
+                for (EntityPlayer friend : WorldUtil.getNearbyFriends(placeRange.getValue()))
+                    if (EnemyUtil.getHealth(friend) - (CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, friend)) <= pauseHealth.getValue() && friendProtect.getValue() == 1)
+                        tempPosition = new CrystalPosition(BlockPos.ORIGIN, 0, 0);
 
-                if (calculatedTargetDamage < minDamagePlace || calculatedSelfDamage > calculatedTargetDamage)
-                    continue;
-
-                if (calculatedTargetDamage <= tempCrystalPostion.getTargetDamage())
+                if (heuristicDamage < minDamage.getValue() && (EnemyUtil.getArmor(calculatedPlayer, armorMelt.getValue(), armorDurability.getValue()) || HoleUtil.isInHole(calculatedPlayer) && facePlaceInHole.getValue() || EnemyUtil.getHealth(calculatedPlayer) > facePlaceHealth.getValue()))
                     continue;
 
                 if (PlayerUtil.getHealth() - calculatedSelfDamage <= pauseHealth.getValue() && pause.getValue() && (pauseMode.getValue() == 0 || pauseMode.getValue() == 2))
                     continue;
 
-                tempCrystalPostion = new CrystalPosition(calculatedPosition, calculatedTargetDamage, calculatedSelfDamage);
-            }
+                if (calculatedSelfDamage > heuristicDamage)
+                    continue;
 
-            currentTarget = tempPlayer;
+                if (heuristicDamage > tempPosition.getTargetDamage() - resetThreshold.getValue())
+                    tempPosition = new CrystalPosition(calculatedPosition, heuristicDamage, calculatedSelfDamage);
+            }
+            
+            currentTarget = calculatedPlayer;
         }
 
-        if (tempCrystalPostion.getTargetDamage() > nodePostion.getTargetDamage() - resetThreshold.getValue())
-            nodePostion = tempCrystalPostion;
+        crystalPosition = tempPosition;
 
         if (autoSwitch.getValue())
             InventoryUtil.switchToSlot(Items.END_CRYSTAL);
 
-        if (placeTimer.passed((long) placeDelay.getValue(), Timer.Format.System) && place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && nodePostion.getCrystalPosition() != null) {
-            CrystalUtil.placeCrystal(nodePostion.getCrystalPosition(), rayTrace.getValue() ? CrystalUtil.getEnumFacing(rayTrace.getValue(), nodePostion.getCrystalPosition()) : EnumFacing.UP, packetPlace.getValue());
-            placedCrystals.add(nodePostion.getCrystalPosition());
+        if (placeTimer.passed((long) placeDelay.getValue(), Timer.Format.System) && place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && crystalPosition.getCrystalPosition() != null) {
+            CrystalUtil.placeCrystal(crystalPosition.getCrystalPosition(), rayTrace.getValue() ? CrystalUtil.getEnumFacing(rayTrace.getValue(), crystalPosition.getCrystalPosition()) : EnumFacing.UP, packetPlace.getValue());
+            placedCrystals.add(crystalPosition.getCrystalPosition());
         }
 
         placeTimer.reset();
@@ -290,11 +297,21 @@ public class AutoCrystal extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        if (renderCrystal.getValue() && nodePostion.getCrystalPosition() != null) {
-            RenderUtil.drawBoxBlockPos(nodePostion.getCrystalPosition(), 0, colorPicker.getColor(), outline.getValue() ? RenderBuilder.renderMode.Both : RenderBuilder.renderMode.Fill);
+        if (renderCrystal.getValue() && crystalPosition.getCrystalPosition() != null) {
+            switch (renderMode.getValue()) {
+                case 0:
+                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
+                    break;
+                case 1:
+                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderBuilder.renderMode.Outline);
+                    break;
+                case 2:
+                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderBuilder.renderMode.Both);
+                    break;
+            }
 
             if (renderDamage.getValue())
-                RenderUtil.drawNametagFromBlockPos(nodePostion.getCrystalPosition(), String.valueOf(MathUtil.roundAvoid(nodePostion.getTargetDamage(), 1)));
+                RenderUtil.drawNametagFromBlockPos(crystalPosition.getCrystalPosition(), String.valueOf(MathUtil.roundAvoid(crystalPosition.getTargetDamage(), 1)));
         }
     }
 
@@ -303,7 +320,7 @@ public class AutoCrystal extends Module {
         if (event.getPacket() instanceof SPacketSoundEffect) {
             if (((SPacketSoundEffect) event.getPacket()).category == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).sound == SoundEvents.ENTITY_GENERIC_EXPLODE) {
                 mc.world.loadedEntityList.stream().filter(entity -> entity.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()).filter(entity -> entity instanceof EntityEnderCrystal).forEach(entity -> {
-                    placedCrystals.removeIf(calculatedPosition -> calculatedPosition.getDistance((int) ((SPacketSoundEffect) event.getPacket()).getX(), (int)  ((SPacketSoundEffect) event.getPacket()).getY(), (int) ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue());
+                    placedCrystals.removeIf(calculatedPositionition -> calculatedPositionition.getDistance((int) ((SPacketSoundEffect) event.getPacket()).getX(), (int)  ((SPacketSoundEffect) event.getPacket()).getY(), (int) ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue());
                 });
             }
         }

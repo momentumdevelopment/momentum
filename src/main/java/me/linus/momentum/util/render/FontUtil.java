@@ -3,10 +3,8 @@ package me.linus.momentum.util.render;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.ModuleManager;
-import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.module.modules.client.ClientFont;
 import me.linus.momentum.util.client.font.FontRender;
-import net.minecraft.client.renderer.GlStateManager;
 
 import java.awt.*;
 import java.io.InputStream;
@@ -46,7 +44,7 @@ public class FontUtil implements MixinInterface {
             return awtClientFont;
         } catch (Exception e) {
             e.printStackTrace();
-            return new Font("default", 0, (int)size);
+            return new Font("default", 0, (int) size);
         }
     }
 

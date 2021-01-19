@@ -49,15 +49,12 @@ public class Blink extends Module {
         if (nullCheck())
             return;
 
-        if (entity != null)
-            mc.world.removeEntity(entity);
+        mc.world.removeEntity(entity);
 
-        if (packets.size() > 0) {
-            for (Packet packet : packets)
-                mc.player.connection.sendPacket(packet);
+        for (Packet packet : packets)
+            mc.player.connection.sendPacket(packet);
 
-            packets.clear();
-        }
+        packets.clear();
     }
 
     @SubscribeEvent
@@ -65,9 +62,7 @@ public class Blink extends Module {
         if (event.getPacket() instanceof CPacketChatMessage || event.getPacket() instanceof CPacketConfirmTeleport || event.getPacket() instanceof CPacketKeepAlive || event.getPacket() instanceof CPacketTabComplete || event.getPacket() instanceof CPacketClientStatus)
             return;
 
-        if (nullCheck()) {
-            packets.add(event.getPacket());
-            event.setCanceled(true);
-        }
+        packets.add(event.getPacket());
+        event.setCanceled(true);
     }
 }

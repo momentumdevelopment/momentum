@@ -57,7 +57,11 @@ public abstract class MixinRenderEnderCrystal implements MixinInterface {
 
     @Inject(method = { "doRender(Lnet/minecraft/entity/item/EntityEnderCrystal;DDDFF)V" }, at = { @At("RETURN") }, cancellable = true)
     public void IdoRender(final EntityEnderCrystal entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks, final CallbackInfo callback) {
-        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue())
-            ESP.espMode.drawESPCrystal(modelEnderCrystal, modelEnderCrystalNoBase, entity, x, y,z, entityYaw, partialTicks, callback, ENDER_CRYSTAL_TEXTURES);
+        try {
+            if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue())
+                ESP.espMode.drawESPCrystal(modelEnderCrystal, modelEnderCrystalNoBase, entity, x, y, z, entityYaw, partialTicks, callback, ENDER_CRYSTAL_TEXTURES);
+        } catch (Exception exception) {
+
+        }
     }
 }

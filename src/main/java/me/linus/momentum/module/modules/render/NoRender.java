@@ -1,8 +1,13 @@
 package me.linus.momentum.module.modules.render;
 
+import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.network.play.server.SPacketEffect;
+import net.minecraft.network.play.server.SPacketParticles;
+import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -23,6 +28,9 @@ public class NoRender extends Module {
     public static Checkbox bossBar = new Checkbox("Boss Bars", true);
     public static Checkbox blockOverlay = new Checkbox("Block Overlay", true);
     public static Checkbox noCluster = new Checkbox("Cluster", true);
+    public static Checkbox particles = new Checkbox("Particles", true);
+    public static Checkbox fireworks = new Checkbox("Fireworks", true);
+    public static Checkbox offhand = new Checkbox("Offhand", true);
 
     @Override
     public void setup() {
@@ -32,6 +40,9 @@ public class NoRender extends Module {
         addSetting(bossBar);
         addSetting(blockOverlay);
         addSetting(noCluster);
+        addSetting(particles);
+        addSetting(fireworks);
+        addSetting(offhand);
     }
 
     @SubscribeEvent
@@ -46,7 +57,12 @@ public class NoRender extends Module {
             event.setCanceled(true);
     }
 
-    public static boolean transparentModel(Entity entity) {
-        return mc.player.getDistance(entity) < 1;
+    @SubscribeEvent
+    public void onPacketRecieve(PacketReceiveEvent event) {
+        if ((event.getPacket() instanceof SPacketParticles || event.getPacket() instanceof SPacketEffect) && particles.getValue())
+            event.setCanceled(true);
+
+        if (event.getPacket() instanceof SPacketSoundEffect && offhand.getValue() && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ITEM_ARMOR_EQUIP_GENERIC)
+            event.setCanceled(true);
     }
 }

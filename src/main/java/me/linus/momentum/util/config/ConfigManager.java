@@ -10,6 +10,7 @@ import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.color.SubColor;
 import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.Mode;
@@ -19,6 +20,7 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.friend.Friend;
 import me.linus.momentum.util.client.friend.FriendManager;
 
+import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.List;
@@ -188,19 +190,25 @@ public class ConfigManager {
                 if (regex[0].startsWith(m.getName())) {
                     int regexCount = 0;
                     for (Setting s : m.getSettings()) {
-                        if (s instanceof Checkbox)
+                        if (s instanceof Checkbox) {
                             ((Checkbox) s).setChecked(Boolean.parseBoolean(regex[regexCount + 1]));
+                            regexCount++;
+                        }
 
-                        if (s instanceof Slider)
+                        if (s instanceof Slider) {
                             ((Slider) s).setValue(Double.parseDouble(regex[regexCount + 1]));
+                            regexCount++;
+                        }
 
-                        if (s instanceof Mode)
+                        if (s instanceof Mode) {
                             ((Mode) s).setMode(Integer.parseInt(regex[regexCount + 1]));
+                            regexCount++;
+                        }
 
-                        if (s instanceof Keybind)
+                        if (s instanceof Keybind) {
                             ((Keybind) s).setKey(Integer.parseInt(regex[regexCount + 1]));
-
-                        regexCount++;
+                            regexCount++;
+                        }
                     }
                 } lineIndex++;
             } br.close();
@@ -230,6 +238,9 @@ public class ConfigManager {
 
                                 if (ss instanceof SubKeybind)
                                     bw.write(((SubKeybind) ss).getKey() + ":");
+
+                                if (ss instanceof SubColor)
+                                    bw.write(((SubColor) ss).getRed() + ":" + ((SubColor) ss).getGreen() + ":" + ((SubColor) ss).getBlue() + ":" + ((SubColor) ss).getAlpha() + ":");
                             }
                         }
                     }
@@ -248,6 +259,9 @@ public class ConfigManager {
 
                                 if (ss instanceof SubKeybind)
                                     bw.write(((SubKeybind) ss).getKey() + ":");
+
+                                if (ss instanceof SubColor)
+                                    bw.write(((SubColor) ss).getRed() + ":" + ((SubColor) ss).getGreen() + ":" + ((SubColor) ss).getBlue() + ":" + ((SubColor) ss).getAlpha() + ":");
                             }
                         }
                     }
@@ -266,6 +280,9 @@ public class ConfigManager {
 
                                 if (ss instanceof SubKeybind)
                                     bw.write(((SubKeybind) ss).getKey() + ":");
+
+                                if (ss instanceof SubColor)
+                                    bw.write(((SubColor) ss).getRed() + ":" + ((SubColor) ss).getGreen() + ":" + ((SubColor) ss).getBlue() + ":" + ((SubColor) ss).getAlpha() + ":");
                             }
                         }
                     }
@@ -284,6 +301,9 @@ public class ConfigManager {
 
                                 if (ss instanceof SubKeybind)
                                     bw.write(((SubKeybind) ss).getKey() + ":");
+
+                                if (ss instanceof SubColor)
+                                    bw.write(((SubColor) ss).getRed() + ":" + ((SubColor) ss).getGreen() + ":" + ((SubColor) ss).getBlue() + ":" + ((SubColor) ss).getAlpha() + ":");
                             }
                         }
                     }
@@ -324,7 +344,13 @@ public class ConfigManager {
                                         if (ss instanceof SubKeybind)
                                             ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
 
-                                        regexCount++;
+                                        if (ss instanceof SubColor)
+                                            ((SubColor) ss).setColor(new Color(Integer.parseInt(regex[regexCount + 1]), Integer.parseInt(regex[regexCount + 2]), Integer.parseInt(regex[regexCount + 3]), Integer.parseInt(regex[regexCount + 4])));
+
+                                        if (ss instanceof SubColor)
+                                            regexCount += 3;
+                                        else
+                                            regexCount++;
                                     }
                                 }
                             }
@@ -344,7 +370,13 @@ public class ConfigManager {
                                         if (ss instanceof SubKeybind)
                                             ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
 
-                                        regexCount++;
+                                        if (ss instanceof SubColor)
+                                            ((SubColor) ss).setColor(new Color(Integer.parseInt(regex[regexCount + 1]), Integer.parseInt(regex[regexCount + 2]), Integer.parseInt(regex[regexCount + 3]), Integer.parseInt(regex[regexCount + 4])));
+
+                                        if (ss instanceof SubColor)
+                                            regexCount += 3;
+                                        else
+                                            regexCount++;
                                     }
                                 }
                             }
@@ -364,7 +396,13 @@ public class ConfigManager {
                                         if (ss instanceof SubKeybind)
                                             ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
 
-                                        regexCount++;
+                                        if (ss instanceof SubColor)
+                                            ((SubColor) ss).setColor(new Color(Integer.parseInt(regex[regexCount + 1]), Integer.parseInt(regex[regexCount + 2]), Integer.parseInt(regex[regexCount + 3]), Integer.parseInt(regex[regexCount + 4])));
+
+                                        if (ss instanceof SubColor)
+                                            regexCount += 3;
+                                        else
+                                            regexCount++;
                                     }
                                 }
                             }
@@ -384,7 +422,13 @@ public class ConfigManager {
                                         if (ss instanceof SubKeybind)
                                             ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
 
-                                        regexCount++;
+                                        if (ss instanceof SubColor)
+                                            ((SubColor) ss).setColor(new Color(Integer.parseInt(regex[regexCount + 1]), Integer.parseInt(regex[regexCount + 2]), Integer.parseInt(regex[regexCount + 3]), Integer.parseInt(regex[regexCount + 4])));
+
+                                        if (ss instanceof SubColor)
+                                            regexCount += 3;
+                                        else
+                                            regexCount++;
                                     }
                                 }
                             }
@@ -404,7 +448,13 @@ public class ConfigManager {
                                         if (ss instanceof SubKeybind)
                                             ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
 
-                                        regexCount++;
+                                        if (ss instanceof SubColor)
+                                            ((SubColor) ss).setColor(new Color(Integer.parseInt(regex[regexCount + 1]), Integer.parseInt(regex[regexCount + 2]), Integer.parseInt(regex[regexCount + 3]), Integer.parseInt(regex[regexCount + 4])));
+
+                                        if (ss instanceof SubColor)
+                                            regexCount += 3;
+                                        else
+                                            regexCount++;
                                     }
                                 }
                             }
