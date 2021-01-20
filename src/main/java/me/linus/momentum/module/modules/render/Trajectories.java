@@ -2,7 +2,7 @@ package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
@@ -32,7 +32,7 @@ public class Trajectories extends Module {
     }
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static SubColor colorPicker = new SubColor(color, new Color(0, 255, 255, 255));
+    public static ColorPicker colorPicker = new ColorPicker(color, new Color(0, 255, 255, 255));
 
     @Override
     public void setup() {

@@ -4,7 +4,7 @@ import baritone.api.BaritoneAPI;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.SubSlider;
 
 import java.awt.*;
@@ -21,10 +21,10 @@ public class Baritone extends Module {
     }
 
     public static Checkbox path = new Checkbox("Render Path", true);
-    public static SubColor pathPicker = new SubColor(path, new Color(255, 0, 255));
+    public static ColorPicker pathPicker = new ColorPicker(path, new Color(255, 0, 255));
 
     public static Checkbox goal = new Checkbox("Render Goal", true);
-    public static SubColor goalPicker = new SubColor(goal, new Color(0, 255, 255));
+    public static ColorPicker goalPicker = new ColorPicker(goal, new Color(0, 255, 255));
 
     public static Checkbox allow = new Checkbox("Allow", true);
     public static SubCheckbox jumpAt256 = new SubCheckbox(allow, "Jump at Build Height", true);

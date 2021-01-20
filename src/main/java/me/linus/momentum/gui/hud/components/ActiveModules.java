@@ -28,8 +28,8 @@ public class ActiveModules extends HUDComponent {
         super("ActiveModules", 200, 2);
     }
 
-    private static final Mode mode = new Mode("Mode", "AlphaStep", "Rainbow", "Rainbow-Static", "Category", "Static");
-    private static final Checkbox background = new Checkbox("Background", false);
+    public static Mode mode = new Mode("Mode", "AlphaStep", "Rainbow", "Rainbow-Static", "Category", "Static");
+    public static Checkbox background = new Checkbox("Background", false);
 
     @Override
     public void setup() {
@@ -37,11 +37,10 @@ public class ActiveModules extends HUDComponent {
         addSetting(background);
     }
 
-    private int count;
+    int count = 0;
 
     @Override
     public void renderComponent() {
-        count = 0;
         int screenWidth = new ScaledResolution(mc).getScaledWidth();
 
         ModuleManager.getModules().stream().filter(Module::isEnabled).filter(Module::isDrawn).sorted(Comparator.comparing(module -> FontUtil.getStringWidth(module.getName() + " " + module.getHUDData()) * (-1))).forEach(module -> {

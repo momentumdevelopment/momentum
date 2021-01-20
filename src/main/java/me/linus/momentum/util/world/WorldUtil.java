@@ -36,8 +36,6 @@ public class WorldUtil implements MixinInterface {
         if (health)
             entity.setHealth(mc.player.getHealth() + mc.player.getAbsorptionAmount());
 
-        entity.setPosition(position.x, position.y, position.z);
-
         mc.world.addEntityToWorld(69420, entity);
     }
 

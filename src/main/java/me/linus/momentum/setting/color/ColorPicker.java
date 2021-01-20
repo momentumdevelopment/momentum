@@ -14,13 +14,13 @@ import java.awt.*;
  * @since 01/03/2021
  */
 
-public class SubColor extends SubSetting {
+public class ColorPicker extends SubSetting {
 
     private Setting parent;
     private Color color;
     private boolean opened;
 
-    public SubColor(Setting parent, Color color) {
+    public ColorPicker(Setting parent, Color color) {
         this.parent = parent;
         this.color = color;
         this.opened = false;

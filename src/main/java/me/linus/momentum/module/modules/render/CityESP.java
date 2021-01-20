@@ -2,7 +2,7 @@ package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
@@ -30,7 +30,7 @@ public class CityESP extends Module {
     public static Checkbox outline = new Checkbox("Outline", false);
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static SubColor colorPicker = new SubColor(color, new Color(255, 0, 0, 55));
+    public static ColorPicker colorPicker = new ColorPicker(color, new Color(255, 0, 0, 55));
 
     @Override
     public void setup() {

@@ -17,7 +17,7 @@ public class Welcomer extends HUDComponent {
         super("Welcomer", 200, 2);
     }
 
-    private static final Mode mode = new Mode("Mode", "Dynamic", "Static");
+    public static Mode mode = new Mode("Mode", "Dynamic", "Static");
 
     @Override
     public void setup() {

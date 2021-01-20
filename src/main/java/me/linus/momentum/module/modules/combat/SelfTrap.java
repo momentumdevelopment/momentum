@@ -2,7 +2,7 @@ package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.render.builder.RenderBuilder;
@@ -38,7 +38,7 @@ public class SelfTrap extends Module {
     public static Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static SubColor colorPicker = new SubColor(color, new Color(109, 231, 217, 121));
+    public static ColorPicker colorPicker = new ColorPicker(color, new Color(109, 231, 217, 121));
 
     @Override
     public void setup() {

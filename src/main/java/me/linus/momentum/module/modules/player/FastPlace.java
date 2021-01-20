@@ -22,7 +22,6 @@ public class FastPlace extends Module {
     public static Checkbox fireworks = new Checkbox("Fireworks", false);
     public static Checkbox spawnEggs = new Checkbox("Spawn Eggs", false);
 
-
     @Override
     public void setup() {
         addSetting(blocks);

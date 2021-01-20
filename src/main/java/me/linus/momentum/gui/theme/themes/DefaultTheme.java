@@ -12,7 +12,7 @@ import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.Mode;
@@ -132,13 +132,13 @@ public class DefaultTheme extends Theme implements MixinInterface {
                                 drawSubModuleBind(skb, GUIUtil.keydown, x, y);
                             }
 
-                            if (ss instanceof SubColor) {
-                                SubColor sc = (SubColor) ss;
+                            if (ss instanceof ColorPicker) {
+                                ColorPicker sc = (ColorPicker) ss;
                                 drawColorPicker(sc, x, y, mouseX, mouseY);
                                 boost += 9;
                             }
 
-                            if (!(ss instanceof SubColor))
+                            if (!(ss instanceof ColorPicker))
                                 GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
@@ -171,13 +171,13 @@ public class DefaultTheme extends Theme implements MixinInterface {
                                 drawSubModuleBind(skb, GUIUtil.keydown, x, y);
                             }
 
-                            if (ss instanceof SubColor) {
-                                SubColor sc = (SubColor) ss;
+                            if (ss instanceof ColorPicker) {
+                                ColorPicker sc = (ColorPicker) ss;
                                 drawColorPicker(sc, x, y, mouseX, mouseY);
                                 boost += 9;
                             }
 
-                            if (!(ss instanceof SubColor))
+                            if (!(ss instanceof ColorPicker))
                                 GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
@@ -210,13 +210,13 @@ public class DefaultTheme extends Theme implements MixinInterface {
                                 drawSubModuleBind(skb, GUIUtil.keydown, x, y);
                             }
 
-                            if (ss instanceof SubColor) {
-                                SubColor sc = (SubColor) ss;
+                            if (ss instanceof ColorPicker) {
+                                ColorPicker sc = (ColorPicker) ss;
                                 drawColorPicker(sc, x, y, mouseX, mouseY);
                                 boost += 9;
                             }
 
-                            if (!(ss instanceof SubColor))
+                            if (!(ss instanceof ColorPicker))
                                 GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
@@ -249,13 +249,13 @@ public class DefaultTheme extends Theme implements MixinInterface {
                                 drawSubModuleBind(skb, GUIUtil.keydown, x, y);
                             }
 
-                            if (ss instanceof SubColor) {
-                                SubColor sc = (SubColor) ss;
+                            if (ss instanceof ColorPicker) {
+                                ColorPicker sc = (ColorPicker) ss;
                                 drawColorPicker(sc, x, y, mouseX, mouseY);
                                 boost += 9;
                             }
 
-                            if (!(ss instanceof SubColor))
+                            if (!(ss instanceof ColorPicker))
                                 GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
@@ -479,7 +479,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             FontUtil.drawString("Listening...", x + 7, (y + height) + 4 + (boost * height), -1);
     }
 
-    public static void drawColorPicker(SubColor sc, int x, int y, int mouseX, int mouseY) {
+    public static void drawColorPicker(ColorPicker sc, int x, int y, int mouseX, int mouseY) {
         drawPicker(sc, mouseX, mouseY, x + 3, y + height + (boost * height) + 2, x + 3, y + height + (boost * height) + 105, x + 3, y + height + (boost * height) + 124);
         sc.setColor(finalColor);
     }
@@ -547,7 +547,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         }
     }
 
-    public static void drawPicker(SubColor subColor, int mouseX, int mouseY, int pickerX, int pickerY, int hueSliderX, int hueSliderY, int alphaSliderX, int alphaSliderY) {
+    public static void drawPicker(ColorPicker subColor, int mouseX, int mouseY, int pickerX, int pickerY, int hueSliderX, int hueSliderY, int alphaSliderX, int alphaSliderY) {
         float[] color = new float[] {
                 subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[0], subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[1], subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[2]
         };
@@ -701,7 +701,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             left = !left;
         }
 
-        gradient(x, y, x + width, y + height, new Color(red, green, blue, alpha).getRGB(), 0, true);
+        gradient(x, y, x + width, y + height, new Color(red, green, blue, 255).getRGB(), 0, true);
         int sliderMinX = (int) (x + width - (width * alpha));
         GuiScreen.drawRect(sliderMinX - 1, y,  sliderMinX + 1, y + height, -1);
     }

@@ -35,14 +35,10 @@ public class FakePlayer extends Module {
 
         switch (mode.getValue()) {
             case 0:
-                WorldUtil.createFakePlayer(name.getMode(name.getValue()), inventory.getValue(), angles.getValue(), true, false, mc.player.getPosition());
+                WorldUtil.createFakePlayer(name.getMode(name.getValue()), inventory.getValue(), angles.getValue(), true, false, mc.player.getPosition().add(0.5, 0, 0.5));
                 break;
             case 1:
-                WorldUtil.createFakePlayer(name.getMode(name.getValue()), inventory.getValue(), angles.getValue(), true, false, mc.player.getPosition().north());
-                WorldUtil.createFakePlayer(name.getMode(name.getValue()), inventory.getValue(), angles.getValue(), true, false, mc.player.getPosition().east());
-                WorldUtil.createFakePlayer(name.getMode(name.getValue()), inventory.getValue(), angles.getValue(), true, false, mc.player.getPosition().west());
-                WorldUtil.createFakePlayer(name.getMode(name.getValue()), inventory.getValue(), angles.getValue(), true, false, mc.player.getPosition().south());
-                break;
+
         }
         
         MessageUtil.sendClientMessage("Spawning fake player(s)!");

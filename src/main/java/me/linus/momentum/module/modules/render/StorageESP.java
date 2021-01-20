@@ -2,7 +2,7 @@ package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.ColorUtil;
@@ -32,25 +32,25 @@ public class StorageESP extends Module {
     public static Mode mode = new Mode("Mode", "Outline", "Fill", "Both");
 
     public static Checkbox chests = new Checkbox("Chests", true);
-    public static SubColor chestPicker = new SubColor(chests, new Color(46, 83, 215));
+    public static ColorPicker chestPicker = new ColorPicker(chests, new Color(46, 83, 215));
 
     public static Checkbox enderChests = new Checkbox("Ender Chests", true);
-    public static SubColor enderPicker = new SubColor(enderChests, new Color(156, 46, 215));
+    public static ColorPicker enderPicker = new ColorPicker(enderChests, new Color(156, 46, 215));
 
     public static Checkbox shulkers = new Checkbox("Shulkers", true);
-    public static SubColor shulkerPicker = new SubColor(shulkers, new Color(215, 46, 198));
+    public static ColorPicker shulkerPicker = new ColorPicker(shulkers, new Color(215, 46, 198));
 
     public static Checkbox hoppers = new Checkbox("Hoppers", true);
-    public static SubColor hopperPicker = new SubColor(hoppers, new Color(106, 106, 114));
+    public static ColorPicker hopperPicker = new ColorPicker(hoppers, new Color(106, 106, 114));
 
     public static Checkbox droppers = new Checkbox("Droppers", true);
-    public static SubColor dropperPicker = new SubColor(droppers, new Color(106, 106, 114));
+    public static ColorPicker dropperPicker = new ColorPicker(droppers, new Color(106, 106, 114));
 
     public static Checkbox furnaces = new Checkbox("Furnaces", true);
-    public static SubColor furnacePicker = new SubColor(furnaces, new Color(106, 106, 114));
+    public static ColorPicker furnacePicker = new ColorPicker(furnaces, new Color(106, 106, 114));
 
     public static Checkbox beds = new Checkbox("Beds", true);
-    public static SubColor bedPicker = new SubColor(beds, new Color(208, 40, 60));
+    public static ColorPicker bedPicker = new ColorPicker(beds, new Color(208, 40, 60));
 
     public static Slider range = new Slider("Range", 0.0D, 30.0D, 100.0D, 0);
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 2.5D, 4.0D, 1);

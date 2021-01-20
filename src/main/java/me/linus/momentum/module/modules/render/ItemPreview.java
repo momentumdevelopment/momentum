@@ -42,12 +42,11 @@ public class ItemPreview extends Module {
 
     public static void tooltipShulker(ItemStack itemStack, int x, int y, CallbackInfo callbackInfo) {
         if (itemStack.getTagCompound() != null && itemStack.getTagCompound().hasKey("BlockEntityTag", 10)) {
-            NBTTagCompound blockEntityTag = itemStack.getTagCompound().getCompoundTag("BlockEntityTag");
-            if (blockEntityTag.hasKey("Items", 9)) {
+            if (itemStack.getTagCompound().getCompoundTag("BlockEntityTag").hasKey("Items", 9)) {
                 callbackInfo.cancel();
 
                 NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
-                ItemStackHelper.loadAllItems(blockEntityTag, nonnulllist);
+                ItemStackHelper.loadAllItems(itemStack.getTagCompound().getCompoundTag("BlockEntityTag"), nonnulllist);
                 GlStateManager.enableBlend();
                 GlStateManager.disableRescaleNormal();
                 RenderHelper.disableStandardItemLighting();
@@ -100,7 +99,6 @@ public class ItemPreview extends Module {
 
                 GlStateManager.pushMatrix();
                 GlStateManager.color(1f, 1f, 1f);
-
                 GlStateManager.translate(x + 6, y + 6, 0.0);
                 GlStateManager.scale(1f, 1f, 0f);
                 mc.getTextureManager().bindTexture(RES_MAP_BACKGROUND);

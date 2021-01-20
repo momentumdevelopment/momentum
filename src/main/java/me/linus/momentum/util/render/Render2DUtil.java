@@ -24,12 +24,12 @@ public class Render2DUtil implements MixinInterface {
         GL11.glEnable(3042 /* GL_BLEND */);
         GL11.glDisable(3553 /* GL_TEXTURE_2D */);
         GL11.glEnable(2848 /* GL_LINE_SMOOTH */);
-        GL11.glBlendFunc(770, 771 );
+        GL11.glBlendFunc(770, 771);
         GL11.glColor4f(((color >> 16) & 0xff) / 255F, ((color >> 8) & 0xff) / 255F, (color & 0xff) / 255F, ((color >> 24) & 0xff) / 255F);
-        GL11.glBegin( 2 /* GL_TRIANGLE_LOOP */);
+        GL11.glBegin(2 /* GL_TRIANGLE_LOOP */);
 
         for (int i = 0; i <= 360; i++)
-            GL11.glVertex2d( x + Math.sin(((i * 3.141526D) / 180)) * radius, y + Math.cos(((i * 3.141526D) / 180)) * radius);
+            GL11.glVertex2d( x + Math.sin(((i * Math.PI) / 180)) * radius, y + Math.cos(((i * Math.PI) / 180)) * radius);
 
         GL11.glEnd();
         GL11.glDisable(2848 /* GL_LINE_SMOOTH */);
@@ -46,7 +46,7 @@ public class Render2DUtil implements MixinInterface {
         GL11.glBegin( 6 /* GL_TRIANGLE_FAN */);
 
         for (int i = 0; i <= 360; i++)
-            GL11.glVertex2d( x + Math.sin(((i * 3.141526D) / 180)) * radius, y + Math.cos(((i * 3.141526D) / 180)) * radius);
+            GL11.glVertex2d( x + Math.sin(((i * Math.PI) / 180)) * radius, y + Math.cos(((i * Math.PI) / 180)) * radius);
 
         GL11.glEnd();
         GL11.glDisable(2848 /* GL_LINE_SMOOTH */);

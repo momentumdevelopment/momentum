@@ -3,8 +3,7 @@ package me.linus.momentum.module.modules.client;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
-import me.linus.momentum.setting.color.SubColor;
-import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.SubSlider;
 
 import java.awt.*;
@@ -28,7 +27,7 @@ public class Colors extends Module {
 	public static SubSlider speed = new SubSlider(rainbow, "Speed", 1.0D, 30.0D, 100.0D, 0);
 
 	public static Checkbox clientColor = new Checkbox("Color", true);
-	public static SubColor clientPicker = new SubColor(clientColor, new Color(220, 20, 220, 130));
+	public static ColorPicker clientPicker = new ColorPicker(clientColor, new Color(220, 20, 220, 130));
 
 	@Override
 	public void setup() {

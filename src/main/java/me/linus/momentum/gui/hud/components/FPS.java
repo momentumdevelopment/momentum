@@ -19,7 +19,7 @@ public class FPS extends HUDComponent {
         super("FPS", 2, 13);
     }
 
-    private static final Checkbox average = new Checkbox("Average", false);
+    public static Checkbox average = new Checkbox("Average", false);
 
     @Override
     public void setup() {

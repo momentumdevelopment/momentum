@@ -2,7 +2,7 @@ package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.builder.RenderUtil;
@@ -20,7 +20,7 @@ public class BlockHighlight extends Module {
     public static Mode mode = new Mode("Mode", "Outline", "Fill", "Both");
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static SubColor colorPicker = new SubColor(color, new Color(255, 0, 255, 55));
+    public static ColorPicker colorPicker = new ColorPicker(color, new Color(255, 0, 255, 55));
 
     @Override
     public void setup() {

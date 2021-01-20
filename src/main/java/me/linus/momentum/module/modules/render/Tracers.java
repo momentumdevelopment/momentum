@@ -2,7 +2,7 @@ package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.builder.RenderUtil;
@@ -27,19 +27,19 @@ public class Tracers extends Module {
     }
 
     public static Checkbox players = new Checkbox("Players", true);
-    public static SubColor playerPicker = new SubColor(players, new Color(215, 46, 46));
+    public static ColorPicker playerPicker = new ColorPicker(players, new Color(215, 46, 46));
 
     public static Checkbox animals = new Checkbox("Animals", true);
-    public static SubColor animalPicker = new SubColor(animals, new Color(0, 200, 0));
+    public static ColorPicker animalPicker = new ColorPicker(animals, new Color(0, 200, 0));
 
     public static Checkbox mobs = new Checkbox("Mobs", true);
-    public static SubColor mobsPicker = new SubColor(mobs, new Color(131, 19, 199));
+    public static ColorPicker mobsPicker = new ColorPicker(mobs, new Color(131, 19, 199));
 
     public static Checkbox items = new Checkbox("Vehicles", true);
-    public static SubColor itemsPicker = new SubColor(items, new Color(199, 103, 19));
+    public static ColorPicker itemsPicker = new ColorPicker(items, new Color(199, 103, 19));
 
     public static Checkbox crystals = new Checkbox("Crystals", true);
-    public static SubColor crystalPicker = new SubColor(crystals, new Color(199, 19, 139));
+    public static ColorPicker crystalPicker = new ColorPicker(crystals, new Color(199, 19, 139));
 
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 0.75D, 5.0D, 2);
 

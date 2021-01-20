@@ -5,7 +5,7 @@ import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
@@ -106,7 +106,7 @@ public class AutoCrystal extends Module {
     public static SubMode blockCalc = new SubMode(logic, "Block Logic", "Normal", "1.13+");
 
     public static Checkbox renderCrystal = new Checkbox("Render", true);
-    public static SubColor colorPicker = new SubColor(renderCrystal, new Color(250, 0, 250, 50));
+    public static ColorPicker colorPicker = new ColorPicker(renderCrystal, new Color(250, 0, 250, 50));
     public static SubMode renderMode = new SubMode(renderCrystal, "Mode", "Fill", "Outline", "Both");
     public static SubCheckbox renderDamage = new SubCheckbox(renderCrystal, "Render Damage", true);
 

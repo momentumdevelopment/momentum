@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.hud.components;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.HUDEditor;
@@ -21,8 +20,7 @@ public class Time extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        final String time = new SimpleDateFormat("h:mm a").format(new Date());
-        FontUtil.drawString(time, this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
-        width = Momentum.fontManager.getCustomFont().getStringWidth(time) + 2;
+        FontUtil.drawString(new SimpleDateFormat("h:mm a").format(new Date()), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);
+        width = (int) (FontUtil.getStringWidth(new SimpleDateFormat("h:mm a").format(new Date())) + 2);
     }
 }

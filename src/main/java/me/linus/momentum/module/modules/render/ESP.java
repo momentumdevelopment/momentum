@@ -4,7 +4,7 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.module.modules.render.esp.modes.*;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import net.minecraft.entity.Entity;
@@ -27,22 +27,22 @@ public class ESP extends Module {
     public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "Wire-Frame", "CS:GO", "Normal", "Textured", "Box");
 
     public static Checkbox players = new Checkbox("Players", true);
-    public static SubColor playerPicker = new SubColor(players, new Color(215, 46, 46));
+    public static ColorPicker playerPicker = new ColorPicker(players, new Color(215, 46, 46));
 
     public static Checkbox animals = new Checkbox("Animals", true);
-    public static SubColor animalPicker = new SubColor(animals, new Color(0, 200, 0));
+    public static ColorPicker animalPicker = new ColorPicker(animals, new Color(0, 200, 0));
 
     public static Checkbox mobs = new Checkbox("Mobs", true);
-    public static SubColor mobsPicker = new SubColor(mobs, new Color(131, 19, 199));
+    public static ColorPicker mobsPicker = new ColorPicker(mobs, new Color(131, 19, 199));
 
     public static Checkbox items = new Checkbox("Items", true);
-    public static SubColor itemsPicker = new SubColor(items, new Color(199, 196, 19));
+    public static ColorPicker itemsPicker = new ColorPicker(items, new Color(199, 196, 19));
 
     public static Checkbox vehicles = new Checkbox("Vehicles", true);
-    public static SubColor vehiclePicker = new SubColor(vehicles, new Color(199, 103, 19));
+    public static ColorPicker vehiclePicker = new ColorPicker(vehicles, new Color(199, 103, 19));
 
     public static Checkbox crystals = new Checkbox("Crystals", true);
-    public static SubColor crystalPicker = new SubColor(crystals, new Color(199, 19, 139));
+    public static ColorPicker crystalPicker = new ColorPicker(crystals, new Color(199, 19, 139));
 
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 2.5D, 5.0D, 1);
 

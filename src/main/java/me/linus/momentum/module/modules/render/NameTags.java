@@ -4,7 +4,7 @@ import me.linus.momentum.Momentum;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.friend.FriendManager;
@@ -50,7 +50,7 @@ public class NameTags extends Module {
     public static Checkbox enchants = new Checkbox("Enchants", true);
 
     public static Checkbox background = new Checkbox("Background", true);
-    public static SubColor colorPicker = new SubColor(background, new Color(0, 0, 0, 70));
+    public static ColorPicker colorPicker = new ColorPicker(background, new Color(0, 0, 0, 70));
 
     public static Checkbox onlyInViewFrustrum = new Checkbox("View Frustrum", false);
 

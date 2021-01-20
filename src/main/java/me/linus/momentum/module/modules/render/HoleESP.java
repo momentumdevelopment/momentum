@@ -2,7 +2,7 @@ package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.color.SubColor;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
@@ -38,10 +38,10 @@ public class HoleESP extends Module {
     public static Mode highlight = new Mode("Highlight", "None", "NoRender", "Glow");
 
     public static Checkbox obsidianColor = new Checkbox("Obsidian Color", true);
-    public static SubColor obsidianPicker = new SubColor(obsidianColor, new Color(93, 235, 240, 45));
+    public static ColorPicker obsidianPicker = new ColorPicker(obsidianColor, new Color(93, 235, 240, 45));
 
     public static Checkbox bedrockColor = new Checkbox("Bedrock Color", true);
-    public static SubColor bedrockPicker = new SubColor(bedrockColor, new Color(144, 0, 255, 45));
+    public static ColorPicker bedrockPicker = new ColorPicker(bedrockColor, new Color(144, 0, 255, 45));
 
     public static Checkbox doubles = new Checkbox("Doubles", true);
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 1.5D, 3.0D, 2);
@@ -52,6 +52,7 @@ public class HoleESP extends Module {
     public void setup() {
         addSetting(main);
         addSetting(outline);
+        addSetting(highlight);
         addSetting(obsidianColor);
         addSetting(bedrockColor);
         addSetting(doubles);
