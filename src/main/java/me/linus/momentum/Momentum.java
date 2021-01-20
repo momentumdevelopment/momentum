@@ -7,7 +7,7 @@ import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.util.client.CapeAPI;
 import me.linus.momentum.util.client.friend.FriendManager;
-import me.linus.momentum.util.config.ConfigManager;
+import me.linus.momentum.util.config.ConfigManager2;
 import me.linus.momentum.util.config.ShutdownHook;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraftforge.common.MinecraftForge;
@@ -80,7 +80,7 @@ public class Momentum {
     public void postInit(FMLPostInitializationEvent event) {
         capeAPI = new CapeAPI();
         LOGGER.info("Cape API Initialized!");
-        ConfigManager.loadConfig();
+        ConfigManager2.loadConfig();
         LOGGER.info("Config System Loaded!");
         Display.setTitle(NAME + " Utility Mod " + VERSION);
         LOGGER.info("Changed Display Name!");

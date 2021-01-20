@@ -18,8 +18,8 @@ public class Rotation extends Module {
         super("Rotation", Category.MOVEMENT, "Locks player rotation");
     }
 
-    private static final Checkbox playerYaw = new Checkbox("Yaw", true);
-    private static final Checkbox playerPitch = new Checkbox("Pitch", true);
+    public static Checkbox playerYaw = new Checkbox("Yaw", true);
+    public static Checkbox playerPitch = new Checkbox("Pitch", true);
 
     @Override
     public void setup() {

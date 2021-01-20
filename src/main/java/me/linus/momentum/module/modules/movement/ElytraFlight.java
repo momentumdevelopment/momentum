@@ -27,32 +27,32 @@ public class ElytraFlight extends Module {
         super("ElytraFlight", Category.MOVEMENT, "Allows you to fly faster on an elytra");
     }
 
-    private static final Mode mode = new Mode("Mode", "Control", "MotionControl", "Pitch", "PitchNCP", "Firework", "Deer", "Dynamic", "DynamicNCP", "Glide", "Vanilla");
-    public static final SubSlider rotationNCP = new SubSlider(mode, "NCP Rotation", 0.0D, 30.0D, 90.0D, 1);
-    public static final SubCheckbox rotationLock = new SubCheckbox(mode, "Rotation Lock", false);
+    public static Mode mode = new Mode("Mode", "Control", "MotionControl", "Pitch", "PitchNCP", "Firework", "Deer", "Dynamic", "DynamicNCP", "Glide", "Vanilla");
+    public static SubSlider rotationNCP = new SubSlider(mode, "NCP Rotation", 0.0D, 30.0D, 90.0D, 1);
+    public static SubCheckbox rotationLock = new SubCheckbox(mode, "Rotation Lock", false);
 
-    public static final Mode boost = new Mode("Boost", "None", "Firework", "Accelerate");
+    public static Mode boost = new Mode("Boost", "None", "Firework", "Accelerate");
 
     public static Slider hSpeed = new Slider("Glide Speed", 0.0D, 2.1D, 3.0D, 1);
     public static Slider ySpeed = new Slider("Rise Speed", 0.0D, 1.0D, 3.0D, 1);
     public static Slider yOffset = new Slider("Y-Offset", 0.0D, 0.009D, 0.1D, 3);
     public static Slider fallSpeed = new Slider("Fall Speed", 0.0D, 0.0D, 0.1D, 3);
 
-    private static final Checkbox takeoff = new Checkbox("Auto-Takeoff", true);
-    private static final SubCheckbox takeoffTimer = new SubCheckbox(takeoff, "Takeoff Timer", false);
-    private static final SubSlider takeoffTicks = new SubSlider(takeoff, "Takeoff Timer Ticks", 0.1D, 0.3D, 1.0D, 2);
+    public static Checkbox takeoff = new Checkbox("Auto-Takeoff", true);
+    public static SubCheckbox takeoffTimer = new SubCheckbox(takeoff, "Takeoff Timer", true);
+    public static SubSlider takeoffTicks = new SubSlider(takeoff, "Takeoff Timer Ticks", 0.1D, 0.2D, 1.0D, 2);
 
-    private static final Checkbox useTimer = new Checkbox("Use Timer", false);
-    private static final SubSlider timerTicks = new SubSlider(useTimer, "Timer Ticks", 0.1D, 1.1D, 2.0D, 2);
+    public static Checkbox useTimer = new Checkbox("Use Timer", false);
+    public static SubSlider timerTicks = new SubSlider(useTimer, "Timer Ticks", 0.1D, 1.1D, 2.0D, 2);
 
-    private static final Checkbox pitchSpoof = new Checkbox("Pitch Spoof", false);
+    public static Checkbox pitchSpoof = new Checkbox("Pitch Spoof", false);
 
-    private static final Checkbox disable = new Checkbox("Disable", true);
-    private static final SubCheckbox waterCancel = new SubCheckbox(disable, "In Liquid", true);
-    private static final SubCheckbox onUpward = new SubCheckbox(disable, "On Upward Motion", false);
-    private static final SubCheckbox onCollision = new SubCheckbox(disable, "On Collision", false);
-    private static final SubCheckbox onRubberband = new SubCheckbox(disable, "On Rubberband", false);
-    private static final SubSlider lowestY = new SubSlider(disable, "Below Y-Level", 0.0D, 8.0D, 20.0D, 0);
+    public static Checkbox disable = new Checkbox("Disable", true);
+    public static SubCheckbox waterCancel = new SubCheckbox(disable, "In Liquid", true);
+    public static SubCheckbox onUpward = new SubCheckbox(disable, "On Upward Motion", false);
+    public static SubCheckbox onCollision = new SubCheckbox(disable, "On Collision", false);
+    public static SubCheckbox onRubberband = new SubCheckbox(disable, "On Rubberband", false);
+    public static SubSlider lowestY = new SubSlider(disable, "Below Y-Level", 0.0D, 8.0D, 20.0D, 0);
 
     @Override
     public void setup() {
@@ -71,6 +71,19 @@ public class ElytraFlight extends Module {
     ElytraMode elytraMode;
 
     @Override
+    public void onEnable() {
+        if (nullCheck())
+            return;
+        
+        if (takeoff.getValue()) {
+            if (mc.player.onGround && !mc.player.isElytraFlying())
+                mc.player.motionY = 0.405f;
+            else if (!mc.player.isElytraFlying() && mc.player.ticksExisted % 5 == 0)
+                mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_FALL_FLYING));
+        }
+    }
+    
+    @Override
     public void onDisable() {
         mc.timer.tickLength = 50f;
     }
@@ -79,13 +92,6 @@ public class ElytraFlight extends Module {
     public void onUpdate() {
         if (nullCheck())
             return;
-
-        if (takeoff.getValue()) {
-            if (mc.player.onGround && !mc.player.isElytraFlying())
-                mc.player.motionY = 0.405f;
-            else if (!mc.player.isElytraFlying() && mc.player.ticksExisted % 5 == 0)
-                mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_FALL_FLYING));
-        }
 
         disableCheck();
         flyTick();
@@ -179,13 +185,12 @@ public class ElytraFlight extends Module {
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
         if (event.getPacket() instanceof CPacketPlayer && pitchSpoof.getValue() && mc.player.isElytraFlying()) {
-            if (event.getPacket() instanceof CPacketPlayer.PositionRotation && pitchSpoof.getValue()) {
-                CPacketPlayer.PositionRotation rotation = (CPacketPlayer.PositionRotation) event.getPacket();
-                mc.getConnection().sendPacket(new CPacketPlayer.Position(rotation.x, rotation.y, rotation.z, rotation.onGround));
+            if (event.getPacket() instanceof CPacketPlayer.PositionRotation) {
+                mc.getConnection().sendPacket(new CPacketPlayer.Position(((CPacketPlayer.PositionRotation) event.getPacket()).x, ((CPacketPlayer.PositionRotation) event.getPacket()).y, ((CPacketPlayer.PositionRotation) event.getPacket()).z, ((CPacketPlayer.PositionRotation) event.getPacket()).onGround));
                 event.setCanceled(true);
             }
 
-            else if (event.getPacket() instanceof CPacketPlayer.Rotation && pitchSpoof.getValue())
+            else if (event.getPacket() instanceof CPacketPlayer.Rotation)
                 event.setCanceled(true);
         }
     }

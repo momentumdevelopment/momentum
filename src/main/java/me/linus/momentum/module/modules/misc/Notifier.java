@@ -114,25 +114,23 @@ public class Notifier extends Module {
     public void onPacketRecieve(PacketReceiveEvent event) {
         if (event.getPacket() instanceof SPacketEntityStatus && totem.getValue()) {
             if (((SPacketEntityStatus) event.getPacket()).getOpCode() == 35) {
-                Entity entity = ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world);
-
-                if (entity == null)
+                if (((SPacketEntityStatus) event.getPacket()).getEntity(mc.world) == null)
                     return;
 
-                if (totemPopContainer.containsKey(entity.getName()))
-                    totemPopContainer.put(entity.getName(), count++);
+                if (totemPopContainer.containsKey(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()))
+                    totemPopContainer.put(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName(), count++);
 
                 else
-                    totemPopContainer.put(entity.getName(), count);
+                    totemPopContainer.put(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName(), count);
 
-                if (Momentum.friendManager.isFriend(entity.getName())) {
-                    NotificationManager.notifications.add(new Notification("Your friend, " + entity.getName() + ", popped " + count + " totems!"));
-                    MessageUtil.sendClientMessage("Your friend, " + entity.getName() + ", popped " + count + " totems!");
+                if (Momentum.friendManager.isFriend(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName())) {
+                    NotificationManager.notifications.add(new Notification("Your friend, " + ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + ", popped " + count + " totems!"));
+                    MessageUtil.sendClientMessage("Your friend, " + ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + ", popped " + count + " totems!");
                 }
 
                 else {
-                    NotificationManager.notifications.add(new Notification(entity.getName() + " popped " + count + " totems!"));
-                    MessageUtil.sendClientMessage(entity.getName() + " popped " + count + " totems!");
+                    NotificationManager.notifications.add(new Notification(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + " popped " + count + " totems!"));
+                    MessageUtil.sendClientMessage(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + " popped " + count + " totems!");
                 }
             }
         }

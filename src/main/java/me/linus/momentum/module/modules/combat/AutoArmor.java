@@ -20,7 +20,7 @@ public class AutoArmor extends Module {
         super("AutoArmor", Category.COMBAT, "Automatically replaces armor");
     }
 
-    private static final Slider delay = new Slider("Delay", 0.0D, 2.0D, 10.0D, 0);
+    public static Slider delay = new Slider("Delay", 0.0D, 2.0D, 10.0D, 0);
     public static Checkbox curse = new Checkbox("Ignore Curse", true);
     public static Checkbox elytra = new Checkbox("Prefer Elytra", false);
 

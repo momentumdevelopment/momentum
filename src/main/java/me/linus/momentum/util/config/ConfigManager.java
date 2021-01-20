@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * @author bon & linustouchtips
- * @since 12/05/20
+ * @since 12/05/2020
  */
 
 public class ConfigManager {

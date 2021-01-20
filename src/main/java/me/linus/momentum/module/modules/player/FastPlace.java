@@ -17,10 +17,10 @@ public class FastPlace extends Module {
         super("FastPlace", Category.PLAYER, "Allows you to place blocks & crystals faster");
     }
 
-    private static final Checkbox blocks = new Checkbox("Blocks", false);
-    private static final Checkbox crystal = new Checkbox("Crystals", true);
-    private static final Checkbox fireworks = new Checkbox("Fireworks", false);
-    private static final Checkbox spawnEggs = new Checkbox("Spawn Eggs", false);
+    public static Checkbox blocks = new Checkbox("Blocks", false);
+    public static Checkbox crystal = new Checkbox("Crystals", true);
+    public static Checkbox fireworks = new Checkbox("Fireworks", false);
+    public static Checkbox spawnEggs = new Checkbox("Spawn Eggs", false);
 
 
     @Override

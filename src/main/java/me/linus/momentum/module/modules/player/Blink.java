@@ -30,7 +30,6 @@ public class Blink extends Module {
         addSetting(playerModel);
     }
 
-    EntityOtherPlayerMP entity;
     Queue<Packet> packets = new ConcurrentLinkedQueue();
 
     @Override
@@ -39,7 +38,7 @@ public class Blink extends Module {
             return;
 
         if (playerModel.getValue())
-            WorldUtil.createFakePlayer(entity, true, true, true);
+            WorldUtil.createFakePlayer(null, true, true, true, true, mc.player.getPosition());
 
         MessageUtil.sendClientMessage("Cancelling all player packets!");
     }
@@ -49,7 +48,7 @@ public class Blink extends Module {
         if (nullCheck())
             return;
 
-        mc.world.removeEntity(entity);
+        mc.world.removeEntityFromWorld(69420);
 
         for (Packet packet : packets)
             mc.player.connection.sendPacket(packet);

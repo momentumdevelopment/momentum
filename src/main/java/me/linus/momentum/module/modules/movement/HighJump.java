@@ -15,7 +15,7 @@ public class HighJump extends Module {
         super("HighJump", Category.MOVEMENT, "Allows you to jump higher");
     }
 
-    private static final Checkbox packet = new Checkbox("Packet", true);
+    public static Checkbox packet = new Checkbox("Packet", true);
     public static Slider height = new Slider("Height", 0.0D, 1.5D, 10.0D, 1);
 
     @Override

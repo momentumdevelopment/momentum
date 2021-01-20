@@ -27,15 +27,13 @@ public class PacketEat extends Module {
         super("PacketEat", Category.PLAYER, "Allows you to eat instantly");
     }
 
-    private static final Mode mode = new Mode("Mode", "Packet", "DeSync", "Auto");
+    public static Mode mode = new Mode("Mode", "Packet", "DeSync", "Auto");
     public static SubSlider health = new SubSlider(mode, "Health", 0.0D, 28.0D, 36.0D, 0);
-    public static Slider delay = new Slider("Delay", 0.0D, 6.0D, 10.0D, 0);
     public static Slider packetSize = new Slider("Packet Iteration", 0.0D, 20.0D, 40.0D, 0);
 
     @Override
     public void setup() {
         addSetting(mode);
-        addSetting(delay);
         addSetting(packetSize);
     }
 

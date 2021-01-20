@@ -10,19 +10,16 @@ import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.combat.crystal.CrystalPosition;
+import me.linus.momentum.util.combat.crystal.*;
+import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.world.Timer;
-import me.linus.momentum.util.client.friend.FriendManager;
-import me.linus.momentum.util.combat.crystal.CrystalUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.player.rotation.Rotation;
-import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.render.builder.RenderUtil;
 import me.linus.momentum.util.world.*;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -40,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 /**
  * @author linustouchtips
@@ -242,8 +238,6 @@ public class AutoCrystal extends Module {
     }
 
     public void placeCrystal() {
-        CrystalPosition tempPosition = new CrystalPosition(BlockPos.ORIGIN, 0, 0);
-
         for (EntityPlayer calculatedPlayer : WorldUtil.getNearbyPlayers(enemyRange.getValue())) {
             for (BlockPos calculatedPosition : CrystalUtil.crystalBlocks(mc.player, placeRange.getValue(), prediction.getValue(), blockCalc.getValue())) {
                 if (!BlockUtil.canBlockBeSeen(calculatedPosition) && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(wallRange.getValue()))
@@ -255,7 +249,7 @@ public class AutoCrystal extends Module {
 
                 for (EntityPlayer friend : WorldUtil.getNearbyFriends(placeRange.getValue()))
                     if (EnemyUtil.getHealth(friend) - (CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, friend)) <= pauseHealth.getValue() && friendProtect.getValue() == 1)
-                        tempPosition = new CrystalPosition(BlockPos.ORIGIN, 0, 0);
+                        crystalPosition = new CrystalPosition(BlockPos.ORIGIN, 0, 0);
 
                 if (heuristicDamage < minDamage.getValue() && (EnemyUtil.getArmor(calculatedPlayer, armorMelt.getValue(), armorDurability.getValue()) || HoleUtil.isInHole(calculatedPlayer) && facePlaceInHole.getValue() || EnemyUtil.getHealth(calculatedPlayer) > facePlaceHealth.getValue()))
                     continue;
@@ -266,14 +260,12 @@ public class AutoCrystal extends Module {
                 if (calculatedSelfDamage > heuristicDamage)
                     continue;
 
-                if (heuristicDamage > tempPosition.getTargetDamage() - resetThreshold.getValue())
-                    tempPosition = new CrystalPosition(calculatedPosition, heuristicDamage, calculatedSelfDamage);
+                if (heuristicDamage > crystalPosition.getTargetDamage() - resetThreshold.getValue())
+                    crystalPosition = new CrystalPosition(calculatedPosition, heuristicDamage, calculatedSelfDamage);
             }
             
             currentTarget = calculatedPlayer;
         }
-
-        crystalPosition = tempPosition;
 
         if (autoSwitch.getValue())
             InventoryUtil.switchToSlot(Items.END_CRYSTAL);
@@ -311,7 +303,7 @@ public class AutoCrystal extends Module {
             }
 
             if (renderDamage.getValue())
-                RenderUtil.drawNametagFromBlockPos(crystalPosition.getCrystalPosition(), String.valueOf(MathUtil.roundAvoid(crystalPosition.getTargetDamage(), 1)));
+                RenderUtil.drawNametagFromBlockPos(crystalPosition.getCrystalPosition(), 0.5f, String.valueOf(MathUtil.roundAvoid(crystalPosition.getTargetDamage(), 1)));
         }
     }
 

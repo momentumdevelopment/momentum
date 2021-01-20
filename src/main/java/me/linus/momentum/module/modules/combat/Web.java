@@ -20,10 +20,10 @@ public class Web extends Module {
         super("Web", Category.COMBAT, "Places webs at your feet");
     }
 
-    private static final Mode mode = new Mode("Mode", "Self", "Aura");
-    private static final Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
-    private static final Checkbox rotate = new Checkbox("Rotate", true);
-    private static final Checkbox disable = new Checkbox("Disables", true);
+    public static Mode mode = new Mode("Mode", "Self", "Aura");
+    public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
+    public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static Checkbox disable = new Checkbox("Disables", true);
 
     @Override
     public void setup() {
@@ -46,7 +46,7 @@ public class Web extends Module {
         if (autoSwitch.getValue())
             InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.WEB));
 
-        BlockUtil.placeBlock(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ), rotate.getValue());
+        BlockUtil.placeBlock(mc.player.getPosition(), rotate.getValue());
 
         if (disable.getValue())
             this.disable();

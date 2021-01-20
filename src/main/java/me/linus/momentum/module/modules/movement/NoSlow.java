@@ -26,7 +26,7 @@ public class NoSlow extends Module {
         super("NoSlow", Category.MOVEMENT, "Allows you to move at normal speeds when using an item");
     }
 
-    private static final Mode mode = new Mode("Mode", "Normal", "2b2t");
+    public static Mode mode = new Mode("Mode", "Normal", "2b2t");
     public static Checkbox inventoryMove = new Checkbox("Inventory Move", true);
     public static SubCheckbox guiMove = new SubCheckbox(inventoryMove, "Custom GUI's", true);
 

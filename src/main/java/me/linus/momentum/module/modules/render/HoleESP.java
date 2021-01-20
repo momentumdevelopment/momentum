@@ -29,11 +29,13 @@ public class HoleESP extends Module {
         super("HoleESP", Category.RENDER, "Highlights safe holes to stand in while crystalling");
     }
 
-    public static Mode main = new Mode("Main", "Fill", "Glow", "None");
-    public static SubSlider mainHeight = new SubSlider(main, "Height", -1.0D, 0.1D, 2.0D, 1);
+    public static Mode main = new Mode("Main",  "Fill", "Glow", "None");
+    public static SubSlider mainHeight = new SubSlider(main, "Height", -1.0D, 1.0D, 3.0D, 1);
 
     public static Mode outline = new Mode("Outline", "WireFrame", "None");
-    public static SubSlider outlineHeight = new SubSlider(outline, "Height", -1.0D, 0.1D, 2.0D, 1);
+    public static SubSlider outlineHeight = new SubSlider(outline, "Height", -1.0D, 0.0D, 3.0D, 1);
+
+    public static Mode highlight = new Mode("Highlight", "None", "NoRender", "Glow");
 
     public static Checkbox obsidianColor = new Checkbox("Obsidian Color", true);
     public static SubColor obsidianPicker = new SubColor(obsidianColor, new Color(93, 235, 240, 45));
@@ -65,27 +67,53 @@ public class HoleESP extends Module {
     }
 
     public void renderMain(Color obbyColor, Color bRockColor) {
-        findObsidianHoles().stream().forEach(hole -> {
+        findObsidianHoles().forEach(hole -> {
             switch (main.getValue()) {
                 case 0:
                     RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Fill);
                     break;
                 case 1:
+                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Glow);
+                    break;
+            }
+
+            if (mc.player.getDistanceSq(hole) < 1) {
+                switch (highlight.getValue()) {
+                    case 0:
+                    case 1:
+                        break;
+                    case 2:
+                        RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Glow);
+                        break;
+                }
             }
         });
 
-        findBedRockHoles().stream().forEach(hole -> {
+        findBedRockHoles().forEach(hole -> {
             switch (main.getValue()) {
                 case 0:
                     RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Fill);
                     break;
                 case 1:
+                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Glow);
+                    break;
+            }
+
+            if (mc.player.getDistanceSq(hole) < 1) {
+                switch (highlight.getValue()) {
+                    case 0:
+                    case 1:
+                        break;
+                    case 2:
+                        RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Glow);
+                        break;
+                }
             }
         });
     }
 
     public void renderOutline(Color obbyColor, Color bRockColor) {
-        findObsidianHoles().stream().forEach(hole -> {
+        findObsidianHoles().forEach(hole -> {
             switch (outline.getValue()) {
                 case 0:
                     GL11.glLineWidth((float) lineWidth.getValue());
@@ -96,7 +124,7 @@ public class HoleESP extends Module {
             }
         });
 
-        findBedRockHoles().stream().forEach(hole -> {
+        findBedRockHoles().forEach(hole -> {
             switch (outline.getValue()) {
                 case 0:
                     GL11.glLineWidth((float) lineWidth.getValue());

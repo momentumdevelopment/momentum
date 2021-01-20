@@ -15,7 +15,7 @@ public class RenderBuilder implements MixinInterface {
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
         GlStateManager.disableDepth();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1);
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ZERO, GL11.GL_ONE);
         GlStateManager.disableTexture2D();
         GlStateManager.depthMask(false);
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
@@ -32,15 +32,22 @@ public class RenderBuilder implements MixinInterface {
         GlStateManager.popMatrix();
     }
 
+    public static void glPrepare() {
+        GlStateManager.disableCull();
+        GlStateManager.disableAlpha();
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+    }
+
+    public static void glRestore() {
+        GlStateManager.enableCull();
+        GlStateManager.enableAlpha();
+        GlStateManager.shadeModel(GL11.GL_FLAT);
+    }
+
     public enum renderMode {
-        Fill(0),
-        Outline(1),
-        Both(2);
-
-        int identifier;
-
-        renderMode(int identifier) {
-            this.identifier = identifier;
-        }
+        Fill,
+        Outline,
+        Both,
+        Glow
     }
 }

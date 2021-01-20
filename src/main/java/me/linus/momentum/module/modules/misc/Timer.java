@@ -16,7 +16,7 @@ public class Timer extends Module {
     }
 
     public static Slider ticks = new Slider("Ticks", 0.1D, 4.0D, 20.0D, 1);
-    private static final Checkbox sync = new Checkbox("TPS Sync", false);
+    public static Checkbox sync = new Checkbox("TPS Sync", false);
 
     @Override
     public void setup() {

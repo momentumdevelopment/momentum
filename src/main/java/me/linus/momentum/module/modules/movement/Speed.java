@@ -26,23 +26,23 @@ public class Speed extends Module {
         super("Speed", Category.MOVEMENT, "Allows you to go faster");
     }
 
-    private static final Mode mode = new Mode("Mode", "SmoothHop", "MomentumHop", "StrictHop", "Y-Port");
+    public static Mode mode = new Mode("Mode", "SmoothHop", "MomentumHop", "StrictHop", "Y-Port");
     private static SubKeybind modeKey = new SubKeybind(mode, "ModeSwitch Key", -2);
-    private static final SubCheckbox strict = new SubCheckbox(mode, "Strict", false);
-    private static final SubCheckbox enableStep = new SubCheckbox(mode, "Use Step", false);
+    public static SubCheckbox strict = new SubCheckbox(mode, "Strict", false);
+    public static SubCheckbox enableStep = new SubCheckbox(mode, "Use Step", false);
 
     public static Slider multiplier = new Slider("Multiplier", 0.0D, 0.03D, 0.3D, 3);
 
-    private static final Checkbox useTimer = new Checkbox("Use Timer", false);
+    public static Checkbox useTimer = new Checkbox("Use Timer", false);
     public static SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.0D, 1.12D, 2.0D, 2);
 
     public static Slider speed = new Slider("Speed", 0.0D, 0.27D, 1.0D, 2);
 
-    private static final Checkbox jump = new Checkbox("Jump", true);
+    public static Checkbox jump = new Checkbox("Jump", true);
 
-    private static final Checkbox disable = new Checkbox("Disable", true);
-    private static final SubCheckbox inWater = new SubCheckbox(disable, "Disable in Liquid", true);
-    private static final SubCheckbox rubberband = new SubCheckbox(disable, "Disable on Rubberband", false);
+    public static Checkbox disable = new Checkbox("Disable", true);
+    public static SubCheckbox inWater = new SubCheckbox(disable, "Disable in Liquid", true);
+    public static SubCheckbox rubberband = new SubCheckbox(disable, "Disable on Rubberband", false);
 
     @Override
     public void setup() {

@@ -43,8 +43,10 @@ public class BreakESP extends Module {
             if (destroyBlockProgress != null && destroyBlockProgress.getPosition().getDistance((int) mc.player.posX,(int)  mc.player.posY,(int)  mc.player.posZ) <= range.getValue()) {
                 RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), 0, colorPicker.getColor(), outline.getValue() ? RenderBuilder.renderMode.Both : RenderBuilder.renderMode.Fill);
 
-                if (showInfo.getValue())
-                    RenderUtil.drawNametagFromBlockPos(destroyBlockProgress.getPosition(), mc.world.getEntityByID(integer).getName() + ": " + (destroyBlockProgress.getPartialBlockDamage() * 10) + "%");
+                if (showInfo.getValue()) {
+                    RenderUtil.drawNametagFromBlockPos(destroyBlockProgress.getPosition(), 0.6f, mc.world.getEntityByID(integer).getName());
+                    RenderUtil.drawNametagFromBlockPos(destroyBlockProgress.getPosition(), 0.2f,(destroyBlockProgress.getPartialBlockDamage() * 10) + "%");
+                }
             }
         });
     }

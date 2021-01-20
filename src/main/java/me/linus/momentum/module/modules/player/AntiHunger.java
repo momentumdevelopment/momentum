@@ -20,7 +20,7 @@ public class AntiHunger extends Module {
         super("AntiHunger", Category.PLAYER, "Allows you to lose no hunger");
     }
 
-    private static final Mode mode = new Mode("Mode", "Packet", "Vanilla");
+    public static Mode mode = new Mode("Mode", "Packet", "Vanilla");
 
     @Override
     public void setup() {

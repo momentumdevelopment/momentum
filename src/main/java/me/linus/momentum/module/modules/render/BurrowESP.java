@@ -45,7 +45,7 @@ public class BurrowESP extends Module {
     public void onUpdate() {
         burrowList.clear();
 
-        WorldUtil.getNearbyPlayers(20).stream().forEach(entityPlayer -> {
+        WorldUtil.getNearbyPlayers(20).forEach(entityPlayer -> {
             if (mc.world.getBlockState(new BlockPos(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ)).getBlock().equals(Blocks.OBSIDIAN))
                 burrowList.add(new BlockPos(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ));
         });

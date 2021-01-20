@@ -1,13 +1,17 @@
 package me.linus.momentum.util.world;
 
+import com.mojang.authlib.GameProfile;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.util.client.friend.FriendManager;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -17,8 +21,8 @@ import java.util.stream.Collectors;
 
 public class WorldUtil implements MixinInterface {
 
-    public static void createFakePlayer(EntityOtherPlayerMP entity, boolean copyInventory, boolean copyAngles, boolean health) {
-        entity = new EntityOtherPlayerMP(mc.world, mc.getSession().getProfile());
+    public static void createFakePlayer(@Nullable String name, boolean copyInventory, boolean copyAngles, boolean health, boolean player, BlockPos position) {
+        EntityOtherPlayerMP entity = player ? new EntityOtherPlayerMP(mc.world, mc.getSession().getProfile()) : new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("70ee432d-0a96-4137-a2c0-37cc9df67f03"), name));
         entity.copyLocationAndAnglesFrom(mc.player);
 
         if (copyInventory)
@@ -31,6 +35,8 @@ public class WorldUtil implements MixinInterface {
 
         if (health)
             entity.setHealth(mc.player.getHealth() + mc.player.getAbsorptionAmount());
+
+        entity.setPosition(position.x, position.y, position.z);
 
         mc.world.addEntityToWorld(69420, entity);
     }

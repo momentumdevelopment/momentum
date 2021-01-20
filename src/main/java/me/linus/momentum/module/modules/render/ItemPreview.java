@@ -1,10 +1,10 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.util.render.FontUtil;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -101,23 +101,17 @@ public class ItemPreview extends Module {
                 GlStateManager.pushMatrix();
                 GlStateManager.color(1f, 1f, 1f);
 
-                int xl = x + 6;
-                int yl = y + 6;
-
-                Tessellator tessellator = Tessellator.getInstance();
-                BufferBuilder bufferbuilder = tessellator.getBuffer();
-
-                GlStateManager.translate(xl, yl, 0.0);
+                GlStateManager.translate(x + 6, y + 6, 0.0);
                 GlStateManager.scale(1f, 1f, 0f);
                 mc.getTextureManager().bindTexture(RES_MAP_BACKGROUND);
                 RenderHelper.disableStandardItemLighting();
                 GL11.glDepthRange(0, 0.01);
-                bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-                bufferbuilder.pos(-7.0D, 135.0D, 0.0D).tex(0.0D, 1.0D).endVertex();
-                bufferbuilder.pos(135.0D, 135.0D, 0.0D).tex(1.0D, 1.0D).endVertex();
-                bufferbuilder.pos(135.0D, -7.0D, 0.0D).tex(1.0D, 0.0D).endVertex();
-                bufferbuilder.pos(-7.0D, -7.0D, 0.0D).tex(0.0D, 0.0D).endVertex();
-                tessellator.draw();
+                RenderUtil.bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+                RenderUtil.bufferbuilder.pos(-7.0D, 135.0D, 0.0D).tex(0.0D, 1.0D).endVertex();
+                RenderUtil.bufferbuilder.pos(135.0D, 135.0D, 0.0D).tex(1.0D, 1.0D).endVertex();
+                RenderUtil.bufferbuilder.pos(135.0D, -7.0D, 0.0D).tex(1.0D, 0.0D).endVertex();
+                RenderUtil.bufferbuilder.pos(-7.0D, -7.0D, 0.0D).tex(0.0D, 0.0D).endVertex();
+                RenderUtil.tessellator.draw();
                 GL11.glDepthRange(0, 1.0);
                 RenderHelper.enableStandardItemLighting();
                 GlStateManager.disableDepth();
