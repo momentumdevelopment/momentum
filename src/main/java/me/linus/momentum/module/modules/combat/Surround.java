@@ -125,19 +125,10 @@ public class Surround extends Module {
 
     public void surroundPlayer() {
         for (Vec3d placePositions : getSurround()) {
-            BlockPos blockPos = new BlockPos(placePositions.add(mc.player.getPositionVector()));
-
-            if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)) {
-                int oldInventorySlot = mc.player.inventory.currentItem;
-
-                if (onlyObsidian.getValue())
-                    InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
-                else
-                    InventoryUtil.switchToSlot(InventoryUtil.getAnyBlockInHotbar());
-
-                BlockUtil.placeBlock(blockPos, rotate.getValue());
-                renderBlock = blockPos;
-                InventoryUtil.switchToSlot(oldInventorySlot);
+            if (BlockUtil.getBlockResistance(new BlockPos(placePositions.add(mc.player.getPositionVector()))).equals(BlockUtil.blockResistance.Blank)) {
+                InventoryUtil.switchToSlot(onlyObsidian.getValue() ? InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) : InventoryUtil.getAnyBlockInHotbar());
+                BlockUtil.placeBlock(new BlockPos(placePositions.add(mc.player.getPositionVector())), rotate.getValue());
+                renderBlock = new BlockPos(placePositions.add(mc.player.getPositionVector()));
                 blocksPlaced++;
 
                 if (blocksPlaced == blocksPerTick.getValue() && disable.getValue() != 2)
@@ -152,7 +143,7 @@ public class Surround extends Module {
             RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
     }
 
-    public List<Vec3d> getSurround() {
+    List<Vec3d> getSurround() {
         switch (mode.getValue()) {
             case 0:
                 return standardSurround;

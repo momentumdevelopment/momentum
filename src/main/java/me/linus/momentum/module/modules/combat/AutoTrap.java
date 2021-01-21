@@ -10,6 +10,7 @@ import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.builder.RenderUtil;
 import me.linus.momentum.util.world.*;
+import me.linus.momentum.util.world.BlockUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -82,14 +83,12 @@ public class AutoTrap extends Module {
             EntityPlayer target = WorldUtil.getClosestPlayer(range.getValue());
 
             if (target != null) {
-                BlockPos blockPos = new BlockPos(autoTrapBox.add(target.getPositionVector()));
-
-                if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)) {
+                if (BlockUtil.getBlockResistance(new BlockPos(autoTrapBox.add(target.getPositionVector()))).equals(BlockUtil.blockResistance.Blank)) {
                     if (autoSwitch.getValue())
                         InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
 
-                    BlockUtil.placeBlock(blockPos, rotate.getValue());
-                    placeBlock = blockPos;
+                    BlockUtil.placeBlock(new BlockPos(autoTrapBox.add(target.getPositionVector())), rotate.getValue());
+                    placeBlock = new BlockPos(autoTrapBox.add(target.getPositionVector()));
                     MessageUtil.sendClientMessage("Trapping " + target.getName() + "!");
 
                     blocksPlaced++;

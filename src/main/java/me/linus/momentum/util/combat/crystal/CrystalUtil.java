@@ -103,16 +103,38 @@ public class CrystalUtil implements MixinInterface {
         return EnumFacing.UP;
     }
 
-    public static boolean canPlaceCrystal(BlockPos blockPos) {
-        return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getBlockState(blockPos.add(0, 1, 0)).getBlock() == Blocks.AIR && mc.world.getBlockState(blockPos.add(0, 2, 0)).getBlock() == Blocks.AIR && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 1, 0))).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 2, 0))).isEmpty();
+    public static List<BlockPos> crystalBlocks(EntityPlayer entityPlayer, double placeRange, boolean prediction, boolean antiSurround, int blockCalc) {
+        return BlockUtil.getNearbyBlocks(entityPlayer, placeRange, prediction).stream().filter(blockPos -> canPlaceCrystal(blockPos, antiSurround, blockCalc == 1)).collect(Collectors.toList());
     }
 
-    public static boolean canPlaceThirteenCrystal(BlockPos blockPos) {
-        return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 1, 0))).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 2, 0))).isEmpty();
-    }
+    public static boolean canPlaceCrystal(BlockPos blockPos, boolean antiSurround, boolean thirteen) {
+        try {
+            if (BlockUtil.getBlockResistance(blockPos) != BlockUtil.blockResistance.Unbreakable && mc.world.getBlockState(blockPos).getBlock() != Blocks.OBSIDIAN)
+                return false;
 
-    public static List<BlockPos> crystalBlocks(EntityPlayer entityPlayer, double placeRange, boolean prediction, int blockCalc) {
-        return BlockUtil.getNearbyBlocks(entityPlayer, placeRange, prediction).stream().filter(blockCalc == 0 ? CrystalUtil::canPlaceCrystal : CrystalUtil::canPlaceThirteenCrystal).collect(Collectors.toList());
+            if (!thirteen && BlockUtil.getBlockResistance(blockPos.add(0, 2, 0)) != BlockUtil.blockResistance.Blank || BlockUtil.getBlockResistance(blockPos.add(0, 1, 0)) != BlockUtil.blockResistance.Blank)
+                return false;
+
+            for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 1, 0)))) {
+                if (entity.isDead || antiSurround && entity instanceof EntityEnderCrystal)
+                    continue;
+
+                return false;
+            }
+
+            if (!thirteen) {
+                for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 2, 0)))) {
+                    if (entity.isDead || antiSurround && entity instanceof EntityEnderCrystal)
+                        continue;
+
+                    return false;
+                }
+            }
+        } catch (Exception ignored) {
+            return false;
+        }
+
+        return true;
     }
 
     public static float calculateDamage(double posX, double posY, double posZ, Entity entity) {

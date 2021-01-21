@@ -13,7 +13,6 @@ import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -24,17 +23,13 @@ import java.awt.*;
 
 public abstract class ColorUtil implements MixinInterface {
 
-	/**
-	 * color cycling
-	 */
-
 	public static int rainbow(long offset) {
 		float hue = (float) ((((System.currentTimeMillis() * (Colors.speed.getValue() / 10)) + (offset * 500)) % (30000L / (Colors.difference.getValue() / 100))) / (30000.0f / (Colors.difference.getValue() / 20)));
 		int rgb = Color.HSBtoRGB(hue, (float) Colors.saturation.getValue(), (float) Colors.brightness.getValue());
 		int red = rgb >> 16 & 255;
 		int green = rgb >> 8 & 255;
 		int blue = rgb & 255;
-		int color = toRGBA(red, green, blue, (int) Colors.clientPicker.getAlpha());
+		int color = toRGBA(red, green, blue, Colors.clientPicker.getColor().getAlpha());
 		return color;
 	}
 
@@ -56,17 +51,9 @@ public abstract class ColorUtil implements MixinInterface {
 		return new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
 	}
 
-	/**
-	 * color conversion
-	 */
-
 	public static int toRGBA(int r, int g, int b, int a) {
 		return (r << 16) + (g << 8) + (b << 0) + (a << 24);
 	}
-
-	/**
-	 * color by variable
-	 */
 
 	public static int getColorByCategory(Module mod) {
 		switch (mod.getCategory()) {

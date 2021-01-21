@@ -117,16 +117,14 @@ public class MotionUtil implements MixinInterface {
         double deltaX = mc.player.posX - prevPosX;
         double deltaZ = mc.player.posZ - prevPosZ;
 
-        float distance = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
-
-        double KMH = MathUtil.roundAvoid((distance / 1000.0f) / (0.05f / 3600.0f), 1);
+        double KMH = MathUtil.roundAvoid((MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ) / 1000.0f) / (0.05f / 3600.0f), 1);
 
         String formattedString = formatter.format(KMH);
 
         if (!formattedString.contains("."))
             formattedString += ".0";
 
-        String bps = " " + formattedString + TextFormatting.GRAY + "km/h";
+        String bps = " " + formattedString + TextFormatting.WHITE + " km/h";
 
         return bps;
     }

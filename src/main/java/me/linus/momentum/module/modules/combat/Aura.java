@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
@@ -21,8 +22,8 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEndCrystal;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemSword;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Comparator;
@@ -92,7 +93,7 @@ public class Aura extends Module {
 
         if (currentTarget != null && !FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled()) {
             auraRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1]);
-            RotationUtil.updateRotations(auraRotation, rotate.getValue());
+            auraRotation.updateRotations(rotate.getValue());
         }
 
         killAura();
@@ -104,6 +105,14 @@ public class Aura extends Module {
             event.setCanceled(true);
             event.setPitch(auraRotation.yaw);
             event.setYaw(auraRotation.pitch);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPacketSend(PacketSendEvent event) {
+        if (event.getPacket() instanceof CPacketPlayer.Rotation) {
+            ((CPacketPlayer.Rotation) event.getPacket()).yaw = auraRotation.yaw;
+            ((CPacketPlayer.Rotation) event.getPacket()).pitch = auraRotation.pitch;
         }
     }
 

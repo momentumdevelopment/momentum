@@ -14,10 +14,6 @@ import javax.annotation.Nullable;
 
 public class MessageUtil implements MixinInterface {
 
-	/**
-	 * message sending
-	 */
-	
 	public static void sendClientMessage(String message) {
 		mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(TextFormatting.DARK_PURPLE + "[Momentum] " + TextFormatting.RESET + message), 69);
 	}
@@ -30,17 +26,9 @@ public class MessageUtil implements MixinInterface {
 		mc.player.sendChatMessage(message);
 	}
 
-	/**
-	 * commands
-	 */
-
 	public static void usageException(Command command, @Nullable String specialUsage) {
 		mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(TextFormatting.DARK_PURPLE + "[Momentum] " + TextFormatting.RESET + "Usage: " + command.getUsage() + " " + specialUsage), 69);
 	}
-
-	/**
-	 * unicode conversion
-	 */
 
 	public static String toUnicode(String s) {
 		return s.toLowerCase()

@@ -13,12 +13,12 @@ import java.util.List;
 
 public class Keybind extends Setting {
 
-    private final String name;
+    private String name;
     private int key;
     private boolean opened;
     private boolean binding;
 
-    private final List<SubSetting> subs = new ArrayList<>();
+    private List<SubSetting> subs = new ArrayList<>();
 
     public Keybind(String name, int key) {
         this.name = name;

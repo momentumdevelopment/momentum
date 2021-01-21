@@ -18,9 +18,9 @@ public class Coordinates extends HUDComponent {
         super("Coordinates", 2, 350);
     }
 
-    public staticMode mode = new Mode("Mode", "Normal", "In-Line");
-    public staticCheckbox overWorld = new Checkbox("OverWorld", true);
-    public staticCheckbox nether = new Checkbox("Nether", true);
+    public static Mode mode = new Mode("Mode", "Normal", "In-Line");
+    public static Checkbox overWorld = new Checkbox("OverWorld", true);
+    public static Checkbox nether = new Checkbox("Nether", true);
 
     @Override
     public void setup() {

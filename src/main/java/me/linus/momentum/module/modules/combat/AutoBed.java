@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
@@ -23,6 +24,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBed;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.tileentity.TileEntityBed;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -86,16 +88,11 @@ public class AutoBed extends Module {
 
     Timer breakTimer = new Timer();
     Timer placeTimer = new Timer();
-
     Entity currentTarget = null;
-
     Rotation bedRotation;
-
     BlockPos currentBlock = null;
-
     double diffXZ;
     float rotVar;
-
     boolean nowTop = false;
 
     @Override
@@ -113,7 +110,7 @@ public class AutoBed extends Module {
 
         if (currentTarget != null && (!FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled())) {
             bedRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1]);
-            RotationUtil.updateRotations(bedRotation, rotate.getValue());
+            bedRotation.updateRotations(rotate.getValue());
         }
 
         switch (logicMode.getValue()) {
@@ -135,7 +132,7 @@ public class AutoBed extends Module {
             if (pause.getValue() && PlayerUtil.getHealth() <= pauseHealth.getValue())
                 return;
 
-            RotationUtil.updateRotations(new Rotation(RotationUtil.getTileAngles(bed)[0], RotationUtil.getTileAngles(bed)[1]), rotate.getValue());
+            bedRotation.updateRotations(rotate.getValue());
 
             if (explode.getValue())
                 BedUtil.attackBed(bed.getPos());
@@ -203,6 +200,14 @@ public class AutoBed extends Module {
             event.setCanceled(true);
             event.setPitch(bedRotation.yaw);
             event.setYaw(bedRotation.pitch);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPacketSend(PacketSendEvent event) {
+        if (event.getPacket() instanceof CPacketPlayer.Rotation) {
+            ((CPacketPlayer.Rotation) event.getPacket()).yaw = bedRotation.yaw;
+            ((CPacketPlayer.Rotation) event.getPacket()).pitch = bedRotation.pitch;
         }
     }
 

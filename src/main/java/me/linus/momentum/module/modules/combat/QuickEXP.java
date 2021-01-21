@@ -24,7 +24,7 @@ public class QuickEXP extends Module {
     public static Mode mode = new Mode("Mode", "Packet", "AutoMend", "Throw");
     public static Slider delay = new Slider("Throw Delay", 0.0D, 0.0D, 4.0D, 0);
     public static Checkbox stopEXP = new Checkbox("Stop EXP", false);
-    public static Checkbox footEXP = new Checkbox("FootEXP", true);
+    public static Checkbox footEXP = new Checkbox("FootEXP", false);
     public static Keybind mendKey = new Keybind("Mend Key", -2);
 
     @Override
@@ -41,8 +41,10 @@ public class QuickEXP extends Module {
         if (nullCheck())
             return;
 
-        if (stopEXP.getValue() && EnemyUtil.getArmor(mc.player) == 100)
+        if (stopEXP.getValue() && EnemyUtil.getArmor(mc.player) == 100) {
+            mc.player.stopActiveHand();
             return;
+        }
 
         if (InventoryUtil.getHeldItem(Items.EXPERIENCE_BOTTLE))
             mc.rightClickDelayTimer = (int) delay.getValue();

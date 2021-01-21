@@ -10,7 +10,6 @@ import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemSword;
 import org.lwjgl.input.Mouse;
 
 /**
@@ -81,7 +80,7 @@ public class Offhand extends Module {
         if (health.getValue() > PlayerUtil.getHealth())
             searching = Items.TOTEM_OF_UNDYING;
 
-        else if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordGap.getValue())
+        else if (InventoryUtil.getHeldItem(Items.DIAMOND_SWORD) && swordGap.getValue())
             searching = Items.GOLDEN_APPLE;
 
         else if (forceGap.getValue() && Mouse.isButtonDown(1))

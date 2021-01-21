@@ -2,20 +2,13 @@ package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.hud.HUD;
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.ClickGUI;
-import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.util.render.AnimationUtil;
-import me.linus.momentum.util.client.notification.Notification;
 import me.linus.momentum.util.client.notification.NotificationManager;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.util.Iterator;
 
 /**
  * @author linustouchtips

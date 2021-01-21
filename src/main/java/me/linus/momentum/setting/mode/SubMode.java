@@ -13,9 +13,9 @@ import me.linus.momentum.setting.slider.Slider;
 
 public class SubMode extends SubSetting {
 	
-	private final Setting parent;
-	private final String name;
-	private final String[] modes;
+	private Setting parent;
+	private String name;
+	private String[] modes;
 	private int mode;
 
 	public SubMode(Setting parent, String name, String... modes) {

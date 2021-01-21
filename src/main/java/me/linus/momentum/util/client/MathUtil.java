@@ -17,10 +17,6 @@ public class MathUtil {
 		return in * in;
 	}
 
-	/**
-	 * rounding
-	 */
-	
 	public static double roundDouble(double number, int scale) {
 		BigDecimal bd = new BigDecimal(number);
 		bd = bd.setScale(scale, RoundingMode.HALF_UP);
@@ -47,10 +43,6 @@ public class MathUtil {
 
 		return val;
 	}
-
-	/**
-	 * angles
-	 */
 
 	public static float[] calcAngle(Vec3d from, Vec3d to) {
 		double difX = to.x - from.x;

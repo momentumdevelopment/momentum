@@ -25,25 +25,23 @@ public class MixinNetworkManager {
 
 	@Inject(method = "sendPacket(Lnet/minecraft/network/Packet;)V", at = @At("HEAD"), cancellable = true)
 	public void onPacketSend(Packet<?> packet, CallbackInfo ci) {
-		final PacketSendEvent event = new PacketSendEvent(packet, Stage.PRE);
+		PacketSendEvent event = new PacketSendEvent(packet, Stage.PRE);
 		MinecraftForge.EVENT_BUS.post(event);
-		if(event.isCanceled()) {
+		if (event.isCanceled())
 			ci.cancel();
-		}
 	}
 	
 	@Inject(method = "channelRead0", at = @At("HEAD"), cancellable = true)
 	public void onPacketReceive(ChannelHandlerContext chc, Packet<?> packet, CallbackInfo ci) {
-		final PacketReceiveEvent event = new PacketReceiveEvent(packet, Stage.PRE);
+		PacketReceiveEvent event = new PacketReceiveEvent(packet, Stage.PRE);
 		MinecraftForge.EVENT_BUS.post(event);
-		if(event.isCanceled()) {
+		if (event.isCanceled()) 
 			ci.cancel();
-		}
 	}
 
 	@Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
 	private void exceptionCaught(ChannelHandlerContext exceptionCaught1, Throwable exceptionCaught2, CallbackInfo info) {
-		if (exceptionCaught2 instanceof IOException && ModuleManager.getModuleByName("AntiPacketKick").isEnabled())
+		if (exceptionCaught2 instanceof IOException || exceptionCaught2 instanceof IOException && ModuleManager.getModuleByName("AntiPacketKick").isEnabled())
 			info.cancel();
 	}
 }

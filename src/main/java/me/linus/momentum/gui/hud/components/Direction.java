@@ -20,7 +20,7 @@ public class Direction extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        FontUtil.drawString(RotationUtil.getFacing() + TextFormatting.WHITE + RotationUtil.getTowards(), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
-        width = Momentum.fontManager.getCustomFont().getStringWidth(RotationUtil.getFacing() + " [" + RotationUtil.getTowards() + "]") + 2;
+        FontUtil.drawString(RotationUtil.getFacing() + " " + TextFormatting.WHITE + RotationUtil.getTowards(), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+        width = Momentum.fontManager.getCustomFont().getStringWidth(RotationUtil.getFacing() + " " + TextFormatting.WHITE + RotationUtil.getTowards()) + 2;
     }
 }

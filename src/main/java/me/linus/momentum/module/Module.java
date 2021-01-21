@@ -22,10 +22,10 @@ import java.util.List;
 
 public abstract class Module implements MixinInterface {
 
-	private final String name;
-	private final Category category;
-	private final String description;
-	private final KeyBinding key;
+	private String name;
+	private Category category;
+	private String description;
+	private KeyBinding key;
 	
 	private boolean enabled;
 	private boolean opened;
@@ -95,10 +95,6 @@ public abstract class Module implements MixinInterface {
 	public void onUpdate() {
 		
 	}
-
-	/**
-	 * obamahack tick
-	 */
 
 	public void onFastUpdate() {
 		
@@ -204,9 +200,9 @@ public abstract class Module implements MixinInterface {
 		RENDER("Render"),
 		BOT("Bot");
 		
-		private final String name;
+		String name;
 
-		Category(final String name) {
+		Category(String name) {
 			this.name = name;
 		}
 		

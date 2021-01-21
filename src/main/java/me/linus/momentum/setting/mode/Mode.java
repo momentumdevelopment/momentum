@@ -13,12 +13,12 @@ import java.util.List;
 
 public class Mode extends Setting {
 	
-	private final String name;
-	private final String[] modes;
+	private String name;
+	private String[] modes;
 	private int mode;
 	private boolean opened;
 	
-	private final List<SubSetting> subs = new ArrayList<>();
+	private List<SubSetting> subs = new ArrayList<>();
 	
 	public Mode(String name, String... modes) {
 		this.name = name;

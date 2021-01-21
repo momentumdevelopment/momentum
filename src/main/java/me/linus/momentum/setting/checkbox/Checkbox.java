@@ -13,11 +13,11 @@ import java.util.List;
 
 public class Checkbox extends Setting {
 	
-	private final String name;
+	private String name;
 	private boolean checked;
 	private boolean opened;
 	
-	private final List<SubSetting> subs = new ArrayList<>();
+	private List<SubSetting> subs = new ArrayList<>();
 	
 	public Checkbox(String name, boolean checked) {
 		this.name = name;

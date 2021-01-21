@@ -88,21 +88,6 @@ public class RotationUtil implements MixinInterface {
         }
     }
 
-    // updates player rotations here
-    public static void updateRotations(Rotation spoofRotation, int mode) {
-       switch (mode) {
-            case 0:
-                mc.player.rotationYawHead = spoofRotation.yaw;
-                break;
-            case 1:
-                mc.player.rotationYaw = spoofRotation.yaw;
-                mc.player.rotationPitch = spoofRotation.pitch;
-                break;
-            case 2:
-                break;
-        }
-    }
-
     public static void resetRotation(RotationEvent event) {
         event.setYaw(mc.player.rotationYaw);
         event.setPitch(mc.player.rotationPitch);

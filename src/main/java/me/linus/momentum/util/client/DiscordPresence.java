@@ -14,7 +14,7 @@ import net.minecraft.client.gui.GuiWorldSelection;
  */
 
 public class DiscordPresence implements MixinInterface {
-    private static final DiscordRPC rpc = DiscordRPC.INSTANCE;
+    private static DiscordRPC rpc = DiscordRPC.INSTANCE;
     public static DiscordRichPresence rp = new DiscordRichPresence();
     private static String details;
     private static String state;

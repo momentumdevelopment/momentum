@@ -74,13 +74,10 @@ public class SelfTrap extends Module {
         int blocksPlaced = 0;
 
         for (Vec3d autoTrapBox : getTrap()) {
-            BlockPos blockPos = new BlockPos(autoTrapBox.add(mc.player.getPositionVector()));
-
-            if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)) {
+            if (BlockUtil.getBlockResistance(new BlockPos(autoTrapBox.add(mc.player.getPositionVector()))).equals(BlockUtil.blockResistance.Blank)) {
                 InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
-
-                BlockUtil.placeBlock(blockPos, rotate.getValue());
-                placeBlock = blockPos;
+                BlockUtil.placeBlock(new BlockPos(autoTrapBox.add(mc.player.getPositionVector())), rotate.getValue());
+                placeBlock = new BlockPos(autoTrapBox.add(mc.player.getPositionVector()));
                 blocksPlaced++;
 
                 if (blocksPlaced == blocksPerTick.getValue())

@@ -65,7 +65,8 @@ public class Burrow extends Module {
         if (mc.player.posY > originalPos.getY() + 1.2) {
             InventoryUtil.switchToSlot(Blocks.OBSIDIAN);
 
-            BlockUtil.placeBlock(originalPos, rotate.getValue());
+            if (BlockUtil.getBlockResistance(originalPos).equals(BlockUtil.blockResistance.Blank))
+                BlockUtil.placeBlock(originalPos, rotate.getValue());
 
             if (onGround.getValue())
                 mc.player.onGround = true;

@@ -37,10 +37,11 @@ public class ActiveModules extends HUDComponent {
         addSetting(background);
     }
 
-    int count = 0;
+    int count;
 
     @Override
     public void renderComponent() {
+        count = 0;
         int screenWidth = new ScaledResolution(mc).getScaledWidth();
 
         ModuleManager.getModules().stream().filter(Module::isEnabled).filter(Module::isDrawn).sorted(Comparator.comparing(module -> FontUtil.getStringWidth(module.getName() + " " + module.getHUDData()) * (-1))).forEach(module -> {

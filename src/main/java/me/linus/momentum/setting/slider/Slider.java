@@ -13,14 +13,14 @@ import java.util.List;
 
 public class Slider extends Setting {
 	
-	private final String name;
-	private final double min;
+	private String name;
+	private double min;
 	private double value;
-	private final double max;
-	private final int scale;
+	private double max;
+	private int scale;
 	private boolean opened;
 	
-	private final List<SubSetting> subs = new ArrayList<>();
+	private List<SubSetting> subs = new ArrayList<>();
 	
 	public Slider(String name, double min, double value, double max, int scale) {
 		this.name = name;

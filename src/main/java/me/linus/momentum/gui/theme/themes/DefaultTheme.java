@@ -701,7 +701,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             left = !left;
         }
 
-        gradient(x, y, x + width, y + height, new Color(red, green, blue, 255).getRGB(), 0, true);
+        gradient(x, y, x + width, y + height, new Color(red, green, blue, 1).getRGB(), 0, true);
         int sliderMinX = (int) (x + width - (width * alpha));
         GuiScreen.drawRect(sliderMinX - 1, y,  sliderMinX + 1, y + height, -1);
     }
