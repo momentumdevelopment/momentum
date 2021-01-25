@@ -29,7 +29,7 @@ public class HoleESP extends Module {
         super("HoleESP", Category.RENDER, "Highlights safe holes to stand in while crystalling");
     }
 
-    public static Mode main = new Mode("Main",  "Fill", "Glow", "None");
+    public static Mode main = new Mode("Main",  "Glow", "Fill", "None");
     public static SubSlider mainHeight = new SubSlider(main, "Height", -1.0D, 1.0D, 3.0D, 1);
 
     public static Mode outline = new Mode("Outline", "WireFrame", "None");
@@ -71,10 +71,10 @@ public class HoleESP extends Module {
         findObsidianHoles().forEach(hole -> {
             switch (main.getValue()) {
                 case 0:
-                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Fill);
+                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Glow);
                     break;
                 case 1:
-                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Glow);
+                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, obbyColor, RenderBuilder.renderMode.Fill);
                     break;
             }
 
@@ -93,10 +93,10 @@ public class HoleESP extends Module {
         findBedRockHoles().forEach(hole -> {
             switch (main.getValue()) {
                 case 0:
-                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Fill);
+                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Glow);
                     break;
                 case 1:
-                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Glow);
+                    RenderUtil.drawBoxBlockPos(hole, mainHeight.getValue() - 1, bRockColor, RenderBuilder.renderMode.Fill);
                     break;
             }
 

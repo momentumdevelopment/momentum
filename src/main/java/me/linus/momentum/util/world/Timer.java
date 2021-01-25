@@ -21,7 +21,7 @@ public class Timer implements MixinInterface {
     public boolean passed(long time, Format format) {
         switch (format) {
             case System:
-                return this.getMS(System.nanoTime() - this.time) >= time;
+                return getMS(System.nanoTime() - this.time) >= time;
             case Ticks:
                 return mc.player.ticksExisted % (int) time == 0;
         }
@@ -32,7 +32,7 @@ public class Timer implements MixinInterface {
     public boolean reach(long time, Format format) {
         switch (format) {
             case System:
-                return this.getMS(System.nanoTime() - this.time) <= time;
+                return getMS(System.nanoTime() - this.time) <= time;
             case Ticks:
                 return mc.player.ticksExisted % (int) time != 0;
         }
@@ -42,7 +42,7 @@ public class Timer implements MixinInterface {
 
     public boolean sleep(long time) {
         if ((System.nanoTime() / 1000000L - time) >= time) {
-            this.reset();
+            reset();
             return true;
         }
 

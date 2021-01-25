@@ -10,9 +10,9 @@ import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.client.CPacketUseEntity;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.CombatRules;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -58,13 +58,15 @@ public class CrystalUtil implements MixinInterface {
     public static void swingArm(int mode) {
         switch (mode) {
             case 0:
-                mc.player.swingArm(EnumHand.MAIN_HAND);
+                mc.player.swingArm(EnumHand.OFF_HAND);
+                break;
             case 1:
-                if (!mc.player.getHeldItemOffhand().isEmpty())
-                    mc.player.swingArm(EnumHand.OFF_HAND);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                break;
             case 2:
                 mc.player.swingArm(EnumHand.MAIN_HAND);
                 mc.player.swingArm(EnumHand.OFF_HAND);
+                break;
             case 3:
                 mc.player.swingArm(EnumHand.MAIN_HAND);
                 mc.player.swingArm(EnumHand.MAIN_HAND);
@@ -80,6 +82,7 @@ public class CrystalUtil implements MixinInterface {
                 mc.player.swingArm(EnumHand.MAIN_HAND);
                 mc.player.swingArm(EnumHand.MAIN_HAND);
                 mc.player.swingArm(EnumHand.MAIN_HAND);
+                break;
         }
     }
 
@@ -156,7 +159,7 @@ public class CrystalUtil implements MixinInterface {
             damage = CombatRules.getDamageAfterAbsorb(damage, (float) entity.getTotalArmorValue(), (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
             damage *= 1.0f - MathHelper.clamp((float) EnchantmentHelper.getEnchantmentModifierDamage(entity.getArmorInventoryList(), DamageSource.causeExplosionDamage(explosion)), 0.0f, 20.0f) / 25.0f;
 
-            if (entity.isPotionActive(Potion.getPotionById(11)))
+            if (entity.isPotionActive(MobEffects.RESISTANCE))
                 damage -= damage / 4.0f;
 
             return damage;

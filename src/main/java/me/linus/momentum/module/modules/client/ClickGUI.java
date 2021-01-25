@@ -24,7 +24,7 @@ public class ClickGUI extends Module {
 	public static Slider speed = new Slider("Animation Speed", 0.0D, 3.5D, 5.0D, 1);
 
 	public static Checkbox blurEffect = new Checkbox("Blur Effect", true);
-	public static final Checkbox allowOverflow = new Checkbox("Allow Overflow", true);
+	public static Checkbox allowOverflow = new Checkbox("Allow Overflow", true);
 
 	public static Checkbox snapSlider = new Checkbox("Slider Snap", true);
 	public static SubSlider snapSub = new SubSlider(snapSlider, "Snap Distance", 1.0D, 5.0D, 10.0D, 0);

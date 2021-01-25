@@ -205,9 +205,9 @@ public class AutoBed extends Module {
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketPlayer.Rotation) {
-            ((CPacketPlayer.Rotation) event.getPacket()).yaw = bedRotation.yaw;
-            ((CPacketPlayer.Rotation) event.getPacket()).pitch = bedRotation.pitch;
+        if (event.getPacket() instanceof CPacketPlayer) {
+            ((CPacketPlayer) event.getPacket()).yaw = bedRotation.yaw;
+            ((CPacketPlayer) event.getPacket()).pitch = bedRotation.pitch;
         }
     }
 

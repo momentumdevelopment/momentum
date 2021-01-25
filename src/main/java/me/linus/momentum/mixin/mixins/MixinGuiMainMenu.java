@@ -1,6 +1,7 @@
 package me.linus.momentum.mixin.mixins;
 
 import me.linus.momentum.Momentum;
+import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.text.TextFormatting;
@@ -20,6 +21,6 @@ public class MixinGuiMainMenu extends GuiScreen {
 
 	@Inject(method = "drawScreen", at = @At("TAIL"), cancellable = true)
 	public void drawText(int mouseX, int mouseY, float partialTicks, CallbackInfo callbackInfo) {
-		Momentum.fontManager.getCustomFont().drawStringWithShadow(TextFormatting.DARK_PURPLE + Momentum.NAME + TextFormatting.WHITE + " " + Momentum.VERSION, 2, 2, -1);
+		FontUtil.drawString(TextFormatting.DARK_PURPLE + Momentum.NAME + TextFormatting.WHITE + " " + Momentum.VERSION, 2, 2, -1);
 	}
 }

@@ -18,6 +18,7 @@ public class Baritone extends Module {
     public Baritone() {
         super("Baritone", Category.CLIENT, "Settings for Baritone");
         this.enable();
+        this.setDrawn(false);
     }
 
     public static Checkbox path = new Checkbox("Render Path", true);

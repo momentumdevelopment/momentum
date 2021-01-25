@@ -22,18 +22,18 @@ public class Offhand extends Module {
         super("Offhand", Category.COMBAT, "Switches items in the offhand to a totem when low on health");
     }
 
-    public static  Mode mode = new Mode("Mode", "Crystal", "Gapple", "Bed", "Chorus", "Totem");
-    public static  Mode fallbackMode = new Mode("Fallback", "Crystal", "Gapple", "Bed", "Chorus", "Totem");
-    public static  Slider health = new Slider("Health", 0.1, 16.0, 36.0, 1);
+    public static Mode mode = new Mode("Mode", "Crystal", "Gapple", "Bed", "Chorus", "Totem");
+    public static Mode fallbackMode = new Mode("Fallback", "Crystal", "Gapple", "Bed", "Chorus", "Totem");
+    public static Slider health = new Slider("Health", 0.1, 16.0, 36.0, 1);
 
     public static Checkbox checks = new Checkbox("Checks", true);
     public static SubCheckbox caFunction = new SubCheckbox(checks, "AutoCrystal", false);
     public static SubCheckbox elytraCheck = new SubCheckbox(checks, "Elytra", false);
     public static SubCheckbox fallCheck = new SubCheckbox(checks, "Falling", false);
 
-    public static  Checkbox swordGap = new Checkbox("Sword Gapple", true);
-    public static  Checkbox forceGap = new Checkbox("Force Gapple", false);
-    public static  Checkbox hotbar = new Checkbox("Search Hotbar", false);
+    public static Checkbox swordGap = new Checkbox("Sword Gapple", true);
+    public static Checkbox forceGap = new Checkbox("Force Gapple", false);
+    public static Checkbox hotbar = new Checkbox("Search Hotbar", false);
 
     @Override
     public void setup() {

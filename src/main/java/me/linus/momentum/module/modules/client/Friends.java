@@ -11,5 +11,6 @@ public class Friends extends Module {
     public Friends() {
         super("Friends", Category.CLIENT, "Allows friend system to function");
         this.enable();
+        this.setDrawn(false);
     }
 }

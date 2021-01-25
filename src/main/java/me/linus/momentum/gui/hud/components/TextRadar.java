@@ -3,6 +3,7 @@ package me.linus.momentum.gui.hud.components;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.util.client.ColorUtil;
+import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.FontUtil;
@@ -24,7 +25,7 @@ public class TextRadar extends HUDComponent {
         WorldUtil.getNearbyPlayers(20).forEach(entityPlayer -> {
             int screenWidthScaled = new ScaledResolution(mc).getScaledWidth();
             float modWidth = FontUtil.getStringWidth(ColorUtil.getHealthText(EnemyUtil.getHealth(entityPlayer)) + String.valueOf(EnemyUtil.getHealth(entityPlayer)) + (FriendManager.isFriend(entityPlayer.getName()) ? TextFormatting.AQUA : TextFormatting.RESET) + entityPlayer.getName() + TextFormatting.WHITE + mc.player.getDistance(entityPlayer));
-            String modText = ColorUtil.getHealthText(EnemyUtil.getHealth(entityPlayer)) + String.valueOf(EnemyUtil.getHealth(entityPlayer)) + (FriendManager.isFriend(entityPlayer.getName()) ? TextFormatting.AQUA : TextFormatting.RESET) + entityPlayer.getName() + TextFormatting.WHITE + mc.player.getDistance(entityPlayer);
+            String modText = ColorUtil.getHealthText(EnemyUtil.getHealth(entityPlayer)) + String.valueOf(MathUtil.roundAvoid(EnemyUtil.getHealth(entityPlayer), 1)) +  " " + (FriendManager.isFriend(entityPlayer.getName()) ? TextFormatting.AQUA : TextFormatting.RESET) + entityPlayer.getName() + TextFormatting.WHITE + " " + MathUtil.roundAvoid(mc.player.getDistance(entityPlayer), 1);
 
             if (this.x < (screenWidthScaled / 2))
                 FontUtil.drawString(modText, this.x - 2, this.y + (10 * count), ThemeColor.BRIGHT);

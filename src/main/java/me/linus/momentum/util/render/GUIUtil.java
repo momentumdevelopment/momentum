@@ -14,17 +14,9 @@ public class GUIUtil {
 	public static boolean lheld;
 	public static boolean rdown;
 
-	/**
-	 * mouse hover
-	 */
-	
 	public static boolean mouseOver(int minX, int minY, int maxX, int maxY) {
 		return mX >= minX && mY >= minY && mX <= maxX && mY <= maxY;
 	}
-
-	/**
-	 * event listen
-	 */
 	
 	public static void mouseListen(int mouseX, int mouseY) {
 		mX = mouseX;

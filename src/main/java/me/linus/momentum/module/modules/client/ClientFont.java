@@ -13,6 +13,7 @@ import me.linus.momentum.setting.slider.Slider;
 public class ClientFont extends Module {
     public ClientFont() {
         super("Font", Category.CLIENT, "Allows you to customize the client font");
+        this.setDrawn(false);
     }
 
     public static Mode family = new Mode("Family", "Lato", "Ubuntu", "Verdana", "Comfortaa", "Comic Sans");

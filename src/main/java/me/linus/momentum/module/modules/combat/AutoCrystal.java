@@ -11,6 +11,7 @@ import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.combat.crystal.CrystalPosition;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.world.Timer;
@@ -53,21 +54,23 @@ public class AutoCrystal extends Module {
 
     public static Checkbox explode = new Checkbox("Break", true);
     public static SubMode breakMode = new SubMode(explode, "Mode", "All", "Only Own");
+    public static SubMode breakHand = new SubMode(explode, "BreakHand", "OffHand", "MainHand", "Both", "MultiSwing");
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 20.0D, 60.0D, 0);
+    public static SubSlider syncDelay = new SubSlider(explode, "Sync Delay", 0.0D, 100.0D, 1000.0D, 0);
     public static SubSlider breakAttempts = new SubSlider(explode, "Break Attempts", 0.0D, 1.0D, 5.0D, 0);
     public static SubCheckbox packetBreak = new SubCheckbox(explode, "Packet Break", true);
     public static SubCheckbox walls = new SubCheckbox(explode, "Through Walls", true);
     public static SubCheckbox syncBreak = new SubCheckbox(explode, "Sync Break", true);
     public static SubCheckbox unsafeSync = new SubCheckbox(explode, "Unsafe Sync", false);
     public static SubCheckbox unload = new SubCheckbox(explode, "Unload Crystal", true);
+    public static SubCheckbox antiFreeze = new SubCheckbox(explode, "AntiFreeze", false);
     public static SubCheckbox damageSync = new SubCheckbox(explode, "Damage Sync", false);
     public static SubCheckbox antiWeakness = new SubCheckbox(explode, "Anti-Weakness", false);
-    public static SubMode breakHand = new SubMode(explode, "BreakHand", "MainHand", "OffHand", "Both", "MultiSwing");
 
     public static Checkbox place = new Checkbox("Place", true);
     public static SubSlider placeRange = new SubSlider(place, "Place Range", 0.0D, 5.0D, 7.0D, 1);
-    public static SubSlider enemyRange = new SubSlider(place, "Enemy Range", 0.0D, 5.0D, 15.0D, 1);
+    public static SubSlider enemyRange = new SubSlider(place, "Enemy Range", 0.0D, 10.0D, 15.0D, 1);
     public static SubSlider wallRange = new SubSlider(place, "Walls Range", 0.0D, 3.0D, 7.0D, 1);
     public static SubSlider placeDelay = new SubSlider(place, "Place Delay", 0.0D, 40.0D, 500.0D, 0);
     public static SubSlider minDamage = new SubSlider(place, "Minimum Damage", 0.0D, 7.0D, 36.0D, 0);
@@ -131,6 +134,7 @@ public class AutoCrystal extends Module {
     Timer breakTimer = new Timer();
     Timer placeTimer = new Timer();
     Timer rotationTimer = new Timer();
+    Timer syncTimer = new Timer();
     EntityPlayer currentTarget = null;
     EntityEnderCrystal crystal = null;
     Rotation crystalRotation = null;
@@ -223,6 +227,7 @@ public class AutoCrystal extends Module {
                     CrystalUtil.attackCrystal(crystal, packetBreak.getValue());
 
             CrystalUtil.swingArm(breakHand.getValue());
+            crystalPosition.breaking = true;
 
             if (unsafeSync.getValue())
                 crystal.setDead();
@@ -242,6 +247,7 @@ public class AutoCrystal extends Module {
         }
 
         breakTimer.reset();
+        crystalPosition.breaking = false;
 
         if (!multiPlace.getValue() || (multiPlaceInHole.getValue() && HoleUtil.isInHole(mc.player)))
             return;
@@ -303,10 +309,18 @@ public class AutoCrystal extends Module {
 
         if (placeTimer.passed((long) placeDelay.getValue(), Timer.Format.System) && place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && crystalPosition.getCrystalPosition() != null) {
             CrystalUtil.placeCrystal(crystalPosition.getCrystalPosition(), rayTrace.getValue() ? CrystalUtil.getEnumFacing(rayTrace.getValue(), crystalPosition.getCrystalPosition()) : EnumFacing.UP, packetPlace.getValue());
+
+            if (BlockUtil.getBlockResistance(crystalPosition.getCrystalPosition().add(0.5, 1, 0.5)) == BlockUtil.blockResistance.Blank && antiFreeze.getValue()) {
+                MessageUtil.sendClientMessage("AutoCrystal Freeze Detected!");
+                crystalPosition.frozen = true;
+            }
+
+            crystalPosition.placing = true;
             placedCrystals.add(crystalPosition.getCrystalPosition());
         }
 
         placeTimer.reset();
+        crystalPosition.placing = false;
     }
 
     @SubscribeEvent
@@ -356,8 +370,10 @@ public class AutoCrystal extends Module {
             ((CPacketPlayer) event.getPacket()).pitch = crystalRotation.pitch;
         }
 
-        if (event.getPacket() instanceof CPacketUseEntity && ((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world) instanceof EntityEnderCrystal && syncBreak.getValue())
+        if (event.getPacket() instanceof CPacketUseEntity && ((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world) instanceof EntityEnderCrystal && syncBreak.getValue() && !crystalPosition.frozen && syncTimer.passed((long) syncDelay.getValue(), Timer.Format.System)) {
             ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world).setDead();
+            syncTimer.reset();
+        }
     }
 
     @Override

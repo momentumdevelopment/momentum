@@ -97,6 +97,10 @@ public class RotationUtil implements MixinInterface {
        return MathUtil.calcAngle(EntityUtil.interpolateEntityTime(mc.player, mc.getRenderPartialTicks()), EntityUtil.interpolateEntityTime(entity, mc.getRenderPartialTicks()));
     }
 
+    public static float[] getPositionAngles(BlockPos blockPos) {
+        return MathUtil.calcAngle(EntityUtil.interpolateEntityTime(mc.player, mc.getRenderPartialTicks()), new Vec3d(blockPos));
+    }
+
     public static float[] getTileAngles(TileEntity tileEntity) {
         return MathUtil.calcAngle(new Vec3d(tileEntity.getPos().x, tileEntity.getPos().y, tileEntity.getPos().z), new Vec3d(tileEntity.getPos().x, tileEntity.getPos().y, tileEntity.getPos().z));
     }

@@ -40,7 +40,7 @@ public class Quiver extends Module {
         addSetting(toggle);
     }
 
-    private int randomVariation;
+    int randomVariation;
 
     public void onUpdate() {
         PotionEffect speedEffect = mc.player.getActivePotionEffect(Potion.getPotionById(1));

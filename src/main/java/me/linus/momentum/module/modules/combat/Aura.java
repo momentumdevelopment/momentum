@@ -110,9 +110,9 @@ public class Aura extends Module {
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketPlayer.Rotation) {
-            ((CPacketPlayer.Rotation) event.getPacket()).yaw = auraRotation.yaw;
-            ((CPacketPlayer.Rotation) event.getPacket()).pitch = auraRotation.pitch;
+        if (event.getPacket() instanceof CPacketPlayer) {
+            ((CPacketPlayer) event.getPacket()).yaw = auraRotation.yaw;
+            ((CPacketPlayer) event.getPacket()).pitch = auraRotation.pitch;
         }
     }
 

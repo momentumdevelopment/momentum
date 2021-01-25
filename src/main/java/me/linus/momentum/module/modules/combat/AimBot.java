@@ -71,9 +71,9 @@ public class AimBot extends Module {
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketPlayer.Rotation) {
-            ((CPacketPlayer.Rotation) event.getPacket()).yaw = aimbotRotation.yaw;
-            ((CPacketPlayer.Rotation) event.getPacket()).pitch = aimbotRotation.pitch;
+        if (event.getPacket() instanceof CPacketPlayer) {
+            ((CPacketPlayer) event.getPacket()).yaw = aimbotRotation.yaw;
+            ((CPacketPlayer) event.getPacket()).pitch = aimbotRotation.pitch;
         }
     }
 

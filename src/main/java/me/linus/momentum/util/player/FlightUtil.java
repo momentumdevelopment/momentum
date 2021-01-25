@@ -69,7 +69,7 @@ public class FlightUtil implements MixinInterface {
     public static void fireworkElytra(double rotation) {
         if (mc.gameSettings.keyBindJump.isKeyDown() || mc.player.rotationPitch >= rotation) {
             InventoryUtil.switchToSlot(Items.FIREWORKS);
-            mc.rightClickMouse();
+            mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
         }
     }
 

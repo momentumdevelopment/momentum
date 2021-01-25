@@ -19,7 +19,6 @@
       "MixinNetworkManager",
       "MixinPlayerControllerMP",
       "MixinRenderEnderCrystal",
-      "MixinRenderLivingBase",
       "MixinGuiScreen",
       "MixinMovementInputFromOptions",
       "MixinRenderPlayer"

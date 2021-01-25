@@ -195,7 +195,7 @@ public class NameTags extends Module {
                     iterator = iterator2;
 
                 else {
-                    Momentum.fontManager.getCustomFont().drawString(getEnchantName(enchantment, EnchantmentHelper.getEnchantmentLevel(enchantment, itemStack)), (float) (x * 2), (float) y, -1);
+                    FontUtil.drawString(getEnchantName(enchantment, EnchantmentHelper.getEnchantmentLevel(enchantment, itemStack)), (float) (x * 2), (float) y, -1);
 
                     y += 8;
                     iterator = iterator2;
@@ -203,7 +203,7 @@ public class NameTags extends Module {
             }
 
             if (itemStack.getItem().equals(Items.GOLDEN_APPLE) && itemStack.hasEffect())
-                Momentum.fontManager.getCustomFont().drawString(TextFormatting.DARK_RED + "God", (float) (x * 2), (float) y, -1);
+                FontUtil.drawString(TextFormatting.DARK_RED + "God", (float) (x * 2), (float) y, -1);
 
             GlStateManager.scale(2.0f, 2.0f, 2.0f);
         }

@@ -22,7 +22,7 @@ public class LagNotifier extends HUDComponent {
     public LagNotifier() {
         super("LagNotifier", 300, 2);
 
-        width = (int) FontUtil.getStringWidth("Server has stopped responding for X seconds!");
+        width = (int) FontUtil.getStringWidth("Server has stopped responding for X.X seconds!");
         MinecraftForge.EVENT_BUS.register(this);
     }
 

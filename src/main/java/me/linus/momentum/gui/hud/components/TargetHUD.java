@@ -3,12 +3,10 @@ package me.linus.momentum.gui.hud.components;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.FontUtil;
+import me.linus.momentum.util.render.Render2DUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,8 +35,6 @@ public class TargetHUD extends HUDComponent {
             height = 90;
         }
 
-        public final RenderItem itemRender = mc.getRenderItem();
-
         String playerinfo;
         TextFormatting playercolor;
         Color healthcolor;
@@ -64,7 +60,7 @@ public class TargetHUD extends HUDComponent {
                 GlStateManager.disableTexture2D();
                 GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
 
-                drawEntityOnScreen(this.x + 27, this.y + 71, 30, this.x + 32,  this.x + 70, e);
+                Render2DUtil.drawEntityOnScreen(this.x + 27, this.y + 71, 30, this.x + 32,  this.x + 70, e);
 
                 GlStateManager.enableRescaleNormal();
                 GlStateManager.enableTexture2D();
@@ -172,16 +168,14 @@ public class TargetHUD extends HUDComponent {
                     ++iteration;
                     if (is.isEmpty()) continue;
                     int x = this.x + ((9 - iteration) * 14) - 17;
-                    itemRender.zLevel = 200.0f;
-                    itemRender.renderItemAndEffectIntoGUI(is, x, this.y + 58);
-                    itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, is, x, this.y + 58, "");
-                    itemRender.zLevel = 0.0f;
+                    mc.getRenderItem().zLevel = 200.0f;
+                    mc.getRenderItem().renderItemAndEffectIntoGUI(is, x, this.y + 58);
+                    mc.getRenderItem().renderItemOverlayIntoGUI(mc.fontRenderer, is, x, this.y + 58, "");
+                    mc.getRenderItem().zLevel = 0.0f;
                 }
 
-                ItemStack mainheld = e.itemStackMainHand;
-                ItemStack offheld = e.getHeldItemOffhand();
-                itemRender.renderItemAndEffectIntoGUI(mainheld, this.x + 114, this.y + 58);
-                itemRender.renderItemAndEffectIntoGUI(offheld, this.x + 130, this.y + 58);
+                mc.getRenderItem().renderItemAndEffectIntoGUI(e.itemStackMainHand, this.x + 114, this.y + 58);
+                mc.getRenderItem().renderItemAndEffectIntoGUI(e.getHeldItemOffhand(), this.x + 130, this.y + 58);
             }
             
             GlStateManager.enableDepth();
@@ -208,29 +202,5 @@ public class TargetHUD extends HUDComponent {
 
             }
             return ping;
-        }
-
-        public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityLivingBase ent) {
-            GlStateManager.enableColorMaterial();
-            GlStateManager.pushMatrix();
-            GlStateManager.translate((float)posX, (float)posY, 50.0F);
-            GlStateManager.scale((float)(-scale), (float)scale, (float)scale);
-            GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
-            RenderHelper.enableStandardItemLighting();
-            GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(-((float)Math.atan(mouseY / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.translate(0.0F, 0.0F, 0.0F);
-            RenderManager rendermanager = mc.getRenderManager();
-            rendermanager.setPlayerViewY(180.0F);
-            rendermanager.setRenderShadow(false);
-            rendermanager.renderEntity(ent, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
-            rendermanager.setRenderShadow(true);
-            GlStateManager.popMatrix();
-            RenderHelper.disableStandardItemLighting();
-            GlStateManager.disableRescaleNormal();
-            GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-            GlStateManager.disableTexture2D();
-            GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
         }
 }

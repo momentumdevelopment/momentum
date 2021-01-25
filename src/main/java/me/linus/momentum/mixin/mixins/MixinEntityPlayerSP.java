@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import me.linus.momentum.event.events.player.MoveEvent;
 import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.module.modules.misc.Portal;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -25,12 +26,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = EntityPlayerSP.class/*, priority = 634756347*/)
 public class MixinEntityPlayerSP extends AbstractClientPlayer {
-    public MixinEntityPlayerSP(final World worldIn, final GameProfile playerProfile) {
+    public MixinEntityPlayerSP(World worldIn, GameProfile playerProfile) {
         super(worldIn, playerProfile);
     }
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/AbstractClientPlayer;move(Lnet/minecraft/entity/MoverType;DDD)V"))
-    public void move(final AbstractClientPlayer player, final MoverType moverType, final double x, final double y, final double z) {
+    public void move(AbstractClientPlayer player, MoverType moverType, double x, double y, double z) {
         MoveEvent event = new MoveEvent(moverType, x, y, z);
         MinecraftForge.EVENT_BUS.post(event);
 
@@ -52,13 +53,13 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer {
 
     @Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;closeScreen()V"))
     public void closeScreen(EntityPlayerSP entityPlayerSP) {
-        if (ModuleManager.getModuleByName("Portal").isEnabled())
+        if (ModuleManager.getModuleByName("Portal").isEnabled() && Portal.portalGui.getValue())
             return;
     }
 
     @Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;displayGuiScreen(Lnet/minecraft/client/gui/GuiScreen;)V"))
     public void closeScreen(Minecraft minecraft, GuiScreen screen) {
-        if (ModuleManager.getModuleByName("Portal").isEnabled())
+        if (ModuleManager.getModuleByName("Portal").isEnabled() && Portal.portalGui.getValue())
             return;
     }
 }

@@ -17,6 +17,7 @@ import net.minecraft.entity.passive.EntityLlama;
 import net.minecraft.entity.passive.EntityMule;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.network.play.server.SPacketEntityStatus;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.HashMap;
@@ -86,13 +87,13 @@ public class Notifier extends Module {
                 if (!totemPopContainer.containsKey(player.getName()))
                     return;
 
-                if (player.isDead || player.getHealth() <= 0.0f) {
+                if (player.isDead || EnemyUtil.getHealth(player) <= 0.0f) {
                     int count = totemPopContainer.get(player.getName()).intValue();
 
                     totemPopContainer.remove(player.getName());
 
-                    NotificationManager.notifications.add(new Notification(player.getName() + " died after popping " + count + " totems!"));
-                    MessageUtil.sendClientMessage(player.getName() + " died after popping " + count + " totems!");
+                    NotificationManager.notifications.add(new Notification(player.getName() + " died after popping " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!"));
+                    MessageUtil.sendClientMessage(player.getName() + " died after popping " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!");
                 }
             }
 
@@ -114,9 +115,6 @@ public class Notifier extends Module {
     public void onPacketRecieve(PacketReceiveEvent event) {
         if (event.getPacket() instanceof SPacketEntityStatus && totem.getValue()) {
             if (((SPacketEntityStatus) event.getPacket()).getOpCode() == 35) {
-                if (((SPacketEntityStatus) event.getPacket()).getEntity(mc.world) == null)
-                    return;
-
                 if (totemPopContainer.containsKey(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()))
                     totemPopContainer.put(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName(), count++);
 
@@ -125,11 +123,11 @@ public class Notifier extends Module {
 
                 if (Momentum.friendManager.isFriend(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName())) {
                     NotificationManager.notifications.add(new Notification("Your friend, " + ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + ", popped " + count + " totems!"));
-                    MessageUtil.sendClientMessage("Your friend, " + ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + ", popped " + count + " totems!");
+                    MessageUtil.sendClientMessage("Your friend, " + ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + ", popped " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!");
                 }
 
                 else {
-                    NotificationManager.notifications.add(new Notification(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + " popped " + count + " totems!"));
+                    NotificationManager.notifications.add(new Notification(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + " popped " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!"));
                     MessageUtil.sendClientMessage(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + " popped " + count + " totems!");
                 }
             }

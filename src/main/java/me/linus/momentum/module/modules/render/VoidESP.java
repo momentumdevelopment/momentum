@@ -28,7 +28,7 @@ public class VoidESP extends Module {
     }
 
     public static Slider range = new Slider("Range", 0.0D, 12.0D, 20.0D, 0);
-    public static Checkbox portals = new Checkbox("Portals", true);
+    public static Checkbox portals = new Checkbox("Portals", false);
     public static Checkbox outline = new Checkbox("Outline", false);
 
     public static Checkbox color = new Checkbox("Color", true);
@@ -37,6 +37,7 @@ public class VoidESP extends Module {
     @Override
     public void setup() {
         addSetting(range);
+        addSetting(portals);
         addSetting(outline);
         addSetting(color);
     }

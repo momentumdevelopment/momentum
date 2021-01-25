@@ -90,7 +90,7 @@ public class ActiveModules extends HUDComponent {
     public int generateColor(Module mod) {
         switch (mode.getValue()) {
             case 0:
-                return ColorUtil.alphaStep(new Color(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getBlue(), Colors.clientPicker.getColor().getGreen()), 50, (count * 2) + 10).getRGB();
+                return ColorUtil.alphaStep(new Color(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getGreen(), Colors.clientPicker.getColor().getBlue()), 50, (count * 2) + 10).getRGB();
             case 1:
                 return ColorUtil.staticRainbow().getRGB();
             case 2:

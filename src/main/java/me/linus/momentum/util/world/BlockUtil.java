@@ -50,7 +50,7 @@ public class BlockUtil implements MixinInterface {
     }
 
     public static boolean isCollidedBlocks(BlockPos pos) {
-        return mc.world.getBlockState(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ)).getBlock().equals(Blocks.OBSIDIAN) || isInterceptedByOther(pos) || InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) == -1;
+        return BlockUtil.getBlockResistance(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ)) == blockResistance.Resistant || isInterceptedByOther(pos) || InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) == -1;
     }
 
     public static boolean isInterceptedByOther(BlockPos pos) {
