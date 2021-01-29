@@ -3,6 +3,8 @@ package me.linus.momentum.command.commands;
 import me.linus.momentum.command.Command;
 import me.linus.momentum.util.config.ConfigManager2;
 
+import java.io.IOException;
+
 /**
  * @author linustouchtips
  * @since 01/18/2021
@@ -15,7 +17,11 @@ public class Save extends Command {
 
     @Override
     public void onCommand(String[] args) {
-        ConfigManager2.saveModule();
+        try {
+            ConfigManager2.saveModule();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

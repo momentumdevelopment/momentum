@@ -19,12 +19,14 @@ public class ClientFont extends Module {
     public static Mode family = new Mode("Family", "Lato", "Ubuntu", "Verdana", "Comfortaa", "Comic Sans");
     public static Slider scale = new Slider("Scale", 0.0D, 40.0D, 60.0D, 1);
     public static Checkbox shadow = new Checkbox("Shadow", true);
+    public static Checkbox override = new Checkbox("Override Vanilla", true);
 
     @Override
     public void setup() {
         addSetting(family);
         addSetting(scale);
         addSetting(shadow);
+        addSetting(override);
     }
 
     @Override

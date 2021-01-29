@@ -17,6 +17,9 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * @author linustouchtips & LittleDraily
@@ -28,7 +31,7 @@ public class ConfigManager2 {
     public static File configFolder = new File("momentum");
     public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void saveConfig() {
+    public static void saveConfig() throws IOException {
         saveModule();
     }
 
@@ -42,7 +45,20 @@ public class ConfigManager2 {
             configFolder.mkdirs();
     }
 
-    public static void saveModule() {
+    public void createFile(String location, String name) throws IOException {
+        if (!Files.exists(Paths.get("momentum" + location + name + ".json")))
+            Files.createFile(Paths.get("momentum" + location + name + ".json"));
+
+        else {
+            File file = new File("momentum" + location + name + ".json");
+            file.delete();
+            Files.createFile(Paths.get("momentum" + location +name + ".json"));
+        }
+    }
+
+    public static void saveModule() throws IOException {
+        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum" + "module.json"), StandardCharsets.UTF_8);
+
         JsonObject settingsArray = new JsonObject();
         JsonObject subSettingsArray = new JsonObject();
         JsonObject moduleArray = new JsonObject();
@@ -133,15 +149,9 @@ public class ConfigManager2 {
         }
 
         settingsArray.add("modules", moduleArray);
-
-        try {
-            FileWriter fw = new FileWriter(new File(configFolder.getAbsolutePath(), "modules.json"));
-            gson.toJson(settingsArray, fw);
-            fw.flush();
-            fw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String jsonString = gson.toJson(new JsonParser().parse(settingsArray.toString()));
+        fileOutputStreamWriter.write(jsonString);
+        fileOutputStreamWriter.close();
     }
 
     public static void loadModule() {

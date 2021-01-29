@@ -7,6 +7,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.world.Timer;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -26,6 +27,7 @@ public class Criticals extends Module {
     public static Mode mode = new Mode("Mode", "ByPass", "Packet", "2b2t", "NCP-Packet", "NCP-ByPass", "Absurd", "Overflow", "Dynamic", "Jump", "MiniJump", "QuickSwitch");
 
     public static Checkbox pause = new Checkbox("Pause", true);
+    public static SubCheckbox crystalTarget = new SubCheckbox(pause, "Crystal", false);
     public static SubCheckbox auraNotEnabled = new SubCheckbox(pause, "Aura not Enabled", false);
     public static SubCheckbox whenFalling = new SubCheckbox(pause, "When Falling", true);
     public static SubCheckbox waterPause = new SubCheckbox(pause, "When in Liquid", true);
@@ -41,7 +43,6 @@ public class Criticals extends Module {
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
         if (event.getPacket() instanceof CPacketUseEntity) {
-            final CPacketUseEntity packet = (CPacketUseEntity) event.getPacket();
             if (((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && mc.player.onGround) {
                 if (mc.player.fallDistance > 0.0f && whenFalling.getValue())
                     return;
@@ -52,11 +53,10 @@ public class Criticals extends Module {
                 if (auraNotEnabled.getValue() && !ModuleManager.getModuleByName("Aura").isEnabled())
                     return;
 
+                if (((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world) instanceof EntityEnderCrystal && crystalTarget.getValue())
+                    return;
+
                 switch (mode.getValue()) {
-                    case 1:
-                        mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.10000000149011612, mc.player.posZ, false));
-                        mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, false));
-                        break;
                     case 0:
                         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.11, mc.player.posZ, false));
                         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.11, mc.player.posZ, false));
@@ -64,6 +64,10 @@ public class Criticals extends Module {
                         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.1100013579, mc.player.posZ, false));
                         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.1100013579, mc.player.posZ, false));
                         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.1100013579, mc.player.posZ, false));
+                        mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, false));
+                        break;
+                    case 1:
+                        mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.10000000149011612, mc.player.posZ, false));
                         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, false));
                         break;
                     case 2:
@@ -101,7 +105,7 @@ public class Criticals extends Module {
                         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 1.0E-6, mc.player.posZ, false));
                         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, false));
                         mc.player.connection.sendPacket(new CPacketPlayer());
-                        mc.player.onCriticalHit(Objects.requireNonNull(packet.getEntityFromWorld(mc.world)));
+                        mc.player.onCriticalHit(Objects.requireNonNull(((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world)));
                         break;
                     case 7:
                         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.11, mc.player.posZ, false));
@@ -111,7 +115,7 @@ public class Criticals extends Module {
                         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 1.3579E-6, mc.player.posZ, false));
                         mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, false));
                         mc.player.connection.sendPacket(new CPacketPlayer());
-                        mc.player.onCriticalHit(Objects.requireNonNull(packet.getEntityFromWorld(mc.world)));
+                        mc.player.onCriticalHit(Objects.requireNonNull(((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world)));
                         break;
                     case 8:
                         mc.player.jump();

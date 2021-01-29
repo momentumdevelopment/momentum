@@ -360,6 +360,6 @@ public class DarkTheme extends Theme implements MixinInterface {
 	}
 
 	public static void drawText(String text, float x, float y, int color) {
-		Momentum.fontManager.getCustomFont().drawString(text, x, y, color);
+		Momentum.fontManager.getCustomFont().drawString(text, (int) x, (int)  y, color);
 	}
 }

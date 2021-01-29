@@ -1,7 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.event.events.packet.PacketSendEvent;
-import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
@@ -81,7 +80,7 @@ public class Aura extends Module {
 
     Timer syncTimer = new Timer();
     Entity currentTarget;
-    Rotation auraRotation;
+    Rotation auraRotation = null;
 
     @Override
     public void onUpdate() {
@@ -91,26 +90,28 @@ public class Aura extends Module {
         if (autoSwitch.getValue())
             InventoryUtil.switchToSlot(getItem());
 
+        if (!InventoryUtil.getHeldItem(Items.DIAMOND_SWORD))
+            auraRotation.restoreRotation();
+
         if (currentTarget != null && !FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled()) {
             auraRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1]);
-            auraRotation.updateRotations(rotate.getValue());
+
+            switch (rotate.getValue()) {
+                case 0:
+                    auraRotation.updateRotations(Rotation.RotationMode.Packet);
+                    break;
+                case 1:
+                    auraRotation.updateRotations(Rotation.RotationMode.Legit);
+                    break;
+            }
         }
 
         killAura();
     }
 
     @SubscribeEvent
-    public void onRotation(RotationEvent event) {
-        if (auraRotation != null && rotate.getValue() == 0) {
-            event.setCanceled(true);
-            event.setPitch(auraRotation.yaw);
-            event.setYaw(auraRotation.pitch);
-        }
-    }
-
-    @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketPlayer) {
+        if (event.getPacket() instanceof CPacketPlayer && auraRotation != null) {
             ((CPacketPlayer) event.getPacket()).yaw = auraRotation.yaw;
             ((CPacketPlayer) event.getPacket()).pitch = auraRotation.pitch;
         }

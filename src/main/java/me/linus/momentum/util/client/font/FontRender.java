@@ -31,7 +31,7 @@ public class FontRender extends FontRenderer implements MixinInterface {
         return this.defaultFont.getFont().getSize();
     }
 
-    public void drawString(String s, float x, float y, int color) {
+    public void drawStringVoid(String s, float x, float y, int color) {
         this.drawString(s, x, y, color, false);
     }
 
@@ -45,7 +45,7 @@ public class FontRender extends FontRenderer implements MixinInterface {
     }
 
     public void drawCenteredString(String s, float x, float y, int color) {
-        this.drawString(s, x - (float) this.getStringWidth(s) / 2.0f, y, color);
+        this.drawStringVoid(s, x - (float) this.getStringWidth(s) / 2.0f, y, color);
     }
 
     @Override

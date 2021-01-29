@@ -1,6 +1,7 @@
 package me.linus.momentum.util.combat.crystal;
 
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.module.modules.combat.AutoCrystal;
 import me.linus.momentum.util.world.BlockUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -141,17 +142,20 @@ public class CrystalUtil implements MixinInterface {
     }
 
     public static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
-        if (mc.player.capabilities.isCreativeMode)
-            return 0;
+        try {
+            double factor = (1.0 - entity.getDistance(posX, posY, posZ) / 12.0f) * entity.world.getBlockDensity(new Vec3d(posX, posY, posZ), entity.getEntityBoundingBox());
+            float calculatedDamage = (float) (int) ((factor * factor + factor) / 2.0 * 7.0 * 12.0f + 1.0);
+            double damage = 1.0;
 
-        double factor = (1.0 - entity.getDistance(posX, posY, posZ) / 12.0f) * entity.world.getBlockDensity(new Vec3d(posX, posY, posZ), entity.getEntityBoundingBox());
-        float calculatedDamage = (float) (int) ((factor * factor + factor) / 2.0 * 7.0 * 12.0f + 1.0);
-        double damage = 1.0;
+            if (entity instanceof EntityLivingBase)
+                damage = getBlastReduction((EntityLivingBase) entity, calculatedDamage * ((mc.world.getDifficulty().getDifficultyId() == 0) ? 0.0f : ((mc.world.getDifficulty().getDifficultyId() == 2) ? 1.0f : ((mc.world.getDifficulty().getDifficultyId() == 1) ? 0.5f : 1.5f))), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
 
-        if (entity instanceof EntityLivingBase)
-            damage = getBlastReduction((EntityLivingBase) entity, calculatedDamage * ((mc.world.getDifficulty().getDifficultyId() == 0) ? 0.0f : ((mc.world.getDifficulty().getDifficultyId() == 2) ? 1.0f : ((mc.world.getDifficulty().getDifficultyId() == 1) ? 0.5f : 1.5f))), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
+            return (float) damage;
+        } catch (Exception e) {
 
-        return (float) damage;
+        }
+
+        return 0;
     }
 
     public static float getBlastReduction(EntityLivingBase entity, float damage, Explosion explosion) {
@@ -169,14 +173,14 @@ public class CrystalUtil implements MixinInterface {
         return damage;
     }
 
-    public static double getHeuristic(BlockPos placePos, double targetDamage, double selfDamage, int mode) {
+    public static double getHeuristic(CrystalPosition crystalPosition, int mode) {
         switch (mode) {
             case 0:
-                return targetDamage;
+                return crystalPosition.getTargetDamage();
             case 1:
-                return targetDamage - selfDamage;
+                return crystalPosition.getTargetDamage() - crystalPosition.getSelfDamage();
             case 2:
-                return targetDamage - (selfDamage + mc.player.getDistance(placePos.x, placePos.y, placePos.z));
+                return crystalPosition.getTargetDamage() - (crystalPosition.getSelfDamage() + mc.player.getDistance(crystalPosition.getCrystalPosition().x, crystalPosition.getCrystalPosition().y, crystalPosition.getCrystalPosition().z));
         }
 
         return 0;

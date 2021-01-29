@@ -3,7 +3,6 @@ package me.linus.momentum.module.modules.combat;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.util.player.InventoryUtil;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemBow;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.math.BlockPos;

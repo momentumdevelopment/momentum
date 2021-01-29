@@ -1,7 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.event.events.packet.PacketSendEvent;
-import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
@@ -13,7 +12,6 @@ import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemBow;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -53,25 +51,21 @@ public class AimBot extends Module {
 
         if (target != null && (!FriendManager.isFriend(target.getName()) && FriendManager.isFriendModuleEnabled())) {
             aimbotRotation = new Rotation(RotationUtil.getAngles(target)[0], RotationUtil.getAngles(target)[1]);
-            aimbotRotation.updateRotations(mode.getValue());
-        }
-    }
 
-    @SubscribeEvent
-    public void onRotation(RotationEvent event) {
-        if (aimbotRotation != null && mode.getValue() == 0) {
-            event.setCanceled(true);
-            event.setPitch(aimbotRotation.yaw);
-            event.setYaw(aimbotRotation.pitch);
+            switch (mode.getValue()) {
+                case 0:
+                    aimbotRotation.updateRotations(Rotation.RotationMode.Packet);
+                    break;
+                case 1:
+                    aimbotRotation.updateRotations(Rotation.RotationMode.Legit);
+                    break;
+            }
         }
-
-        if (target != null && event.isCanceled())
-            RotationUtil.resetRotation(event);
     }
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketPlayer) {
+        if (event.getPacket() instanceof CPacketPlayer && aimbotRotation != null) {
             ((CPacketPlayer) event.getPacket()).yaw = aimbotRotation.yaw;
             ((CPacketPlayer) event.getPacket()).pitch = aimbotRotation.pitch;
         }

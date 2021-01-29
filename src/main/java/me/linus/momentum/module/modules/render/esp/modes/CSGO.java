@@ -39,7 +39,7 @@ public class CSGO extends ESPMode {
             GL11.glDisable(2929);
             GL11.glDepthMask(false);
             GL11.glEnable(10754);
-            GL11.glColor4f(ColorUtil.getEntityColor(entitylivingbaseIn).getRed() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getGreen() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getBlue() / 255.0f, ColorUtil.getEntityColor(entitylivingbaseIn).getBlue() / 255.0f);
+            ESPUtil.setColor(ColorUtil.getEntityColor(entitylivingbaseIn));
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             GL11.glEnable(2929);
             GL11.glDepthMask(true);

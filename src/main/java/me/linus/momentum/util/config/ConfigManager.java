@@ -10,7 +10,6 @@ import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
-import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.Mode;
@@ -20,7 +19,6 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.friend.Friend;
 import me.linus.momentum.util.client.friend.FriendManager;
 
-import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.List;
@@ -238,9 +236,6 @@ public class ConfigManager {
 
                                 if (ss instanceof SubKeybind)
                                     bw.write(((SubKeybind) ss).getKey() + ":");
-
-                                if (ss instanceof ColorPicker)
-                                    bw.write(((ColorPicker) ss).getRed() + ":" + ((ColorPicker) ss).getGreen() + ":" + ((ColorPicker) ss).getBlue() + ":" + ((ColorPicker) ss).getAlpha() + ":");
                             }
                         }
                     }
@@ -259,9 +254,6 @@ public class ConfigManager {
 
                                 if (ss instanceof SubKeybind)
                                     bw.write(((SubKeybind) ss).getKey() + ":");
-
-                                if (ss instanceof ColorPicker)
-                                    bw.write(((ColorPicker) ss).getRed() + ":" + ((ColorPicker) ss).getGreen() + ":" + ((ColorPicker) ss).getBlue() + ":" + ((ColorPicker) ss).getAlpha() + ":");
                             }
                         }
                     }
@@ -280,9 +272,6 @@ public class ConfigManager {
 
                                 if (ss instanceof SubKeybind)
                                     bw.write(((SubKeybind) ss).getKey() + ":");
-
-                                if (ss instanceof ColorPicker)
-                                    bw.write(((ColorPicker) ss).getRed() + ":" + ((ColorPicker) ss).getGreen() + ":" + ((ColorPicker) ss).getBlue() + ":" + ((ColorPicker) ss).getAlpha() + ":");
                             }
                         }
                     }
@@ -301,9 +290,6 @@ public class ConfigManager {
 
                                 if (ss instanceof SubKeybind)
                                     bw.write(((SubKeybind) ss).getKey() + ":");
-
-                                if (ss instanceof ColorPicker)
-                                    bw.write(((ColorPicker) ss).getRed() + ":" + ((ColorPicker) ss).getGreen() + ":" + ((ColorPicker) ss).getBlue() + ":" + ((ColorPicker) ss).getAlpha() + ":");
                             }
                         }
                     }
@@ -344,13 +330,7 @@ public class ConfigManager {
                                         if (ss instanceof SubKeybind)
                                             ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
 
-                                        if (ss instanceof ColorPicker)
-                                            ((ColorPicker) ss).setColor(new Color(Integer.parseInt(regex[regexCount + 1]), Integer.parseInt(regex[regexCount + 2]), Integer.parseInt(regex[regexCount + 3]), Integer.parseInt(regex[regexCount + 4])));
-
-                                        if (ss instanceof ColorPicker)
-                                            regexCount += 3;
-                                        else
-                                            regexCount++;
+                                        regexCount++;
                                     }
                                 }
                             }
@@ -370,13 +350,7 @@ public class ConfigManager {
                                         if (ss instanceof SubKeybind)
                                             ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
 
-                                        if (ss instanceof ColorPicker)
-                                            ((ColorPicker) ss).setColor(new Color(Integer.parseInt(regex[regexCount + 1]), Integer.parseInt(regex[regexCount + 2]), Integer.parseInt(regex[regexCount + 3]), Integer.parseInt(regex[regexCount + 4])));
-
-                                        if (ss instanceof ColorPicker)
-                                            regexCount += 3;
-                                        else
-                                            regexCount++;
+                                        regexCount++;
                                     }
                                 }
                             }
@@ -396,13 +370,7 @@ public class ConfigManager {
                                         if (ss instanceof SubKeybind)
                                             ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
 
-                                        if (ss instanceof ColorPicker)
-                                            ((ColorPicker) ss).setColor(new Color(Integer.parseInt(regex[regexCount + 1]), Integer.parseInt(regex[regexCount + 2]), Integer.parseInt(regex[regexCount + 3]), Integer.parseInt(regex[regexCount + 4])));
-
-                                        if (ss instanceof ColorPicker)
-                                            regexCount += 3;
-                                        else
-                                            regexCount++;
+                                        regexCount++;
                                     }
                                 }
                             }
@@ -422,13 +390,7 @@ public class ConfigManager {
                                         if (ss instanceof SubKeybind)
                                             ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
 
-                                        if (ss instanceof ColorPicker)
-                                            ((ColorPicker) ss).setColor(new Color(Integer.parseInt(regex[regexCount + 1]), Integer.parseInt(regex[regexCount + 2]), Integer.parseInt(regex[regexCount + 3]), Integer.parseInt(regex[regexCount + 4])));
-
-                                        if (ss instanceof ColorPicker)
-                                            regexCount += 3;
-                                        else
-                                            regexCount++;
+                                        regexCount++;
                                     }
                                 }
                             }
@@ -448,13 +410,7 @@ public class ConfigManager {
                                         if (ss instanceof SubKeybind)
                                             ((SubKeybind) ss).setKey(Integer.parseInt(regex[regexCount + 1]));
 
-                                        if (ss instanceof ColorPicker)
-                                            ((ColorPicker) ss).setColor(new Color(Integer.parseInt(regex[regexCount + 1]), Integer.parseInt(regex[regexCount + 2]), Integer.parseInt(regex[regexCount + 3]), Integer.parseInt(regex[regexCount + 4])));
-
-                                        if (ss instanceof ColorPicker)
-                                            regexCount += 3;
-                                        else
-                                            regexCount++;
+                                        regexCount++;
                                     }
                                 }
                             }

@@ -70,7 +70,7 @@ public class FontUtil implements MixinInterface {
             if (ClientFont.shadow.getValue())
                 Momentum.fontManager.getCustomFont().drawStringWithShadow(text, x, y, color);
             else
-                Momentum.fontManager.getCustomFont().drawString(text, x, y, color);
+                Momentum.fontManager.getCustomFont().drawString(text, (int) x, (int) y, color);
         }
 
         else {
@@ -81,11 +81,33 @@ public class FontUtil implements MixinInterface {
         }
     }
 
+    public static int getString(String text, float x, float y, int color) {
+        if (ModuleManager.getModuleByName("Font").isEnabled()) {
+            if (ClientFont.shadow.getValue())
+                return Momentum.fontManager.getCustomFont().drawStringWithShadow(text, x, y, color);
+            else
+                return Momentum.fontManager.getCustomFont().drawString(text, (int) x, (int) y, color);
+        }
+
+        else {
+            if (ClientFont.shadow.getValue())
+                return mc.fontRenderer.drawStringWithShadow(text, x, y, color);
+            else
+                return mc.fontRenderer.drawString(text, (int) x, (int) y, color);
+        }
+    }
+
     public static float getStringWidth(String text) {
-        return Momentum.fontManager.getCustomFont().getStringWidth(text);
+        if (ModuleManager.getModuleByName("Font").isEnabled())
+            return Momentum.fontManager.getCustomFont().getStringWidth(text);
+        else
+            return mc.fontRenderer.getStringWidth(text);
     }
 
     public static float getFontHeight() {
-        return Momentum.fontManager.getCustomFont().FONT_HEIGHT;
+        if (ModuleManager.getModuleByName("Font").isEnabled())
+            return Momentum.fontManager.getCustomFont().FONT_HEIGHT;
+        else
+            return mc.fontRenderer.FONT_HEIGHT;
     }
 }

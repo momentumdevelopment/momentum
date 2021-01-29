@@ -1,9 +1,7 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.ColorUtil;
@@ -17,7 +15,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -55,7 +52,7 @@ public class NameTags extends Module {
     public static Checkbox onlyInViewFrustrum = new Checkbox("View Frustrum", false);
 
     public static Slider scale = new Slider("Scale", 0.0D, 2.0D, 10.0D, 1);
-    public static SubCheckbox scaleByDistance = new SubCheckbox(scale, "Scale By Distance", true);
+    public static Checkbox scaleByDistance = new Checkbox("Scale By Distance", true);
 
     @Override
     public void setup() {
@@ -67,6 +64,7 @@ public class NameTags extends Module {
         addSetting(background);
         addSetting(onlyInViewFrustrum);
         addSetting(scale);
+        addSetting(scaleByDistance);
     }
 
     @SubscribeEvent
@@ -87,8 +85,6 @@ public class NameTags extends Module {
 
         nametagEntities.sort((entity1, entity2) -> Double.compare(entity2.getDistance(mc.getRenderViewEntity()), entity1.getDistance(mc.getRenderViewEntity())));
         nametagEntities.stream().forEach(entityPlayer -> {
-            Entity entity2 = mc.getRenderViewEntity();
-
             Vec3d pos = EntityUtil.interpolateEntityByTicks(entityPlayer, event.getPartialTicks());
 
             double x = pos.x;
@@ -97,20 +93,20 @@ public class NameTags extends Module {
 
             double y = distance + (entityPlayer.isSneaking() ? 0.0 : 0.08);
 
-            pos = EntityUtil.interpolateEntityByTicks(entity2, event.getPartialTicks());
+            pos = EntityUtil.interpolateEntityByTicks(mc.getRenderViewEntity(), event.getPartialTicks());
 
-            double posX = entity2.posX;
-            double posY = entity2.posY;
-            double posZ = entity2.posZ;
+            double posX = mc.getRenderViewEntity().posX;
+            double posY = mc.getRenderViewEntity().posY;
+            double posZ = mc.getRenderViewEntity().posZ;
 
-            entity2.posX = pos.x;
-            entity2.posY = pos.y;
-            entity2.posZ = pos.z;
+            mc.getRenderViewEntity().posX = pos.x;
+            mc.getRenderViewEntity().posY = pos.y;
+            mc.getRenderViewEntity().posZ = pos.z;
 
             double distanceScale = scale.getValue();
 
             if (distance > 0.0 && scaleByDistance.getValue())
-                distanceScale = 2 + (scale.getValue() / 10) * distance;
+                distanceScale = scale.getValue() * (distance / 100);
 
             String nameTag = generateNameTag(entityPlayer);
             float width = FontUtil.getStringWidth(nameTag) / 2;
@@ -168,9 +164,9 @@ public class NameTags extends Module {
                 return TextFormatting.RED + "Bind";
 
             String substring = enchantment.getTranslatedName(translated);
-            int n2 = (translated > 1) ? 2 : 3;
-            if (substring.length() > n2)
-                substring = substring.substring(0, n2);
+            int translatedFinal = (translated > 1) ? 2 : 3;
+            if (substring.length() > translatedFinal)
+                substring = substring.substring(0, translatedFinal);
 
             StringBuilder sb = new StringBuilder();
             String s = substring;

@@ -25,7 +25,7 @@ public class QuickEXP extends Module {
     public static Slider delay = new Slider("Throw Delay", 0.0D, 0.0D, 4.0D, 0);
     public static Checkbox stopEXP = new Checkbox("Stop EXP", false);
     public static Checkbox footEXP = new Checkbox("FootEXP", false);
-    public static Keybind mendKey = new Keybind("Mend Key", -2);
+    public static Keybind mendKey = new Keybind("Mend Key", Keyboard.KEY_LSHIFT);
 
     @Override
     public void setup() {

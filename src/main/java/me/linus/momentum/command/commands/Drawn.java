@@ -1,7 +1,8 @@
 package me.linus.momentum.command.commands;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.command.Command;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.module.Module;
 import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.util.text.TextFormatting;
 
@@ -17,15 +18,17 @@ public class Drawn extends Command {
 
     @Override
     public void onCommand(String[] args) {
-        if (args.length > 0) {
-            if (!ModuleManager.getModuleByName(args[1]).isDrawn()) {
-                ModuleManager.getModuleByName(args[1]).setDrawn(false);
-                MessageUtil.sendClientMessage(args + "is now" + TextFormatting.RED + " hidden!");
-            }
+        if (args.length > 1) {
+            for (Module module : Momentum.moduleManager.getModules()) {
+                if (module.getName().equalsIgnoreCase(args[1]) && !module.isDrawn()) {
+                    MessageUtil.sendClientMessage(TextFormatting.AQUA + module.getName() + TextFormatting.WHITE + " is now " + TextFormatting.GREEN + "DRAWN");
+                    module.setDrawn(true);
+                }
 
-            else {
-                ModuleManager.getModuleByName(args[1]).setDrawn(true);
-                MessageUtil.sendClientMessage(args + "is now" + TextFormatting.GREEN + " drawn!");
+                else if (module.getName().equalsIgnoreCase(args[1]) && module.isDrawn()) {
+                    MessageUtil.sendClientMessage(TextFormatting.AQUA + module.getName() + TextFormatting.WHITE + " is now " + TextFormatting.RED + "HIDDEN");
+                    module.setDrawn(false);
+                }
             }
         }
 

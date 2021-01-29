@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.IOException;
+import java.util.ConcurrentModificationException;
 
 /**
  * @author bon
@@ -41,7 +42,7 @@ public class MixinNetworkManager {
 
 	@Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
 	private void exceptionCaught(ChannelHandlerContext exceptionCaught1, Throwable exceptionCaught2, CallbackInfo info) {
-		if (exceptionCaught2 instanceof IOException || exceptionCaught2 instanceof IOException && ModuleManager.getModuleByName("AntiPacketKick").isEnabled())
+		if ((exceptionCaught2 instanceof IOException || exceptionCaught2 instanceof NullPointerException || exceptionCaught2 instanceof ConcurrentModificationException) && ModuleManager.getModuleByName("AntiPacketKick").isEnabled())
 			info.cancel();
 	}
 }

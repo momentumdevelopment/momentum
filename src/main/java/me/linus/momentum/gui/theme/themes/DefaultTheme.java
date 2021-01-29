@@ -23,10 +23,9 @@ import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
+import me.linus.momentum.util.render.builder.RenderUtil;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.input.Keyboard;
@@ -690,7 +689,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
                 GuiScreen.drawRect(x + squareIndex, y, x + squareIndex + checkerBoardSquareSize, y + height, 0xFFFFFFFF);
                 GuiScreen.drawRect(x + squareIndex, y + checkerBoardSquareSize, x + squareIndex + checkerBoardSquareSize, y + height, 0xFF909090);
 
-                if (squareIndex < height - checkerBoardSquareSize) {
+                if (squareIndex < width - checkerBoardSquareSize) {
                     int minX = x + squareIndex + checkerBoardSquareSize;
                     int maxX = Math.min(x + width, x + squareIndex + checkerBoardSquareSize * 2);
                     GuiScreen.drawRect(minX, y, maxX, y + height, 0xFF909090);
@@ -752,14 +751,12 @@ public class DefaultTheme extends Theme implements MixinInterface {
         GlStateManager.disableAlpha();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.shadeModel(7425);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos(right, top, 0).color(f1, f2, f3, f).endVertex();
-        bufferbuilder.pos(left, top, 0).color(f1, f2, f3, f).endVertex();
-        bufferbuilder.pos(left, bottom, 0).color(f5, f6, f7, f4).endVertex();
-        bufferbuilder.pos(right, bottom, 0).color(f5, f6, f7, f4).endVertex();
-        tessellator.draw();
+        RenderUtil.bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        RenderUtil.bufferbuilder.pos(right, top, 0).color(f1, f2, f3, f).endVertex();
+        RenderUtil.bufferbuilder.pos(left, top, 0).color(f1, f2, f3, f).endVertex();
+        RenderUtil.bufferbuilder.pos(left, bottom, 0).color(f5, f6, f7, f4).endVertex();
+        RenderUtil.bufferbuilder.pos(right, bottom, 0).color(f5, f6, f7, f4).endVertex();
+        RenderUtil.tessellator.draw();
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();

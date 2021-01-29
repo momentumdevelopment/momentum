@@ -9,7 +9,6 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.builder.RenderUtil;
 import me.linus.momentum.util.world.BlockUtil;
-import me.linus.momentum.util.world.EntityUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.init.Blocks;
@@ -46,6 +45,7 @@ public class Surround extends Module {
     public static Checkbox onlyObsidian = new Checkbox("Only Obsidian", true);
     public static Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
     public static Checkbox chorusSave = new Checkbox("Chorus Save", false);
+    public static Checkbox switchBack = new Checkbox("Switch Back", true);
 
     public static Checkbox renderSurround = new Checkbox("Render", true);
     public static ColorPicker colorPicker = new ColorPicker(renderSurround, new Color(0, 255, 0, 55));
@@ -99,8 +99,6 @@ public class Surround extends Module {
         if (nullCheck())
             return;
 
-        Vec3d vec3d = EntityUtil.getInterpolatedPos(mc.player, 0);
-
         switch (disable.getValue()) {
             case 0:
                 if (!mc.player.onGround)
@@ -126,10 +124,15 @@ public class Surround extends Module {
     public void surroundPlayer() {
         for (Vec3d placePositions : getSurround()) {
             if (BlockUtil.getBlockResistance(new BlockPos(placePositions.add(mc.player.getPositionVector()))).equals(BlockUtil.blockResistance.Blank)) {
+                int oldInventorySlot = mc.player.inventory.currentItem;
+
                 InventoryUtil.switchToSlot(onlyObsidian.getValue() ? InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) : InventoryUtil.getAnyBlockInHotbar());
                 BlockUtil.placeBlock(new BlockPos(placePositions.add(mc.player.getPositionVector())), rotate.getValue());
                 renderBlock = new BlockPos(placePositions.add(mc.player.getPositionVector()));
                 blocksPlaced++;
+
+                if (switchBack.getValue())
+                    InventoryUtil.switchToSlot(oldInventorySlot);
 
                 if (blocksPlaced == blocksPerTick.getValue() && disable.getValue() != 2)
                     return;

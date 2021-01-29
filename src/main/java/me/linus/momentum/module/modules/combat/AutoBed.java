@@ -1,7 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.event.events.packet.PacketSendEvent;
-import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
@@ -89,7 +88,7 @@ public class AutoBed extends Module {
     Timer breakTimer = new Timer();
     Timer placeTimer = new Timer();
     Entity currentTarget = null;
-    Rotation bedRotation;
+    Rotation bedRotation = null;
     BlockPos currentBlock = null;
     double diffXZ;
     float rotVar;
@@ -108,9 +107,20 @@ public class AutoBed extends Module {
         currentTarget = WorldUtil.getClosestPlayer(enemyRange.getValue());
         diffXZ = mc.player.getPositionVector().distanceTo(currentTarget.getPositionVector());
 
+        if (!InventoryUtil.getHeldItem(Items.BED))
+            bedRotation.restoreRotation();
+
         if (currentTarget != null && (!FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled())) {
             bedRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1]);
-            bedRotation.updateRotations(rotate.getValue());
+
+            switch (rotate.getValue()) {
+                case 0:
+                    bedRotation.updateRotations(Rotation.RotationMode.Packet);
+                    break;
+                case 1:
+                    bedRotation.updateRotations(Rotation.RotationMode.Legit);
+                    break;
+            }
         }
 
         switch (logicMode.getValue()) {
@@ -131,8 +141,6 @@ public class AutoBed extends Module {
         if (bed != null && breakTimer.passed((long) breakDelay.getValue(), Timer.Format.System)) {
             if (pause.getValue() && PlayerUtil.getHealth() <= pauseHealth.getValue())
                 return;
-
-            bedRotation.updateRotations(rotate.getValue());
 
             if (explode.getValue())
                 BedUtil.attackBed(bed.getPos());
@@ -195,17 +203,8 @@ public class AutoBed extends Module {
     }
 
     @SubscribeEvent
-    public void onRotation(RotationEvent event) {
-        if (bedRotation != null && rotate.getValue() == 0) {
-            event.setCanceled(true);
-            event.setPitch(bedRotation.yaw);
-            event.setYaw(bedRotation.pitch);
-        }
-    }
-
-    @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketPlayer) {
+        if (event.getPacket() instanceof CPacketPlayer && bedRotation != null) {
             ((CPacketPlayer) event.getPacket()).yaw = bedRotation.yaw;
             ((CPacketPlayer) event.getPacket()).pitch = bedRotation.pitch;
         }

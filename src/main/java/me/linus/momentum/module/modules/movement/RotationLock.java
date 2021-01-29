@@ -13,9 +13,9 @@ import java.util.Objects;
  * @since 12/03/2020
  */
 
-public class Rotation extends Module {
-    public Rotation() {
-        super("Rotation", Category.MOVEMENT, "Locks player rotation");
+public class RotationLock extends Module {
+    public RotationLock() {
+        super("RotationLock", Category.MOVEMENT, "Locks player rotation");
     }
 
     public static Checkbox playerYaw = new Checkbox("Yaw", true);

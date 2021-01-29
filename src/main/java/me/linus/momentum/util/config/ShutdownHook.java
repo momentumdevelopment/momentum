@@ -11,7 +11,8 @@ public class ShutdownHook extends Thread {
 
     @Override
     public void run() {
-        ConfigManager2.saveConfig();
+        ConfigManager.saveConfig();
+
         Momentum.LOGGER.info("Saving Config!");
     }
 }

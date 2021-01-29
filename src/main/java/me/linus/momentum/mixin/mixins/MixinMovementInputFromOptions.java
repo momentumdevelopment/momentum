@@ -12,8 +12,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+/**
+ * @author linustouchtips
+ * @since 01/26/2021
+ */
+
 @Mixin(value = MovementInputFromOptions.class, priority = 10001)
-public abstract class MixinMovementInputFromOptions extends MovementInput implements MixinInterface {
+public class MixinMovementInputFromOptions extends MovementInput implements MixinInterface {
 
     @Redirect(method = "updatePlayerMoveState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;isKeyDown()Z"))
     public boolean isKeyPressed(KeyBinding keyBinding) {

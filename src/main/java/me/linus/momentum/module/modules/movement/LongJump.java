@@ -9,7 +9,6 @@ import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.MotionUtil;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemBow;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
