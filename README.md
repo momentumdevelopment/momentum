@@ -14,3 +14,4 @@ ideas:
 
 
 hacked by meh
+Spartan better hacker
