@@ -22,9 +22,6 @@ public class Inventory extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        if (mc.player == null || mc.player.inventory == null)
-            return;
-
         GlStateManager.enableAlpha();
         GuiScreen.drawRect(this.x, this.y, this.x + 145, this.y + 48, new Color(0, 0, 0, 125).getRGB());
         GlStateManager.disableAlpha();

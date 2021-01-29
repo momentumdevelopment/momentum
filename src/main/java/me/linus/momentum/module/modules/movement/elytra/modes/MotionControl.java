@@ -24,12 +24,6 @@ public class MotionControl extends ElytraMode {
     @Override
     public void onHorizontalMovement() {
         FlightUtil.horizontalFlight(ElytraFlight.hSpeed.getValue());
-
-        if (mc.gameSettings.keyBindLeft.isPressed())
-            mc.player.motionX = -ElytraFlight.hSpeed.getValue();
-
-        if (mc.gameSettings.keyBindRight.isPressed())
-            mc.player.motionX = ElytraFlight.hSpeed.getValue();
     }
 
     @Override

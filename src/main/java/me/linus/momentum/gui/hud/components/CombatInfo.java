@@ -28,7 +28,7 @@ public class CombatInfo extends HUDComponent {
         FontUtil.drawString("SP:" + getEnabled(ModuleManager.getModuleByName("Speed")), this.x, this.y + 44, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
 
         width = Momentum.fontManager.getCustomFont().getStringWidth("AC: OFF") + 2;
-        height = 56;
+        height = 70;
     }
 
     public String getEnabled(Module module) {

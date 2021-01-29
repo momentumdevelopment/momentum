@@ -22,8 +22,7 @@
       "MixinGuiScreen",
       "MixinMovementInputFromOptions",
       "MixinRenderPlayer",
-      "MixinFontRenderer",
-      "MixinRenderLivingBase"
+      "MixinFontRenderer"
     ],
 
     "client": [

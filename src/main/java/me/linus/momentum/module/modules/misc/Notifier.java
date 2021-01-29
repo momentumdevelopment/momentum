@@ -10,8 +10,8 @@ import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.client.notification.Notification;
 import me.linus.momentum.util.client.notification.NotificationManager;
+import me.linus.momentum.util.world.Timer;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityDonkey;
 import net.minecraft.entity.passive.EntityLlama;
 import net.minecraft.entity.passive.EntityMule;
@@ -50,6 +50,7 @@ public class Notifier extends Module {
     }
 
     HashMap<String, Integer> totemPopContainer = new HashMap<>();
+    Timer notificationTimer = new Timer();
     int count = 1;
 
     @Override
@@ -57,26 +58,26 @@ public class Notifier extends Module {
         if (nullCheck())
             return;
 
-        if (armor.getValue() && mc.player.getArmorInventoryList() != null && EnemyUtil.getArmor(mc.player) < 15) {
-            NotificationManager.notifications.add(new Notification("Your armor durability is getting low!"));
+        if (armor.getValue() && mc.player.getArmorInventoryList() != null && EnemyUtil.getArmor(mc.player) < 15 && notificationTimer.passed(60, Timer.Format.Ticks)) {
+            NotificationManager.notifications.add(new Notification("Your armor durability is getting low!", Notification.Type.Warning));
             MessageUtil.sendClientMessage("Your armor durability is getting low!");
         }
 
         mc.world.loadedEntityList.forEach(entity -> {
-            if (entity instanceof EntityDonkey && donkeys.getValue()) {
-                NotificationManager.notifications.add(new Notification("Found a donkey at [" + Math.round(entity.lastTickPosX) + ", " + Math.round(entity.lastTickPosY) + ", " + Math.round(entity.lastTickPosZ) + "]"));
+            if (entity instanceof EntityDonkey && donkeys.getValue() && notificationTimer.passed(60, Timer.Format.Ticks)) {
+                NotificationManager.notifications.add(new Notification("Found a donkey at [" + Math.round(entity.lastTickPosX) + ", " + Math.round(entity.lastTickPosY) + ", " + Math.round(entity.lastTickPosZ) + "]", Notification.Type.Warning));
                 MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "donkey " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
                 mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
             }
 
-            if (entity instanceof EntityLlama && llamas.getValue()) {
-                NotificationManager.notifications.add(new Notification("Found a llama at [" + Math.round(entity.lastTickPosX) + ", " + Math.round(entity.lastTickPosY) + ", " + Math.round(entity.lastTickPosZ) + "]"));
+            if (entity instanceof EntityLlama && llamas.getValue() && notificationTimer.passed(60, Timer.Format.Ticks)) {
+                NotificationManager.notifications.add(new Notification("Found a llama at [" + Math.round(entity.lastTickPosX) + ", " + Math.round(entity.lastTickPosY) + ", " + Math.round(entity.lastTickPosZ) + "]", Notification.Type.Warning));
                 MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "llama " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
                 mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
             }
 
-            if (entity instanceof EntityMule && mules.getValue()) {
-                NotificationManager.notifications.add(new Notification("Found a mule at [" + Math.round(entity.lastTickPosX) + ", " + Math.round(entity.lastTickPosY) + ", " + Math.round(entity.lastTickPosZ) + "]"));
+            if (entity instanceof EntityMule && mules.getValue() && notificationTimer.passed(60, Timer.Format.Ticks)) {
+                NotificationManager.notifications.add(new Notification("Found a mule at [" + Math.round(entity.lastTickPosX) + ", " + Math.round(entity.lastTickPosY) + ", " + Math.round(entity.lastTickPosZ) + "]", Notification.Type.Warning));
                 MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "mule " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
                 mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
             }
@@ -92,19 +93,19 @@ public class Notifier extends Module {
 
                     totemPopContainer.remove(player.getName());
 
-                    NotificationManager.notifications.add(new Notification(player.getName() + " died after popping " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!"));
+                    NotificationManager.notifications.add(new Notification(player.getName() + " died after popping " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!", Notification.Type.Warning));
                     MessageUtil.sendClientMessage(player.getName() + " died after popping " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!");
                 }
             }
 
-            if (player != mc.player && visualRange.getValue()) {
+            if (player != mc.player && visualRange.getValue() && notificationTimer.passed(60, Timer.Format.Ticks)) {
                 if (Momentum.friendManager.isFriend(player.getName())) {
-                    NotificationManager.notifications.add(new Notification("Your friend, " + player.getName() + ", has entered your visual range!"));
+                    NotificationManager.notifications.add(new Notification("Your friend, " + player.getName() + ", has entered your visual range!", Notification.Type.Warning));
                     MessageUtil.sendClientMessage("Your friend, " + player.getName() + ", has entered your visual range!");
                 }
 
-                else {
-                    NotificationManager.notifications.add(new Notification(player.getName() + "has entered your visual range!"));
+                else if (notificationTimer.passed(60, Timer.Format.Ticks)) {
+                    NotificationManager.notifications.add(new Notification(player.getName() + "has entered your visual range!", Notification.Type.Warning));
                     MessageUtil.sendClientMessage(player.getName() + "has entered your visual range!");
                 }
             }
@@ -113,23 +114,21 @@ public class Notifier extends Module {
 
     @SubscribeEvent
     public void onPacketRecieve(PacketReceiveEvent event) {
-        if (event.getPacket() instanceof SPacketEntityStatus && totem.getValue()) {
-            if (((SPacketEntityStatus) event.getPacket()).getOpCode() == 35) {
-                if (totemPopContainer.containsKey(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()))
-                    totemPopContainer.put(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName(), count++);
+        if (event.getPacket() instanceof SPacketEntityStatus && totem.getValue() && ((SPacketEntityStatus) event.getPacket()).getOpCode() == 35) {
+            if (totemPopContainer.containsKey(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()))
+                totemPopContainer.put(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName(), count++);
 
-                else
-                    totemPopContainer.put(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName(), count);
+            else
+                totemPopContainer.put(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName(), count);
 
-                if (Momentum.friendManager.isFriend(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName())) {
-                    NotificationManager.notifications.add(new Notification("Your friend, " + ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + ", popped " + count + " totems!"));
-                    MessageUtil.sendClientMessage("Your friend, " + ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + ", popped " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!");
-                }
+            if (Momentum.friendManager.isFriend(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName())) {
+                NotificationManager.notifications.add(new Notification("Your friend, " + ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + ", popped " + count + " totems!", Notification.Type.Warning));
+                MessageUtil.sendClientMessage("Your friend, " + ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + ", popped " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!");
+            }
 
-                else {
-                    NotificationManager.notifications.add(new Notification(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + " popped " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!"));
-                    MessageUtil.sendClientMessage(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + " popped " + count + " totems!");
-                }
+            else {
+                NotificationManager.notifications.add(new Notification(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + " popped " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!", Notification.Type.Warning));
+                MessageUtil.sendClientMessage(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + " popped " + count + " totems!");
             }
         }
     }
