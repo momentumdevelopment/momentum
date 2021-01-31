@@ -27,7 +27,7 @@ import org.lwjgl.opengl.Display;
 
 @Mod (
 	modid = Momentum.MODID,
-	name = Momentum.NAME,
+	name = Momentum.CLIENTNAME,
 	version = Momentum.VERSION,
 	acceptedMinecraftVersions = "[1.12.2]"
 )
@@ -35,8 +35,9 @@ import org.lwjgl.opengl.Display;
 public class Momentum {
 	
     public static final String MODID = "momentum";
-    public static final String NAME = "Momentum";
+    public static final String CLIENTNAME = "Momentum";
     public static final String VERSION = "1.1.9";
+    public static String NAME = "Momentum";
     public static String PREFIX = "!";
     public static final Logger LOGGER;
     

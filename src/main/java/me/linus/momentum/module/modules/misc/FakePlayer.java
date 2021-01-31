@@ -37,8 +37,6 @@ public class FakePlayer extends Module {
             case 0:
                 WorldUtil.createFakePlayer(name.getMode(name.getValue()), inventory.getValue(), angles.getValue(), true, false, mc.player.getPosition().add(0.5, 0, 0.5));
                 break;
-            case 1:
-
         }
         
         MessageUtil.sendClientMessage("Spawning fake player(s)!");

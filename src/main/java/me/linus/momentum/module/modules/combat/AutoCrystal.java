@@ -55,7 +55,7 @@ public class AutoCrystal extends Module {
     }
 
     public static Checkbox explode = new Checkbox("Break", true);
-    public static SubMode breakMode = new SubMode(explode, "Mode", "All");
+    public static SubMode breakMode = new SubMode(explode, "Mode", "All", "Only Own");
     public static SubMode breakHand = new SubMode(explode, "BreakHand", "OffHand", "MainHand", "Both", "MultiSwing");
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 80.0D, 200.0D, 0);
@@ -212,6 +212,9 @@ public class AutoCrystal extends Module {
                     CrystalUtil.swingArm(breakHand.getValue());
                 }
 
+                if (inhibit.getValue() && !crystal.isDead)
+                    crystal.setDead();
+
                 breakTimer.reset();
             }
 
@@ -252,7 +255,7 @@ public class AutoCrystal extends Module {
 
             tempPosition = crystalPositions.stream().max(Comparator.comparing(idealCrystalPosition -> CrystalUtil.getHeuristic(idealCrystalPosition, heuristic.getValue()))).orElse(null);
 
-            if (tempPosition == null) {
+            if (tempPosition == null || tempPosition.getTargetDamage() > crystalPosition.getTargetDamage() - threshold.getValue() && tempPosition.getTargetDamage() < crystalPosition.getTargetDamage() + threshold.getValue()) {
                 crystalPosition = null;
                 crystalTarget = null;
                 return;
@@ -396,17 +399,12 @@ public class AutoCrystal extends Module {
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketUseEntity && ((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world) instanceof EntityEnderCrystal && packetBreak.getValue()) {
-            if (syncBreak.getValue())
-                ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world).setDead();
-
-            if (inhibit.getValue() && !((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world).isDead)
-                NotificationManager.notifications.add(new Notification("AutoCrystal Frozen! Removing crystals!", Notification.Type.Warning));
-        }
+        if (event.getPacket() instanceof CPacketUseEntity && ((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world) instanceof EntityEnderCrystal && packetBreak.getValue() && syncBreak.getValue())
+            ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world).setDead();
     }
 
     @Override
     public String getHUDData() {
-        return crystalTarget != null ? " " + crystalTarget.getName() : " None";
+        return " " + breakTimer.getMS(System.nanoTime() - breakTimer.time);
     }
 }
