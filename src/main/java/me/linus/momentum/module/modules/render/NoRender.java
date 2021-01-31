@@ -26,6 +26,7 @@ public class NoRender extends Module {
     public static Checkbox water = new Checkbox("Water", true);
     public static Checkbox armor = new Checkbox("Armor", false);
     public static Checkbox bossBar = new Checkbox("Boss Bars", true);
+    public static Checkbox witherSkulls = new Checkbox("Wither Skulls", true);
     public static Checkbox blockOverlay = new Checkbox("Block Overlay", true);
     public static Checkbox noCluster = new Checkbox("Cluster", true);
     public static Checkbox particles = new Checkbox("Particles", true);
@@ -38,6 +39,7 @@ public class NoRender extends Module {
         addSetting(fire);
         addSetting(armor);
         addSetting(bossBar);
+        addSetting(witherSkulls);
         addSetting(blockOverlay);
         addSetting(noCluster);
         addSetting(particles);
