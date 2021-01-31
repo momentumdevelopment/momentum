@@ -43,7 +43,7 @@ public class Notifications extends HUDComponent {
         count = 0;
         if (mc.currentScreen instanceof HUD) {
             GuiScreen.drawRect(this.x - 33, this.y - 18 - (count * 37), (int) (this.x + FontUtil.getStringWidth("This is an example notification!")) + 2, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, new Color(0, 0, 0, 120).getRGB());
-            GuiScreen.drawRect(this.x - 33, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 1, (int) (this.x + FontUtil.getStringWidth("This is an example notification!")) + 2, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, Notification.Type.Info.getColor());
+            GuiScreen.drawRect(this.x - 33, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 3, (int) (this.x + FontUtil.getStringWidth("This is an example notification!")) + 2, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, Notification.Type.Info.getColor());
             FontUtil.drawString("Info", this.x, this.y - (count * 37) - 14, -1);
             FontUtil.drawString("This is an example notification!", this.x, this.y - (count * 37) - 1, -1);
 
@@ -66,7 +66,7 @@ public class Notifications extends HUDComponent {
                     AnimationUtil.moveTowards(this.x, this.x - FontUtil.getStringWidth(notification.getMessage()), (float) (0.01f + ClickGUI.speed.getValue() / 30), 0.1f);
 
                 GuiScreen.drawRect(this.x - 33, this.y - 18 - (count * 37), (int) (this.x + FontUtil.getStringWidth(notification.getMessage())) + 2, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, new Color(0, 0, 0, 120).getRGB());
-                GuiScreen.drawRect(this.x - 33, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 2, (int) (this.x + ((FontUtil.getStringWidth(notification.getMessage()) / (stayTime.getValue() * 1000)) * (int) notification.stayTimer.getMS(System.nanoTime() - notification.stayTimer.time))), (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, notification.type.getColor());
+                GuiScreen.drawRect(this.x - 33, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 3, (int) (this.x + ((FontUtil.getStringWidth(notification.getMessage()) / (stayTime.getValue() * 1000)) * (int) notification.stayTimer.getMS(System.nanoTime() - notification.stayTimer.time))), (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, notification.type.getColor());
                 FontUtil.drawString(notification.type.name(), this.x, this.y - (count * 37) - 14, -1);
                 FontUtil.drawString(notification.getMessage(), this.x, this.y - (count * 37) - 1, -1);
 

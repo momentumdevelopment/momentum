@@ -25,7 +25,7 @@ public class QuickEXP extends Module {
     public static Slider delay = new Slider("Throw Delay", 0.0D, 0.0D, 4.0D, 0);
     public static Checkbox stopEXP = new Checkbox("Stop EXP", false);
     public static Checkbox footEXP = new Checkbox("FootEXP", false);
-    public static Keybind mendKey = new Keybind("Mend Key", Keyboard.KEY_LSHIFT);
+    public static Keybind mendKey = new Keybind("Mend Key", Keyboard.KEY_NONE);
 
     @Override
     public void setup() {
@@ -49,7 +49,7 @@ public class QuickEXP extends Module {
         if (InventoryUtil.getHeldItem(Items.EXPERIENCE_BOTTLE))
             mc.rightClickDelayTimer = (int) delay.getValue();
 
-        if (Keyboard.isKeyDown(mendKey.getKey())) {
+        if (Keyboard.isKeyDown(mendKey.getKey()) && !(mode.getValue() == 2)) {
             switch (mode.getValue()) {
                 case 1:
                     InventoryUtil.switchToSlot(Items.EXPERIENCE_BOTTLE);

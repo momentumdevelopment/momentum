@@ -31,6 +31,9 @@ public class ClickGUI extends Module {
 
 	public static Mode theme = new Mode("Theme", "Default", "Dark");
 
+	public static Checkbox pauseGame = new Checkbox("Pause Game", false);
+	public static Checkbox indicators = new Checkbox("Indicators", false);
+
 	public static GUI clickGui = new GUI();
 
 	@Override
@@ -41,6 +44,8 @@ public class ClickGUI extends Module {
 		addSetting(speed);
 		addSetting(blurEffect);
 		addSetting(allowOverflow);
+		addSetting(pauseGame);
+		addSetting(indicators);
 	}
 
 	@Override

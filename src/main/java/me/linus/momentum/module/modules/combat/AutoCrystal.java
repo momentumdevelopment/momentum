@@ -103,7 +103,7 @@ public class AutoCrystal extends Module {
     public static SubCheckbox armorBreaker = new SubCheckbox(facePlace, "Armor Breaker", false);
     public static SubSlider armorScale = new SubSlider(facePlace, "Armor Scale", 0.0D, 15.0D, 100.0D, 0);
     public static SubCheckbox facePlaceInHole = new SubCheckbox(facePlace, "FacePlace HoleCampers", false);
-    public static SubKeybind forceFaceplace = new SubKeybind(facePlace, "Force FacePlace", Keyboard.KEY_O);
+    public static SubKeybind forceFaceplace = new SubKeybind(facePlace, "Force FacePlace", Keyboard.KEY_NONE);
 
     public static Checkbox calculations = new Checkbox("Calculations", true);
     public static SubMode heuristic = new SubMode(calculations, "Heuristic", "Damage", "MiniMax", "Atomic");
@@ -405,6 +405,6 @@ public class AutoCrystal extends Module {
 
     @Override
     public String getHUDData() {
-        return " " + breakTimer.getMS(System.nanoTime() - breakTimer.time);
+        return " " + (breakTimer.getMS(System.nanoTime() - breakTimer.time) / 1000);
     }
 }

@@ -18,10 +18,12 @@ public class HUDEditor extends Module {
 
 	public static Checkbox allowOverflow = new Checkbox("Allow Overflow", false);
 	public static Checkbox colorSync = new Checkbox("Color Sync", true);
+	public static Checkbox pauseGame = new Checkbox("Pause Game", false);
 
 	public void setup() {
 		addSetting(allowOverflow);
 		addSetting(colorSync);
+		addSetting(pauseGame);
 	}
 	
 	public static HUD hudEditor = new HUD();

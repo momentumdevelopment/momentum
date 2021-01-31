@@ -29,6 +29,12 @@ public class FakePlayer extends Module {
         addSetting(angles);
     }
 
+    @Override
+    public void onUpdate() {
+        if (mc.world == null)
+            this.disable();
+    }
+
     public void onEnable() {
         if (nullCheck())
             return;

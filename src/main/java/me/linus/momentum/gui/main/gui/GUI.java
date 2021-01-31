@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.main.gui;
 
 import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -75,6 +76,6 @@ public class GUI extends GuiScreen {
 
 	@Override
 	public boolean doesGuiPauseGame() {
-		return false;
+		return ClickGUI.pauseGame.getValue();
 	}
 }

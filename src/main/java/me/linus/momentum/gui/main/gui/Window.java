@@ -27,7 +27,7 @@ public class Window implements MixinInterface {
 	boolean ldown;
 	boolean rdown;
 	boolean dragging;
-	boolean opened = false;
+	boolean opened = true;
 
 	int currentTheme;
 

@@ -82,11 +82,11 @@ public class DefaultTheme extends Theme implements MixinInterface {
             FontUtil.drawString(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
 
             if (m.hasSettings() && !m.isOpened())
-                FontUtil.drawString("...", (x + width) - 12, y + 1 + height + (boost * height), -1);
+                FontUtil.drawString("+", (x + width) - 12, y + 1 + height + (boost * height), -1);
 
             if (m.isOpened()) {
                 if (m.hasSettings()) {
-                    FontUtil.drawString("...", (x + width) - 12, y + 1 + height + (boost * height), -1);
+                    FontUtil.drawString("-", (x + width) - 12, y + 1 + height + (boost * height), -1);
                     drawDropdown(m, x, y, mouseX, mouseY);
                 }
 
@@ -308,8 +308,11 @@ public class DefaultTheme extends Theme implements MixinInterface {
         GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), checkbox.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color);
         FontUtil.drawString(checkbox.getName(), x + 7, (y + height) + 4 + (boost * height), -1);
 
-        if (checkbox.hasSubSettings() && !checkbox.isOpened())
-            FontUtil.drawString("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
+        if (checkbox.hasSubSettings() && !checkbox.isOpened() && ClickGUI.indicators.getValue())
+            FontUtil.drawString("+", (x + width) - 12, (y + height + 1) + (boost * height), -1);
+
+        if (checkbox.hasSubSettings() && checkbox.isOpened() && ClickGUI.indicators.getValue())
+            FontUtil.drawString("-", (x + width) - 12, (y + height + 1) + (boost * height), -1);
     }
 
     private static void drawSubCheckbox(SubCheckbox sc, int x, int y) {
@@ -342,8 +345,11 @@ public class DefaultTheme extends Theme implements MixinInterface {
         GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
         FontUtil.drawString(m.getName() + ": " + m.getMode(m.getValue()), x + 7, (y + height) + 4 + (boost * height), -1);
 
-        if (m.hasSubSettings() && !m.isOpened())
-            FontUtil.drawString("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
+        if (m.hasSubSettings() && !m.isOpened() && ClickGUI.indicators.getValue())
+            FontUtil.drawString("+", (x + width) - 12, (y + height + 1) + (boost * height), -1);
+
+        if (m.hasSubSettings() && m.isOpened() && ClickGUI.indicators.getValue())
+            FontUtil.drawString("-", (x + width) - 12, (y + height + 1) + (boost * height), -1);
     }
 
     private static void drawSubMode(SubMode sm, int x, int y) {
@@ -392,8 +398,11 @@ public class DefaultTheme extends Theme implements MixinInterface {
         GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, x + 4 + (rectAdd > width - 1 ? (width - 5) : rectAdd), (y + height) + height + (boost * height), ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR);
         FontUtil.drawString(sl.getName() + " " + sl.getValue(), x + 6, (y + height) + 4 + (boost * height), -1);
 
-        if (sl.hasSubSettings() && !sl.isOpened())
-            FontUtil.drawString("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
+        if (sl.hasSubSettings() && !sl.isOpened() && ClickGUI.indicators.getValue())
+            FontUtil.drawString("+", (x + width) - 12, (y + height + 1) + (boost * height), -1);
+
+        if (sl.hasSubSettings() && sl.isOpened() && ClickGUI.indicators.getValue())
+            FontUtil.drawString("-", (x + width) - 12, (y + height + 1) + (boost * height), -1);
     }
 
     private static void drawSubSlider(SubSlider ssl, int x, int y) {
@@ -532,12 +541,12 @@ public class DefaultTheme extends Theme implements MixinInterface {
             GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), component.isEnabled() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color);
             FontUtil.drawString(component.getName(), x + 4, y + height + 3 + (boost * height), -1);
 
-            if (component.hasSettings() && !component.isOpened())
-                FontUtil.drawString("...", (x + width) - 12, y + 2 + height + (boost * height), -1);
+            if (component.hasSettings() && !component.isOpened() && ClickGUI.indicators.getValue())
+                FontUtil.drawString("+", (x + width) - 12, y + 2 + height + (boost * height), -1);
 
             if (component.isOpened()) {
-                if (component.hasSettings()) {
-                    FontUtil.drawString("...", (x + width) - 12, y + 2 + height + (boost * height), -1);
+                if (component.hasSettings() && ClickGUI.indicators.getValue()) {
+                    FontUtil.drawString("-", (x + width) - 12, y + 2 + height + (boost * height), -1);
                     drawHUDDropdown(component, x, y);
                 }
             }

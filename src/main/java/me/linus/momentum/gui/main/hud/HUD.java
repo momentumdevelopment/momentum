@@ -3,6 +3,7 @@ package me.linus.momentum.gui.main.hud;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -70,6 +71,6 @@ public class HUD extends GuiScreen {
 	
 	@Override
 	public boolean doesGuiPauseGame() {
-		return false;
+		return HUDEditor.pauseGame.getValue();
 	}
 }
