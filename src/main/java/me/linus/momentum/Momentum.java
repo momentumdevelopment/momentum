@@ -9,6 +9,7 @@ import me.linus.momentum.util.client.CapeAPI;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.config.ConfigManager;
 import me.linus.momentum.util.config.ShutdownHook;
+import me.linus.momentum.util.player.rotation.RotationManager;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -35,7 +36,7 @@ public class Momentum {
 	
     public static final String MODID = "momentum";
     public static final String NAME = "Momentum";
-    public static final String VERSION = "1.1.8";
+    public static final String VERSION = "1.1.9";
     public static String PREFIX = "!";
     public static final Logger LOGGER;
     
@@ -43,6 +44,7 @@ public class Momentum {
     public static CommandManager commandManager;
     public static FriendManager friendManager;
     public static HUDComponentManager componentManager;
+    public static RotationManager rotationManager;
     public static FontUtil fontManager = new FontUtil();
     public static CapeAPI capeAPI;
 
@@ -56,22 +58,31 @@ public class Momentum {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
+
         fontManager.load();
         LOGGER.info("Fonts Loaded!");
+
         moduleManager = new ModuleManager();
         LOGGER.info("Modules Initialized!");
-        MinecraftForge.EVENT_BUS.register(moduleManager);
-    	LOGGER.info("Mod Initialized!");
+
+    	rotationManager = new RotationManager();
+        LOGGER.info("Client Rotations Initialized!");
+
     	Window.initGui();
     	LOGGER.info("ClickGui Initialized!");
+
     	Theme.initThemes();
     	LOGGER.info("GUI Themes Initialized!");
+
         friendManager = new FriendManager();
         LOGGER.info("Friends System Initialized!");
+
         commandManager = new CommandManager();
         LOGGER.info("Commands Initialized!");
+
         componentManager = new HUDComponentManager();
         LOGGER.info("HUD System Initialized!");
+
         Runtime.getRuntime().addShutdownHook(new ShutdownHook());
         LOGGER.info("Config System Saved!");
     }
@@ -80,8 +91,10 @@ public class Momentum {
     public void postInit(FMLPostInitializationEvent event) {
         capeAPI = new CapeAPI();
         LOGGER.info("Cape API Initialized!");
+
         ConfigManager.loadConfig();
         LOGGER.info("Config System Loaded!");
+
         Display.setTitle(NAME + " Utility Mod " + VERSION);
         LOGGER.info("Changed Display Name!");
     }

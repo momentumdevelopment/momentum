@@ -8,6 +8,7 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.player.rotation.RotationManager;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.combat.EnemyUtil;
@@ -94,16 +95,16 @@ public class Aura extends Module {
             auraRotation.restoreRotation();
 
         if (currentTarget != null && !FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled()) {
-            auraRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1]);
-
             switch (rotate.getValue()) {
                 case 0:
-                    auraRotation.updateRotations(Rotation.RotationMode.Packet);
+                    auraRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], Rotation.RotationMode.Packet);
                     break;
                 case 1:
-                    auraRotation.updateRotations(Rotation.RotationMode.Legit);
+                    auraRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], Rotation.RotationMode.Legit);
                     break;
             }
+
+            RotationManager.rotationQueue.add(auraRotation);
         }
 
         killAura();

@@ -8,6 +8,7 @@ import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.player.rotation.RotationManager;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.client.friend.FriendManager;
@@ -111,16 +112,16 @@ public class AutoBed extends Module {
             bedRotation.restoreRotation();
 
         if (currentTarget != null && (!FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled())) {
-            bedRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1]);
-
             switch (rotate.getValue()) {
                 case 0:
-                    bedRotation.updateRotations(Rotation.RotationMode.Packet);
+                    bedRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], Rotation.RotationMode.Packet);
                     break;
                 case 1:
-                    bedRotation.updateRotations(Rotation.RotationMode.Legit);
+                    bedRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], Rotation.RotationMode.Legit);
                     break;
             }
+
+            RotationManager.rotationQueue.add(bedRotation);
         }
 
         switch (logicMode.getValue()) {

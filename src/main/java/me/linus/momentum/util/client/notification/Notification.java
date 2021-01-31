@@ -13,20 +13,18 @@ import java.awt.*;
 public class Notification {
 
     public String message;
-
-    public Timer completionTimer = new Timer();
-
+    public Timer stayTimer = new Timer();
     public Type type;
 
     public Notification(String message, Type type) {
         this.message = message;
         this.type = type;
 
-        completionTimer.reset();
+        stayTimer.reset();
     }
 
     public boolean isComplete() {
-        return completionTimer.passed((long) (Notifications.stayTime.getValue() * 1000), Timer.Format.System);
+        return stayTimer.passed((long) (Notifications.stayTime.getValue() * 1000), Timer.Format.System);
     }
 
     public String getMessage() {
@@ -34,8 +32,9 @@ public class Notification {
     }
 
     public enum Type {
-        Info((new Color(0, 196, 255)).getRGB()),
-        Warning((new Color(255, 174, 2)).getRGB());
+        Info((new Color(0, 196, 255, 120)).getRGB()),
+        Warning((new Color(255, 174, 2, 120)).getRGB()),
+        Tip((new Color(255, 255, 255, 120)).getRGB());
 
         int color;
 

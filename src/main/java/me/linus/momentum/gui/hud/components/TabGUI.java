@@ -49,7 +49,7 @@ public class TabGUI extends HUDComponent {
             GuiScreen.drawRect(this.x + 89, this.y + 2 + (currentModuleHovered * 15), this.x + 163, this.y + 2 + ((currentModuleHovered + 1) * 15), ThemeColor.COLOR);
         }
 
-        GuiScreen.drawRect(this.x + 2, this.y + 2 + (currentHovered * 15), this.x + 83, this.y + 2 + ((currentHovered + 1) * 15), new Color(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getBlue(), Colors.clientPicker.getColor().getGreen(), 110).getRGB());
+        GuiScreen.drawRect(this.x + 2, this.y + 2 + (currentHovered * 15), this.x + 83, this.y + 2 + ((currentHovered + 1) * 15), new Color(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getGreen(), Colors.clientPicker.getColor().getBlue(), 110).getRGB());
 
         if (hoveringModules)
             for (Module module : ModuleManager.getModulesInCategory(categories[currentHovered])) {
@@ -104,7 +104,11 @@ public class TabGUI extends HUDComponent {
             currentModuleHovered = 0;
         }
 
-        if ((Keyboard.isKeyDown(Keyboard.KEY_RETURN) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) && hoveringModules)
-            ModuleManager.getModulesInCategory(categories[currentHovered]).get(currentModuleHovered).toggle();
+        try {
+            if ((Keyboard.isKeyDown(Keyboard.KEY_RETURN) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) && hoveringModules)
+                ModuleManager.getModulesInCategory(categories[currentHovered]).get(currentModuleHovered).toggle();
+        } catch (Exception e) {
+
+        }
     }
 }

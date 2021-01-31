@@ -8,6 +8,7 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.friend.FriendManager;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.rotation.Rotation;
+import me.linus.momentum.util.player.rotation.RotationManager;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,16 +51,16 @@ public class AimBot extends Module {
         target = WorldUtil.getClosestPlayer(range.getValue());
 
         if (target != null && (!FriendManager.isFriend(target.getName()) && FriendManager.isFriendModuleEnabled())) {
-            aimbotRotation = new Rotation(RotationUtil.getAngles(target)[0], RotationUtil.getAngles(target)[1]);
-
             switch (mode.getValue()) {
                 case 0:
-                    aimbotRotation.updateRotations(Rotation.RotationMode.Packet);
+                    aimbotRotation = new Rotation(RotationUtil.getAngles(target)[0], RotationUtil.getAngles(target)[1], Rotation.RotationMode.Packet);
                     break;
                 case 1:
-                    aimbotRotation.updateRotations(Rotation.RotationMode.Legit);
+                    aimbotRotation = new Rotation(RotationUtil.getAngles(target)[0], RotationUtil.getAngles(target)[1], Rotation.RotationMode.Legit);
                     break;
             }
+
+            RotationManager.rotationQueue.add(aimbotRotation);
         }
     }
 

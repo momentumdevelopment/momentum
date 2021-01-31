@@ -10,6 +10,7 @@ import me.linus.momentum.module.modules.misc.*;
 import me.linus.momentum.module.modules.movement.*;
 import me.linus.momentum.module.modules.player.*;
 import me.linus.momentum.module.modules.render.*;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
@@ -24,6 +25,9 @@ import java.util.List;
  */
 
 public class ModuleManager implements MixinInterface {
+	public ModuleManager() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
 	static final List<Module> modules = Arrays.asList(
 			// client

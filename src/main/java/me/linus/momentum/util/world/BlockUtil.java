@@ -65,10 +65,6 @@ public class BlockUtil implements MixinInterface {
         return true;
     }
 
-    public static boolean canBlockBeSeen(BlockPos blockPos) {
-        return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
-    }
-
     public static List<BlockPos> getNearbyBlocks(EntityPlayer player, double blockRange, boolean motion) {
         List<BlockPos> nearbyBlocks = new ArrayList<>();
         int range = (int) MathUtil.roundDouble(blockRange, 0);

@@ -3,7 +3,6 @@ package me.linus.momentum.util.player.rotation;
 import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.render.builder.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPacketEntityAction;
@@ -12,6 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+
+import javax.annotation.Nullable;
 
 /**
  * @author linustouchtips
@@ -88,9 +89,15 @@ public class RotationUtil implements MixinInterface {
         }
     }
 
-    public static void resetRotation(RotationEvent event) {
-        event.setYaw(mc.player.rotationYaw);
-        event.setPitch(mc.player.rotationPitch);
+    public static boolean isInViewFrustrum(@Nullable Entity entity, @Nullable BlockPos blockPos, int mode) {
+        switch (mode) {
+            case 0:
+                return mc.player.canEntityBeSeen(entity);
+            case 1:
+                return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
+        }
+
+        return false;
     }
 
     public static float[] getAngles(Entity entity) {

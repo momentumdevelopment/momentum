@@ -131,12 +131,11 @@ public class Step extends Module {
     public double getCollision() {
         mc.player.stepHeight = 0.5f;
         double maxY = -1.0;
-        AxisAlignedBB grow = mc.player.getEntityBoundingBox().offset(0.0, 0.05, 0.0).grow(0.05);
         
-        if (!mc.world.getCollisionBoxes(mc.player, grow.offset(0.0, 2.0, 0.0)).isEmpty()) 
+        if (!mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, 0.05, 0.0).grow(0.05).offset(0.0, 2.0, 0.0)).isEmpty())
             return 100.0;
 
-        for (final AxisAlignedBB aabb : mc.world.getCollisionBoxes(mc.player, grow)) {
+        for (AxisAlignedBB aabb : mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, 0.05, 0.0).grow(0.05))) {
             if (aabb.maxY > maxY)
                 maxY = aabb.maxY;
         }

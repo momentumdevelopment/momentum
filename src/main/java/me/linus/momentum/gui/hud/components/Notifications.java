@@ -49,7 +49,7 @@ public class Notifications extends HUDComponent {
 
             GlStateManager.enableAlpha();
             mc.getTextureManager().bindTexture(infoIcon);
-            GlStateManager.color(0, 0.768f, 1, 1);
+            GlStateManager.color(0, 0.768f, 1, 0.47f);
             GL11.glPushMatrix();
             GuiScreen.drawScaledCustomSizeModalRect(this.x - 31, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) - 27, 0, 0, 256,256,26,26,256,256);
             GL11.glPopMatrix();
@@ -66,7 +66,7 @@ public class Notifications extends HUDComponent {
                     AnimationUtil.moveTowards(this.x, this.x - FontUtil.getStringWidth(notification.getMessage()), (float) (0.01f + ClickGUI.speed.getValue() / 30), 0.1f);
 
                 GuiScreen.drawRect(this.x - 33, this.y - 18 - (count * 37), (int) (this.x + FontUtil.getStringWidth(notification.getMessage())) + 2, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, new Color(0, 0, 0, 120).getRGB());
-                GuiScreen.drawRect(this.x - 33, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 1, (int) (this.x + ((FontUtil.getStringWidth(notification.getMessage()) / (stayTime.getValue() * 1000)) * (int) notification.completionTimer.getMS(System.nanoTime() - notification.completionTimer.time))), (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, notification.type.getColor());
+                GuiScreen.drawRect(this.x - 33, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 2, (int) (this.x + ((FontUtil.getStringWidth(notification.getMessage()) / (stayTime.getValue() * 1000)) * (int) notification.stayTimer.getMS(System.nanoTime() - notification.stayTimer.time))), (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, notification.type.getColor());
                 FontUtil.drawString(notification.type.name(), this.x, this.y - (count * 37) - 14, -1);
                 FontUtil.drawString(notification.getMessage(), this.x, this.y - (count * 37) - 1, -1);
 
@@ -74,7 +74,7 @@ public class Notifications extends HUDComponent {
                     case Info:
                         GlStateManager.enableAlpha();
                         mc.getTextureManager().bindTexture(infoIcon);
-                        GlStateManager.color(0, 0.768f, 1, 1);
+                        GlStateManager.color(0, 0.768f, 1, 0.47f);
                         GL11.glPushMatrix();
                         GuiScreen.drawScaledCustomSizeModalRect(this.x - 31, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) - 27, 0, 0, 256,256,26,26,256,256);
                         GL11.glPopMatrix();
@@ -84,7 +84,7 @@ public class Notifications extends HUDComponent {
                     case Warning:
                         GlStateManager.enableAlpha();
                         mc.getTextureManager().bindTexture(warningIcon);
-                        GlStateManager.color(1, 1, 1, 1);
+                        GlStateManager.color(1, 1, 1, 0.47f);
                         GL11.glPushMatrix();
                         GuiScreen.drawScaledCustomSizeModalRect(this.x - 33, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) - 28, 0, 0, 256,256,28,28,256,256);
                         GL11.glPopMatrix();

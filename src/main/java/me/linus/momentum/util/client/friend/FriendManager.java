@@ -31,13 +31,14 @@ public class FriendManager {
     }
 
     public static boolean isFriend(String name) {
-        boolean b = false;
+        boolean friend = false;
+
         for (Friend f : getFriends()) {
             if (f.getName().equalsIgnoreCase(name))
-                b = true;
+                friend = true;
         }
 
-        return b;
+        return friend;
     }
 
     public static Friend getFriendByName(String name) {

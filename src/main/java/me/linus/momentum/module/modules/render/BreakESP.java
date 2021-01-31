@@ -6,7 +6,6 @@ import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.builder.RenderUtil;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -39,6 +38,9 @@ public class BreakESP extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
+        if (nullCheck())
+            return;
+
         mc.renderGlobal.damagedBlocks.forEach((integer, destroyBlockProgress) -> {
             if (destroyBlockProgress != null && destroyBlockProgress.getPosition().getDistance((int) mc.player.posX,(int)  mc.player.posY,(int)  mc.player.posZ) <= range.getValue()) {
                 RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), 0, colorPicker.getColor(), outline.getValue() ? RenderBuilder.renderMode.Both : RenderBuilder.renderMode.Fill);
