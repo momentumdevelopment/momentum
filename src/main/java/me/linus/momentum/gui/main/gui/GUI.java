@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import java.io.IOException;
 
 /**
- * @author bon
+ * @author bon & linustouchtips
  * @since 11/16/20
  */
 
@@ -36,8 +36,12 @@ public class GUI extends GuiScreen {
 			GUIUtil.lclickListen();
 		}
 
-		if (mouseButton == 1)
+		if (mouseButton == 1) {
+			for (Window w : Window.windows)
+				w.rclickListen(mouseX, mouseY, mouseButton);
+
 			GUIUtil.rclickListen();
+		}
 	}
 
 	@Override

@@ -27,6 +27,7 @@ public class Window implements MixinInterface {
 	boolean ldown;
 	boolean rdown;
 	boolean dragging;
+	boolean opened = false;
 
 	int currentTheme;
 
@@ -61,7 +62,10 @@ public class Window implements MixinInterface {
 		currentTheme = ClickGUI.theme.getValue();
 		Theme current = Theme.getTheme(currentTheme);
 		current.drawTitles(name, x, y);
-		current.drawModules(modules, x, y, mouseX, mouseY, partialTicks);
+
+		if (opened)
+			current.drawModules(modules, x, y, mouseX, mouseY, partialTicks);
+
 		reset();
 
 		if (mc != null && !ClickGUI.allowOverflow.getValue())
@@ -93,7 +97,6 @@ public class Window implements MixinInterface {
 
 		lastmX = GUIUtil.mX;
 		lastmY = GUIUtil.mY;
-
 	}
 
 	void reset() {
@@ -106,6 +109,13 @@ public class Window implements MixinInterface {
 
 		if (GUIUtil.mouseOver(x, y, x + current.getThemeWidth(), y + current.getThemeHeight()))
 			dragging = true;
+	}
+
+	public void rclickListen(int mouseX, int mouseY, int mouseButton) throws IOException {
+		Theme current = Theme.getTheme(currentTheme);
+
+		if (GUIUtil.mouseOver(x, y, x + current.getThemeWidth(), y + current.getThemeHeight()))
+			opened = !opened;
 	}
 
 	public void mouseWheelListen() {

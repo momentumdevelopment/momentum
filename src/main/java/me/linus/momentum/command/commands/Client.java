@@ -5,6 +5,11 @@ import me.linus.momentum.Momentum;
 import me.linus.momentum.command.Command;
 import me.linus.momentum.util.client.MessageUtil;
 
+/**
+ * @author linustouchtips
+ * @since 01/31/2020
+ */
+
 public class Client extends Command {
     public Client() {
         super("client");
