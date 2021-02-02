@@ -1,17 +1,17 @@
 # Momentum
 
 todo:
-- rewrite packet fly (phase good, but rubberbanding, also modified from salhack so gay)
-- rewrite holefill (paste from dream)
+- rewrite autoarmor
+- rewrite longjump
+- rewrite holefill
+- console for gui
 
 fix:
-- mixin priority
+- auto crystal kicks
 
 ideas:
 - bot (cpvp? elytra?)
-- console for gui
-
-
+- packetfly
 
 hacked by meh
 Spartan better hacker
