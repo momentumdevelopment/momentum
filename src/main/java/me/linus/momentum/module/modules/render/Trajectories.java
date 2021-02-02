@@ -32,7 +32,7 @@ public class Trajectories extends Module {
     }
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, new Color(0, 255, 255, 255));
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", new Color(0, 255, 255, 255));
 
     @Override
     public void setup() {

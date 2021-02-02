@@ -1,5 +1,8 @@
 package me.linus.momentum.util.config;
 
+import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.gui.hud.HUDComponentManager;
+import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.setting.Setting;
@@ -13,6 +16,10 @@ import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import com.google.gson.*;
+import me.linus.momentum.util.social.enemy.Enemy;
+import me.linus.momentum.util.social.enemy.EnemyManager;
+import me.linus.momentum.util.social.friend.Friend;
+import me.linus.momentum.util.social.friend.FriendManager;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -29,14 +36,14 @@ public class ConfigManagerJSON {
     static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void createDirectory() throws IOException {
-        if (!Files.exists(Paths.get("momentum/"))) 
+        if (!Files.exists(Paths.get("momentum/")))
             Files.createDirectories(Paths.get("momentum/"));
     }
 
     public static void registerFiles(String name) throws IOException {
         if (!Files.exists(Paths.get("momentum/" + name + ".json")))
             Files.createFile(Paths.get("momentum/" + name + ".json"));
-        
+
         else {
             File file = new File("momentum/" + name + ".json");
             file.delete();
@@ -44,13 +51,33 @@ public class ConfigManagerJSON {
         }
     }
 
-    public static void saveConfig() throws IOException {
-        saveModules();
+    public static void saveConfig() {
+        try {
+            saveEnabledModules();
+            saveDrawnModules();
+            saveModules();
+            saveGUI();
+            saveHUD();
+            saveFriends();
+            saveEnemies();
+        } catch (IOException e) {
+
+        }
     }
 
-    public static void loadConfig() throws IOException {
-        createDirectory();
-        loadModules();
+    public static void loadConfig() {
+        try {
+            createDirectory();
+            loadEnabledModules();
+            loadDrawnModules();
+            loadModules();
+            loadGUI();
+            loadHUD();
+            loadFriends();
+            loadEnemies();
+        } catch (IOException e) {
+
+        }
     }
 
     public static void saveModules() throws IOException {
@@ -337,5 +364,268 @@ public class ConfigManagerJSON {
 
             inputStream.close();
         }
+    }
+
+    public static void saveEnabledModules() throws IOException {
+        registerFiles("Enabled");
+
+        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "Enabled" + ".json"), StandardCharsets.UTF_8);
+        JsonObject moduleObject = new JsonObject();
+        JsonObject enabledObject = new JsonObject();
+
+        for (Module module : ModuleManager.getModules()) {
+            enabledObject.add(module.getName(), new JsonPrimitive(module.isEnabled()));
+        }
+
+        moduleObject.add("Modules", enabledObject);
+        String jsonString = gson.toJson(new JsonParser().parse(moduleObject.toString()));
+        fileOutputStreamWriter.write(jsonString);
+        fileOutputStreamWriter.close();
+    }
+
+    public static void loadEnabledModules() throws IOException {
+        if (!Files.exists(Paths.get("momentum/" + "Enabled" + ".json")))
+            return;
+
+        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "Enabled" + ".json"));
+        JsonObject moduleObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
+
+        if (moduleObject.get("Modules") == null)
+            return;
+
+        JsonObject settingObject = moduleObject.get("Modules").getAsJsonObject();
+        for (Module module : ModuleManager.getModules()) {
+            JsonElement dataObject = settingObject.get(module.getName());
+
+            if (dataObject != null && dataObject.isJsonPrimitive()) {
+                if (dataObject.getAsBoolean())
+                    module.enable();
+            }
+        }
+
+        inputStream.close();
+    }
+
+    public static void saveDrawnModules() throws IOException {
+        registerFiles("Drawn");
+
+        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "Drawn" + ".json"), StandardCharsets.UTF_8);
+        JsonObject moduleObject = new JsonObject();
+        JsonObject drawnObject = new JsonObject();
+
+        for (Module module : ModuleManager.getModules()) {
+            drawnObject.add(module.getName(), new JsonPrimitive(module.isDrawn()));
+        }
+
+        moduleObject.add("Modules", drawnObject);
+        String jsonString = gson.toJson(new JsonParser().parse(moduleObject.toString()));
+        fileOutputStreamWriter.write(jsonString);
+        fileOutputStreamWriter.close();
+    }
+
+    public static void loadDrawnModules() throws IOException {
+        if (!Files.exists(Paths.get("momentum/" + "Drawn" + ".json")))
+            return;
+
+        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "Drawn" + ".json"));
+        JsonObject moduleObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
+
+        if (moduleObject.get("Modules") == null)
+            return;
+
+        JsonObject drawnObject = moduleObject.get("Modules").getAsJsonObject();
+        for (Module module : ModuleManager.getModules()) {
+            JsonElement dataObject = drawnObject.get(module.getName());
+
+            if (dataObject != null && dataObject.isJsonPrimitive())
+                module.setDrawn(dataObject.getAsBoolean());
+        }
+
+        inputStream.close();
+    }
+
+    public static void saveGUI() throws IOException {
+        registerFiles("GUI");
+
+        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "GUI" + ".json"), StandardCharsets.UTF_8);
+        JsonObject guiObject = new JsonObject();
+        JsonObject windowObject = new JsonObject();
+
+        for (Window window : Window.windows) {
+            JsonObject positionObject = new JsonObject();
+
+            positionObject.add("x", new JsonPrimitive(window.x));
+            positionObject.add("y", new JsonPrimitive(window.y));
+            positionObject.add("open", new JsonPrimitive(window.opened));
+
+            windowObject.add(window.category.getName(), positionObject);
+        }
+
+        guiObject.add("Windows", windowObject);
+        String jsonString = gson.toJson(new JsonParser().parse(guiObject.toString()));
+        fileOutputStreamWriter.write(jsonString);
+        fileOutputStreamWriter.close();
+    }
+
+    public static void loadGUI() throws IOException {
+        if (!Files.exists(Paths.get("momentum/" + "GUI" + ".json")))
+            return;
+
+        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "GUI" + ".json"));
+        JsonObject guiObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
+
+        if (guiObject.get("Windows") == null)
+            return;
+
+        JsonObject windowObject = guiObject.get("Windows").getAsJsonObject();
+        for (Window window : Window.windows) {
+            if (windowObject.get(window.category.name()) == null)
+                return;
+
+            JsonObject categoryObject = windowObject.get(window.category.name()).getAsJsonObject();
+
+            JsonElement windowXObject = categoryObject.get("x");
+            if (windowXObject != null && windowXObject.isJsonPrimitive())
+                window.x = windowXObject.getAsInt();
+
+            JsonElement windowYObject = categoryObject.get("y");
+            if (windowYObject != null && windowYObject.isJsonPrimitive())
+                window.y = windowYObject.getAsInt();
+
+            JsonElement windowOpenObject = categoryObject.get("open");
+            if (windowOpenObject != null && windowOpenObject.isJsonPrimitive())
+                window.opened = windowOpenObject.getAsBoolean();
+        }
+
+        inputStream.close();
+    }
+
+    public static void saveHUD() throws IOException {
+        registerFiles("HUD");
+
+        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "HUD" + ".json"), StandardCharsets.UTF_8);
+        JsonObject guiObject = new JsonObject();
+        JsonObject hudObject = new JsonObject();
+
+        for (HUDComponent component : HUDComponentManager.getComponents()) {
+            JsonObject positionObject = new JsonObject();
+
+            positionObject.add("x", new JsonPrimitive(component.x));
+            positionObject.add("y", new JsonPrimitive(component.y));
+            positionObject.add("enabled", new JsonPrimitive(component.isEnabled()));
+
+            hudObject.add(component.getName(), positionObject);
+        }
+
+        guiObject.add("Components", hudObject);
+        String jsonString = gson.toJson(new JsonParser().parse(guiObject.toString()));
+        fileOutputStreamWriter.write(jsonString);
+        fileOutputStreamWriter.close();
+    }
+
+    public static void loadHUD() throws IOException {
+        if (!Files.exists(Paths.get("momentum/" + "HUD" + ".json")))
+            return;
+
+        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "HUD" + ".json"));
+        JsonObject guiObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
+
+        if (guiObject.get("Components") == null)
+            return;
+
+        JsonObject windowObject = guiObject.get("Components").getAsJsonObject();
+        for (HUDComponent component : HUDComponentManager.getComponents()) {
+            if (windowObject.get(component.getName()) == null)
+                return;
+
+            JsonObject categoryObject = windowObject.get(component.getName()).getAsJsonObject();
+
+            JsonElement hudXObject = categoryObject.get("x");
+            if (hudXObject != null && hudXObject.isJsonPrimitive())
+                component.x = hudXObject.getAsInt();
+
+            JsonElement hudYObject = categoryObject.get("y");
+            if (hudYObject != null && hudYObject.isJsonPrimitive())
+                component.y = hudYObject.getAsInt();
+
+            JsonElement hudEnabledObject = categoryObject.get("enabled");
+            if (hudEnabledObject != null && hudEnabledObject.isJsonPrimitive())
+                if (hudEnabledObject.getAsBoolean())
+                    component.toggle();
+        }
+
+        inputStream.close();
+    }
+
+    public static void saveFriends() throws IOException {
+        registerFiles("Friends");
+
+        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "Friends" + ".json"), StandardCharsets.UTF_8);
+        JsonObject mainObject = new JsonObject();
+        JsonArray friendArray = new JsonArray();
+
+        for (Friend friend : FriendManager.getFriends()) {
+            friendArray.add(friend.getName());
+        }
+
+        mainObject.add("Friends", friendArray);
+        String jsonString = gson.toJson(new JsonParser().parse(mainObject.toString()));
+        fileOutputStreamWriter.write(jsonString);
+        fileOutputStreamWriter.close();
+    }
+
+    public static void loadFriends() throws IOException {
+        if (!Files.exists(Paths.get("momentum/" + "Friends" + ".json")))
+            return;
+
+        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "Friends" + ".json"));
+        JsonObject mainObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
+
+        if (mainObject.get("Friends") == null)
+            return;
+
+        JsonArray friendObject = mainObject.get("Friends").getAsJsonArray();
+
+        for (JsonElement object : friendObject) {
+            FriendManager.addFriend(object.getAsString());
+        }
+
+        inputStream.close();
+    }
+
+    public static void saveEnemies() throws IOException {
+        registerFiles("Enemies");
+
+        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "Enemies" + ".json"), StandardCharsets.UTF_8);
+        JsonObject mainObject = new JsonObject();
+        JsonArray enemyArray = new JsonArray();
+
+        for (Enemy enemy : EnemyManager.getEnemies()) {
+            enemyArray.add(enemy.getName());
+        }
+
+        mainObject.add("Enemies", enemyArray);
+        String jsonString = gson.toJson(new JsonParser().parse(mainObject.toString()));
+        fileOutputStreamWriter.write(jsonString);
+        fileOutputStreamWriter.close();
+    }
+
+    public static void loadEnemies() throws IOException {
+        if (!Files.exists(Paths.get("momentum/" + "Enemies" + ".json")))
+            return;
+
+        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "Enemies" + ".json"));
+        JsonObject mainObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
+
+        if (mainObject.get("Enemies") == null)
+            return;
+
+        JsonArray enemyObject = mainObject.get("Enemies").getAsJsonArray();
+
+        for (JsonElement object : enemyObject) {
+            EnemyManager.addEnemy(object.getAsString());
+        }
+
+        inputStream.close();
     }
 }

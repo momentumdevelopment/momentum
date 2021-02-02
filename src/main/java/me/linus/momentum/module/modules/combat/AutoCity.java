@@ -37,7 +37,7 @@ public class AutoCity extends Module {
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
     public static Slider enemyRange = new Slider("Enemy Range", 0.0D, 7.0D, 10.0D, 0);
     public static Checkbox autoSwitch = new Checkbox("Auto Switch", true);
-    public static Checkbox packet = new Checkbox("Packet", false);
+    public static Checkbox packet = new Checkbox("Packet", true);
     public static Checkbox disable = new Checkbox("Disable", true);
 
     @Override
@@ -89,7 +89,7 @@ public class AutoCity extends Module {
         if (packet.getValue())
             this.disable();
 
-        else if (mc.world.getBlockState(breakTarget).getBlock() == Blocks.AIR && disable.getValue()) {
+        else if (mc.world.getBlockState(breakTarget).getBlock().equals(Blocks.AIR) && disable.getValue()) {
             this.disable();
             MessageUtil.sendClientMessage("Finished citying!");
         }

@@ -32,7 +32,7 @@ public class VoidESP extends Module {
     public static Checkbox outline = new Checkbox("Outline", false);
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, new Color(177, 50, 236, 121));
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", new Color(177, 50, 236, 121));
 
     @Override
     public void setup() {

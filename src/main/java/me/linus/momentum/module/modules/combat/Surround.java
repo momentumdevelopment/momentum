@@ -48,7 +48,7 @@ public class Surround extends Module {
     public static Checkbox switchBack = new Checkbox("Switch Back", true);
 
     public static Checkbox renderSurround = new Checkbox("Render", true);
-    public static ColorPicker colorPicker = new ColorPicker(renderSurround, new Color(0, 255, 0, 55));
+    public static ColorPicker colorPicker = new ColorPicker(renderSurround, "Color Picker", new Color(0, 255, 0, 55));
 
     @Override
     public void setup() {

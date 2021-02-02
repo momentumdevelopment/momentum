@@ -49,7 +49,7 @@ public class NameTags extends Module {
     public static Checkbox enchants = new Checkbox("Enchants", true);
 
     public static Checkbox background = new Checkbox("Background", true);
-    public static ColorPicker colorPicker = new ColorPicker(background, new Color(0, 0, 0, 70));
+    public static ColorPicker colorPicker = new ColorPicker(background, "Color Picker", new Color(0, 0, 0, 70));
 
     public static Checkbox onlyInViewFrustrum = new Checkbox("View Frustrum", false);
 

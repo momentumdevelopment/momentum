@@ -20,10 +20,10 @@ public class SkyColor extends Module {
     }
 
     public static Checkbox color = new Checkbox("Sky", true);
-    public static ColorPicker skyPicker = new ColorPicker(color, new Color(255, 0, 0, 255));
+    public static ColorPicker skyPicker = new ColorPicker(color, "Sky Picker", new Color(255, 0, 0, 255));
 
     public static Checkbox fog = new Checkbox("Fog", false);
-    public static ColorPicker fogPicker = new ColorPicker(fog, new Color(255, 0, 0, 255));
+    public static ColorPicker fogPicker = new ColorPicker(fog, "Fog Picker", new Color(255, 0, 0, 255));
     public static SubCheckbox fogCancel = new SubCheckbox(fog, "No Fog", true);
 
     @Override

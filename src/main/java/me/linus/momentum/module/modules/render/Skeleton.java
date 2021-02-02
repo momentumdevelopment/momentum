@@ -30,7 +30,7 @@ public class Skeleton extends Module {
     }
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, new Color(255, 255, 255, 255));
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", new Color(255, 255, 255, 255));
 
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 1.0D, 5.0D, 1);
 

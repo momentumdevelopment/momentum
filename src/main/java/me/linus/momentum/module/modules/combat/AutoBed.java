@@ -75,7 +75,7 @@ public class AutoBed extends Module {
     public static SubMode logicMode = new SubMode(logic, "Logic", "Break -> Place", "Place -> Break");
 
     public static Checkbox renderBed = new Checkbox("Render", true);
-    public static ColorPicker colorPicker = new ColorPicker(renderBed, new Color(255, 0, 0, 55));
+    public static ColorPicker colorPicker = new ColorPicker(renderBed, "Color Picker", new Color(255, 0, 0, 55));
 
     @Override
     public void setup() {
@@ -200,14 +200,6 @@ public class AutoBed extends Module {
                         BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, nowTop, spoofAngles.getValue());
                     break;
             }
-        }
-    }
-
-    @SubscribeEvent
-    public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketPlayer && bedRotation != null) {
-            ((CPacketPlayer) event.getPacket()).yaw = bedRotation.yaw;
-            ((CPacketPlayer) event.getPacket()).pitch = bedRotation.pitch;
         }
     }
 

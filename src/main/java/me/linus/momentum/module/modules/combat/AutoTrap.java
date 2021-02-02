@@ -42,7 +42,7 @@ public class AutoTrap extends Module {
     public static Checkbox disable = new Checkbox("Disables", true);
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, new Color(255, 0, 0, 55));
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", new Color(255, 0, 0, 55));
 
     @Override
     public void setup() {

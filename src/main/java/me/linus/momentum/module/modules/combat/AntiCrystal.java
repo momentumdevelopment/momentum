@@ -40,7 +40,7 @@ public class AntiCrystal extends Module {
     public static Slider placeDelay = new Slider("Place Delay", 0, 2, 20, 1);
 
     public static Checkbox renderPlacement = new Checkbox("Render Placement", true);
-    public static ColorPicker colorPicker = new ColorPicker(renderPlacement, new Color(0, 217, 255, 55));
+    public static ColorPicker colorPicker = new ColorPicker(renderPlacement, "Color Picker", new Color(0, 217, 255, 55));
 
     @Override
     public void setup() {

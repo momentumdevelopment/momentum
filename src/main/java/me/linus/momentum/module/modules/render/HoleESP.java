@@ -38,10 +38,10 @@ public class HoleESP extends Module {
     public static Mode highlight = new Mode("Highlight", "None", "NoRender", "Glow");
 
     public static Checkbox obsidianColor = new Checkbox("Obsidian Color", true);
-    public static ColorPicker obsidianPicker = new ColorPicker(obsidianColor, new Color(93, 235, 240, 45));
+    public static ColorPicker obsidianPicker = new ColorPicker(obsidianColor, "Obsidian Picker", new Color(93, 235, 240, 45));
 
     public static Checkbox bedrockColor = new Checkbox("Bedrock Color", true);
-    public static ColorPicker bedrockPicker = new ColorPicker(bedrockColor, new Color(144, 0, 255, 45));
+    public static ColorPicker bedrockPicker = new ColorPicker(bedrockColor, "Bedrock Picker", new Color(144, 0, 255, 45));
 
     public static Checkbox doubles = new Checkbox("Doubles", true);
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 1.5D, 3.0D, 2);

@@ -10,7 +10,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 
 public class Social extends Module {
     public Social() {
-        super("Social", Category.CLIENT, "Allows friend system to function");
+        super("Social", Category.CLIENT, "Allows social system to function");
         this.enable();
         this.setDrawn(false);
     }

@@ -27,22 +27,22 @@ public class ESP extends Module {
     public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "Wire-Frame", "CS:GO", "Normal", "Textured", "Box");
 
     public static Checkbox players = new Checkbox("Players", true);
-    public static ColorPicker playerPicker = new ColorPicker(players, new Color(215, 46, 46));
+    public static ColorPicker playerPicker = new ColorPicker(players, "Player Picker", new Color(215, 46, 46));
 
     public static Checkbox animals = new Checkbox("Animals", true);
-    public static ColorPicker animalPicker = new ColorPicker(animals, new Color(0, 200, 0));
+    public static ColorPicker animalPicker = new ColorPicker(animals, "Animal Picker", new Color(0, 200, 0));
 
     public static Checkbox mobs = new Checkbox("Mobs", true);
-    public static ColorPicker mobsPicker = new ColorPicker(mobs, new Color(131, 19, 199));
+    public static ColorPicker mobsPicker = new ColorPicker(mobs, "Mob Picker", new Color(131, 19, 199));
 
     public static Checkbox items = new Checkbox("Items", true);
-    public static ColorPicker itemsPicker = new ColorPicker(items, new Color(199, 196, 19));
+    public static ColorPicker itemsPicker = new ColorPicker(items, "Item Picker", new Color(199, 196, 19));
 
     public static Checkbox vehicles = new Checkbox("Vehicles", true);
-    public static ColorPicker vehiclePicker = new ColorPicker(vehicles, new Color(199, 103, 19));
+    public static ColorPicker vehiclePicker = new ColorPicker(vehicles, "Vehicle Picker", new Color(199, 103, 19));
 
     public static Checkbox crystals = new Checkbox("Crystals", true);
-    public static ColorPicker crystalPicker = new ColorPicker(crystals, new Color(199, 19, 139));
+    public static ColorPicker crystalPicker = new ColorPicker(crystals, "Crystal Picker", new Color(199, 19, 139));
 
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 2.5D, 5.0D, 1);
 

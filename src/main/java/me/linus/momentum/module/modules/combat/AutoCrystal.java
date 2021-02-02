@@ -117,7 +117,7 @@ public class AutoCrystal extends Module {
     public static SubMode blockCalc = new SubMode(logic, "Block Logic", "Normal", "1.13+");
 
     public static Checkbox renderCrystal = new Checkbox("Render", true);
-    public static ColorPicker colorPicker = new ColorPicker(renderCrystal, new Color(250, 0, 250, 50));
+    public static ColorPicker colorPicker = new ColorPicker(renderCrystal, "Color Picker", new Color(250, 0, 250, 50));
     public static SubMode renderMode = new SubMode(renderCrystal, "Mode", "Fill", "Outline", "Both");
     public static SubCheckbox renderDamage = new SubCheckbox(renderCrystal, "Render Damage", true);
 

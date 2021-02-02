@@ -22,10 +22,10 @@ public class Baritone extends Module {
     }
 
     public static Checkbox path = new Checkbox("Render Path", true);
-    public static ColorPicker pathPicker = new ColorPicker(path, new Color(255, 0, 255));
+    public static ColorPicker pathPicker = new ColorPicker(path, "Path Picker", new Color(255, 0, 255));
 
     public static Checkbox goal = new Checkbox("Render Goal", true);
-    public static ColorPicker goalPicker = new ColorPicker(goal, new Color(0, 255, 255));
+    public static ColorPicker goalPicker = new ColorPicker(goal, "Goal Picker", new Color(0, 255, 255));
 
     public static Checkbox allow = new Checkbox("Allow", true);
     public static SubCheckbox jumpAt256 = new SubCheckbox(allow, "Jump at Build Height", true);

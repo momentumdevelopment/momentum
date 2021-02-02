@@ -38,7 +38,7 @@ public class SelfTrap extends Module {
     public static Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, new Color(109, 231, 217, 121));
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker",  new Color(109, 231, 217, 121));
 
     @Override
     public void setup() {

@@ -26,7 +26,7 @@ public class AimBot extends Module {
         super("AimBot", Category.COMBAT, "Automatically rotates to nearby entities");
     }
 
-    public static Mode mode = new Mode("Rotate","Packet", "Legit", "None");
+    public static Mode mode = new Mode("Rotate","Legit", "Packet", "None");
     public static Slider range = new Slider("Range", 0.0D, 8.0D, 20.0D, 0);
     public static Checkbox onlyBow = new Checkbox("Bow Only", true);
 
@@ -37,7 +37,7 @@ public class AimBot extends Module {
         addSetting(onlyBow);
     }
 
-    EntityPlayer target = null;
+    EntityPlayer aimTarget = null;
     Rotation aimbotRotation = null;
 
     @Override
@@ -48,27 +48,19 @@ public class AimBot extends Module {
         if (!(InventoryUtil.getHeldItem(Items.BOW)) && !mc.player.isHandActive() && !(mc.player.getItemInUseMaxCount() >= 3) && onlyBow.getValue())
             return;
 
-        target = WorldUtil.getClosestPlayer(range.getValue());
+        aimTarget = WorldUtil.getClosestPlayer(range.getValue());
 
-        if (target != null && (!FriendManager.isFriend(target.getName()) && FriendManager.isFriendModuleEnabled())) {
+        if (aimTarget != null && (!FriendManager.isFriend(aimTarget.getName()) && FriendManager.isFriendModuleEnabled())) {
             switch (mode.getValue()) {
                 case 0:
-                    aimbotRotation = new Rotation(RotationUtil.getAngles(target)[0], RotationUtil.getAngles(target)[1], Rotation.RotationMode.Packet);
+                    aimbotRotation = new Rotation(RotationUtil.getAngles(aimTarget)[0], RotationUtil.getAngles(aimTarget)[1], Rotation.RotationMode.Legit);
                     break;
                 case 1:
-                    aimbotRotation = new Rotation(RotationUtil.getAngles(target)[0], RotationUtil.getAngles(target)[1], Rotation.RotationMode.Legit);
+                    aimbotRotation = new Rotation(RotationUtil.getAngles(aimTarget)[0], RotationUtil.getAngles(aimTarget)[1], Rotation.RotationMode.Packet);
                     break;
             }
 
             RotationManager.rotationQueue.add(aimbotRotation);
-        }
-    }
-
-    @SubscribeEvent
-    public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketPlayer && aimbotRotation != null) {
-            ((CPacketPlayer) event.getPacket()).yaw = aimbotRotation.yaw;
-            ((CPacketPlayer) event.getPacket()).pitch = aimbotRotation.pitch;
         }
     }
 

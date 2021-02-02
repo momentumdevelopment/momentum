@@ -16,11 +16,13 @@ import java.awt.*;
 
 public class ColorPicker extends SubSetting {
 
+    private String name;
     private Setting parent;
     private Color color;
     private boolean opened;
 
-    public ColorPicker(Setting parent, Color color) {
+    public ColorPicker(Setting parent, String name, Color color) {
+        this.name = name;
         this.parent = parent;
         this.color = color;
         this.opened = false;
@@ -48,6 +50,10 @@ public class ColorPicker extends SubSetting {
 
     public Setting getParent() {
         return this.parent;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public Color getColor() {

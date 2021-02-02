@@ -24,19 +24,19 @@ public class Window implements MixinInterface {
 	public int x;
 	public int y;
 
-	boolean ldown;
-	boolean rdown;
-	boolean dragging;
-	boolean opened = true;
+	public boolean ldown;
+	public boolean rdown;
+	public boolean dragging;
+	public boolean opened = true;
 
-	int currentTheme;
+	public int currentTheme;
 
-	int lastmX;
-	int lastmY;
-	final String name;
-	final Category category;
-	final List<Module> modules;
-	public static final List<Window> windows = new ArrayList<>();
+	public int lastmX;
+	public int lastmY;
+	public String name;
+	public Category category;
+	public List<Module> modules;
+	public static List<Window> windows = new ArrayList<>();
 
 	public Window(String name, int x, int y, Category category) {
 		this.name = name;
@@ -121,7 +121,7 @@ public class Window implements MixinInterface {
 	public void mouseWheelListen() {
 		int scrollWheel = Mouse.getDWheel();
 
-		for (final Window windows : Window.windows) {
+		for (Window windows : Window.windows) {
 			if (scrollWheel < 0)
 				windows.setY((int) (windows.getY() - ClickGUI.scrollSpeed.getValue()));
 
