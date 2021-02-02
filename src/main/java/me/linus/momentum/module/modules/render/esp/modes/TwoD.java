@@ -14,6 +14,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+import static org.lwjgl.opengl.GL11.*;
+
 /**
  * @author linustouchtips
  * @since 01/06/2021
@@ -47,9 +49,9 @@ public class TwoD extends ESPMode {
             GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(-viewerYaw, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate((isThirdPersonFrontal ? -1 : 1), 1.0F, 0.0F, 0.0F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+            ESPUtil.setColor(new Color(255, 255, 255, 125));
             GL11.glLineWidth(1.0f);
-            GL11.glEnable(2848);
+            GL11.glEnable(GL_LINE_SMOOTH);
 
             if ((entitylivingbaseIn instanceof EntityPlayer && !(entitylivingbaseIn instanceof EntityPlayerSP) && ESP.players.getValue()) || (EntityUtil.isPassive(entitylivingbaseIn) && ESP.animals.getValue()) || (EntityUtil.isHostileMob(entitylivingbaseIn) && ESP.mobs.getValue()) || (EntityUtil.isVehicle(entitylivingbaseIn) && ESP.vehicles.getValue()) || (entitylivingbaseIn instanceof EntityEnderCrystal && ESP.crystals.getValue())) {
                 Color color = ColorUtil.getEntityColor(entitylivingbaseIn);
