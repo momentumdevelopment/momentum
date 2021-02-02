@@ -31,13 +31,13 @@ public class ModuleManager implements MixinInterface {
 
 	static final List<Module> modules = Arrays.asList(
 			// client
+			new Baritone(),
+			new Capes(),
 			new ClickGUI(),
 			new Colors(),
-			new HUDEditor(),
-			new Baritone(),
 			new ClientFont(),
-			new Friends(),
-			new Capes(),
+			new HUDEditor(),
+			new Social(),
 
 			// combat
 			new AimBot(),

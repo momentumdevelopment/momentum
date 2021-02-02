@@ -22,9 +22,7 @@ public class HClip extends Command implements MixinInterface {
         Vec3d direction = RotationUtil.direction(mc.player.rotationYaw);
 
         if (direction != null && args.length > 0) {
-            Entity entity = mc.player.isRiding() ? mc.player.getRidingEntity() : mc.player;
-
-            entity.setPosition(mc.player.posX + direction.x * Double.valueOf(args[1]), mc.player.posY, mc.player.posZ + direction.z * Double.valueOf(args[1]));
+            (mc.player.isRiding() ? mc.player.getRidingEntity() : mc.player).setPosition(mc.player.posX + direction.x * Double.valueOf(args[1]), mc.player.posY, mc.player.posZ + direction.z * Double.valueOf(args[1]));
 
             MessageUtil.sendClientMessage("Teleported you " + args[1] + " blocks in the horizontal direction!");
         }

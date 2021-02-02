@@ -1,14 +1,14 @@
-package me.linus.momentum.util.client.friend;
+package me.linus.momentum.util.social.enemy;
 
 /**
  * @author linustouchtips
- * @since 11/29/2020
+ * @since 02/01/2021
  */
 
-public class Friend {
+public class Enemy {
     String name;
 
-    public Friend(String name) {
+    public Enemy(String name) {
         this.name = name;
     }
 

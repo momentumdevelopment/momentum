@@ -75,6 +75,6 @@ public class AntiCrystal extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (renderBlock != null && renderPlacement.getValue())
-            RenderUtil.drawBoxBlockPos(renderBlock, -0.9, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
+            RenderUtil.drawBoxBlockPos(renderBlock, -0.9, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
     }
 }

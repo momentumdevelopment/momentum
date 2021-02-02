@@ -6,7 +6,7 @@ import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.StorageESP;
 import me.linus.momentum.module.modules.render.Tracers;
-import me.linus.momentum.util.client.friend.FriendManager;
+import me.linus.momentum.util.social.friend.FriendManager;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;

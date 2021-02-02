@@ -26,7 +26,7 @@ import java.nio.file.Paths;
  * @since 01/18/2020
  */
 
-public class ConfigManager2 {
+public class ConfigManagerJSON {
 
     public static File configFolder = new File("momentum");
     public static Gson gson = new GsonBuilder().setPrettyPrinting().create();

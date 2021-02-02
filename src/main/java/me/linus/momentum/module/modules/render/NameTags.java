@@ -5,7 +5,8 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.ColorUtil;
-import me.linus.momentum.util.client.friend.FriendManager;
+import me.linus.momentum.util.social.enemy.EnemyManager;
+import me.linus.momentum.util.social.friend.FriendManager;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.FontUtil;
@@ -65,6 +66,7 @@ public class NameTags extends Module {
         addSetting(background);
         addSetting(onlyInViewFrustrum);
         addSetting(scale);
+        addSetting(scaleByDistance);
     }
 
     @SubscribeEvent
@@ -245,6 +247,8 @@ public class NameTags extends Module {
     public String generateName(EntityPlayer entityPlayer) {
         if (FriendManager.isFriend(entityPlayer.getName()))
             return TextFormatting.AQUA + entityPlayer.getName() + TextFormatting.RESET;
+        else if (EnemyManager.isEnemy(entityPlayer.getName()))
+            return TextFormatting.DARK_RED + entityPlayer.getName() + TextFormatting.RESET;
         else if (entityPlayer.isSneaking())
             return TextFormatting.GOLD + entityPlayer.getName() + TextFormatting.RESET;
         else
@@ -274,7 +278,7 @@ public class NameTags extends Module {
             if (!mc.isSingleplayer())
                 return ping.getValue() ? " " + mc.getConnection().getPlayerInfo(entityPlayer.getUniqueID()).getResponseTime() + "ms" : "";
             else
-                return ping.getValue() ? " -1ms" : "";
+                return ping.getValue() ? " -1 ms" : "";
         } catch (Exception e) {
             e.printStackTrace();
         }

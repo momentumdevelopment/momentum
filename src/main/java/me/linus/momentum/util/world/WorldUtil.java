@@ -3,7 +3,7 @@ package me.linus.momentum.util.world;
 import com.mojang.authlib.GameProfile;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
-import me.linus.momentum.util.client.friend.FriendManager;
+import me.linus.momentum.util.social.friend.FriendManager;
 import me.linus.momentum.util.combat.EnemyUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.GuiMainMenu;

@@ -4,9 +4,8 @@ import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.module.modules.client.ClickGUI;
-import me.linus.momentum.util.render.GUIUtil;
+import me.linus.momentum.util.render.gui.GUIUtil;
 
 import java.util.List;
 

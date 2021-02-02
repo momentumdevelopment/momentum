@@ -1,6 +1,7 @@
-package me.linus.momentum.util.client.friend;
+package me.linus.momentum.util.social.friend;
 
 import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.module.modules.client.Social;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +32,14 @@ public class FriendManager {
     }
 
     public static boolean isFriend(String name) {
-        boolean friend = false;
+        boolean isFriend = false;
 
-        for (Friend f : getFriends()) {
-            if (f.getName().equalsIgnoreCase(name))
-                friend = true;
+        for (Friend friend : getFriends()) {
+            if (friend.getName().equalsIgnoreCase(name))
+                isFriend = true;
         }
 
-        return friend;
+        return isFriend;
     }
 
     public static Friend getFriendByName(String name) {
@@ -46,6 +47,6 @@ public class FriendManager {
     }
 
     public static boolean isFriendModuleEnabled() {
-        return ModuleManager.getModuleByName("Friends").isEnabled();
+        return ModuleManager.getModuleByName("Social").isEnabled() && Social.friends.getValue();
     }
 }

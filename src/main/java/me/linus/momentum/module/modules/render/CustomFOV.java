@@ -16,14 +16,24 @@ public class CustomFOV extends Module {
     }
 
     public static Slider customFOV = new Slider("FOV", 0.0D, 120.0D, 250.0D, 0);
+    public static Slider itemFOV = new Slider("Item FOV", 0.0D, 120.0D, 250.0D, 0);
 
     @Override
     public void setup() {
         addSetting(customFOV);
+        addSetting(itemFOV);
+    }
+
+    @Override
+    public void onUpdate() {
+        if (nullCheck())
+            return;
+
+        mc.gameSettings.fovSetting = (float) customFOV.getValue();
     }
 
     @SubscribeEvent
     public void eventFOV(EntityViewRenderEvent.FOVModifier FOV) {
-        FOV.setFOV((float) customFOV.getValue());
+        FOV.setFOV((float) itemFOV.getValue());
     }
 }

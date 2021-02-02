@@ -22,9 +22,7 @@ public class VClip extends Command implements MixinInterface {
         Vec3d direction = RotationUtil.direction(mc.player.rotationYaw);
 
         if (direction != null && args.length > 1) {
-            Entity entity = mc.player.isRiding() ? mc.player.getRidingEntity() : mc.player;
-
-            entity.setPosition(mc.player.posX, mc.player.posY + Double.valueOf(args[1]), mc.player.posZ);
+            (mc.player.isRiding() ? mc.player.getRidingEntity() : mc.player).setPosition(mc.player.posX, mc.player.posY + Double.valueOf(args[1]), mc.player.posZ);
 
             MessageUtil.sendClientMessage("Teleported you " + args[1] + " blocks in the vertical direction!");
         }

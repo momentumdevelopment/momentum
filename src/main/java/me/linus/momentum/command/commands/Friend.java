@@ -3,7 +3,7 @@ package me.linus.momentum.command.commands;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.command.Command;
 import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.client.friend.FriendManager;
+import me.linus.momentum.util.social.friend.FriendManager;
 import net.minecraft.util.text.TextFormatting;
 
 /**
@@ -41,7 +41,7 @@ public class Friend extends Command {
         }
 
         else
-            MessageUtil.usageException(this, "[player name]");
+            MessageUtil.usageException(this, "[add/remove] [player name]");
     }
 
     @Override

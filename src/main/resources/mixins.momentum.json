@@ -24,7 +24,8 @@
       "MixinRenderPlayer",
       "MixinFontRenderer",
       "MixinRenderWitherSkull",
-      "MixinRenderLivingBase"
+      "MixinRenderLivingBase",
+      "MixinWorld"
     ],
 
     "client": [

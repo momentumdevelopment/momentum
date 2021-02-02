@@ -4,7 +4,7 @@ import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.client.friend.FriendManager;
+import me.linus.momentum.util.social.friend.FriendManager;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.world.WorldUtil;

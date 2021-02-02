@@ -31,21 +31,9 @@ public class FontRender extends FontRenderer implements MixinInterface {
         return this.defaultFont.getFont().getSize();
     }
 
-    public void drawStringVoid(String s, float x, float y, int color) {
-        this.drawString(s, x, y, color, false);
-    }
-
     @Override
     public int drawStringWithShadow(String text, float x, float y, int color) {
         return this.drawString(text, x, y, color, true);
-    }
-
-    public void drawCenteredString(String s, float x, float y, int color, boolean shadow) {
-        this.drawString(s, x - (float) this.getStringWidth(s) / 2.0f, y, color, shadow);
-    }
-
-    public void drawCenteredString(String s, float x, float y, int color) {
-        this.drawStringVoid(s, x - (float) this.getStringWidth(s) / 2.0f, y, color);
     }
 
     @Override
@@ -92,10 +80,6 @@ public class FontRender extends FontRenderer implements MixinInterface {
             ImageAWT currentFont = this.defaultFont;
             double width = 0.0;
             boolean randomCase = false;
-            boolean bold = false;
-            boolean italic = false;
-            boolean strikeThrough = false;
-            boolean underline = false;
 
             for (int index = 0; index < parts.length; ++index) {
                 String part = parts[index];
@@ -132,35 +116,20 @@ public class FontRender extends FontRenderer implements MixinInterface {
                         if (!ignoreColor)
                             currentColor = ColorUtils.hexColors[colorIndex] | alpha << 24;
 
-                        bold = false;
-                        italic = false;
                         randomCase = false;
-                        underline = false;
-                        strikeThrough = false;
                         break;
                     case 16: {
                         randomCase = true;
                         break;
                     }
                     case 18:
-                        strikeThrough = true;
-                        break;
-                    case 19:
-                        underline = true;
-                        break;
-                    case 20:
-                        italic = true;
                         break;
                     case 21:
                         currentColor = color;
-                        if ((currentColor & 0xFC000000) == 0) {
+                        if ((currentColor & 0xFC000000) == 0)
                             currentColor |= 0xFF000000;
-                        }
-                        bold = false;
-                        italic = false;
+
                         randomCase = false;
-                        underline = false;
-                        strikeThrough = false;
                 }
 
                 currentFont = this.defaultFont;
@@ -193,8 +162,7 @@ public class FontRender extends FontRenderer implements MixinInterface {
             String[] parts = text.split("§");
             ImageAWT currentFont = this.defaultFont;
             int width = 0;
-            boolean bold = false;
-            boolean italic = false;
+
             for (int index = 0; index < parts.length; ++index) {
                 String part = parts[index];
 
@@ -207,18 +175,6 @@ public class FontRender extends FontRenderer implements MixinInterface {
                 }
 
                 String words = part.substring(1);
-                char type = part.charAt(0);
-                int colorIndex = FontRender.getColorIndex(type);
-                if (colorIndex < 16)
-                    bold = false;
-                    italic = false;
-                if (colorIndex == 17)
-                    bold = true;
-                else if (colorIndex == 20)
-                    italic = true;
-                else if (colorIndex == 21)
-                    bold = false;
-                    italic = false;
 
                 currentFont =  this.defaultFont;
                 width += currentFont.getStringWidth(words);

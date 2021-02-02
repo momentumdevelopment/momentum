@@ -10,7 +10,7 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.player.rotation.RotationManager;
 import me.linus.momentum.util.world.Timer;
-import me.linus.momentum.util.client.friend.FriendManager;
+import me.linus.momentum.util.social.friend.FriendManager;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;

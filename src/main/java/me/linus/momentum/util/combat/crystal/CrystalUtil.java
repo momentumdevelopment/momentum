@@ -23,6 +23,7 @@ import net.minecraft.world.Explosion;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -39,21 +40,11 @@ public class CrystalUtil implements MixinInterface {
             mc.playerController.attackEntity(mc.player, crystal);
     }
 
-    public static boolean attackCheck(Entity crystal, int mode, double breakRange, List<BlockPos> placedCrystals) {
+    public static boolean attackCheck(Entity crystal) {
         if (!(crystal instanceof EntityEnderCrystal))
             return false;
 
-        switch (mode) {
-            case 0:
-                return true;
-            case 1:
-                for (BlockPos placePos : new ArrayList<>(placedCrystals)) {
-                    if (placePos != null && placePos.getDistance((int) crystal.posX, (int) crystal.posY, (int) crystal.posZ) <= breakRange)
-                        return true;
-                }
-        }
-
-        return false;
+        return true;
     }
 
     public static void swingArm(int mode) {

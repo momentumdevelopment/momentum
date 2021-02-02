@@ -16,8 +16,8 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.friend.Friend;
-import me.linus.momentum.util.client.friend.FriendManager;
+import me.linus.momentum.util.social.friend.Friend;
+import me.linus.momentum.util.social.friend.FriendManager;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -51,6 +51,7 @@ public class ConfigManager {
         saveHUDSettings();
         savePrefix();
         saveBinds();
+        saveDrawn();
     }
 
     public static void loadConfig() {
@@ -66,6 +67,7 @@ public class ConfigManager {
         loadHUDSettings();
         loadPrefix();
         loadBinds();
+        loadDrawn();
     }
 
     public static void saveEnabledModules() {
@@ -673,6 +675,34 @@ public class ConfigManager {
                 String[] regex = line.split(":");
                 Module m = ModuleManager.getModuleByName(regex[0]);
                 m.getKeybind().setKeyCode(Integer.parseInt(regex[1]));
+            }
+
+            br.close();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public static void saveDrawn() {
+        try {
+            File binds = new File(config.getAbsolutePath(), "Drawn.txt");
+            BufferedWriter bw = new BufferedWriter(new FileWriter(binds));
+            for (Module m : ModuleManager.getModules()) {
+                bw.write(m.getName() + ":" + m.isDrawn());
+                bw.write("\r\n");
+            }
+
+            bw.close();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public static void loadDrawn() {
+        try {
+            File binds = new File(config.getAbsolutePath(), "Drawn.txt");
+            BufferedReader br = new BufferedReader(new FileReader(binds));
+            List<String> linezz = Files.readAllLines(binds.toPath());
+            for (String line : linezz) {
+                String[] regex = line.split(":");
+                Module m = ModuleManager.getModuleByName(regex[0]);
+                m.setDrawn(Boolean.parseBoolean(regex[1]));
             }
 
             br.close();

@@ -2,7 +2,7 @@ package me.linus.momentum.gui.main.gui;
 
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
-import me.linus.momentum.util.render.GUIUtil;
+import me.linus.momentum.util.render.gui.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 

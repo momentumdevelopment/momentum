@@ -34,8 +34,8 @@ public class CommandManager {
             new Cancel(),
             new Peek(),
             new Drawn(),
-            new Save(),
-            new Client()
+            new Client(),
+            new Enemy()
     );
 
     public static List<Command> getCommands() {

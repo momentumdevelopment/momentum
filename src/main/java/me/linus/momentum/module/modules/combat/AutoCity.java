@@ -98,7 +98,7 @@ public class AutoCity extends Module {
     @SubscribeEvent
     public void onWorldRender(RenderWorldLastEvent eventRender) {
         if (breakTarget != null)
-            RenderUtil.drawBoxBlockPos(breakTarget, 0, new Color(0, 255, 0, 50), RenderBuilder.renderMode.Fill);
+            RenderUtil.drawBoxBlockPos(breakTarget, 0, new Color(0, 255, 0, 50), RenderBuilder.RenderMode.Fill);
     }
 
     @Override

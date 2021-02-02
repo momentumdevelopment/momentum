@@ -6,7 +6,9 @@ import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.util.client.CapeAPI;
-import me.linus.momentum.util.client.friend.FriendManager;
+import me.linus.momentum.util.social.enemy.EnemyManager;
+import me.linus.momentum.util.social.friend.FriendManager;
+import me.linus.momentum.util.combat.crystal.CrystalManager;
 import me.linus.momentum.util.config.ConfigManager;
 import me.linus.momentum.util.config.ShutdownHook;
 import me.linus.momentum.util.player.rotation.RotationManager;
@@ -44,8 +46,10 @@ public class Momentum {
     public static ModuleManager moduleManager;
     public static CommandManager commandManager;
     public static FriendManager friendManager;
+    public static EnemyManager enemyManager;
     public static HUDComponentManager componentManager;
     public static RotationManager rotationManager;
+    public static CrystalManager crystalManager;
     public static FontUtil fontManager = new FontUtil();
     public static CapeAPI capeAPI;
 
@@ -69,6 +73,9 @@ public class Momentum {
     	rotationManager = new RotationManager();
         LOGGER.info("Client Rotations Initialized!");
 
+        crystalManager = new CrystalManager();
+        LOGGER.info("AutoCrystal Manager Initialized!");
+
     	Window.initGui();
     	LOGGER.info("ClickGui Initialized!");
 
@@ -77,6 +84,9 @@ public class Momentum {
 
         friendManager = new FriendManager();
         LOGGER.info("Friends System Initialized!");
+
+        enemyManager = new EnemyManager();
+        LOGGER.info("Enemy System Initialized!");
 
         commandManager = new CommandManager();
         LOGGER.info("Commands Initialized!");

@@ -2,6 +2,11 @@ package me.linus.momentum.util.combat.crystal;
 
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * @author linustouchtips
+ * @since 02/01/2021
+ */
+
 public class CrystalPosition {
 
     BlockPos crystalPosition;

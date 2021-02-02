@@ -106,7 +106,7 @@ public class AutoTrap extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (placeBlock != null)
-            RenderUtil.drawBoxBlockPos(placeBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
+            RenderUtil.drawBoxBlockPos(placeBlock, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
     }
 
     public List<Vec3d> getTrap() {

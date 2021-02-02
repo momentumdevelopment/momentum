@@ -143,7 +143,7 @@ public class Surround extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (renderSurround.getValue() && renderBlock != null)
-            RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
+            RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
     }
 
     List<Vec3d> getSurround() {

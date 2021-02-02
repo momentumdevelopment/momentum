@@ -1,6 +1,8 @@
 package me.linus.momentum.mixin.mixins;
 
-import me.linus.momentum.util.client.friend.FriendManager;
+import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.util.social.enemy.EnemyManager;
+import me.linus.momentum.util.social.friend.FriendManager;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.scoreboard.ScorePlayerTeam;
@@ -19,8 +21,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinGuiPlayerTabOverlay {
 
     @Inject(method = "getPlayerName", at = @At("HEAD"), cancellable = true)
-    public void getPlayerName(NetworkPlayerInfo networkPlayerInfoIn, CallbackInfoReturnable returnable) {
-        returnable.cancel();
-        returnable.setReturnValue((FriendManager.isFriend(networkPlayerInfoIn.getDisplayName() != null ? networkPlayerInfoIn.getDisplayName().getFormattedText() : ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName()))) ? TextFormatting.AQUA + (networkPlayerInfoIn.getDisplayName() != null ? networkPlayerInfoIn.getDisplayName().getFormattedText() : ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName())) : networkPlayerInfoIn.getDisplayName() != null ? networkPlayerInfoIn.getDisplayName().getFormattedText() : ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName()));
+    public void getPlayerName(NetworkPlayerInfo networkPlayerInfoIn, CallbackInfoReturnable callbackInfoReturnable) {
+        if (ModuleManager.getModuleByName("Social").isEnabled()) {
+            callbackInfoReturnable.cancel();
+            callbackInfoReturnable.setReturnValue(getPlayerName(networkPlayerInfoIn));
+        }
+    }
+
+    public String getPlayerName(NetworkPlayerInfo networkPlayerInfoIn) {
+        String displayName = networkPlayerInfoIn.getDisplayName() != null ? networkPlayerInfoIn.getDisplayName().getFormattedText() : ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName());
+        if (FriendManager.isFriend(displayName))
+            return TextFormatting.AQUA + displayName;
+        else if (EnemyManager.isEnemy(displayName))
+            return TextFormatting.DARK_RED + displayName;
+        else
+            return displayName;
     }
 }

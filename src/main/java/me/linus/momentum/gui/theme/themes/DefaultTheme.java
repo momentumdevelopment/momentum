@@ -22,8 +22,9 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
-import me.linus.momentum.util.render.GUIUtil;
+import me.linus.momentum.util.render.Render2DUtil;
 import me.linus.momentum.util.render.builder.RenderUtil;
+import me.linus.momentum.util.render.gui.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -81,12 +82,14 @@ public class DefaultTheme extends Theme implements MixinInterface {
             GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), m.isEnabled() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color);
             FontUtil.drawString(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
 
-            if (m.hasSettings() && !m.isOpened())
+            if (m.hasSettings() && !m.isOpened() && ClickGUI.indicators.getValue())
                 FontUtil.drawString("+", (x + width) - 12, y + 1 + height + (boost * height), -1);
 
             if (m.isOpened()) {
                 if (m.hasSettings()) {
-                    FontUtil.drawString("-", (x + width) - 12, y + 1 + height + (boost * height), -1);
+                    if (ClickGUI.indicators.getValue())
+                        FontUtil.drawString("-", (x + width) - 12, y + 1 + height + (boost * height), -1);
+
                     drawDropdown(m, x, y, mouseX, mouseY);
                 }
 
@@ -304,8 +307,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
                 checkbox.toggleState();
         }
 
-        GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-        GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), checkbox.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color);
+        GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0x99202020);
+        GuiScreen.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), checkbox.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color);
         FontUtil.drawString(checkbox.getName(), x + 7, (y + height) + 4 + (boost * height), -1);
 
         if (checkbox.hasSubSettings() && !checkbox.isOpened() && ClickGUI.indicators.getValue())
@@ -325,7 +328,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         }
 
         GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-        GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), sc.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color);
+        GuiScreen.drawRect(x + 8, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), sc.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color);
         FontUtil.drawString(sc.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
     }
 
@@ -342,7 +345,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         }
 
         GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0x99202020);
-        GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
+        GuiScreen.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), color);
         FontUtil.drawString(m.getName() + ": " + m.getMode(m.getValue()), x + 7, (y + height) + 4 + (boost * height), -1);
 
         if (m.hasSubSettings() && !m.isOpened() && ClickGUI.indicators.getValue())
@@ -363,7 +366,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         }
 
         GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-        GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
+        GuiScreen.drawRect(x + 8, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), color);
         FontUtil.drawString(sm.getName() + ": " + sm.getMode(sm.getValue()), x + 12, (y + height) + 4 + (boost * height), -1);
     }
 
@@ -394,8 +397,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
         }
 
         GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-        GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
-        GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, x + 4 + (rectAdd > width - 1 ? (width - 5) : rectAdd), (y + height) + height + (boost * height), ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR);
+        GuiScreen.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), color);
+        GuiScreen.drawRect(x + 4, y + height + (boost * height), x + 4 + (rectAdd > width - 1 ? (width - 5) : rectAdd), (y + height) + height + (boost * height), ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR);
         FontUtil.drawString(sl.getName() + " " + sl.getValue(), x + 6, (y + height) + 4 + (boost * height), -1);
 
         if (sl.hasSubSettings() && !sl.isOpened() && ClickGUI.indicators.getValue())
@@ -432,8 +435,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
         }
 
         GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-        GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
-        GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, x + 8 + (rectAdd > width ? (width-8) : rectAdd), (y + height) + height + (boost * height), ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR);
+        GuiScreen.drawRect(x + 8, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), color);
+        GuiScreen.drawRect(x + 8, y + height + (boost * height), x + 8 + (rectAdd > width ? (width-8) : rectAdd), (y + height) + height + (boost * height), ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR);
         FontUtil.drawString(ssl.getName() + " " + ssl.getValue(), x + 10, (y + height) + 4 + (boost * height), -1);
     }
 
@@ -454,7 +457,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             keybind.setBinding(false);
 
         GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-        GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
+        GuiScreen.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), color);
 
         if (!keybind.isBinding())
             FontUtil.drawString(keybind.getName() + ": " + (keybind.getKey() == -2 ? "None" : Keyboard.getKeyName(keybind.getKey())), x + 7, (y + height) + 4 + (boost * height), -1);
@@ -479,7 +482,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             skb.setBinding(false);
 
         GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-        GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
+        GuiScreen.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), color);
 
         if (!skb.isBinding())
             FontUtil.drawString(skb.getName() + ": " + (skb.getKey() == -2 ? "None" : Keyboard.getKeyName(skb.getKey())), x + 7, (y + height) + 4 + (boost * height), -1);
@@ -516,7 +519,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             m.setBinding(false);
 
         GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
-        GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), color);
+        GuiScreen.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), color);
 
         if (!m.isBinding())
             FontUtil.drawString("Keybind: " + (m.getKeybind().getDisplayName().equalsIgnoreCase("NONE") ? "None" : m.getKeybind().getDisplayName()), x + 7, (y + height) + 4 + (boost * height), -1);
@@ -545,8 +548,10 @@ public class DefaultTheme extends Theme implements MixinInterface {
                 FontUtil.drawString("+", (x + width) - 12, y + 2 + height + (boost * height), -1);
 
             if (component.isOpened()) {
-                if (component.hasSettings() && ClickGUI.indicators.getValue()) {
-                    FontUtil.drawString("-", (x + width) - 12, y + 2 + height + (boost * height), -1);
+                if (component.hasSettings()) {
+                    if (ClickGUI.indicators.getValue())
+                        FontUtil.drawString("-", (x + width) - 12, y + 2 + height + (boost * height), -1);
+
                     drawHUDDropdown(component, x, y);
                 }
             }
@@ -668,7 +673,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
                 int previousStep = Color.HSBtoRGB((float) step/6, 1.0f, 1.0f);
                 int nextStep = Color.HSBtoRGB((float) (step+1)/6, 1.0f, 1.0f);
-                drawGradientRect(x, y + step * (height/6), x + width, y + (step+1) * (height/6), previousStep, nextStep);
+                Render2DUtil.drawGradientRectVertical(x, y + step * (height/6), x + width, y + (step+1) * (height/6), previousStep, nextStep);
                 step++;
             }
 
@@ -680,7 +685,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
                 int previousStep = Color.HSBtoRGB((float) step/6, 1.0f, 1.0f);
                 int nextStep = Color.HSBtoRGB((float) (step+1)/6, 1.0f, 1.0f);
-                gradient(x + step * (width/6), y, x + (step+1) * (width/6), y + height, previousStep, nextStep, true);
+                Render2DUtil.drawGradientRectHorizontal(x + step * (width/6), y, x + (step+1) * (width/6), y + height, previousStep, nextStep);
                 step++;
             }
 
@@ -709,66 +714,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
             left = !left;
         }
 
-        gradient(x, y, x + width, y + height, new Color(red, green, blue, 1).getRGB(), 0, true);
+        Render2DUtil.drawGradientRectHorizontal(x, y, x + width, y + height, new Color(red, green, blue, 1).getRGB(), 0);
         int sliderMinX = (int) (x + width - (width * alpha));
         GuiScreen.drawRect(sliderMinX - 1, y,  sliderMinX + 1, y + height, -1);
-    }
-
-    public static void gradient(int minX, int minY, int maxX, int maxY, int startColor, int endColor, boolean left) {
-        if (left) {
-            float startA = (startColor >> 24 & 0xFF) / 255.0f;
-            float startR = (startColor >> 16 & 0xFF) / 255.0f;
-            float startG = (startColor >> 8 & 0xFF) / 255.0f;
-            float startB = (startColor & 0xFF) / 255.0f;
-            float endA = (endColor >> 24 & 0xFF) / 255.0f;
-            float endR = (endColor >> 16 & 0xFF) / 255.0f;
-            float endG = (endColor >> 8 & 0xFF) / 255.0f;
-            float endB = (endColor & 0xFF) / 255.0f;
-
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-            GL11.glBegin(GL11.GL_POLYGON);
-            GL11.glColor4f(startR, startG, startB, startA);
-            GL11.glVertex2f(minX, minY);
-            GL11.glVertex2f(minX, maxY);
-            GL11.glColor4f(endR, endG, endB, endA);
-            GL11.glVertex2f(maxX, maxY);
-            GL11.glVertex2f(maxX, minY);
-            GL11.glEnd();
-            GL11.glShadeModel(GL11.GL_FLAT);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-            GL11.glDisable(GL11.GL_BLEND);
-        }
-
-        else
-            drawGradientRect(minX, minY, maxX, maxY, startColor, endColor);
-    }
-
-    public static void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor) {
-        float f = (float) (startColor >> 24 & 255) / 255.0F;
-        float f1 = (float) (startColor >> 16 & 255) / 255.0F;
-        float f2 = (float) (startColor >> 8 & 255) / 255.0F;
-        float f3 = (float) (startColor & 255) / 255.0F;
-        float f4 = (float) (endColor >> 24 & 255) / 255.0F;
-        float f5 = (float) (endColor >> 16 & 255) / 255.0F;
-        float f6 = (float) (endColor >> 8 & 255) / 255.0F;
-        float f7 = (float) (endColor & 255) / 255.0F;
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlpha();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.shadeModel(7425);
-        RenderUtil.bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        RenderUtil.bufferbuilder.pos(right, top, 0).color(f1, f2, f3, f).endVertex();
-        RenderUtil.bufferbuilder.pos(left, top, 0).color(f1, f2, f3, f).endVertex();
-        RenderUtil.bufferbuilder.pos(left, bottom, 0).color(f5, f6, f7, f4).endVertex();
-        RenderUtil.bufferbuilder.pos(right, bottom, 0).color(f5, f6, f7, f4).endVertex();
-        RenderUtil.tessellator.draw();
-        GlStateManager.shadeModel(7424);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
     }
 }

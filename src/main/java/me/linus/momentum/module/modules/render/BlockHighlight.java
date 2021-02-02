@@ -33,13 +33,13 @@ public class BlockHighlight extends Module {
         if (mc.objectMouseOver.typeOfHit.equals(RayTraceResult.Type.BLOCK)) {
             switch (mode.getValue()) {
                 case 0:
-                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, new Color(colorPicker.getColor().getRed(), colorPicker.getColor().getGreen(), colorPicker.getColor().getBlue(), 144), RenderBuilder.renderMode.Outline);
+                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, new Color(colorPicker.getColor().getRed(), colorPicker.getColor().getGreen(), colorPicker.getColor().getBlue(), 144), RenderBuilder.RenderMode.Outline);
                     break;
                 case 1:
-                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, colorPicker.getColor(), RenderBuilder.renderMode.Fill);
+                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
                     break;
                 case 2:
-                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, colorPicker.getColor(), RenderBuilder.renderMode.Both);
+                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, colorPicker.getColor(), RenderBuilder.RenderMode.Both);
                     break;
             }
         }

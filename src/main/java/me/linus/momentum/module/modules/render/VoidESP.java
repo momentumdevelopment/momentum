@@ -64,9 +64,9 @@ public class VoidESP extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         for (BlockPos voidPos : voidBlocks)
-            RenderUtil.drawBoxBlockPos(voidPos, 0, colorPicker.getColor(), outline.getValue() ? RenderBuilder.renderMode.Both : RenderBuilder.renderMode.Fill);
+            RenderUtil.drawBoxBlockPos(voidPos, 0, colorPicker.getColor(), outline.getValue() ? RenderBuilder.RenderMode.Both : RenderBuilder.RenderMode.Fill);
 
         for (BlockPos portalPos : portalBlocks)
-            RenderUtil.drawBoxBlockPos(portalPos, 0, colorPicker.getColor(), outline.getValue() ? RenderBuilder.renderMode.Both : RenderBuilder.renderMode.Fill);
+            RenderUtil.drawBoxBlockPos(portalPos, 0, colorPicker.getColor(), outline.getValue() ? RenderBuilder.RenderMode.Both : RenderBuilder.RenderMode.Fill);
     }
 }

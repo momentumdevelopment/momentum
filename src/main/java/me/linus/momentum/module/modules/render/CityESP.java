@@ -55,6 +55,6 @@ public class CityESP extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         for (BlockPos cityPos : cityBlocks)
-            RenderUtil.drawBoxBlockPos(cityPos, 0, colorPicker.getColor(), outline.getValue() ? RenderBuilder.renderMode.Both : RenderBuilder.renderMode.Fill);
+            RenderUtil.drawBoxBlockPos(cityPos, 0, colorPicker.getColor(), outline.getValue() ? RenderBuilder.RenderMode.Both : RenderBuilder.RenderMode.Fill);
     }
 }

@@ -11,7 +11,7 @@ import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.player.rotation.RotationManager;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.world.Timer;
-import me.linus.momentum.util.client.friend.FriendManager;
+import me.linus.momentum.util.social.friend.FriendManager;
 import me.linus.momentum.util.combat.BedUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
@@ -214,8 +214,8 @@ public class AutoBed extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (currentBlock != null && currentTarget != null && renderBed.getValue()) {
-            RenderUtil.drawBoxBlockPos(currentBlock, -0.5, colorPicker.getColor(), RenderBuilder.renderMode.Outline);
-            RenderUtil.drawBoxBlockPos(new BlockPos(currentBlock.x + 1, currentBlock.y, currentBlock.z), -0.5, colorPicker.getColor(), RenderBuilder.renderMode.Outline);
+            RenderUtil.drawBoxBlockPos(currentBlock, -0.5, colorPicker.getColor(), RenderBuilder.RenderMode.Outline);
+            RenderUtil.drawBoxBlockPos(new BlockPos(currentBlock.x + 1, currentBlock.y, currentBlock.z), -0.5, colorPicker.getColor(), RenderBuilder.RenderMode.Outline);
         }
     }
 
