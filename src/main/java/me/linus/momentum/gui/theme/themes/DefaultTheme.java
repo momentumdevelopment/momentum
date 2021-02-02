@@ -531,9 +531,10 @@ public class DefaultTheme extends Theme implements MixinInterface {
     @Override
     public void drawHUDModules(List<HUDComponent> components, int x, int y) {
         boost = 0;
-        int color = 0xCC232323;
         for (HUDComponent component : components) {
+            int color = 0xCC232323;
             if (GUIUtil.mouseOver(x, y + height + 1 + (boost * height), (x + width) - 1, y + height * 2 + (boost * height))) {
+                color = 0xCC383838;
                 if (GUIUtil.ldown)
                     component.toggle();
 

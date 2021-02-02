@@ -12,6 +12,8 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.player.MotionUtil;
+import net.minecraft.network.play.server.SPacketEntityVelocity;
+import net.minecraft.network.play.server.SPacketExplosion;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
@@ -26,7 +28,7 @@ public class Speed extends Module {
         super("Speed", Category.MOVEMENT, "Allows you to go faster");
     }
 
-    public static Mode mode = new Mode("Mode", "SmoothHop", "MomentumHop", "StrictHop", "Y-Port");
+    public static Mode mode = new Mode("Mode", "SmoothHop", "MomentumHop", "StrictHop", "Y-Port", "CrystalHop");
     private static SubKeybind modeKey = new SubKeybind(mode, "ModeSwitch Key", -2);
     public static SubCheckbox strict = new SubCheckbox(mode, "Strict", false);
     public static SubCheckbox enableStep = new SubCheckbox(mode, "Use Step", false);
@@ -59,6 +61,7 @@ public class Speed extends Module {
     private int ticks = 0;
     private double lastDist = 0.0;
     private int timerDelay;
+    private boolean boostable = false;
 
     @Override
     public void onUpdate() {
@@ -70,9 +73,6 @@ public class Speed extends Module {
 
         if ((mc.player.isInWater() || mc.player.isInLava() && inWater.getValue()))
             return;
-
-        if (enableStep.getValue())
-            ModuleManager.getModuleByName("Step").enable();
 
         double xDist = mc.player.posX - mc.player.prevPosX;
         double zDist = mc.player.posZ - mc.player.prevPosZ;
@@ -123,6 +123,9 @@ public class Speed extends Module {
                 break;
             case 2:
                 speedStrict(event);
+                break;
+            case 4:
+                speedCrystal(event);
                 break;
         }
     }
@@ -308,6 +311,94 @@ public class Speed extends Module {
         }
     }
 
+    public void speedCrystal(MoveEvent event) {
+        ++timerDelay;
+        timerDelay %= 5;
+
+        if (timerDelay != 0)
+            mc.timer.tickLength = 50f;
+
+        else if (MotionUtil.hasMotion()) {
+            mc.timer.tickLength = 50f / 1.3f;
+            mc.player.motionX *= 1.02f;
+            mc.player.motionZ *= 1.02f;
+        }
+
+        if (mc.player.onGround && MotionUtil.hasMotion())
+            level = 2;
+
+        if (MathUtil.round(mc.player.posY - (double)((int)mc.player.posY)) == MathUtil.round(0.138)) {
+            mc.player.motionY -= 0.08;
+            event.setY(event.getY() - 0.09316090325960147);
+            mc.player.posY -= 0.09316090325960147;
+        }
+
+        if (level == 1 && (mc.player.moveForward != 0.0f || mc.player.moveStrafing != 0.0f)) {
+            level = 2;
+            moveSpeed = 1.38 * speed.getValue() - 0.01;
+        }
+
+        else if (level == 2) {
+            level = 3;
+            mc.player.motionY = 0.3994f;
+            event.setY(0.3994f);
+            moveSpeed *= 2.149;
+        }
+
+        else if (level == 3) {
+            level = 4;
+            double difference = 0.66 * (lastDist - speed.getValue());
+            moveSpeed = lastDist - difference;
+        }
+
+        else {
+            if (mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, mc.player.motionY, 0.0)).size() > 0 || mc.player.collidedVertically)
+                level = 1;
+
+            moveSpeed = lastDist - lastDist / 159.0;
+        }
+
+        moveSpeed = Math.max(moveSpeed, speed.getValue());
+        moveSpeed = Math.min(moveSpeed, 0.551);
+        float forward = mc.player.movementInput.moveForward;
+        float strafe = mc.player.movementInput.moveStrafe;
+        float yaw = mc.player.rotationYaw;
+
+        if (forward == 0.0f && strafe == 0.0f) {
+            event.setX(0.0);
+            event.setZ(0.0);
+        }
+
+        else if (forward != 0.0f) {
+            if (strafe >= 1.0f) {
+                yaw += (float)(forward > 0.0f ? -45 : 45);
+                strafe = 0.0f;
+            }
+
+            else if (strafe <= -1.0f) {
+                yaw += (float)(forward > 0.0f ? 45 : -45);
+                strafe = 0.0f;
+            }
+
+            if (forward > 0.0f)
+                forward = 1.0f;
+
+            else if (forward < 0.0f)
+                forward = -1.0f;
+        }
+
+        double mx = Math.cos(Math.toRadians(yaw + 90.0f));
+        double mz = Math.sin(Math.toRadians(yaw + 90.0f));
+        event.setX((double) forward * moveSpeed * mx + (double) strafe * moveSpeed * mz + (boostable ? multiplier.getValue() * 10 : 0));
+        event.setZ((double) forward * moveSpeed * mz - (double) strafe * moveSpeed * mx + (boostable ? multiplier.getValue() * 10 : 0));
+        mc.player.stepHeight = 0.6f;
+
+        if (forward == 0.0f && strafe == 0.0f) {
+            event.setX(0.0);
+            event.setZ(0.0);
+        }
+    }
+
     public void speedStrict(MoveEvent event) {
         ++timerDelay;
         timerDelay %= 5;
@@ -415,6 +506,12 @@ public class Speed extends Module {
             mc.player.motionY = -1;
             mc.timer.tickLength = 50f;
         }
+    }
+
+    @SubscribeEvent
+    public void onPacketReceive(PacketReceiveEvent event) {
+        if (event.getPacket() instanceof SPacketExplosion)
+            boostable = true;
     }
 
     @Override
