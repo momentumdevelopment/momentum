@@ -6,6 +6,7 @@ import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.module.ModuleManager;
 import me.linus.momentum.util.client.CapeAPI;
+import me.linus.momentum.util.config.ConfigManagerJSON;
 import me.linus.momentum.util.social.enemy.EnemyManager;
 import me.linus.momentum.util.social.friend.FriendManager;
 import me.linus.momentum.util.combat.crystal.CrystalManager;
@@ -21,6 +22,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.Display;
+
+import java.io.IOException;
 
 /**
  * @author bon & linustouchtips
@@ -103,7 +106,12 @@ public class Momentum {
         capeAPI = new CapeAPI();
         LOGGER.info("Cape API Initialized!");
 
-        ConfigManager.loadConfig();
+        try {
+            ConfigManagerJSON.loadConfig();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         LOGGER.info("Config System Loaded!");
 
         Display.setTitle(NAME + " Utility Mod " + VERSION);

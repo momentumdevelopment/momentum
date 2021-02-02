@@ -45,7 +45,7 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
 
     @Overwrite
     protected void renderModel(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-        if (mc.player.getDistance(entitylivingbaseIn) < 1 && ModuleManager.getModuleByName("NoRender").isEnabled() && NoRender.noCluster.getValue())
+        if (mc.player.getDistance(entitylivingbaseIn) < 1 && entitylivingbaseIn != mc.player && ModuleManager.getModuleByName("NoRender").isEnabled() && NoRender.noCluster.getValue())
             GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
 
         if (!this.bindEntityTexture(entitylivingbaseIn))

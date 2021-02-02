@@ -41,14 +41,14 @@ public class Coordinates extends HUDComponent {
 
         if (mode.getValue() == 0) {
             if (overWorld.getValue())
-                FontUtil.drawString(netherCoords, this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+                FontUtil.drawString(netherCoords, this.x, this.y, -1);
 
             if (nether.getValue())
-                FontUtil.drawString(overWorldCoords, this.x, this.y + 10, -1);
+                FontUtil.drawString(overWorldCoords, this.x, this.y + 10, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
         }
 
         else
-            FontUtil.drawString((overWorld.getValue() ? overWorldCoords : "") + " " + (nether.getValue() ? netherCoords : ""), this.x, this.y, -1);
+            FontUtil.drawString((overWorld.getValue() ? overWorldCoords : "") + " " + (nether.getValue() ? netherCoords : ""), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
 
         width = Momentum.fontManager.getCustomFont().getStringWidth(mode.getValue() == 0 ? overWorldCoords : overWorldCoords + " " + netherCoords) + 2;
         height = mode.getValue() == 0 ? (mc.fontRenderer.FONT_HEIGHT * 2) + 4 : mc.fontRenderer.FONT_HEIGHT + 4;

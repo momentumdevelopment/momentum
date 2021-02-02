@@ -175,10 +175,7 @@ public class Aura extends Module {
     }
 
     public Item getItem() {
-        if (weaponCheck.getValue() == 0)
-            return Items.DIAMOND_SWORD;
-        else
-            return Items.DIAMOND_AXE;
+        return (weaponCheck.getValue() == 0) ? Items.DIAMOND_SWORD : Items.DIAMOND_AXE;
     }
 
     @Override

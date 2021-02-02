@@ -92,9 +92,9 @@ public class Trajectories extends Module {
         GL11.glLineWidth(2);
 
         if (power > 0.6f)
-            GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255, colorPicker.getColor().getBlue() / 255, colorPicker.getColor().getAlpha() / 255);
+            GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255f, colorPicker.getColor().getBlue() / 255f, colorPicker.getColor().getAlpha() / 255f);
         else
-            GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255, colorPicker.getColor().getBlue() / 255, colorPicker.getColor().getAlpha() / 255);
+            GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255f, colorPicker.getColor().getBlue() / 255f, colorPicker.getColor().getAlpha() / 255f);
 
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         float size = (float) ((item instanceof ItemBow) ? 0.3 : 0.25);
@@ -130,7 +130,7 @@ public class Trajectories extends Module {
             }
 
             if (landingOnEntity != null)
-                GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255, colorPicker.getColor().getBlue() / 255, colorPicker.getColor().getAlpha() / 255);
+                GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255f, colorPicker.getColor().getBlue() / 255f, colorPicker.getColor().getAlpha() / 255f);
 
             posX += motionX;
             posY += motionY;
@@ -161,11 +161,11 @@ public class Trajectories extends Module {
             c.setDrawStyle(100011);
 
             if (landingOnEntity != null) {
-                GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255, colorPicker.getColor().getBlue() / 255, colorPicker.getColor().getAlpha() / 255);
+                GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255f, colorPicker.getColor().getBlue() / 255f, colorPicker.getColor().getAlpha() / 255f);
                 GL11.glLineWidth(2.5f);
                 c.draw(0.6f, 0.3f, 0.0f, 4, 1);
                 GL11.glLineWidth(0.1f);
-                GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255, colorPicker.getColor().getBlue() / 255, colorPicker.getColor().getAlpha() / 255);
+                GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255f, colorPicker.getColor().getBlue() / 255f, colorPicker.getColor().getAlpha() / 255f);
             }
 
             c.draw(0.6f, 0.3f, 0.0f, 4, 1);
@@ -187,7 +187,7 @@ public class Trajectories extends Module {
         GL11.glVertex3d(var1, var2, var3);
     }
 
-    private List getEntitiesWithinAABB(AxisAlignedBB bb) {
+    List getEntitiesWithinAABB(AxisAlignedBB bb) {
         ArrayList list = new ArrayList<>();
         int chunkMinX = MathHelper.floor((bb.minX - 2.0) / 16.0);
         int chunkMaxX = MathHelper.floor((bb.maxX + 2.0) / 16.0);

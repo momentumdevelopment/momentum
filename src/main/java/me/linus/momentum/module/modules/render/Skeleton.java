@@ -2,6 +2,7 @@ package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import net.minecraft.client.gui.Gui;
@@ -15,6 +16,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.util.HashMap;
 
 /**
@@ -28,10 +30,7 @@ public class Skeleton extends Module {
     }
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static SubSlider red = new SubSlider(color, "Red", 0.0D, 255.0D, 255.0D, 0);
-    public static SubSlider green = new SubSlider(color, "Green", 0.0D, 255.0D, 255.0D, 0);
-    public static SubSlider blue = new SubSlider(color, "Blue", 0.0D, 255.0D, 255.0D, 0);
-    public static SubSlider alpha = new SubSlider(color, "Alpha", 0.0D, 255.0D, 255.0D, 0);
+    public static ColorPicker colorPicker = new ColorPicker(color, new Color(255, 255, 255, 255));
 
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 1.0D, 5.0D, 1);
 
@@ -75,7 +74,7 @@ public class Skeleton extends Module {
             GL11.glPushMatrix();
             GL11.glEnable(2848);
             GL11.glLineWidth((float) lineWidth.getValue());
-            GlStateManager.color((float) red.getValue() / 255.0F, (float) green.getValue() / 255.0F, (float) blue.getValue() / 255.0F, (float) alpha.getValue() / 255.0F);
+            GlStateManager.color((float) colorPicker.getColor().getRed() / 255.0F, (float) colorPicker.getColor().getGreen() / 255.0F, (float) colorPicker.getColor().getBlue() / 255.0F, (float) colorPicker.getColor().getAlpha() / 255.0F);
             Vec3d vec = getVec3(event, e);
             double x = vec.x - mc.getRenderManager().renderPosX;
             double y = vec.y - mc.getRenderManager().renderPosY;
@@ -86,7 +85,7 @@ public class Skeleton extends Module {
             GL11.glTranslated(0.0D, 0.0D, e.isSneaking() ? -0.235D : 0.0D);
             float yOff = e.isSneaking() ? 0.6F : 0.75F;
             GL11.glPushMatrix();
-            GlStateManager.color((float) red.getValue() / 255.0F, (float) green.getValue() / 255.0F, (float) blue.getValue() / 255.0F, (float) alpha.getValue() / 255.0F);
+            GlStateManager.color((float) colorPicker.getColor().getRed() / 255.0F, (float) colorPicker.getColor().getGreen() / 255.0F, (float) colorPicker.getColor().getBlue() / 255.0F, (float) colorPicker.getColor().getAlpha() / 255.0F);
             GL11.glTranslated(-0.125D, yOff, 0.0D);
 
             if (entPos[3][0] != 0.0F)
@@ -104,7 +103,7 @@ public class Skeleton extends Module {
             GL11.glEnd();
             GL11.glPopMatrix();
             GL11.glPushMatrix();
-            GlStateManager.color((float) red.getValue() / 255.0F, (float) green.getValue() / 255.0F, (float) blue.getValue() / 255.0F, (float) alpha.getValue() / 255.0F);
+            GlStateManager.color((float) colorPicker.getColor().getRed() / 255.0F, (float) colorPicker.getColor().getGreen() / 255.0F, (float) colorPicker.getColor().getBlue() / 255.0F, (float) colorPicker.getColor().getAlpha() / 255.0F);
             GL11.glTranslated(0.125D, yOff, 0.0D);
 
             if (entPos[4][0] != 0.0F)
@@ -123,10 +122,10 @@ public class Skeleton extends Module {
             GL11.glPopMatrix();
             GL11.glTranslated(0.0D, 0.0D, e.isSneaking() ? 0.25D : 0.0D);
             GL11.glPushMatrix();
-            GlStateManager.color((float) red.getValue() / 255.0F, (float) green.getValue() / 255.0F, (float) blue.getValue() / 255.0F, (float) alpha.getValue() / 255.0F);
+            GlStateManager.color((float) colorPicker.getColor().getRed() / 255.0F, (float) colorPicker.getColor().getGreen() / 255.0F, (float) colorPicker.getColor().getBlue() / 255.0F, (float) colorPicker.getColor().getAlpha() / 255.0F);
             GL11.glTranslated(0.0D, e.isSneaking() ? -0.05D : 0.0D, e.isSneaking() ? -0.01725D : 0.0D);
             GL11.glPushMatrix();
-            GlStateManager.color((float) red.getValue() / 255.0F, (float) green.getValue() / 255.0F, (float) blue.getValue() / 255.0F, (float) alpha.getValue() / 255.0F);
+            GlStateManager.color((float) colorPicker.getColor().getRed() / 255.0F, (float) colorPicker.getColor().getGreen() / 255.0F, (float) colorPicker.getColor().getBlue() / 255.0F, (float) colorPicker.getColor().getAlpha() / 255.0F);
             GL11.glTranslated(-0.375D, yOff + 0.55D, 0.0D);
 
             if (entPos[1][0] != 0.0F)
@@ -162,7 +161,7 @@ public class Skeleton extends Module {
             GL11.glPopMatrix();
             GL11.glRotatef(xOff - e.rotationYawHead, 0.0F, 1.0F, 0.0F);
             GL11.glPushMatrix();
-            GlStateManager.color((float) red.getValue() / 255.0F, (float) green.getValue() / 255.0F, (float) blue.getValue() / 255.0F, (float) alpha.getValue() / 255.0F);
+            GlStateManager.color((float) colorPicker.getColor().getRed() / 255.0F, (float) colorPicker.getColor().getGreen() / 255.0F, (float) colorPicker.getColor().getBlue() / 255.0F, (float) colorPicker.getColor().getAlpha() / 255.0F);
             GL11.glTranslated(0.0D, yOff + 0.55D, 0.0D);
 
             if (entPos[0][0] != 0.0F)
@@ -184,7 +183,7 @@ public class Skeleton extends Module {
             GL11.glEnd();
             GL11.glPopMatrix();
             GL11.glPushMatrix();
-            GlStateManager.color((float) red.getValue() / 255.0F, (float) green.getValue() / 255.0F, (float) blue.getValue() / 255.0F, (float) alpha.getValue() / 255.0F);
+            GlStateManager.color((float) colorPicker.getColor().getRed() / 255.0F, (float) colorPicker.getColor().getGreen() / 255.0F, (float) colorPicker.getColor().getBlue() / 255.0F, (float) colorPicker.getColor().getAlpha() / 255.0F);
             GL11.glTranslated(0.0D, yOff, 0.0D);
             GL11.glBegin(3);
             GL11.glVertex3d(0.0D, 0.0D, 0.0D);

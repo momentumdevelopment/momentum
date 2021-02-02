@@ -25,6 +25,12 @@ public class RotationUtil implements MixinInterface {
      * proper rotation spoofing system
      */
 
+    public static Rotation rotationStep(Rotation currentRotation, Rotation targetRotation, float rotationStep) {
+        float yawDifference = ((targetRotation.yaw - currentRotation.yaw) % 360.0f + 540.0f) % 360.0f - 180.0f;
+        float pitchDifference = ((targetRotation.pitch - currentRotation.pitch) % 360.0f + 540.0f) % 360.0f - 180.0f;
+        return new Rotation(currentRotation.yaw + (yawDifference > rotationStep ? rotationStep : Math.max(yawDifference, -rotationStep)), currentRotation.pitch + (pitchDifference > rotationStep ? rotationStep : Math.max(pitchDifference, -rotationStep)), Rotation.RotationMode.Packet);
+    }
+
     // override vanilla packet sending here, we replace them with our own custom values
     public static void updateRotationPackets(RotationEvent event) {
         if (mc.player.isSprinting() != mc.player.serverSprintState) {

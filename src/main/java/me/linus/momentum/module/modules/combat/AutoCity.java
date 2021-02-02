@@ -103,9 +103,6 @@ public class AutoCity extends Module {
 
     @Override
     public String getHUDData() {
-        if (currentTarget != null)
-            return " " + currentTarget.getName();
-        else
-            return " None";
+         return currentTarget != null ? " " + currentTarget.getName() : " None";
     }
 }

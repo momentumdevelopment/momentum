@@ -20,6 +20,7 @@ public class RotationManager implements MixinInterface {
     }
 
     public static LinkedBlockingQueue<Rotation> rotationQueue = new LinkedBlockingQueue<>();
+    public static Rotation serverRotation = null;
     public static Rotation currentRotation = null;
 
     @SubscribeEvent
@@ -40,6 +41,9 @@ public class RotationManager implements MixinInterface {
         if (currentRotation != null && !rotationQueue.isEmpty() && event.getPacket() instanceof CPacketPlayer) {
             ((CPacketPlayer) event.getPacket()).yaw = currentRotation.yaw;
             ((CPacketPlayer) event.getPacket()).pitch = currentRotation.pitch;
+
+            if (((CPacketPlayer) event.getPacket()).rotating)
+                serverRotation = new Rotation(((CPacketPlayer) event.getPacket()).yaw, ((CPacketPlayer) event.getPacket()).pitch, Rotation.RotationMode.Packet);
         }
     }
 }
