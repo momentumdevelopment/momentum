@@ -620,47 +620,23 @@ public class DefaultTheme extends Theme implements MixinInterface {
         GuiScreen.drawRect(pickerX - 2, pickerY - 2, pickerX + pickerWidth + 2, pickerY + pickerHeight + 50, 0xCC232323);
 
         int selectedColor = Color.HSBtoRGB(color[0], 1.0f, 1.0f);
+
         float selectedRed = (selectedColor >> 16 & 0xFF) / 255.0f;
         float selectedGreen = (selectedColor >> 8 & 0xFF) / 255.0f;
         float selectedBlue = (selectedColor & 0xFF) / 255.0f;
 
-        drawPickerBase(pickerX, pickerY, pickerWidth, pickerHeight, selectedRed, selectedGreen, selectedBlue, finalAlpha);
+        Render2DUtil.drawPickerBase(pickerX, pickerY, pickerWidth, pickerHeight, selectedRed, selectedGreen, selectedBlue, finalAlpha);
+
         drawHueSlider(hueSliderX, hueSliderY, hueSliderWidth, hueSliderHeight, color[0]);
-        drawAlphaSlider(alphaSliderX, alphaSliderY, alphaSliderWidth, alphaSliderHeight, selectedRed, selectedGreen, selectedBlue, finalAlpha);
 
         int cursorX = (int) (pickerX + color[1] * pickerWidth);
         int cursorY = (int) ((pickerY + pickerHeight) - color[2] * pickerHeight);
-        GuiScreen.drawRect(cursorX - 2, cursorY - 2, cursorX + 2, cursorY + 2, -1);
-        finalColor = alphaIntegrate(new Color(Color.HSBtoRGB(color[0], color[1], color[2])), finalAlpha);
-    }
 
-    public static void drawPickerBase(int pickerX, int pickerY, int pickerWidth, int pickerHeight, float red, float green, float blue, float alpha) {
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glShadeModel(GL11.GL_SMOOTH);
-        GL11.glBegin(GL11.GL_POLYGON);
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        GL11.glVertex2f(pickerX, pickerY);
-        GL11.glVertex2f(pickerX, pickerY + pickerHeight);
-        GL11.glColor4f(red, green, blue, alpha);
-        GL11.glVertex2f(pickerX + pickerWidth, pickerY + pickerHeight);
-        GL11.glVertex2f(pickerX + pickerWidth, pickerY);
-        GL11.glEnd();
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glBegin(GL11.GL_POLYGON);
-        GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
-        GL11.glVertex2f(pickerX, pickerY);
-        GL11.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-        GL11.glVertex2f(pickerX, pickerY + pickerHeight);
-        GL11.glVertex2f(pickerX + pickerWidth, pickerY + pickerHeight);
-        GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
-        GL11.glVertex2f(pickerX + pickerWidth, pickerY);
-        GL11.glEnd();
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glShadeModel(GL11.GL_FLAT);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
+        GuiScreen.drawRect(cursorX - 2, cursorY - 2, cursorX + 2, cursorY + 2, -1);
+
+        drawAlphaSlider(alphaSliderX, alphaSliderY, alphaSliderWidth, alphaSliderHeight, selectedRed, selectedGreen, selectedBlue, finalAlpha);
+
+        finalColor = alphaIntegrate(new Color(Color.HSBtoRGB(color[0], color[1], color[2])), finalAlpha);
     }
 
     public static void drawHueSlider(int x, int y, int width, int height, float hue) {
@@ -673,7 +649,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
                 int previousStep = Color.HSBtoRGB((float) step/6, 1.0f, 1.0f);
                 int nextStep = Color.HSBtoRGB((float) (step+1)/6, 1.0f, 1.0f);
-                Render2DUtil.drawGradientRectVertical(x, y + step * (height/6), x + width, y + (step+1) * (height/6), previousStep, nextStep);
+                Render2DUtil.drawGradientRect(x, y + step * (height/6), x + width, y + (step+1) * (height/6), previousStep, nextStep);
                 step++;
             }
 
@@ -685,7 +661,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
                 int previousStep = Color.HSBtoRGB((float) step/6, 1.0f, 1.0f);
                 int nextStep = Color.HSBtoRGB((float) (step+1)/6, 1.0f, 1.0f);
-                Render2DUtil.drawGradientRectHorizontal(x + step * (width/6), y, x + (step+1) * (width/6), y + height, previousStep, nextStep);
+                Render2DUtil.gradient(x + step * (width/6), y, x + (step+1) * (width/6), y + height, previousStep, nextStep, true);
                 step++;
             }
 
@@ -714,7 +690,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             left = !left;
         }
 
-        Render2DUtil.drawGradientRectHorizontal(x, y, x + width, y + height, new Color(red, green, blue, 1).getRGB(), 0);
+        Render2DUtil.drawLeftGradientRect(x, y, x + width, y + height, new Color(red, green, blue, 1).getRGB(), 0);
         int sliderMinX = (int) (x + width - (width * alpha));
         GuiScreen.drawRect(sliderMinX - 1, y,  sliderMinX + 1, y + height, -1);
     }
