@@ -1,9 +1,15 @@
 package me.linus.momentum.module.modules.player;
 
 import me.linus.momentum.module.Module;
+import me.linus.momentum.setting.mode.Mode;
+import me.linus.momentum.util.player.InventoryUtil;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.init.Items;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * @author linustouchtips
@@ -15,23 +21,49 @@ public class NoFall extends Module {
         super("NoFall", Category.PLAYER, "Prevents fall damage");
     }
 
-    private long last = 0;
+    public static Mode mode = new Mode("Mode", "NCP", "AAC", "Bucket");
+
+    @Override
+    public void setup() {
+        addSetting(mode);
+    }
 
     @Override
     public void onUpdate() {
         if (nullCheck())
             return;
 
-        if (mc.player.fallDistance >= 5 && System.currentTimeMillis() - last > 100) {
-            Vec3d posVec = mc.player.getPositionVector();
-            RayTraceResult result = mc.world.rayTraceBlocks(posVec, posVec.addVector(0, -13.33f, 0), true, true, false);
-            if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK) {
-                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, mc.player.onGround));
-                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX + mc.player.motionX, -1000.0, mc.player.posZ + mc.player.motionZ, mc.player.onGround));
-                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 1000, mc.player.posZ, mc.player.onGround));
+        if (mc.player.fallDistance > 4.0f) {
+            switch (mode.getValue()) {
+                case 0:
+                    mc.player.fallDistance = 0;
+                    mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX +420420, mc.player.posY, mc.player.posZ, false));
+                    mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 1, mc.player.posZ, true));
+                    break;
+                case 1:
+                    mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 1, mc.player.posZ, true));
+                    break;
+                case 2:
+                    InventoryUtil.switchToSlot(Items.WATER_BUCKET);
 
-                last = System.currentTimeMillis();
+                    BlockPos bucketPos = null;
+                    for (int i = 0; i < mc.player.posY - 5; i++) {
+                        BlockPos belowPos = new BlockPos(mc.player.posX, i, mc.player.posZ);
+
+                        if (mc.world.getBlockState(belowPos).getBlock() instanceof BlockLiquid)
+                            continue;
+
+                        bucketPos = belowPos;
+                    }
+
+                    mc.player.rotationPitch = 90.0f;
+                    mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(bucketPos, EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
             }
         }
+    }
+
+    @Override
+    public String getHUDData() {
+        return " " + mode.getMode(mode.getValue());
     }
 }

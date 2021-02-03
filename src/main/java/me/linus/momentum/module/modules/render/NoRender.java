@@ -32,6 +32,8 @@ public class NoRender extends Module {
     public static Checkbox particles = new Checkbox("Particles", true);
     public static Checkbox fireworks = new Checkbox("Fireworks", true);
     public static Checkbox offhand = new Checkbox("Offhand", true);
+    public static Checkbox enchantmentTables = new Checkbox("Enchantment Tables", false);
+    public static Checkbox beacons = new Checkbox("Beacons", false);
 
     @Override
     public void setup() {
@@ -45,6 +47,8 @@ public class NoRender extends Module {
         addSetting(particles);
         addSetting(fireworks);
         addSetting(offhand);
+        addSetting(enchantmentTables);
+        addSetting(beacons);
     }
 
     @SubscribeEvent

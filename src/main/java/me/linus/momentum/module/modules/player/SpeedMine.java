@@ -58,7 +58,7 @@ public class SpeedMine extends Module {
                     mc.playerController.blockHitDelay = 0;
                     break;
                 case 5:
-                    mc.player.addPotionEffect(new PotionEffect(new PotionEffect(MobEffects.HASTE, 80950, 1, false, false)));
+                    mc.player.addPotionEffect(new PotionEffect(new PotionEffect(MobEffects.HASTE, 10000, 1, false, false)));
                     break;
             }
         }

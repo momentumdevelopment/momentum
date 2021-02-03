@@ -25,7 +25,9 @@
       "MixinFontRenderer",
       "MixinRenderWitherSkull",
       "MixinRenderLivingBase",
-      "MixinWorld"
+      "MixinWorld",
+      "MixinTileEntityBeaconRenderer",
+      "MixinTileEntityEnchantmentTableRenderer"
     ],
 
     "client": [

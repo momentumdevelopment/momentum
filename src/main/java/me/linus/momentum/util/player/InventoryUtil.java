@@ -11,6 +11,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * @author max & linustouchtips & reap
  * @since 11/26/2020
@@ -61,7 +65,7 @@ public class InventoryUtil implements MixinInterface {
         mc.playerController.windowClick(0, slot < 9 ? slot + 36 : slot, 0, ClickType.PICKUP, mc.player);
         mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
 
-        for (int i = 0; i < 45; i++) {
+        for (int i = 9; i < 45; i++) {
             if (mc.player.inventory.getStackInSlot(i).isEmpty()) {
                 returnSlot = i;
                 break;
@@ -70,13 +74,6 @@ public class InventoryUtil implements MixinInterface {
 
         if (returnSlot != -1)
             mc.playerController.windowClick(0, returnSlot < 9 ? returnSlot + 36 : returnSlot, 0, ClickType.PICKUP, mc.player);
-    }
-
-    public static void moveItemToOffhand(Item item, boolean hotbar) {
-        int slot = getInventoryItemSlot(item, hotbar);
-
-        if (slot != -1)
-            moveItemToOffhand(slot);
     }
 
     public static int getHotbarItemSlot(Item item) {

@@ -13,7 +13,6 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.player.MotionUtil;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
-import net.minecraft.network.play.server.SPacketExplosion;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
@@ -510,8 +509,9 @@ public class Speed extends Module {
 
     @SubscribeEvent
     public void onPacketReceive(PacketReceiveEvent event) {
-        if (event.getPacket() instanceof SPacketExplosion)
+        if (event.getPacket() instanceof SPacketEntityVelocity) {
             boostable = true;
+        }
     }
 
     @Override

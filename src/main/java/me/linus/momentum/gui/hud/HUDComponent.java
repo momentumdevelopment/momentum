@@ -6,6 +6,7 @@ import me.linus.momentum.setting.Setting;
 import me.linus.momentum.util.render.gui.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -50,10 +51,10 @@ public class HUDComponent implements MixinInterface {
             y = dragY + mouseY;
         }
 
-        if (GUIUtil.mouseOver(x - 1, y - 1, x + width, y + height))
-            colors = new Color(82, 81, 77, 125).getRGB();
-        else
-            colors = new Color(117, 116, 110, 125).getRGB();
+        colors = (GUIUtil.mouseOver(x - 1, y - 1, x + width, y + height)) ? new Color(82, 81, 77, 125).getRGB() : new Color(117, 116, 110, 125).getRGB();
+
+        if (GUIUtil.mouseOver(x - 1, y - 1, x + width, y + height) && Mouse.isButtonDown(2))
+            this.enabled = false;
 
         if (getBackground())
             GuiScreen.drawRect(x - 1, y - 1, x + width, y + height, colors);
@@ -89,15 +90,18 @@ public class HUDComponent implements MixinInterface {
 
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (width < 0) {
-            if (button == 0 && mouseX < x && mouseX > x + width && mouseY > y && mouseY < y + height){
+            if (button == 0 && mouseX < x && mouseX > x + width && mouseY > y && mouseY < y + height) {
                 dragX = x - mouseX;
                 dragY = y - mouseY;
                 dragging = true;
             }
+
+            if (button == 2)
+                this.enabled = false;
         }
 
         else {
-            if (button == 0 && mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height){
+            if (button == 0 && mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height) {
                 dragX = x - mouseX;
                 dragY = y - mouseY;
                 dragging = true;
