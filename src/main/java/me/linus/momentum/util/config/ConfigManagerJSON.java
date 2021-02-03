@@ -53,8 +53,6 @@ public class ConfigManagerJSON {
 
     public static void saveConfig() {
         try {
-            saveEnabledModules();
-            saveDrawnModules();
             saveModules();
             saveGUI();
             saveHUD();
@@ -68,8 +66,6 @@ public class ConfigManagerJSON {
     public static void loadConfig() {
         try {
             createDirectory();
-            loadEnabledModules();
-            loadDrawnModules();
             loadModules();
             loadGUI();
             loadHUD();
@@ -90,6 +86,9 @@ public class ConfigManagerJSON {
             JsonObject subSettingObject = new JsonObject();
 
             moduleObject.add("Name", new JsonPrimitive(module.getName()));
+            moduleObject.add("Enabled", new JsonPrimitive(module.isEnabled()));
+            moduleObject.add("Drawn", new JsonPrimitive(module.isDrawn()));
+            moduleObject.add("Bind", new JsonPrimitive(module.getKeybind().getKeyCode()));
 
             for (Setting setting : module.getSettings()) {
                 if (setting instanceof Checkbox) {
@@ -191,6 +190,12 @@ public class ConfigManagerJSON {
 
             if (moduleObject.get("Name") == null)
                 return;
+
+            if (moduleObject.get("Enabled").getAsBoolean())
+                module.enable();
+
+            module.setDrawn(moduleObject.get("Drawn").getAsBoolean());
+            module.getKeybind().setKeyCode(moduleObject.get("Bind").getAsInt());
 
             JsonObject settingObject = moduleObject.get("Settings").getAsJsonObject();
             JsonObject subSettingObject = settingObject.get("SubSettings").getAsJsonObject();
@@ -364,84 +369,6 @@ public class ConfigManagerJSON {
 
             inputStream.close();
         }
-    }
-
-    public static void saveEnabledModules() throws IOException {
-        registerFiles("Enabled");
-
-        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "Enabled" + ".json"), StandardCharsets.UTF_8);
-        JsonObject moduleObject = new JsonObject();
-        JsonObject enabledObject = new JsonObject();
-
-        for (Module module : ModuleManager.getModules()) {
-            enabledObject.add(module.getName(), new JsonPrimitive(module.isEnabled()));
-        }
-
-        moduleObject.add("Modules", enabledObject);
-        String jsonString = gson.toJson(new JsonParser().parse(moduleObject.toString()));
-        fileOutputStreamWriter.write(jsonString);
-        fileOutputStreamWriter.close();
-    }
-
-    public static void loadEnabledModules() throws IOException {
-        if (!Files.exists(Paths.get("momentum/" + "Enabled" + ".json")))
-            return;
-
-        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "Enabled" + ".json"));
-        JsonObject moduleObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
-
-        if (moduleObject.get("Modules") == null)
-            return;
-
-        JsonObject settingObject = moduleObject.get("Modules").getAsJsonObject();
-        for (Module module : ModuleManager.getModules()) {
-            JsonElement dataObject = settingObject.get(module.getName());
-
-            if (dataObject != null && dataObject.isJsonPrimitive()) {
-                if (dataObject.getAsBoolean())
-                    module.enable();
-            }
-        }
-
-        inputStream.close();
-    }
-
-    public static void saveDrawnModules() throws IOException {
-        registerFiles("Drawn");
-
-        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "Drawn" + ".json"), StandardCharsets.UTF_8);
-        JsonObject moduleObject = new JsonObject();
-        JsonObject drawnObject = new JsonObject();
-
-        for (Module module : ModuleManager.getModules()) {
-            drawnObject.add(module.getName(), new JsonPrimitive(module.isDrawn()));
-        }
-
-        moduleObject.add("Modules", drawnObject);
-        String jsonString = gson.toJson(new JsonParser().parse(moduleObject.toString()));
-        fileOutputStreamWriter.write(jsonString);
-        fileOutputStreamWriter.close();
-    }
-
-    public static void loadDrawnModules() throws IOException {
-        if (!Files.exists(Paths.get("momentum/" + "Drawn" + ".json")))
-            return;
-
-        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "Drawn" + ".json"));
-        JsonObject moduleObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
-
-        if (moduleObject.get("Modules") == null)
-            return;
-
-        JsonObject drawnObject = moduleObject.get("Modules").getAsJsonObject();
-        for (Module module : ModuleManager.getModules()) {
-            JsonElement dataObject = drawnObject.get(module.getName());
-
-            if (dataObject != null && dataObject.isJsonPrimitive())
-                module.setDrawn(dataObject.getAsBoolean());
-        }
-
-        inputStream.close();
     }
 
     public static void saveGUI() throws IOException {

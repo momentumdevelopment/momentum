@@ -23,14 +23,11 @@ import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.Render2DUtil;
-import me.linus.momentum.util.render.builder.RenderUtil;
 import me.linus.momentum.util.render.gui.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.settings.KeyModifier;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.List;
@@ -511,7 +508,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         }
 
         if (m.isBinding() && key != -1 && key != Keyboard.KEY_ESCAPE && key != Keyboard.KEY_DELETE) {
-            m.getKeybind().setKeyCode((key == Keyboard.KEY_DELETE || key == Keyboard.KEY_BACK) ? Keyboard.KEY_NONE : key);
+            m.getKeybind().setKeyModifierAndCode(KeyModifier.NONE, (key == Keyboard.KEY_DELETE || key == Keyboard.KEY_BACK) ? Keyboard.KEY_NONE : key);
             m.setBinding(false);
         }
 
@@ -523,7 +520,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
         if (!m.isBinding())
             FontUtil.drawString("Keybind: " + (m.getKeybind().getDisplayName().equalsIgnoreCase("NONE") ? "None" : m.getKeybind().getDisplayName()), x + 7, (y + height) + 4 + (boost * height), -1);
-
         else
             FontUtil.drawString("Listening...", x + 7, (y + height) + 4 + (boost * height), -1);
     }

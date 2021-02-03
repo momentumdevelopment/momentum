@@ -82,8 +82,9 @@ public class AutoCrystal extends Module {
     public static SubCheckbox multiPlace = new SubCheckbox(place, "MultiPlace", false);
 
     public static Checkbox rotate = new Checkbox("Rotate", true);
-    public static SubMode rotateDuring = new SubMode(rotate, "Mode", "Place", "Break", "Both");
+    public static SubMode rotateDuring = new SubMode(rotate, "When", "Place", "Break", "Both");
     public static SubMode rotateMode = new SubMode(rotate, "Rotate Mode", "Packet", "Legit", "None");
+    public static SubMode rotateType = new SubMode(rotate, "Type", "Full", "Head", "NoRender");
     public static SubSlider rotateDelay = new SubSlider(rotate, "Rotation Delay", 0.0D, 0.0D, 5000.0D, 0);
     public static SubSlider rotateStep = new SubSlider(rotate, "Rotation Step", 0.0D, 180.0D, 360.0D, 0);
     public static SubCheckbox onlyInViewFrustrum = new SubCheckbox(rotate, "Only In View Frustrum", false);
@@ -92,7 +93,7 @@ public class AutoCrystal extends Module {
     public static SubCheckbox strictReset = new SubCheckbox(rotate, "Strict Reset", false);
 
     public static Checkbox pause = new Checkbox("Pause", true);
-    public static SubMode pauseMode = new SubMode(pause, "Mode", "Place", "Break", "Both");
+    public static SubMode pauseMode = new SubMode(pause, "Pause Mode", "Place", "Break", "Both");
     public static SubMode friendProtect = new SubMode(pause, "Friend Protect", "Ignore", "Place", "Break");
     public static SubSlider pauseHealth = new SubSlider(pause, "Pause Health", 0.0D, 7.0D, 36.0D, 0);
     public static SubCheckbox whenMining = new SubCheckbox(pause, "When Mining", false);

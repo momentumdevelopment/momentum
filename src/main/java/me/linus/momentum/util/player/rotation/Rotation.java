@@ -29,6 +29,7 @@ public class Rotation implements MixinInterface {
         switch (this.mode) {
             case Packet:
                 mc.player.rotationYawHead = this.yaw;
+                mc.player.renderYawOffset = this.yaw;
                 break;
             case Legit:
                 mc.player.rotationYaw = this.yaw;

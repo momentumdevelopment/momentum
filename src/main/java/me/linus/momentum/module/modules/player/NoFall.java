@@ -50,7 +50,7 @@ public class NoFall extends Module {
                     for (int i = 0; i < mc.player.posY - 5; i++) {
                         BlockPos belowPos = new BlockPos(mc.player.posX, i, mc.player.posZ);
 
-                        if (mc.world.getBlockState(belowPos).getBlock() instanceof BlockLiquid)
+                        if (mc.world.getBlockState(belowPos).getBlock() instanceof BlockLiquid || mc.world.isAirBlock(belowPos))
                             continue;
 
                         bucketPos = belowPos;
