@@ -6,6 +6,11 @@ import me.linus.momentum.module.modules.movement.speed.SpeedMode;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.player.MotionUtil;
 
+/**
+ * @author linustouchtips
+ * @since 02/03/2021
+ */
+
 public class GayHop extends SpeedMode {
 
     @Override

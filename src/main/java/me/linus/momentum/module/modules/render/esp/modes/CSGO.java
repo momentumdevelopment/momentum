@@ -30,7 +30,7 @@ public class CSGO extends ESPMode {
         if (entitylivingbaseIn instanceof EntityPlayer && !(entitylivingbaseIn instanceof EntityPlayerSP) && ESP.players.getValue() || (EntityUtil.isPassive(entitylivingbaseIn) && ESP.animals.getValue()) || (EntityUtil.isHostileMob(entitylivingbaseIn) && ESP.mobs.getValue()) || (EntityUtil.isVehicle(entitylivingbaseIn) && ESP.vehicles.getValue()) || (entitylivingbaseIn instanceof EntityEnderCrystal && ESP.crystals.getValue())) {
             GL11.glPushMatrix();
             GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
-            GL11.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            GL11.glPolygonMode(GL_FRONT_AND_BACK, GL_RENDER);
             GL11.glDisable(GL_TEXTURE_2D);
             GL11.glDisable(GL_LIGHTING);
             GL11.glDisable(GL_DEPTH_TEST);

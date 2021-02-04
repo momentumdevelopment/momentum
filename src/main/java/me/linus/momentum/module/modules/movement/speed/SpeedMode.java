@@ -3,6 +3,11 @@ package me.linus.momentum.module.modules.movement.speed;
 import me.linus.momentum.event.events.player.MoveEvent;
 import me.linus.momentum.mixin.MixinInterface;
 
+/**
+ * @author linustouchtips
+ * @since 02/03/2021
+ */
+
 public class SpeedMode implements MixinInterface {
 
     public double moveSpeed = 0.0;

@@ -22,7 +22,7 @@ import java.awt.*;
 
 public class Notifications extends HUDComponent {
     public Notifications() {
-        super("Notifications", 10, 400);
+        super("Notifications", 43, 360);
         this.toggle();
     }
 

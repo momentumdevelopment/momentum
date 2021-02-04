@@ -52,7 +52,7 @@ public class AutoCrystal extends Module {
     }
 
     public static Checkbox explode = new Checkbox("Break", true);
-    public static SubMode breakMode = new SubMode(explode, "Mode", "All", "Only Own");
+    public static SubMode breakMode = new SubMode(explode, "Mode", "All");
     public static SubMode breakHand = new SubMode(explode, "BreakHand", "OffHand", "MainHand", "Both", "MultiSwing");
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 80.0D, 200.0D, 0);
@@ -71,7 +71,7 @@ public class AutoCrystal extends Module {
     public static SubSlider wallRange = new SubSlider(place, "Walls Range", 0.0D, 3.0D, 7.0D, 1);
     public static SubSlider placeDelay = new SubSlider(place, "Place Delay", 0.0D, 0.0D, 500.0D, 0);
     public static SubSlider minDamage = new SubSlider(place, "Minimum Damage", 0.0D, 7.0D, 36.0D, 0);
-    public static SubSlider maxLocalDamage = new SubSlider(place, "Maximum Local Damage", 0.0D, 20.0D, 36.0D, 0);
+    public static SubSlider maxLocalDamage = new SubSlider(place, "Maximum Local Damage", 0.0D, 8.0D, 36.0D, 0);
     public static SubSlider threshold = new SubSlider(place, "Threshold", 0.0D, 0.0D, 10.0D, 0);
     public static SubMode autoSwitch = new SubMode(place, "Switch", "None", "Normal", "Packet");
     public static SubCheckbox packetPlace = new SubCheckbox(place, "Packet Place", true);

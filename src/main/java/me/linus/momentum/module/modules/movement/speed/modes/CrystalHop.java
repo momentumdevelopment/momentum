@@ -7,6 +7,11 @@ import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.player.MotionUtil;
 import me.linus.momentum.util.world.Timer;
 
+/**
+ * @author linustouchtips
+ * @since 02/03/2021
+ */
+
 public class CrystalHop extends SpeedMode {
 
     Timer boostTimer = new Timer();
