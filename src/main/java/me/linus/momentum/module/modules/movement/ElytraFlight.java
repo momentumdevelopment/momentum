@@ -68,7 +68,7 @@ public class ElytraFlight extends Module {
         addSetting(disable);
     }
 
-    ElytraMode elytraMode;
+    ElytraMode elytraMode = new Control();
 
     @Override
     public void onEnable() {
@@ -89,45 +89,48 @@ public class ElytraFlight extends Module {
     }
 
     @Override
+    public void onValueChange() {
+        switch (mode.getValue()) {
+            case -1:
+                elytraMode = new Control();
+                break;
+            case 0:
+                elytraMode = new MotionControl();
+                break;
+            case 1:
+                elytraMode = new Pitch();
+                break;
+            case 2:
+                elytraMode = new PitchNCP();
+                break;
+            case 3:
+                elytraMode = new Firework();
+                break;
+            case 4:
+                elytraMode = new Deer();
+                break;
+            case 5:
+                elytraMode = new Dynamic();
+                break;
+            case 6:
+                elytraMode = new DynamicNCP();
+                break;
+            case 7:
+                elytraMode = new Glide();
+                break;
+            case 8:
+                elytraMode = new Vanilla();
+                break;
+        }
+    }
+
+    @Override
     public void onUpdate() {
         if (nullCheck())
             return;
 
         disableCheck();
         flyTick();
-
-        switch (mode.getValue()) {
-            case 0:
-                elytraMode = new Control();
-                break;
-            case 1:
-                elytraMode = new MotionControl();
-                break;
-            case 2:
-                elytraMode = new Pitch();
-                break;
-            case 3:
-                elytraMode = new PitchNCP();
-                break;
-            case 4:
-                elytraMode = new Firework();
-                break;
-            case 5:
-                elytraMode = new Deer();
-                break;
-            case 6:
-                elytraMode = new Dynamic();
-                break;
-            case 7:
-                elytraMode = new DynamicNCP();
-                break;
-            case 8:
-                elytraMode = new Glide();
-                break;
-            case 9:
-                elytraMode = new Vanilla();
-                break;
-        }
 
         if (mc.player.isElytraFlying()) {
             if (!MotionUtil.isMoving())

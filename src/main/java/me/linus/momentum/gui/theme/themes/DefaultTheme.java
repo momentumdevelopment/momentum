@@ -29,6 +29,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.settings.KeyModifier;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.List;
 
@@ -118,7 +119,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
                             if (ss instanceof SubMode) {
                                 SubMode sm = (SubMode) ss;
-                                drawSubMode(sm, x, y);
+                                drawSubMode(m, sm, x, y);
                             }
 
                             if (ss instanceof SubSlider) {
@@ -145,7 +146,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
                 if (s instanceof Mode) {
                     Mode mode = (Mode) s;
-                    drawMode(mode, x, y);
+                    drawMode(m, mode, x, y);
                     for (SubSetting ss : mode.getSubSettings()) {
                         if (mode.isOpened()) {
                             boost++;
@@ -157,7 +158,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
                             if (ss instanceof SubMode) {
                                 SubMode sm = (SubMode) ss;
-                                drawSubMode(sm, x, y);
+                                drawSubMode(m, sm, x, y);
                             }
 
                             if (ss instanceof SubSlider) {
@@ -196,7 +197,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
                             if (ss instanceof SubMode) {
                                 SubMode sm = (SubMode) ss;
-                                drawSubMode(sm, x, y);
+                                drawSubMode(m, sm, x, y);
                             }
 
                             if (ss instanceof SubSlider) {
@@ -235,7 +236,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
                             if (ss instanceof SubMode) {
                                 SubMode sm = (SubMode) ss;
-                                drawSubMode(sm, x, y);
+                                drawSubMode(m, sm, x, y);
                             }
 
                             if (ss instanceof SubSlider) {
@@ -277,7 +278,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
                 if (s instanceof Mode) {
                     Mode mode = (Mode) s;
-                    drawMode(mode, x, y);
+                    drawMode(null, mode, x, y);
                 }
 
                 if (s instanceof Slider) {
@@ -329,13 +330,15 @@ public class DefaultTheme extends Theme implements MixinInterface {
         FontUtil.drawString(sc.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
     }
 
-    private static void drawMode(Mode m, int x, int y) {
+    private static void drawMode(@Nullable Module module, Mode m, int x, int y) {
         int color = 0xCC232323;
         if (GUIUtil.mouseOver(x + 4, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
             color = 0xCC383838;
 
-            if (GUIUtil.ldown)
+            if (GUIUtil.ldown) {
+                module.onValueChange();
                 m.setMode(m.nextMode());
+            }
 
             if (GUIUtil.rdown)
                 m.toggleState();
@@ -352,14 +355,16 @@ public class DefaultTheme extends Theme implements MixinInterface {
             FontUtil.drawString("-", (x + width) - 12, (y + height + 1) + (boost * height), -1);
     }
 
-    private static void drawSubMode(SubMode sm, int x, int y) {
+    private static void drawSubMode(@Nullable Module module, SubMode sm, int x, int y) {
         int color = 0xCC232323;
 
         if (GUIUtil.mouseOver(x + 8, y + height + (boost * height) + 2, (x + width) - 1, (y + height) + height + (boost * height))) {
             color = 0xCC383838;
 
-            if (GUIUtil.ldown)
+            if (GUIUtil.ldown) {
+                module.onValueChange();
                 sm.setMode(sm.nextMode());
+            }
         }
 
         GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);

@@ -38,7 +38,7 @@ public class RotationManager implements MixinInterface {
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
-        if (currentRotation != null && !rotationQueue.isEmpty() && event.getPacket() instanceof CPacketPlayer) {
+        if (currentRotation != null && currentRotation.mode.equals(Rotation.RotationMode.Packet) && !rotationQueue.isEmpty() && event.getPacket() instanceof CPacketPlayer) {
             ((CPacketPlayer) event.getPacket()).yaw = currentRotation.yaw;
             ((CPacketPlayer) event.getPacket()).pitch = currentRotation.pitch;
 

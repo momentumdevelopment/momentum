@@ -99,6 +99,10 @@ public abstract class Module implements MixinInterface {
 	public void onFastUpdate() {
 		
 	}
+
+	public void onValueChange() {
+
+	}
 	
 	public void toggle() {
 		this.enabled = !this.enabled;

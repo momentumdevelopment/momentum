@@ -58,6 +58,8 @@ public class BoatFlight extends Module {
         disableCheck();
         flyTick();
 
+        mc.player.ridingEntity.rotationYaw = mc.player.rotationYaw;
+
         switch (mode.getValue()) {
             case 0:
                 flyControl();

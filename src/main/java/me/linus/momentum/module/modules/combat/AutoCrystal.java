@@ -27,11 +27,9 @@ import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
-import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -64,7 +62,7 @@ public class AutoCrystal extends Module {
     public static SubCheckbox sequential = new SubCheckbox(explode, "Sequential", true);
     public static SubCheckbox inhibit = new SubCheckbox(explode, "Inhibit", true);
     public static SubCheckbox syncBreak = new SubCheckbox(explode, "Sync", false);
-    public static SubCheckbox unsafeSync = new SubCheckbox(explode, "Unsafe Sync", true);
+    public static SubCheckbox unsafeSync = new SubCheckbox(explode, "Unsafe Sync", false);
     public static SubCheckbox antiWeakness = new SubCheckbox(explode, "Anti-Weakness", false);
 
     public static Checkbox place = new Checkbox("Place", true);
@@ -74,7 +72,7 @@ public class AutoCrystal extends Module {
     public static SubSlider placeDelay = new SubSlider(place, "Place Delay", 0.0D, 0.0D, 500.0D, 0);
     public static SubSlider minDamage = new SubSlider(place, "Minimum Damage", 0.0D, 7.0D, 36.0D, 0);
     public static SubSlider maxLocalDamage = new SubSlider(place, "Maximum Local Damage", 0.0D, 20.0D, 36.0D, 0);
-    public static SubSlider threshold = new SubSlider(place, "Threshold", 0.0D, 0.0D, 10.0D, 1);
+    public static SubSlider threshold = new SubSlider(place, "Threshold", 0.0D, 0.0D, 10.0D, 0);
     public static SubMode autoSwitch = new SubMode(place, "Switch", "None", "Normal", "Packet");
     public static SubCheckbox packetPlace = new SubCheckbox(place, "Packet Place", true);
     public static SubCheckbox prediction = new SubCheckbox(place, "Prediction", true);
@@ -83,8 +81,8 @@ public class AutoCrystal extends Module {
 
     public static Checkbox rotate = new Checkbox("Rotate", true);
     public static SubMode rotateDuring = new SubMode(rotate, "When", "Place", "Break", "Both");
-    public static SubMode rotateMode = new SubMode(rotate, "Rotate Mode", "Packet", "Legit", "None");
-    public static SubMode rotateType = new SubMode(rotate, "Type", "Full", "Head", "NoRender");
+    public static SubMode rotateMode = new SubMode(rotate, "Type", "Packet", "Legit", "None");
+    public static SubMode rotateType = new SubMode(rotate, "Render", "Full", "Head", "NoRender");
     public static SubSlider rotateDelay = new SubSlider(rotate, "Rotation Delay", 0.0D, 0.0D, 5000.0D, 0);
     public static SubSlider rotateStep = new SubSlider(rotate, "Rotation Step", 0.0D, 180.0D, 360.0D, 0);
     public static SubCheckbox onlyInViewFrustrum = new SubCheckbox(rotate, "Only In View Frustrum", false);
@@ -289,17 +287,18 @@ public class AutoCrystal extends Module {
                 return true;
         }
 
-        if (PlayerUtil.getHealth() < pauseHealth.getValue())
+        if (PlayerUtil.getHealth() < pauseHealth.getValue() && (EnemyUtil.getHealth(crystalTarget) - crystalPosition.getTargetDamage() > threshold.getValue()))
             return true;
         if (PlayerUtil.isEating() && whenEating.getValue() || PlayerUtil.isMining() && whenMining.getValue())
             return true;
         if (closePlacements.getValue() && mc.player.getDistance(crystal.getCrystal()) < 1.5)
             return true;
-        if (CrystalManager.swings > 3 && inhibit.getValue()) {
+        if (CrystalManager.swings > 50 && inhibit.getValue()) {
             CrystalManager.swings = 0;
             CrystalManager.updateTicks(true);
             NotificationManager.notifications.add(new Notification("AutoCrystal Frozen! Pausing for 1 tick!", Notification.Type.Warning));
 
+            crystal = null;
             if (unsafeSync.getValue())
                 crystal.getCrystal().setDead();
 
@@ -331,10 +330,10 @@ public class AutoCrystal extends Module {
 
         switch (rotateMode.getValue()) {
             case 0:
-                crystalRotation = !strict.getValue() ? randomRotate.getValue() ? (rotateDuring.getValue() == 1 ? new Rotation(new Random().nextInt(360), RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Packet) : new Rotation(new Random().nextInt(360), RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Packet)) : (rotateDuring.getValue() == 1 ? new Rotation(RotationUtil.getAngles(crystal.getCrystal())[0], RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Packet) : new Rotation(RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[0], RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Packet)) : RotationUtil.rotationStep(RotationManager.serverRotation, randomRotate.getValue() ? (rotateDuring.getValue() == 0 ? new Rotation(new Random().nextInt(360), RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Packet) : new Rotation(new Random().nextInt(360), RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Packet)) : (rotateDuring.getValue() == 0 ? new Rotation(RotationUtil.getAngles(crystal.getCrystal())[0], RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Packet) : new Rotation(RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[0], RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Packet)), (float) rotateStep.getValue());
+                crystalRotation = !strict.getValue() ? randomRotate.getValue() ? (rotateDuring.getValue() == 1 ? new Rotation(new Random().nextInt(360), RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Packet, rotateType.getValue() == 0) : new Rotation(new Random().nextInt(360), RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Packet, rotateType.getValue() == 0)) : (rotateDuring.getValue() == 1 ? new Rotation(RotationUtil.getAngles(crystal.getCrystal())[0], RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Packet, rotateType.getValue() == 0) : new Rotation(RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[0], RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Packet, rotateType.getValue() == 0)) : RotationUtil.rotationStep(RotationManager.serverRotation, randomRotate.getValue() ? (rotateDuring.getValue() == 0 ? new Rotation(new Random().nextInt(360), RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Packet, rotateType.getValue() == 0) : new Rotation(new Random().nextInt(360), RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Packet, rotateType.getValue() == 0)) : (rotateDuring.getValue() == 0 ? new Rotation(RotationUtil.getAngles(crystal.getCrystal())[0], RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Packet, rotateType.getValue() == 0) : new Rotation(RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[0], RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Packet, rotateType.getValue() == 0)), (float) rotateStep.getValue());
                 break;
             case 1:
-                crystalRotation = !strict.getValue() ? randomRotate.getValue() ? (rotateDuring.getValue() == 1 ? new Rotation(new Random().nextInt(360), RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Legit) : new Rotation(new Random().nextInt(360), RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Legit)) : (rotateDuring.getValue() == 1 ? new Rotation(RotationUtil.getAngles(crystal.getCrystal())[0], RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Legit) : new Rotation(RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[0], RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Legit)) : RotationUtil.rotationStep(RotationManager.serverRotation, randomRotate.getValue() ? (rotateDuring.getValue() == 0 ? new Rotation(new Random().nextInt(360), RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Legit) : new Rotation(new Random().nextInt(360), RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Legit)) : (rotateDuring.getValue() == 0 ? new Rotation(RotationUtil.getAngles(crystal.getCrystal())[0], RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Legit) : new Rotation(RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[0], RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Legit)), (float) rotateStep.getValue());
+                crystalRotation = !strict.getValue() ? randomRotate.getValue() ? (rotateDuring.getValue() == 1 ? new Rotation(new Random().nextInt(360), RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Legit, rotateType.getValue() == 0) : new Rotation(new Random().nextInt(360), RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Legit, rotateType.getValue() == 0)) : (rotateDuring.getValue() == 1 ? new Rotation(RotationUtil.getAngles(crystal.getCrystal())[0], RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Legit, rotateType.getValue() == 0) : new Rotation(RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[0], RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Legit, rotateType.getValue() == 0)) : RotationUtil.rotationStep(RotationManager.serverRotation, randomRotate.getValue() ? (rotateDuring.getValue() == 0 ? new Rotation(new Random().nextInt(360), RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Legit, rotateType.getValue() == 0) : new Rotation(new Random().nextInt(360), RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Legit, rotateType.getValue() == 0)) : (rotateDuring.getValue() == 0 ? new Rotation(RotationUtil.getAngles(crystal.getCrystal())[0], RotationUtil.getAngles(crystal.getCrystal())[1], Rotation.RotationMode.Legit, rotateType.getValue() == 0) : new Rotation(RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[0], RotationUtil.getPositionAngles(crystalPosition.getCrystalPosition())[1], Rotation.RotationMode.Legit, rotateType.getValue() == 0)), (float) rotateStep.getValue());
                 break;
         }
 
@@ -343,6 +342,9 @@ public class AutoCrystal extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
+        if (nullCheck())
+            return;
+
         try {
             if (renderCrystal.getValue() && crystalPosition.getCrystalPosition() != BlockPos.ORIGIN && crystalPosition.getCrystalPosition() != null && crystalPosition != null) {
                 switch (renderMode.getValue()) {
@@ -358,7 +360,7 @@ public class AutoCrystal extends Module {
                 }
 
                 if (renderDamage.getValue())
-                    RenderUtil.drawNametagFromBlockPos(crystalPosition.getCrystalPosition(), 0.5f, String.valueOf(MathUtil.roundAvoid(crystalPosition.getTargetDamage(), 1)));
+                    RenderUtil.drawNametagFromBlockPos(crystalPosition.getCrystalPosition(), 0.5f, String.valueOf(MathUtil.roundAvoid(crystalPosition.getTargetDamage() / (78 / 36), 1)));
             }
         } catch (Exception e) {
 
@@ -369,17 +371,6 @@ public class AutoCrystal extends Module {
     public void onPacketReceive(PacketReceiveEvent event) {
         if (nullCheck())
             return;
-
-        if (event.getPacket() instanceof SPacketSoundEffect) {
-            if (((SPacketSoundEffect) event.getPacket()).category == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).sound == SoundEvents.ENTITY_GENERIC_EXPLODE && serverConfirm.getValue()) {
-                mc.world.loadedEntityList.stream().filter(entity -> entity.getDistance(((SPacketSoundEffect) event.getPacket()).getX(), ((SPacketSoundEffect) event.getPacket()).getY(), ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue()).filter(entity -> entity instanceof EntityEnderCrystal).forEach(entity -> {
-                    CrystalManager.placedCrystals.forEach((crystalPosition1, integer) -> {
-                        if (crystalPosition1.getCrystalPosition().getDistance((int) ((SPacketSoundEffect) event.getPacket()).getX(), (int)  ((SPacketSoundEffect) event.getPacket()).getY(), (int) ((SPacketSoundEffect) event.getPacket()).getZ()) <= breakRange.getValue())
-                            CrystalManager.placedCrystals.remove(crystalPosition1);
-                    });
-                });
-            }
-        }
 
         if (event.getPacket() instanceof SPacketSpawnObject && ((SPacketSpawnObject) event.getPacket()).getType() == 51 && sequential.getValue() && explode.getValue()) {
             if (mc.player.getDistance(((SPacketSpawnObject) event.getPacket()).getX(), ((SPacketSpawnObject) event.getPacket()).getY(), ((SPacketSpawnObject) event.getPacket()).getZ()) > breakRange.getValue())
@@ -396,6 +387,7 @@ public class AutoCrystal extends Module {
 
         if (event.getPacket() instanceof SPacketPlayerPosLook) {
             NotificationManager.getNotification().add(new Notification("Rubberband detected! Reset Rotations!", Notification.Type.Warning));
+
 
             float lastYaw = ((SPacketPlayerPosLook) event.getPacket()).yaw;
             float lastPitch = ((SPacketPlayerPosLook) event.getPacket()).pitch;
@@ -418,6 +410,9 @@ public class AutoCrystal extends Module {
 
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
+        if (nullCheck())
+            return;
+
         if (event.getPacket() instanceof CPacketUseEntity && ((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world) instanceof EntityEnderCrystal && packetBreak.getValue()) {
             if (syncBreak.getValue())
                 ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world).setDead();

@@ -5,32 +5,28 @@ import me.linus.momentum.module.modules.movement.Speed;
 import me.linus.momentum.module.modules.movement.speed.SpeedMode;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.player.MotionUtil;
-import me.linus.momentum.util.world.Timer;
 
-public class CrystalHop extends SpeedMode {
-
-    Timer boostTimer = new Timer();
+public class GayHop extends SpeedMode {
 
     @Override
     public void onMotionUpdate() {
         double xDist = mc.player.posX - mc.player.prevPosX;
         double zDist = mc.player.posZ - mc.player.prevPosZ;
         lastDist = Math.sqrt(xDist * xDist + zDist * zDist);
-
-        if (boostTimer.passed(1200, Timer.Format.System))
-            boostable = false;
     }
 
     @Override
     public void handleSpeed(MoveEvent event) {
-        ++timerDelay;
+        timerDelay++;
         timerDelay %= 5;
 
         if (timerDelay != 0)
-            mc.timer.tickLength = 50f;
+            mc.timer.tickLength = 50;
 
         else if (MotionUtil.hasMotion()) {
-            mc.timer.tickLength = 50f / 1.3f;
+            if (Speed.useTimer.getValue())
+                mc.timer.tickLength = (float) (50 / Speed.timerTicks.getValue());
+
             mc.player.motionX *= 1.02f;
             mc.player.motionZ *= 1.02f;
         }
@@ -51,8 +47,12 @@ public class CrystalHop extends SpeedMode {
 
         else if (level == 2) {
             level = 3;
-            mc.player.motionY = 0.3994f;
-            event.setY(0.3994f);
+
+            if (Speed.jump.getValue()) {
+                mc.player.motionY = 0.3994f;
+                event.setY(0.3994f);
+            }
+
             moveSpeed *= 2.149;
         }
 
@@ -70,11 +70,6 @@ public class CrystalHop extends SpeedMode {
         }
 
         moveSpeed = Math.max(moveSpeed, Speed.speed.getValue());
-        moveSpeed = Math.min(moveSpeed, 0.551);
-
-        if (boostable)
-            moveSpeed += Speed.multiplier.getValue();
-
         float forward = mc.player.movementInput.moveForward;
         float strafe = mc.player.movementInput.moveStrafe;
         float yaw = mc.player.rotationYaw;
@@ -104,19 +99,13 @@ public class CrystalHop extends SpeedMode {
 
         double mx = Math.cos(Math.toRadians(yaw + 90.0f));
         double mz = Math.sin(Math.toRadians(yaw + 90.0f));
-        event.setX((double) forward * moveSpeed * mx + (double) strafe * moveSpeed * mz);
-        event.setZ((double) forward * moveSpeed * mz - (double) strafe * moveSpeed * mx);
+        event.setX((double)forward * moveSpeed * mx + (double)strafe * moveSpeed * mz);
+        event.setZ((double)forward * moveSpeed * mz - (double)strafe * moveSpeed * mx);
         mc.player.stepHeight = 0.6f;
 
         if (forward == 0.0f && strafe == 0.0f) {
             event.setX(0.0);
             event.setZ(0.0);
         }
-    }
-
-    @Override
-    public void onKnockback() {
-        boostTimer.reset();
-        boostable = true;
     }
 }
