@@ -15,7 +15,7 @@ import net.minecraft.util.text.TextFormatting;
  */
 
 public class XP extends HUDComponent {
-    public Totem() {
+    public XP() {
         super("XP", 2, 57);
     }
 
