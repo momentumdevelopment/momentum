@@ -61,7 +61,7 @@ public class Notifications extends HUDComponent {
         }
 
         else {
-            NotificationManager.getNotification().stream().forEach(notification -> {
+            NotificationManager.notifications.stream().forEach(notification -> {
                 if (this.x > this.x - FontUtil.getStringWidth(notification.getMessage()))
                     AnimationUtil.moveTowards(this.x, this.x - FontUtil.getStringWidth(notification.getMessage()), (float) (0.01f + ClickGUI.speed.getValue() / 30), 0.1f);
 
@@ -93,7 +93,7 @@ public class Notifications extends HUDComponent {
                         break;
                 }
 
-                NotificationManager.getNotification().removeIf(continuedNotification -> continuedNotification.isComplete());
+                NotificationManager.notifications.removeIf(continuedNotification -> continuedNotification.isComplete());
 
                 count++;
             });

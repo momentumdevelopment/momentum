@@ -239,8 +239,8 @@ public class AutoCrystal extends Module {
                 if (verifyPlace.getValue() && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(breakRange.getValue()))
                     continue;
 
-                double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.add(0.5, 1, 0.5), crystalTarget);
-                double calculatedSelfDamage = mc.player.capabilities.isCreativeMode ? 0 : CrystalUtil.calculateDamage(calculatedPosition.add(0.5, 1, 0.5), mc.player);
+                double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, crystalTarget);
+                double calculatedSelfDamage = mc.player.capabilities.isCreativeMode ? 0 : CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, mc.player);
 
                 if (calculatedTargetDamage < minDamage.getValue() && handleMinDamage())
                     continue;
@@ -283,7 +283,7 @@ public class AutoCrystal extends Module {
 
     public boolean handlePause() {
         for (EntityPlayer friend : WorldUtil.getNearbyFriends(placeRange.getValue())) {
-            if (EnemyUtil.getHealth(friend) - (CrystalUtil.calculateDamage(crystal.getCrystal().getPosition().add(0.5, 1, 0.5), friend)) <= pauseHealth.getValue() && friendProtect.getValue() == 0)
+            if (EnemyUtil.getHealth(friend) - (CrystalUtil.calculateDamage(crystal.getCrystal().getPosition().x + 0.5, crystal.getCrystal().getPosition().y + 1, crystal.getCrystal().getPosition().z + 0.5, friend)) <= pauseHealth.getValue() && friendProtect.getValue() == 0)
                 return true;
         }
 
@@ -297,7 +297,7 @@ public class AutoCrystal extends Module {
             CrystalManager.updateTicks(true);
 
             if (CrystalManager.swings < 75)
-                NotificationManager.notifications.add(new Notification("AutoCrystal Frozen! Pausing for 1 tick!", Notification.Type.Warning));
+                NotificationManager.addNotification(new Notification("AutoCrystal Frozen! Pausing for 1 tick!", Notification.Type.Warning));
 
             crystal = null;
             if (unsafeSync.getValue())
@@ -387,7 +387,7 @@ public class AutoCrystal extends Module {
         }
 
         if (event.getPacket() instanceof SPacketPlayerPosLook) {
-            NotificationManager.getNotification().add(new Notification("Rubberband detected! Reset Rotations!", Notification.Type.Warning));
+            NotificationManager.addNotification(new Notification("Rubberband detected! Reset Rotations!", Notification.Type.Warning));
 
 
             float lastYaw = ((SPacketPlayerPosLook) event.getPacket()).yaw;

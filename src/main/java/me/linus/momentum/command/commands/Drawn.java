@@ -35,4 +35,9 @@ public class Drawn extends Command {
         else
             MessageUtil.usageException(this, "[module name]");
     }
+
+    @Override
+    public String getDescription() {
+        return "Hides or draws a module on the arraylist";
+    }
 }

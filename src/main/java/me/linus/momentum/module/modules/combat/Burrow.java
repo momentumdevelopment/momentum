@@ -3,7 +3,8 @@ package me.linus.momentum.module.modules.combat;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.notification.Notification;
+import me.linus.momentum.util.client.notification.NotificationManager;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
@@ -56,7 +57,7 @@ public class Burrow extends Module {
             mc.player.setPosition(center.x, center.y, center.z);
         }
 
-        MessageUtil.sendClientMessage("Attempting to trigger a rubberband!");
+        NotificationManager.addNotification(new Notification("Attempting to trigger a rubberband!", Notification.Type.Info));
         mc.player.jump();
     }
 

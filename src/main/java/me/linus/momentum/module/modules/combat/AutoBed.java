@@ -1,13 +1,13 @@
 package me.linus.momentum.module.modules.combat;
 
-import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.client.notification.Notification;
+import me.linus.momentum.util.client.notification.NotificationManager;
 import me.linus.momentum.util.player.rotation.RotationManager;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.world.Timer;
@@ -24,7 +24,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBed;
-import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.tileentity.TileEntityBed;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -101,7 +100,7 @@ public class AutoBed extends Module {
             return;
 
         if (mc.player.dimension == 0 & whenOverworld.getValue()) {
-            MessageUtil.sendClientMessage("You are not in the nether!");
+            NotificationManager.addNotification(new Notification("You are not in the nether!", Notification.Type.Warning));
             return;
         }
 

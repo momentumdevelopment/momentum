@@ -31,5 +31,4 @@ public class Dupe extends Command {
     public String getDescription() {
         return "Sets the starting position for the dupe";
     }
-
 }

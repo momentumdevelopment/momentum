@@ -132,14 +132,14 @@ public class CrystalUtil implements MixinInterface {
         return true;
     }
 
-    public static float calculateDamage(BlockPos blockPos, Entity entity) {
+    public static float calculateDamage(double posX, double posY, double posZ, Entity entity) {
         try {
-            double factor = (1.0 - entity.getDistance(blockPos.x, blockPos.y, blockPos.z) / 12.0f) * entity.world.getBlockDensity(new Vec3d(blockPos.x, blockPos.y, blockPos.z), entity.getEntityBoundingBox());
+            double factor = (1.0 - entity.getDistance(posX, posY, posZ) / 12.0f) * entity.world.getBlockDensity(new Vec3d(posX, posY, posZ), entity.getEntityBoundingBox());
             float calculatedDamage = (float) (int) ((factor * factor + factor) / 2.0 * 7.0 * 12.0f + 1.0);
             double damage = 1.0;
 
             if (entity instanceof EntityLivingBase)
-                damage = getBlastReduction((EntityLivingBase) entity, calculatedDamage * ((mc.world.getDifficulty().getDifficultyId() == 0) ? 0.0f : ((mc.world.getDifficulty().getDifficultyId() == 2) ? 1.0f : ((mc.world.getDifficulty().getDifficultyId() == 1) ? 0.5f : 1.5f))), new Explosion(mc.world, null, blockPos.x, blockPos.y, blockPos.z, 6.0f, false, true));
+                damage = getBlastReduction((EntityLivingBase) entity, calculatedDamage * ((mc.world.getDifficulty().getDifficultyId() == 0) ? 0.0f : ((mc.world.getDifficulty().getDifficultyId() == 2) ? 1.0f : ((mc.world.getDifficulty().getDifficultyId() == 1) ? 0.5f : 1.5f))), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
 
             return (float) damage;
         } catch (Exception e) {

@@ -160,7 +160,7 @@ public class Aura extends Module {
         if (useTicks.getValue() && !sync.getValue() && syncTimer.passed((long) (tickDelay.getValue() * 50), Timer.Format.System))
             PlayerUtil.attackEntity(target);
 
-        if (sync.getValue() && syncTimer.passed((long) ((TickUtil.TPS / 20) * 1000), Timer.Format.System))
+        if (sync.getValue() && syncTimer.passed((long) (TickUtil.TPS / 20), Timer.Format.Ticks))
             PlayerUtil.attackEntity(target);
 
         if (armorMelt.getValue()) {

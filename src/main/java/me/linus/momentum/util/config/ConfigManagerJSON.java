@@ -1,6 +1,5 @@
 package me.linus.momentum.util.config;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.main.gui.Window;
@@ -193,7 +192,6 @@ public class ConfigManagerJSON {
             if (moduleObject.get("Name") == null || moduleObject.get("Enabled") == null || moduleObject.get("Drawn") == null || moduleObject.get("Bind") == null)
                 continue;
 
-            Momentum.LOGGER.info("Loading for " + module.getName());
             module.setEnabled(moduleObject.get("Enabled").getAsBoolean());
             module.setDrawn(moduleObject.get("Drawn").getAsBoolean());
             module.getKeybind().setKeyCode(moduleObject.get("Bind").getAsInt());

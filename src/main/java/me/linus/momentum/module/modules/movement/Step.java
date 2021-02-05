@@ -126,7 +126,7 @@ public class Step extends Module {
                 break;
             case Unsafe:
                 if (disable.getValue() == 0) {
-                    NotificationManager.notifications.add(new Notification("Step Complete! Disabling!", Notification.Type.Warning));
+                    NotificationManager.addNotification(new Notification("Step Complete! Disabling!", Notification.Type.Warning));
                     this.disable();
                 }
 
