@@ -44,7 +44,8 @@ public class HUDComponentManager implements MixinInterface {
             new Totem(),
             new TPS(),
             new WaterMark(),
-            new Welcomer()
+            new Welcomer(),
+            new XP()
     );
 
     public static List<HUDComponent> getComponents(){
