@@ -24,7 +24,7 @@ public class HUDComponentManager implements MixinInterface {
     static final List<HUDComponent> components = Lists.newArrayList(
             new ActiveModules(),
             new Armor(),
-            new ACswitch(),
+            new CombatInfo(),
             new Coordinates(),
             new Crystal(),
             new Direction(),
@@ -44,8 +44,7 @@ public class HUDComponentManager implements MixinInterface {
             new Totem(),
             new TPS(),
             new WaterMark(),
-            new Welcomer(),
-            new XP()
+            new Welcomer()
     );
 
     public static List<HUDComponent> getComponents(){
