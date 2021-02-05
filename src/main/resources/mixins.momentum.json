@@ -27,7 +27,8 @@
       "MixinRenderLivingBase",
       "MixinWorld",
       "MixinTileEntityBeaconRenderer",
-      "MixinTileEntityEnchantmentTableRenderer"
+      "MixinTileEntityEnchantmentTableRenderer",
+      "MixinRender"
     ],
 
     "client": [

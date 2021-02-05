@@ -22,7 +22,7 @@ public class Step extends Module {
     }
 
     public static Mode mode = new Mode("Mode", "Teleport", "Spider", "Vanilla");
-    public static Slider height = new Slider("Height", 0.0D, 2.0D, 5.0D, 1);
+    public static Slider height = new Slider("Height", 0.0D, 2.0D, 2.5D, 1);
 
     public static Mode disable = new Mode("Disable", "Unsafe", "Completion", "Never");
 
@@ -126,7 +126,7 @@ public class Step extends Module {
                 break;
             case Unsafe:
                 if (disable.getValue() == 0) {
-                    NotificationManager.notifications.add(new Notification("Unsafe Step detected! Disabling Step!", Notification.Type.Warning));
+                    NotificationManager.notifications.add(new Notification("Step Complete! Disabling!", Notification.Type.Warning));
                     this.disable();
                 }
 

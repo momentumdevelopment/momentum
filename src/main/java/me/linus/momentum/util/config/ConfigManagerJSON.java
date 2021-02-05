@@ -1,5 +1,6 @@
 package me.linus.momentum.util.config;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.hud.HUDComponentManager;
 import me.linus.momentum.gui.main.gui.Window;
@@ -15,11 +16,12 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import com.google.gson.*;
 import me.linus.momentum.util.social.enemy.Enemy;
 import me.linus.momentum.util.social.enemy.EnemyManager;
 import me.linus.momentum.util.social.friend.Friend;
 import me.linus.momentum.util.social.friend.FriendManager;
+
+import com.google.gson.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -53,8 +55,6 @@ public class ConfigManagerJSON {
 
     public static void saveConfig() {
         try {
-            saveEnabledModules();
-            saveDrawnModules();
             saveModules();
             saveGUI();
             saveHUD();
@@ -68,8 +68,6 @@ public class ConfigManagerJSON {
     public static void loadConfig() {
         try {
             createDirectory();
-            loadEnabledModules();
-            loadDrawnModules();
             loadModules();
             loadGUI();
             loadHUD();
@@ -90,6 +88,9 @@ public class ConfigManagerJSON {
             JsonObject subSettingObject = new JsonObject();
 
             moduleObject.add("Name", new JsonPrimitive(module.getName()));
+            moduleObject.add("Enabled", new JsonPrimitive(module.isEnabled()));
+            moduleObject.add("Drawn", new JsonPrimitive(module.isDrawn()));
+            moduleObject.add("Bind", new JsonPrimitive(module.getKeybind().getKeyCode()));
 
             for (Setting setting : module.getSettings()) {
                 if (setting instanceof Checkbox) {
@@ -184,264 +185,176 @@ public class ConfigManagerJSON {
     public static void loadModules() throws IOException {
         for (Module module : ModuleManager.getModules()) {
             if (!Files.exists(Paths.get("momentum/" + module.getName() + ".json")))
-                return;
+                continue;
 
             InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + module.getName() + ".json"));
             JsonObject moduleObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
 
-            if (moduleObject.get("Name") == null)
-                return;
+            if (moduleObject.get("Name") == null || moduleObject.get("Enabled") == null || moduleObject.get("Drawn") == null || moduleObject.get("Bind") == null)
+                continue;
+
+            Momentum.LOGGER.info("Loading for " + module.getName());
+            module.setEnabled(moduleObject.get("Enabled").getAsBoolean());
+            module.setDrawn(moduleObject.get("Drawn").getAsBoolean());
+            module.getKeybind().setKeyCode(moduleObject.get("Bind").getAsInt());
 
             JsonObject settingObject = moduleObject.get("Settings").getAsJsonObject();
             JsonObject subSettingObject = settingObject.get("SubSettings").getAsJsonObject();
 
             for (Setting setting : module.getSettings()) {
-
-                JsonElement dataSettingObject = null;
+                JsonElement settingValueObject = null;
 
                 if (setting instanceof Checkbox) {
-                    dataSettingObject = settingObject.get(((Checkbox) setting).getName());
+                    settingValueObject = settingObject.get(((Checkbox) setting).getName());
 
-                    if (((Checkbox) setting).hasSubSettings()) {
-                        for (SubSetting subSetting : ((Checkbox) setting).getSubSettings()) {
+                    for (SubSetting subSetting : ((Checkbox) setting).getSubSettings()) {
+                        JsonElement subSettingValueObject = null;
 
-                            JsonElement dataSubSettingObject = null;
+                        if (subSetting instanceof SubCheckbox)
+                            subSettingValueObject = subSettingObject.get(((SubCheckbox) subSetting).getName());
 
+                        if (subSetting instanceof SubSlider)
+                            subSettingValueObject = subSettingObject.get(((SubSlider) subSetting).getName());
+
+                        if (subSetting instanceof SubMode)
+                            subSettingValueObject = subSettingObject.get(((SubMode) subSetting).getName());
+
+                        if (subSetting instanceof SubKeybind)
+                            subSettingValueObject = subSettingObject.get(((SubKeybind) subSetting).getName());
+
+                        if (subSettingValueObject != null) {
                             if (subSetting instanceof SubCheckbox)
-                                dataSubSettingObject = subSettingObject.get(((SubCheckbox) subSetting).getName());
+                                ((SubCheckbox) subSetting).setChecked(subSettingValueObject.getAsBoolean());
 
                             if (subSetting instanceof SubSlider)
-                                dataSubSettingObject = subSettingObject.get(((SubSlider) subSetting).getName());
+                                ((SubSlider) subSetting).setValue(subSettingValueObject.getAsDouble());
 
                             if (subSetting instanceof SubMode)
-                                dataSubSettingObject = subSettingObject.get(((SubMode) subSetting).getName());
+                                ((SubMode) subSetting).setMode(subSettingValueObject.getAsInt());
 
                             if (subSetting instanceof SubKeybind)
-                                dataSubSettingObject = subSettingObject.get(((SubKeybind) subSetting).getName());
-
-                            if (dataSubSettingObject != null && dataSubSettingObject.isJsonPrimitive()) {
-                                if (subSetting instanceof SubCheckbox)
-                                    ((SubCheckbox) subSetting).setChecked(dataSubSettingObject.getAsBoolean());
-
-                                if (subSetting instanceof SubSlider)
-                                    ((SubSlider) subSetting).setValue(dataSubSettingObject.getAsDouble());
-
-                                if (subSetting instanceof SubMode)
-                                    ((SubMode) subSetting).setMode(dataSubSettingObject.getAsInt());
-
-                                if (subSetting instanceof SubKeybind)
-                                    ((SubKeybind) subSetting).setKey(dataSubSettingObject.getAsInt());
-                            }
+                                ((SubKeybind) subSetting).setKey(subSettingValueObject.getAsInt());
                         }
                     }
                 }
 
                 if (setting instanceof Slider) {
-                    dataSettingObject = settingObject.get(((Slider) setting).getName());
+                    settingValueObject = settingObject.get(((Slider) setting).getName());
 
-                    if (((Slider) setting).hasSubSettings()) {
-                        for (SubSetting subSetting : ((Slider) setting).getSubSettings()) {
+                    for (SubSetting subSetting : ((Slider) setting).getSubSettings()) {
+                        JsonElement subSettingValueObject = null;
 
-                            JsonElement dataSubSettingObject = null;
+                        if (subSetting instanceof SubCheckbox)
+                            subSettingValueObject = subSettingObject.get(((SubCheckbox) subSetting).getName());
 
+                        if (subSetting instanceof SubSlider)
+                            subSettingValueObject = subSettingObject.get(((SubSlider) subSetting).getName());
+
+                        if (subSetting instanceof SubMode)
+                            subSettingValueObject = subSettingObject.get(((SubMode) subSetting).getName());
+
+                        if (subSetting instanceof SubKeybind)
+                            subSettingValueObject = subSettingObject.get(((SubKeybind) subSetting).getName());
+
+                        if (subSettingValueObject != null) {
                             if (subSetting instanceof SubCheckbox)
-                                dataSubSettingObject = subSettingObject.get(((SubCheckbox) subSetting).getName());
+                                ((SubCheckbox) subSetting).setChecked(subSettingValueObject.getAsBoolean());
 
                             if (subSetting instanceof SubSlider)
-                                dataSubSettingObject = subSettingObject.get(((SubSlider) subSetting).getName());
+                                ((SubSlider) subSetting).setValue(subSettingValueObject.getAsDouble());
 
                             if (subSetting instanceof SubMode)
-                                dataSubSettingObject = subSettingObject.get(((SubMode) subSetting).getName());
+                                ((SubMode) subSetting).setMode(subSettingValueObject.getAsInt());
 
                             if (subSetting instanceof SubKeybind)
-                                dataSubSettingObject = subSettingObject.get(((SubKeybind) subSetting).getName());
-
-                            if (dataSubSettingObject != null && dataSubSettingObject.isJsonPrimitive()) {
-                                if (subSetting instanceof SubCheckbox)
-                                    ((SubCheckbox) subSetting).setChecked(dataSubSettingObject.getAsBoolean());
-
-                                if (subSetting instanceof SubSlider)
-                                    ((SubSlider) subSetting).setValue(dataSubSettingObject.getAsDouble());
-
-                                if (subSetting instanceof SubMode)
-                                    ((SubMode) subSetting).setMode(dataSubSettingObject.getAsInt());
-
-                                if (subSetting instanceof SubKeybind)
-                                    ((SubKeybind) subSetting).setKey(dataSubSettingObject.getAsInt());
-                            }
+                                ((SubKeybind) subSetting).setKey(subSettingValueObject.getAsInt());
                         }
                     }
                 }
 
                 if (setting instanceof Mode) {
-                    dataSettingObject = settingObject.get(((Mode) setting).getName());
+                    settingValueObject = settingObject.get(((Mode) setting).getName());
 
-                    if (((Mode) setting).hasSubSettings()) {
-                        for (SubSetting subSetting : ((Mode) setting).getSubSettings()) {
+                    for (SubSetting subSetting : ((Mode) setting).getSubSettings()) {
+                        JsonElement subSettingValueObject = null;
 
-                            JsonElement dataSubSettingObject = null;
+                        if (subSetting instanceof SubCheckbox)
+                            subSettingValueObject = subSettingObject.get(((SubCheckbox) subSetting).getName());
 
+                        if (subSetting instanceof SubSlider)
+                            subSettingValueObject = subSettingObject.get(((SubSlider) subSetting).getName());
+
+                        if (subSetting instanceof SubMode)
+                            subSettingValueObject = subSettingObject.get(((SubMode) subSetting).getName());
+
+                        if (subSetting instanceof SubKeybind)
+                            subSettingValueObject = subSettingObject.get(((SubKeybind) subSetting).getName());
+
+                        if (subSettingValueObject != null) {
                             if (subSetting instanceof SubCheckbox)
-                                dataSubSettingObject = subSettingObject.get(((SubCheckbox) subSetting).getName());
+                                ((SubCheckbox) subSetting).setChecked(subSettingValueObject.getAsBoolean());
 
                             if (subSetting instanceof SubSlider)
-                                dataSubSettingObject = subSettingObject.get(((SubSlider) subSetting).getName());
+                                ((SubSlider) subSetting).setValue(subSettingValueObject.getAsDouble());
 
                             if (subSetting instanceof SubMode)
-                                dataSubSettingObject = subSettingObject.get(((SubMode) subSetting).getName());
+                                ((SubMode) subSetting).setMode(subSettingValueObject.getAsInt());
 
                             if (subSetting instanceof SubKeybind)
-                                dataSubSettingObject = subSettingObject.get(((SubKeybind) subSetting).getName());
-
-                            if (dataSubSettingObject != null && dataSubSettingObject.isJsonPrimitive()) {
-                                if (subSetting instanceof SubCheckbox)
-                                    ((SubCheckbox) subSetting).setChecked(dataSubSettingObject.getAsBoolean());
-
-                                if (subSetting instanceof SubSlider)
-                                    ((SubSlider) subSetting).setValue(dataSubSettingObject.getAsDouble());
-
-                                if (subSetting instanceof SubMode)
-                                    ((SubMode) subSetting).setMode(dataSubSettingObject.getAsInt());
-
-                                if (subSetting instanceof SubKeybind)
-                                    ((SubKeybind) subSetting).setKey(dataSubSettingObject.getAsInt());
-                            }
+                                ((SubKeybind) subSetting).setKey(subSettingValueObject.getAsInt());
                         }
                     }
                 }
 
                 if (setting instanceof Keybind) {
-                    dataSettingObject = settingObject.get(((Keybind) setting).getName());
+                    settingValueObject = settingObject.get(((Keybind) setting).getName());
 
-                    if (((Keybind) setting).hasSubSettings()) {
-                        for (SubSetting subSetting : ((Keybind) setting).getSubSettings()) {
+                    for (SubSetting subSetting : ((Keybind) setting).getSubSettings()) {
+                        JsonElement subSettingValueObject = null;
 
-                            JsonElement dataSubSettingObject = null;
+                        if (subSetting instanceof SubCheckbox)
+                            subSettingValueObject = subSettingObject.get(((SubCheckbox) subSetting).getName());
 
+                        if (subSetting instanceof SubSlider)
+                            subSettingValueObject = subSettingObject.get(((SubSlider) subSetting).getName());
+
+                        if (subSetting instanceof SubMode)
+                            subSettingValueObject = subSettingObject.get(((SubMode) subSetting).getName());
+
+                        if (subSetting instanceof SubKeybind)
+                            subSettingValueObject = subSettingObject.get(((SubKeybind) subSetting).getName());
+
+                        if (subSettingValueObject != null) {
                             if (subSetting instanceof SubCheckbox)
-                                dataSubSettingObject = subSettingObject.get(((SubCheckbox) subSetting).getName());
+                                ((SubCheckbox) subSetting).setChecked(subSettingValueObject.getAsBoolean());
 
                             if (subSetting instanceof SubSlider)
-                                dataSubSettingObject = subSettingObject.get(((SubSlider) subSetting).getName());
+                                ((SubSlider) subSetting).setValue(subSettingValueObject.getAsDouble());
 
                             if (subSetting instanceof SubMode)
-                                dataSubSettingObject = subSettingObject.get(((SubMode) subSetting).getName());
+                                ((SubMode) subSetting).setMode(subSettingValueObject.getAsInt());
 
                             if (subSetting instanceof SubKeybind)
-                                dataSubSettingObject = subSettingObject.get(((SubKeybind) subSetting).getName());
-
-                            if (dataSubSettingObject != null && dataSubSettingObject.isJsonPrimitive()) {
-                                if (subSetting instanceof SubCheckbox)
-                                    ((SubCheckbox) subSetting).setChecked(dataSubSettingObject.getAsBoolean());
-
-                                if (subSetting instanceof SubSlider)
-                                    ((SubSlider) subSetting).setValue(dataSubSettingObject.getAsDouble());
-
-                                if (subSetting instanceof SubMode)
-                                    ((SubMode) subSetting).setMode(dataSubSettingObject.getAsInt());
-
-                                if (subSetting instanceof SubKeybind)
-                                    ((SubKeybind) subSetting).setKey(dataSubSettingObject.getAsInt());
-                            }
+                                ((SubKeybind) subSetting).setKey(subSettingValueObject.getAsInt());
                         }
                     }
                 }
 
-                if (dataSettingObject != null && dataSettingObject.isJsonPrimitive()) {
+                if (settingValueObject != null) {
                     if (setting instanceof Checkbox)
-                        ((Checkbox) setting).setChecked(dataSettingObject.getAsBoolean());
+                        ((Checkbox) setting).setChecked(settingValueObject.getAsBoolean());
 
                     if (setting instanceof Slider)
-                        ((Slider) setting).setValue(dataSettingObject.getAsDouble());
+                        ((Slider) setting).setValue(settingValueObject.getAsDouble());
 
                     if (setting instanceof Mode)
-                        ((Mode) setting).setMode(dataSettingObject.getAsInt());
+                        ((Mode) setting).setMode(settingValueObject.getAsInt());
 
                     if (setting instanceof Keybind)
-                        ((Keybind) setting).setKey(dataSettingObject.getAsInt());
+                        ((Keybind) setting).setKey(settingValueObject.getAsInt());
                 }
             }
-
-            inputStream.close();
         }
-    }
-
-    public static void saveEnabledModules() throws IOException {
-        registerFiles("Enabled");
-
-        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "Enabled" + ".json"), StandardCharsets.UTF_8);
-        JsonObject moduleObject = new JsonObject();
-        JsonObject enabledObject = new JsonObject();
-
-        for (Module module : ModuleManager.getModules()) {
-            enabledObject.add(module.getName(), new JsonPrimitive(module.isEnabled()));
-        }
-
-        moduleObject.add("Modules", enabledObject);
-        String jsonString = gson.toJson(new JsonParser().parse(moduleObject.toString()));
-        fileOutputStreamWriter.write(jsonString);
-        fileOutputStreamWriter.close();
-    }
-
-    public static void loadEnabledModules() throws IOException {
-        if (!Files.exists(Paths.get("momentum/" + "Enabled" + ".json")))
-            return;
-
-        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "Enabled" + ".json"));
-        JsonObject moduleObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
-
-        if (moduleObject.get("Modules") == null)
-            return;
-
-        JsonObject settingObject = moduleObject.get("Modules").getAsJsonObject();
-        for (Module module : ModuleManager.getModules()) {
-            JsonElement dataObject = settingObject.get(module.getName());
-
-            if (dataObject != null && dataObject.isJsonPrimitive()) {
-                if (dataObject.getAsBoolean())
-                    module.enable();
-            }
-        }
-
-        inputStream.close();
-    }
-
-    public static void saveDrawnModules() throws IOException {
-        registerFiles("Drawn");
-
-        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "Drawn" + ".json"), StandardCharsets.UTF_8);
-        JsonObject moduleObject = new JsonObject();
-        JsonObject drawnObject = new JsonObject();
-
-        for (Module module : ModuleManager.getModules()) {
-            drawnObject.add(module.getName(), new JsonPrimitive(module.isDrawn()));
-        }
-
-        moduleObject.add("Modules", drawnObject);
-        String jsonString = gson.toJson(new JsonParser().parse(moduleObject.toString()));
-        fileOutputStreamWriter.write(jsonString);
-        fileOutputStreamWriter.close();
-    }
-
-    public static void loadDrawnModules() throws IOException {
-        if (!Files.exists(Paths.get("momentum/" + "Drawn" + ".json")))
-            return;
-
-        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "Drawn" + ".json"));
-        JsonObject moduleObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
-
-        if (moduleObject.get("Modules") == null)
-            return;
-
-        JsonObject drawnObject = moduleObject.get("Modules").getAsJsonObject();
-        for (Module module : ModuleManager.getModules()) {
-            JsonElement dataObject = drawnObject.get(module.getName());
-
-            if (dataObject != null && dataObject.isJsonPrimitive())
-                module.setDrawn(dataObject.getAsBoolean());
-        }
-
-        inputStream.close();
     }
 
     public static void saveGUI() throws IOException {

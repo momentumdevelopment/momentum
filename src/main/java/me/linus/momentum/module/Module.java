@@ -139,6 +139,10 @@ public abstract class Module implements MixinInterface {
 		}
 	}
 
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public boolean nullCheck() {
 		return (mc.player == null || mc.world == null);
 	}

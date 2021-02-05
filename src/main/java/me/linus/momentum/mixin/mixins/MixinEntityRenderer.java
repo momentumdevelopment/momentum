@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinEntityRenderer {
 
     @Inject(method = "hurtCameraEffect", at = @At("HEAD"), cancellable = true)
-    public void hurtCameraEffect(float ticks, CallbackInfo info){
+    public void hurtCameraEffect(float ticks, CallbackInfo info) {
         if (ModuleManager.getModuleByName("NoRender").isEnabled() && NoRender.hurtCamera.getValue())
             info.cancel();
     }

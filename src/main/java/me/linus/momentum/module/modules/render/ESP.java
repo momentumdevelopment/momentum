@@ -7,7 +7,6 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -52,6 +51,7 @@ public class ESP extends Module {
         addSetting(players);
         addSetting(animals);
         addSetting(mobs);
+        addSetting(items);
         addSetting(vehicles);
         addSetting(crystals);
         addSetting(lineWidth);
@@ -94,14 +94,6 @@ public class ESP extends Module {
         }
     }
 
-    @Override
-    public void onDisable() {
-        for (Entity entity : mc.world.loadedEntityList) {
-            if (entity.isGlowing())
-                entity.setGlowing(false);
-        }
-    }
-
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (nullCheck())
@@ -111,11 +103,6 @@ public class ESP extends Module {
             espMode.drawESP();
         } catch (Exception e) {
 
-        }
-
-        for (Entity entity : mc.world.loadedEntityList) {
-            if (entity.isGlowing() && !(mode.getValue() == 1))
-                entity.setGlowing(false);
         }
     }
 

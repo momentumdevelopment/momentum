@@ -7,7 +7,6 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.player.FlightUtil;
-import net.minecraft.entity.Entity;
 
 /**
  * @author linustouchtips
@@ -58,8 +57,6 @@ public class BoatFlight extends Module {
         disableCheck();
         flyTick();
 
-        mc.player.ridingEntity.rotationYaw = mc.player.rotationYaw;
-
         switch (mode.getValue()) {
             case 0:
                 flyControl();
@@ -72,16 +69,16 @@ public class BoatFlight extends Module {
 
     public void flyControl() {
         if (mc.player.isRiding()) {
-            Entity ridingEntity = mc.player.ridingEntity;
+            mc.player.mc.player.ridingEntity.rotationYaw = mc.player.rotationYaw;
 
-            ridingEntity.motionY += yOffset.getValue();
-            ridingEntity.setVelocity(0, -fallSpeed.getValue(), 0);
+            mc.player.ridingEntity.motionY += yOffset.getValue();
+            mc.player.ridingEntity.setVelocity(0, -fallSpeed.getValue(), 0);
 
             if (mc.gameSettings.keyBindJump.isKeyDown())
-                ridingEntity.motionY = ySpeed.getValue();
+                mc.player.ridingEntity.motionY = ySpeed.getValue();
 
             else if (mc.gameSettings.keyBindSneak.isKeyDown())
-                ridingEntity.motionY = (ySpeed.getValue() * -1);
+                mc.player.ridingEntity.motionY = (ySpeed.getValue() * -1);
 
             FlightUtil.horizontalEntityFlight(hSpeed.getValue());
         }
@@ -89,16 +86,16 @@ public class BoatFlight extends Module {
 
     public void flySwim() {
         if (mc.player.isRiding()) {
-            Entity ridingEntity = mc.player.ridingEntity;
+            mc.player.mc.player.ridingEntity.rotationYaw = mc.player.rotationYaw;
 
-            ridingEntity.motionY += yOffset.getValue();
-            ridingEntity.setVelocity(0, -fallSpeed.getValue(), 0);
+            mc.player.ridingEntity.motionY += yOffset.getValue();
+            mc.player.ridingEntity.setVelocity(0, -fallSpeed.getValue(), 0);
 
             if (mc.gameSettings.keyBindJump.isKeyDown())
-                ridingEntity.motionY = ySpeed.getValue();
+                mc.player.ridingEntity.motionY = ySpeed.getValue();
 
             else if (mc.gameSettings.keyBindSneak.isKeyDown())
-                ridingEntity.motionY = (ySpeed.getValue() * -1);
+                mc.player.ridingEntity.motionY = (ySpeed.getValue() * -1);
         }
     }
 

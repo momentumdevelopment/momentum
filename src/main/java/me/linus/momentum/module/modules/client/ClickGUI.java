@@ -6,6 +6,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
@@ -24,6 +25,7 @@ public class ClickGUI extends Module {
 	public static Slider speed = new Slider("Animation Speed", 0.0D, 3.5D, 5.0D, 1);
 
 	public static Checkbox blurEffect = new Checkbox("Blur Effect", true);
+	public static Checkbox blurChat = new Checkbox("Chat Blur", true);
 	public static Checkbox allowOverflow = new Checkbox("Allow Overflow", true);
 
 	public static Checkbox snapSlider = new Checkbox("Slider Snap", true);
@@ -43,6 +45,7 @@ public class ClickGUI extends Module {
 		addSetting(scrollSpeed);
 		addSetting(speed);
 		addSetting(blurEffect);
+		addSetting(blurChat);
 		addSetting(allowOverflow);
 		addSetting(pauseGame);
 		addSetting(indicators);
@@ -58,5 +61,23 @@ public class ClickGUI extends Module {
 
 		if (blurEffect.getValue())
 			mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
+	}
+
+	@Override
+	public void onUpdate() {
+		if (nullCheck())
+			return;
+
+		if (blurChat.getValue()) {
+			if (mc.currentScreen instanceof GuiChat)
+				mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
+			else {
+				try {
+					mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+				} catch (Exception e) {
+
+				}
+			}
+		}
 	}
 }

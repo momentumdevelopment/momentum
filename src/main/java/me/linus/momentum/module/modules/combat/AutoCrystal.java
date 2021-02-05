@@ -294,9 +294,10 @@ public class AutoCrystal extends Module {
         if (closePlacements.getValue() && mc.player.getDistance(crystal.getCrystal()) < 1.5)
             return true;
         if (CrystalManager.swings > 50 && inhibit.getValue()) {
-            CrystalManager.swings = 0;
             CrystalManager.updateTicks(true);
-            NotificationManager.notifications.add(new Notification("AutoCrystal Frozen! Pausing for 1 tick!", Notification.Type.Warning));
+
+            if (CrystalManager.swings < 75)
+                NotificationManager.notifications.add(new Notification("AutoCrystal Frozen! Pausing for 1 tick!", Notification.Type.Warning));
 
             crystal = null;
             if (unsafeSync.getValue())
