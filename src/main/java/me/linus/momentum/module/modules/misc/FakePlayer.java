@@ -45,7 +45,7 @@ public class FakePlayer extends Module {
                 break;
         }
         
-        MessageUtil.sendClientMessage("Spawning fake player(s)!");
+        MessageUtil.sendClientMessage("Spawning fake player!");
     }
 
     @Override

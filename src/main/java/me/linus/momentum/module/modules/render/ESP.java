@@ -107,7 +107,7 @@ public class ESP extends Module {
         }
 
         for (Entity entity : mc.world.loadedEntityList) {
-            if (entity.isGlowing() && (!(mode.getValue() == 1) || !this.isEnabled()))
+            if (entity.isGlowing() && (mode.getValue() != 1 || !this.isEnabled()))
                 entity.setGlowing(false);
         }
     }

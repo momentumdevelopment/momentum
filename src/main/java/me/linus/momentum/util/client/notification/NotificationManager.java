@@ -15,7 +15,6 @@ public class NotificationManager implements MixinInterface {
     public static List<Notification> notifications = new ArrayList<>();
 
     public static void addNotification(Notification notification) {
-        if (notifications.size() < 3)
-            notifications.add(notification);
+        notifications.add(notification);
     }
 }

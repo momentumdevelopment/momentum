@@ -65,6 +65,7 @@ public class Step extends Module {
 
     @Override
     public void onDisable() {
+        mc.timer.tickLength = 50;
         mc.player.stepHeight = 0.5f;
     }
 

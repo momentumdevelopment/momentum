@@ -21,7 +21,7 @@ public class XP extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        FontUtil.drawString("XP: " + TextFormatting.AQUA + InventoryUtil.getItemCount(Items.EXPERIENCE_BOTTLE), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+        FontUtil.drawString("XP: " + InventoryUtil.getItemCount(Items.EXPERIENCE_BOTTLE), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
         width = Momentum.fontManager.getCustomFont().getStringWidth("XP: " + InventoryUtil.getItemCount(Items.EXPERIENCE_BOTTLE)) + 2;
     }
 }

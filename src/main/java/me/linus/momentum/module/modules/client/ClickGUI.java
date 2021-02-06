@@ -62,22 +62,4 @@ public class ClickGUI extends Module {
 		if (blurEffect.getValue())
 			mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
 	}
-
-	@Override
-	public void onUpdate() {
-		if (nullCheck())
-			return;
-
-		if (blurChat.getValue()) {
-			if (mc.currentScreen instanceof GuiChat)
-				mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
-			else {
-				try {
-					mc.entityRenderer.getShaderGroup().deleteShaderGroup();
-				} catch (Exception e) {
-
-				}
-			}
-		}
-	}
 }
