@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import me.linus.momentum.event.MomentumEvent.Stage;
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.event.events.packet.PacketSendEvent;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraftforge.common.MinecraftForge;

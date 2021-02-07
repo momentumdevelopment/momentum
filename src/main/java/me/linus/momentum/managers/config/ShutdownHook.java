@@ -1,4 +1,4 @@
-package me.linus.momentum.util.config;
+package me.linus.momentum.managers.config;
 
 import me.linus.momentum.Momentum;
 

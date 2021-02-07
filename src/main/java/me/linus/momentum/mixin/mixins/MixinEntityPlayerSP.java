@@ -3,7 +3,7 @@ package me.linus.momentum.mixin.mixins;
 import com.mojang.authlib.GameProfile;
 import me.linus.momentum.event.events.player.MoveEvent;
 import me.linus.momentum.event.events.player.RotationEvent;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.misc.Portal;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import net.minecraft.client.Minecraft;

@@ -1,4 +1,4 @@
-package me.linus.momentum.util.social.friend;
+package me.linus.momentum.managers.social.friend;
 
 /**
  * @author linustouchtips

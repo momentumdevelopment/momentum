@@ -2,7 +2,7 @@ package me.linus.momentum.module.modules.misc;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.module.Module;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.movement.ElytraFlight;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
@@ -10,7 +10,7 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.player.rotation.RotationUtil;
-import me.linus.momentum.util.config.ConfigManager;
+import me.linus.momentum.managers.config.ConfigManager;
 import me.linus.momentum.util.render.builder.RenderUtil;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.settings.KeyBinding;

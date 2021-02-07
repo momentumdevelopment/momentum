@@ -1,6 +1,6 @@
 package me.linus.momentum.mixin.mixins;
 
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;

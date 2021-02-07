@@ -1,4 +1,7 @@
-package me.linus.momentum.util.combat.crystal;
+package me.linus.momentum.managers;
+
+import me.linus.momentum.util.combat.crystal.Crystal;
+import me.linus.momentum.util.combat.crystal.CrystalPosition;
 
 import java.util.concurrent.ConcurrentHashMap;
 

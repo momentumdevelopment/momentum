@@ -1,14 +1,14 @@
 package me.linus.momentum.gui.theme.themes;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.linus.momentum.command.CommandManager;
+import me.linus.momentum.managers.CommandManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.console.ConsoleWindow;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;

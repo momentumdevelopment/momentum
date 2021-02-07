@@ -1,6 +1,6 @@
-package me.linus.momentum.util.social.friend;
+package me.linus.momentum.managers.social.friend;
 
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.Social;
 
 import java.util.ArrayList;

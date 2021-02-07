@@ -1,6 +1,6 @@
 package me.linus.momentum.mixin.mixins;
 
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.ClientFont;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.FontRenderer;

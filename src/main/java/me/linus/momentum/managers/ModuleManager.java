@@ -1,7 +1,8 @@
-package me.linus.momentum.module;
+package me.linus.momentum.managers;
 
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.module.Module;
 import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.module.modules.bot.Milo;
 import me.linus.momentum.module.modules.client.*;

@@ -1,19 +1,20 @@
 package me.linus.momentum;
 
-import me.linus.momentum.command.CommandManager;
-import me.linus.momentum.gui.hud.HUDComponentManager;
+import me.linus.momentum.managers.CommandManager;
+import me.linus.momentum.managers.HUDComponentManager;
 import me.linus.momentum.gui.main.console.ConsoleWindow;
 import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.gui.theme.Theme;
-import me.linus.momentum.module.ModuleManager;
-import me.linus.momentum.util.client.CapeAPI;
-import me.linus.momentum.util.config.ConfigManagerJSON;
-import me.linus.momentum.util.social.enemy.EnemyManager;
-import me.linus.momentum.util.social.friend.FriendManager;
-import me.linus.momentum.util.combat.crystal.CrystalManager;
-import me.linus.momentum.util.config.ShutdownHook;
-import me.linus.momentum.util.player.rotation.RotationManager;
+import me.linus.momentum.managers.CapeManager;
+import me.linus.momentum.managers.ModuleManager;
+import me.linus.momentum.managers.config.ConfigManagerJSON;
+import me.linus.momentum.managers.social.enemy.EnemyManager;
+import me.linus.momentum.managers.social.friend.FriendManager;
+import me.linus.momentum.managers.CrystalManager;
+import me.linus.momentum.managers.config.ShutdownHook;
+import me.linus.momentum.managers.RotationManager;
 import me.linus.momentum.util.render.FontUtil;
+import me.linus.momentum.managers.TickManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -51,8 +52,9 @@ public class Momentum {
     public static HUDComponentManager componentManager;
     public static RotationManager rotationManager;
     public static CrystalManager crystalManager;
-    public static FontUtil fontManager = new FontUtil();
-    public static CapeAPI capeAPI;
+    public static TickManager tickManager;
+    public static FontUtil fontManager;
+    public static CapeManager capeManager;
 
     @Mod.Instance
     private static Momentum INSTANCE;
@@ -65,6 +67,7 @@ public class Momentum {
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
 
+        fontManager = new FontUtil();
         fontManager.load();
         LOGGER.info("Fonts Loaded!");
 
@@ -98,14 +101,17 @@ public class Momentum {
         componentManager = new HUDComponentManager();
         LOGGER.info("HUD System Initialized!");
 
+        tickManager = new TickManager();
+        LOGGER.info("Tick System Initialized!");
+
         Runtime.getRuntime().addShutdownHook(new ShutdownHook());
         LOGGER.info("Config System Saved!");
     }
     
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        capeAPI = new CapeAPI();
-        LOGGER.info("Cape API Initialized!");
+        capeManager = new CapeManager();
+        LOGGER.info("Cape System Initialized!");
 
         ConfigManagerJSON.loadConfig();
         LOGGER.info("Config System Loaded!");

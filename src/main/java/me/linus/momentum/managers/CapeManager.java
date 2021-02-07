@@ -1,4 +1,4 @@
-package me.linus.momentum.util.client;
+package me.linus.momentum.managers;
 
 import me.linus.momentum.mixin.MixinInterface;
 
@@ -14,10 +14,10 @@ import java.util.UUID;
  * @since 12/17/2020
  */
 
-public class CapeAPI implements MixinInterface {
+public class CapeManager implements MixinInterface {
     List<UUID> uuids = new ArrayList<>();
 
-    public CapeAPI() {
+    public CapeManager() {
         try {
             URL cache = new URL("https://raw.githubusercontent.com/linustouchtips/momentum-resources/master/capes.json");
             BufferedReader in = new BufferedReader(new InputStreamReader(cache.openStream()));

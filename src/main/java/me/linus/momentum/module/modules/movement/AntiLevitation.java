@@ -1,9 +1,8 @@
 package me.linus.momentum.module.modules.movement;
 
 import me.linus.momentum.module.Module;
-import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.client.notification.Notification;
-import me.linus.momentum.util.client.notification.NotificationManager;
+import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.NotificationManager;
 import net.minecraft.potion.Potion;
 
 import java.util.Objects;

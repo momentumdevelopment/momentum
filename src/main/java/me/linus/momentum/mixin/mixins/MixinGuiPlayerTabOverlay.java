@@ -1,8 +1,8 @@
 package me.linus.momentum.mixin.mixins;
 
-import me.linus.momentum.module.ModuleManager;
-import me.linus.momentum.util.social.enemy.EnemyManager;
-import me.linus.momentum.util.social.friend.FriendManager;
+import me.linus.momentum.managers.ModuleManager;
+import me.linus.momentum.managers.social.enemy.EnemyManager;
+import me.linus.momentum.managers.social.friend.FriendManager;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.scoreboard.ScorePlayerTeam;

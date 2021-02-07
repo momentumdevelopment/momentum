@@ -3,7 +3,7 @@ package me.linus.momentum.module.modules.misc;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.world.TickUtil;
+import me.linus.momentum.managers.TickManager;
 
 /**
  * @author linustouchtips
@@ -34,7 +34,7 @@ public class Timer extends Module {
         if (!sync.getValue())
             mc.timer.tickLength = (float) (50.0f / ticks.getValue());
         else
-            mc.timer.tickLength = 50.0f / (TickUtil.TPS / 20);
+            mc.timer.tickLength = 50.0f / (TickManager.TPS[0] / 20);
     }
 
     @Override

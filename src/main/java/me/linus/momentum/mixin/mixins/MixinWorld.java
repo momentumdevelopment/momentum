@@ -1,10 +1,10 @@
 package me.linus.momentum.mixin.mixins;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.combat.AutoCrystal;
 import me.linus.momentum.module.modules.render.SkyColor;
-import me.linus.momentum.util.combat.crystal.CrystalManager;
+import me.linus.momentum.managers.CrystalManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.util.math.Vec3d;

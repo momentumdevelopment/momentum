@@ -1,11 +1,11 @@
-package me.linus.momentum.util.config;
+package me.linus.momentum.managers.config;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.gui.hud.HUDComponentManager;
+import me.linus.momentum.managers.HUDComponentManager;
 import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.module.Module;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
 import me.linus.momentum.setting.checkbox.Checkbox;
@@ -16,8 +16,8 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.social.friend.Friend;
-import me.linus.momentum.util.social.friend.FriendManager;
+import me.linus.momentum.managers.social.friend.Friend;
+import me.linus.momentum.managers.social.friend.FriendManager;
 
 import java.io.*;
 import java.nio.file.Files;

@@ -3,7 +3,7 @@ package me.linus.momentum.command.commands;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.command.Command;
 import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.social.enemy.EnemyManager;
+import me.linus.momentum.managers.social.enemy.EnemyManager;
 import net.minecraft.util.text.TextFormatting;
 
 /**

@@ -6,8 +6,8 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.notification.Notification;
-import me.linus.momentum.util.client.notification.NotificationManager;
+import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.util.player.MotionUtil;
 import net.minecraft.network.play.client.CPacketPlayer;
 

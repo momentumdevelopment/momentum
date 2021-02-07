@@ -1,4 +1,4 @@
-package me.linus.momentum.util.social.enemy;
+package me.linus.momentum.managers.social.enemy;
 
 /**
  * @author linustouchtips

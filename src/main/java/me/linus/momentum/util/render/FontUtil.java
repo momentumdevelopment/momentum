@@ -2,7 +2,7 @@ package me.linus.momentum.util.render;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.ClientFont;
 import me.linus.momentum.util.client.font.FontRender;
 

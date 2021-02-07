@@ -1,6 +1,7 @@
-package me.linus.momentum.gui.hud;
+package me.linus.momentum.managers;
 
 import com.google.common.collect.Lists;
+import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.hud.components.*;
 import me.linus.momentum.gui.main.gui.GUI;
 import me.linus.momentum.gui.main.hud.HUD;

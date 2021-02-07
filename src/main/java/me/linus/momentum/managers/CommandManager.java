@@ -1,7 +1,8 @@
-package me.linus.momentum.command;
+package me.linus.momentum.managers;
 
 import com.google.common.collect.Lists;
 import me.linus.momentum.Momentum;
+import me.linus.momentum.command.Command;
 import me.linus.momentum.command.commands.*;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.common.MinecraftForge;

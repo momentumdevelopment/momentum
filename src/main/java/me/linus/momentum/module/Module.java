@@ -2,6 +2,7 @@ package me.linus.momentum.module;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.Momentum;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.misc.EnableMessage;
 import me.linus.momentum.setting.Setting;
@@ -30,7 +31,7 @@ public abstract class Module implements MixinInterface {
 	private boolean enabled;
 	private boolean opened;
 	private boolean drawn;
-	protected boolean isKeyDown = false;
+	public boolean isKeyDown = false;
 	private boolean isBinding;
 	public float remainingAnimation = 0.0f;
 	

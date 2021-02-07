@@ -4,7 +4,7 @@ import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.Module.Category;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.GuiScreen;

@@ -1,16 +1,17 @@
 package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.event.events.packet.PacketSendEvent;
+import me.linus.momentum.managers.TickManager;
 import me.linus.momentum.module.Module;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.player.rotation.RotationManager;
+import me.linus.momentum.managers.RotationManager;
 import me.linus.momentum.util.world.Timer;
-import me.linus.momentum.util.social.friend.FriendManager;
+import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
@@ -172,7 +173,7 @@ public class Aura extends Module {
         if (useTicks.getValue() && !sync.getValue() && syncTimer.passed((long) (tickDelay.getValue() * 50), Timer.Format.System))
             PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
 
-        if (sync.getValue() && syncTimer.passed((long) (TickUtil.TPS / 20), Timer.Format.Ticks))
+        if (sync.getValue() && syncTimer.passed((long) (TickManager.TPS[0] / 20), Timer.Format.Ticks))
             PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
 
         if (armorMelt.getValue()) {

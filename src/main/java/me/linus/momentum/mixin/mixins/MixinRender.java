@@ -1,6 +1,6 @@
 package me.linus.momentum.mixin.mixins;
 
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.util.client.ColorUtil;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;

@@ -1,4 +1,4 @@
-package me.linus.momentum.util.client.notification;
+package me.linus.momentum.managers.notification;
 
 import me.linus.momentum.gui.hud.components.Notifications;
 import me.linus.momentum.util.world.Timer;

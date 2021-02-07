@@ -1,7 +1,7 @@
 package me.linus.momentum.mixin.mixins;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.player.Reach;
 import me.linus.momentum.module.modules.player.SpeedMine;
 import me.linus.momentum.module.modules.player.Swing;

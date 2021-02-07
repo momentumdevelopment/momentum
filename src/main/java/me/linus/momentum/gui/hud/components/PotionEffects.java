@@ -3,8 +3,8 @@ package me.linus.momentum.gui.hud.components;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.managers.TickManager;
 import me.linus.momentum.util.render.FontUtil;
-import me.linus.momentum.util.world.TickUtil;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 
@@ -35,7 +35,7 @@ public class PotionEffects extends HUDComponent {
                 String name = I18n.format(effect.getPotion().getName());
 
                 int amplifier = effect.getAmplifier() + 1;
-                double duration = effect.getDuration() / TickUtil.TPS;
+                double duration = effect.getDuration() / TickManager.TPS[0];
                 double timeSeconds = duration % 60;
                 double timeMinutes = duration / 60;
                 double timeMinutesRounded = timeMinutes % 60;

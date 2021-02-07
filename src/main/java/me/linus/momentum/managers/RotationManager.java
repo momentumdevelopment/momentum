@@ -1,7 +1,8 @@
-package me.linus.momentum.util.player.rotation;
+package me.linus.momentum.managers;
 
 import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.util.player.rotation.Rotation;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

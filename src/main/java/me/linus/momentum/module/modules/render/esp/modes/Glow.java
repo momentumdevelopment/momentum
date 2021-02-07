@@ -1,6 +1,6 @@
 package me.linus.momentum.module.modules.render.esp.modes;
 
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.util.world.EntityUtil;

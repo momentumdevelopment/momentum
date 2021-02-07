@@ -3,9 +3,9 @@ package me.linus.momentum.gui.hud.components;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
+import me.linus.momentum.managers.TickManager;
 import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.util.render.FontUtil;
-import me.linus.momentum.util.world.TickUtil;
 import net.minecraft.util.text.TextFormatting;
 
 /**
@@ -20,7 +20,7 @@ public class TPS extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        FontUtil.drawString("TPS " + TextFormatting.WHITE + TickUtil.TPS, this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
-        width = Momentum.fontManager.getCustomFont().getStringWidth(TickUtil.TPS + " TPS") + 2;
+        FontUtil.drawString("TPS " + TextFormatting.WHITE + TickManager.TPS[0], this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+        width = Momentum.fontManager.getCustomFont().getStringWidth(TickManager.TPS[0] + " TPS") + 2;
     }
 }

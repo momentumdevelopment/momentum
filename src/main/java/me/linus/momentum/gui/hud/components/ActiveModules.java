@@ -3,7 +3,7 @@ package me.linus.momentum.gui.hud.components;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.setting.checkbox.Checkbox;

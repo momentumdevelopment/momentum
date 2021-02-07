@@ -1,6 +1,6 @@
 package me.linus.momentum.mixin.mixins;
 
-import me.linus.momentum.module.ModuleManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.render.ItemPreview;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
