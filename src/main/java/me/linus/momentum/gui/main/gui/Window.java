@@ -135,6 +135,14 @@ public class Window implements MixinInterface {
 		dragging = false;
 	}
 
+	public int getX() {
+		return this.x;
+	}
+
+	public void setX(int newX) {
+		this.x = newX;
+	}
+
 	public int getY() {
 		return this.y;
 	}

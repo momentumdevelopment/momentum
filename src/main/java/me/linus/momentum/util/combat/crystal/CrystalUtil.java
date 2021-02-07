@@ -1,7 +1,6 @@
 package me.linus.momentum.util.combat.crystal;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.module.modules.combat.AutoCrystal;
 import me.linus.momentum.util.world.BlockUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -21,9 +20,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.*;
 import net.minecraft.world.Explosion;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**

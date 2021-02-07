@@ -301,7 +301,7 @@ public class AutoCrystal extends Module {
             if (unsafeSync.getValue())
                 crystal.getCrystal().setDead();
 
-            return false;
+            return true;
         }
 
         else
@@ -309,14 +309,16 @@ public class AutoCrystal extends Module {
     }
 
     public boolean handleMinDamage() {
-        if (EnemyUtil.getHealth(crystalTarget) < facePlaceHealth.getValue())
-            return false;
-        else if (EnemyUtil.getArmor(crystalTarget, armorBreaker.getValue(), armorScale.getValue()))
-            return false;
-        else if (facePlaceInHole.getValue() && HoleUtil.isInHole(crystalTarget))
-            return false;
-        else if (Keyboard.isKeyDown(forceFaceplace.getKey()))
-            return false;
+        if (crystalTarget != null) {
+            if (EnemyUtil.getHealth(crystalTarget) < facePlaceHealth.getValue())
+                return false;
+            else if (EnemyUtil.getArmor(crystalTarget, armorBreaker.getValue(), armorScale.getValue()))
+                return false;
+            else if (facePlaceInHole.getValue() && HoleUtil.isInHole(crystalTarget))
+                return false;
+            else if (Keyboard.isKeyDown(forceFaceplace.getKey()))
+                return false;
+        }
 
         return true;
     }
@@ -385,7 +387,6 @@ public class AutoCrystal extends Module {
         if (event.getPacket() instanceof SPacketPlayerPosLook) {
             NotificationManager.addNotification(new Notification("Rubberband detected! Reset Rotations!", Notification.Type.Warning));
 
-
             float lastYaw = ((SPacketPlayerPosLook) event.getPacket()).yaw;
             float lastPitch = ((SPacketPlayerPosLook) event.getPacket()).pitch;
             ((SPacketPlayerPosLook) event.getPacket()).yaw = mc.player.rotationYaw;
@@ -410,7 +411,7 @@ public class AutoCrystal extends Module {
         if (nullCheck())
             return;
 
-        if (event.getPacket() instanceof CPacketUseEntity && ((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world) instanceof EntityEnderCrystal && packetBreak.getValue()) {
+        if (event.getPacket() instanceof CPacketUseEntity && ((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world) instanceof EntityEnderCrystal) {
             if (syncBreak.getValue())
                 ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world).setDead();
         }

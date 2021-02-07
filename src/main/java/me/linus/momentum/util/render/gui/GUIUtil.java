@@ -42,5 +42,4 @@ public class GUIUtil {
 	public static void keyListen(int key) {
 		keydown = key;
 	}
-	
 }

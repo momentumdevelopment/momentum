@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -35,9 +36,13 @@ public class PlayerUtil implements MixinInterface {
         return InventoryUtil.getHeldItem(Items.DIAMOND_PICKAXE) && mc.player.isHandActive();
     }
 
-    public static void attackEntity(Entity entity) {
-        if (mc.player.getCooledAttackStrength(0) >= 1) {
-            mc.playerController.attackEntity(mc.player, entity);
+    public static void attackEntity(Entity entity, boolean packet, boolean cooldown) {
+        if (cooldown ? mc.player.getCooledAttackStrength(0) >= 1 : true) {
+            if (packet)
+                mc.player.connection.sendPacket(new CPacketUseEntity(entity));
+            else
+                mc.playerController.attackEntity(mc.player, entity);
+
             mc.player.swingArm(EnumHand.MAIN_HAND);
         }
     }

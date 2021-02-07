@@ -36,6 +36,6 @@ public class Trigger extends Module {
     @Override
     public void onUpdate() {
         if (mc.objectMouseOver.typeOfHit.equals(RayTraceResult.Type.ENTITY) && (mc.objectMouseOver.entityHit instanceof EntityPlayer && players.getValue() && (!FriendManager.isFriend(mc.objectMouseOver.entityHit.getName()) && FriendManager.isFriendModuleEnabled())) || (mc.objectMouseOver.entityHit instanceof EntityAnimal && animals.getValue()) || (mc.objectMouseOver.entityHit instanceof EntityMob && mobs.getValue()))
-            PlayerUtil.attackEntity(mc.objectMouseOver.entityHit);
+            PlayerUtil.attackEntity(mc.objectMouseOver.entityHit, false, true);
     }
 }

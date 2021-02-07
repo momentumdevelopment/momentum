@@ -1,7 +1,9 @@
 package me.linus.momentum.gui.theme.themes;
 
-import me.linus.momentum.Momentum;
+import com.mojang.realmsclient.gui.ChatFormatting;
+import me.linus.momentum.command.CommandManager;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.gui.main.console.ConsoleWindow;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.mixin.MixinInterface;
@@ -31,6 +33,8 @@ import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,8 +49,14 @@ public class DefaultTheme extends Theme implements MixinInterface {
     public static int width = 105;
     public static int height = 14;
 
+    public static int consoleWidth = 305;
+    public static int consoleHeight = 14;
+
     public static Color finalColor;
     public static float finalAlpha = 0.2f;
+
+    public static String typedCharacters = "";
+    public static List<String> outputs = new ArrayList<>();
 
     public DefaultTheme() {
         super(name, width, height);
@@ -60,7 +70,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
     @Override
     public void drawTitles(String name, int x, int y) {
         GuiScreen.drawRect(x - 2, y, (x + width + 2), y + height, ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR);
-        FontUtil.drawString(name, (x + ((x + width) - x) / 2 - (ModuleManager.getModuleByName("Font").isEnabled() ? Momentum.fontManager.getCustomFont().getStringWidth(name) : mc.fontRenderer.getStringWidth(name)) / 2), y + 3, -1);
+        FontUtil.drawString(name, (x + ((x + width) - x) / 2 - (ModuleManager.getModuleByName("Font").isEnabled() ? FontUtil.getStringWidth(name) : mc.fontRenderer.getStringWidth(name)) / 2), y + 3, -1);
     }
 
     @Override
@@ -529,39 +539,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
             FontUtil.drawString("Listening...", x + 7, (y + height) + 4 + (boost * height), -1);
     }
 
-    @Override
-    public void drawHUDModules(List<HUDComponent> components, int x, int y) {
-        boost = 0;
-        for (HUDComponent component : components) {
-            int color = 0xCC232323;
-            if (GUIUtil.mouseOver(x, y + height + 1 + (boost * height), (x + width) - 1, y + height * 2 + (boost * height))) {
-                color = 0xCC383838;
-                if (GUIUtil.ldown)
-                    component.toggle();
-
-                if (GUIUtil.rdown)
-                    component.toggleState();
-            }
-
-            GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), component.isEnabled() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color);
-            FontUtil.drawString(component.getName(), x + 4, y + height + 3 + (boost * height), -1);
-
-            if (component.hasSettings() && !component.isOpened() && ClickGUI.indicators.getValue())
-                FontUtil.drawString("+", (x + width) - 12, y + 2 + height + (boost * height), -1);
-
-            if (component.isOpened()) {
-                if (component.hasSettings()) {
-                    if (ClickGUI.indicators.getValue())
-                        FontUtil.drawString("-", (x + width) - 12, y + 2 + height + (boost * height), -1);
-
-                    drawHUDDropdown(component, x, y);
-                }
-            }
-
-            boost++;
-        }
-    }
-
     public static void drawPicker(ColorPicker subColor, int mouseX, int mouseY, int pickerX, int pickerY, int hueSliderX, int hueSliderY, int alphaSliderX, int alphaSliderY) {
         float[] color = new float[] {
                 subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[0], subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[1], subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[2]
@@ -695,5 +672,95 @@ public class DefaultTheme extends Theme implements MixinInterface {
         Render2DUtil.drawLeftGradientRect(x, y, x + width, y + height, new Color(red, green, blue, 1).getRGB(), 0);
         int sliderMinX = (int) (x + width - (width * alpha));
         GuiScreen.drawRect(sliderMinX - 1, y,  sliderMinX + 1, y + height, -1);
+    }
+
+    @Override
+    public void drawHUDModules(List<HUDComponent> components, int x, int y) {
+        boost = 0;
+        for (HUDComponent component : components) {
+            int color = 0xCC232323;
+            if (GUIUtil.mouseOver(x, y + height + 1 + (boost * height), (x + width) - 1, y + height * 2 + (boost * height))) {
+                color = 0xCC383838;
+                if (GUIUtil.ldown)
+                    component.toggle();
+
+                if (GUIUtil.rdown)
+                    component.toggleState();
+            }
+
+            GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), component.isEnabled() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color);
+            FontUtil.drawString(component.getName(), x + 4, y + height + 3 + (boost * height), -1);
+
+            if (component.hasSettings() && !component.isOpened() && ClickGUI.indicators.getValue())
+                FontUtil.drawString("+", (x + width) - 12, y + 2 + height + (boost * height), -1);
+
+            if (component.isOpened()) {
+                if (component.hasSettings()) {
+                    if (ClickGUI.indicators.getValue())
+                        FontUtil.drawString("-", (x + width) - 12, y + 2 + height + (boost * height), -1);
+
+                    drawHUDDropdown(component, x, y);
+                }
+            }
+
+            boost++;
+        }
+    }
+
+    @Override
+    public void drawConsoleTitle(String name, int x, int y) {
+        GuiScreen.drawRect(x - 2, y, (x + consoleWidth + 2), y + consoleHeight, ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR);
+        FontUtil.drawString(name, x + 1, y + 3, -1);
+    }
+
+    @Override
+    public void drawConsole(int x, int y) {
+        int outputLength = 0;
+
+        GuiScreen.drawRect(x - 2, y + consoleHeight, (x + consoleWidth + 2), y + consoleHeight + 200, new Color(0, 0, 0, 120).getRGB());
+        GuiScreen.drawRect(x - 2, y + consoleHeight + 200, (x + consoleWidth + 2), y + consoleHeight + 216, new Color(36, 36, 36, 171).getRGB());
+
+        Collections.reverse(outputs);
+
+        for (String output : outputs) {
+            outputLength++;
+            FontUtil.drawString(output, x, y + consoleHeight + 200 - (16 * outputLength), -1);
+        }
+
+        Collections.reverse(outputs);
+
+        String[] command = getConsoleLine().split(" ");
+        String predictionString = "";
+
+        if ((!CommandManager.predictCommands(command[0]).isEmpty() || CommandManager.predictCommands(command[0]).size() != 0))
+            predictionString = CommandManager.predictCommands(command[0]).get(0).getUsage();
+
+        FontUtil.drawString(predictionString, x, y + consoleHeight + 205, ThemeColor.BRIGHT);
+        FontUtil.drawString(getConsoleLine(), x, y + consoleHeight + 205, -1);
+    }
+
+    private static void executeCommand(String command) {
+        outputs.add(command);
+        mc.player.sendChatMessage("!" + command);
+    }
+
+    public static void resetText() {
+        executeCommand(typedCharacters);
+        typedCharacters = "";
+    }
+
+    public static String getConsoleLine() {
+        if (!ConsoleWindow.isTyping)
+            return ChatFormatting.WHITE + "Command";
+
+        else {
+            if (FontUtil.getStringWidth(ChatFormatting.WHITE + typedCharacters) < width)
+                return typedCharacters;
+
+            else
+                resetText();
+        }
+
+        return "";
     }
 }

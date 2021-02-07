@@ -5,9 +5,6 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.SubSlider;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.util.ResourceLocation;
-
 import java.awt.*;
 
 /**
@@ -61,5 +58,5 @@ public class Colors extends Module {
 			}
 		}
 	}
-	 */
+	*/
 }

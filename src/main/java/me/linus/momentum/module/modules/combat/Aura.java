@@ -40,17 +40,16 @@ public class Aura extends Module {
 
     public static Mode mode = new Mode("Mode", "Closest", "Health", "Armor");
 
-    public static Checkbox attackCheck = new Checkbox("Attack Check", true);
-    public static SubCheckbox players = new SubCheckbox(attackCheck, "Players", true);
-    public static SubCheckbox animals = new SubCheckbox(attackCheck, "Animals", true);
-    public static SubCheckbox mobs = new SubCheckbox(attackCheck, "Mobs", true);
+    public static Checkbox players = new Checkbox("Players", true);
+    public static Checkbox animals = new Checkbox("Animals", true);
+    public static Checkbox mobs = new Checkbox("Mobs", true);
+    public static Checkbox projectiles = new Checkbox("Projectiles", true);
 
     public static Checkbox delay = new Checkbox("Delay", true);
+    public static Checkbox cooldown = new Checkbox("Cooldown", true);
     public static SubCheckbox useTicks = new SubCheckbox(delay, "Use Ticks", true);
     public static SubSlider tickDelay = new SubSlider(delay, "Tick Delay", 0.0D, 10.0D, 20.0D, 1);
     public static SubCheckbox sync = new SubCheckbox(delay, "TPS Sync", false);
-
-    public static Checkbox armorMelt = new Checkbox("Armor Melt", false);
 
     public static Mode weaponCheck = new Mode("Weapon", "Swing", "Damage");
     public static SubCheckbox autoSwitch = new SubCheckbox(weaponCheck, "Auto Switch", true);
@@ -68,15 +67,25 @@ public class Aura extends Module {
 
     public static Slider range = new Slider("Range", 0.0D, 6.0D, 10.0D, 0);
 
+    public static Checkbox packet = new Checkbox("Packet Swing", true);
+    public static Checkbox teleport = new Checkbox("Teleport", false);
+    public static Checkbox armorMelt = new Checkbox("Armor Melt", false);
+
     @Override
     public void setup() {
         addSetting(mode);
-        addSetting(attackCheck);
+        addSetting(players);
+        addSetting(mobs);
+        addSetting(animals);
+        addSetting(projectiles);
         addSetting(delay);
         addSetting(weaponCheck);
         addSetting(pause);
         addSetting(rotate);
         addSetting(range);
+        addSetting(packet);
+        addSetting(teleport);
+        addSetting(armorMelt);
     }
 
     Timer syncTimer = new Timer();
@@ -87,6 +96,9 @@ public class Aura extends Module {
     public void onUpdate() {
         if (nullCheck())
             return;
+
+        if (teleport.getValue())
+            mc.player.setPosition(currentTarget.posX, currentTarget.posY, currentTarget.posZ);
 
         if (autoSwitch.getValue())
             InventoryUtil.switchToSlot(getItem());
@@ -158,20 +170,20 @@ public class Aura extends Module {
 
     public void attackEntity(Entity target) {
         if (useTicks.getValue() && !sync.getValue() && syncTimer.passed((long) (tickDelay.getValue() * 50), Timer.Format.System))
-            PlayerUtil.attackEntity(target);
+            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
 
         if (sync.getValue() && syncTimer.passed((long) (TickUtil.TPS / 20), Timer.Format.Ticks))
-            PlayerUtil.attackEntity(target);
+            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
 
         if (armorMelt.getValue()) {
             mc.playerController.windowClick(mc.player.inventoryContainer.windowId, 9, mc.player.inventory.currentItem, ClickType.SWAP, mc.player);
-            PlayerUtil.attackEntity(target);
+            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
             mc.playerController.windowClick(mc.player.inventoryContainer.windowId, 9, mc.player.inventory.currentItem, ClickType.SWAP, mc.player);
-            PlayerUtil.attackEntity(target);
+            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
         }
 
         else
-            PlayerUtil.attackEntity(target);
+            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
     }
 
     public Item getItem() {

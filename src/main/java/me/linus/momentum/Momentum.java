@@ -2,6 +2,7 @@ package me.linus.momentum;
 
 import me.linus.momentum.command.CommandManager;
 import me.linus.momentum.gui.hud.HUDComponentManager;
+import me.linus.momentum.gui.main.console.ConsoleWindow;
 import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.module.ModuleManager;
@@ -78,6 +79,9 @@ public class Momentum {
 
     	Window.initGui();
     	LOGGER.info("ClickGui Initialized!");
+
+        ConsoleWindow.initConsole();
+        LOGGER.info("Console Initialized!");
 
     	Theme.initThemes();
     	LOGGER.info("GUI Themes Initialized!");

@@ -15,6 +15,7 @@ public class TickUtil {
 
     public static float TPS = 20.0f;
     public static long lastUpdate = -1;
+
     public static float[] tpsCounts = new float[10];
     public static DecimalFormat format = new DecimalFormat("##.0#");
 

@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author linustouchtips
@@ -40,6 +41,10 @@ public class CommandManager {
 
     public static List<Command> getCommands() {
         return commands;
+    }
+
+    public static List<Command> predictCommands(String command) {
+        return commands.stream().filter(predictCommand -> predictCommand.getUsage().startsWith(command)).collect(Collectors.toList());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

@@ -35,6 +35,7 @@ public class ModuleManager implements MixinInterface {
 			new Capes(),
 			new ClickGUI(),
 			new Colors(),
+			new ConsoleScreen(),
 			new ClientFont(),
 			new HUDEditor(),
 			new Social(),

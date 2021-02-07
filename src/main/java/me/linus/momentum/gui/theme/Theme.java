@@ -36,6 +36,10 @@ public abstract class Theme {
 
 	public abstract void drawHUDModules(List<HUDComponent> modules, int left, int top);
 
+	public abstract void drawConsoleTitle(String name, int left, int top);
+
+	public abstract void drawConsole(int left, int top);
+
 	/**
 	 * Make sure to add any new themes you create in this arraylist.
 	 */
