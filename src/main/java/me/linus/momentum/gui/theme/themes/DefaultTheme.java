@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.theme.themes;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.linus.momentum.managers.AnimationManager;
 import me.linus.momentum.managers.CommandManager;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.console.ConsoleWindow;
@@ -150,9 +151,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
                                 drawColorPicker(sc, x, y, mouseX, mouseY);
                                 boost += 9;
                             }
-
-                            if (!(ss instanceof ColorPicker))
-                                GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
                 }
@@ -189,9 +187,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
                                 drawColorPicker(sc, x, y, mouseX, mouseY);
                                 boost += 9;
                             }
-
-                            if (!(ss instanceof ColorPicker))
-                                GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
                 }
@@ -228,9 +223,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
                                 drawColorPicker(sc, x, y, mouseX, mouseY);
                                 boost += 9;
                             }
-
-                            if (!(ss instanceof ColorPicker))
-                                GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
                 }
@@ -267,9 +259,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
                                 drawColorPicker(sc, x, y, mouseX, mouseY);
                                 boost += 9;
                             }
-
-                            if (!(ss instanceof ColorPicker))
-                                GuiScreen.drawRect(x + 4, y + ((boost + 1) * height) + 1, x + 5, y + height * 2 + (boost * height), 0xFF202020);
                         }
                     }
                 }

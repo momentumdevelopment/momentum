@@ -21,15 +21,14 @@ public class ColoredText extends Module {
             if (((CPacketChatMessage) event.getPacket()).getMessage().startsWith("/") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("!") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("$") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith("?") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith(".") || ((CPacketChatMessage) event.getPacket()).getMessage().startsWith(","))
                 return;
 
-            String suffix = " > ";
-            String s = suffix + ((CPacketChatMessage) event.getPacket()).getMessage();
-            int ok = 0;
+            String coloredMessage = " > " + ((CPacketChatMessage) event.getPacket()).getMessage();
+            int newLine = 0;
 
-            if (s.length() > 255)
-                ok = s.length() - 255;
+            if (coloredMessage.length() > 255)
+                newLine = coloredMessage.length() - 255;
 
-            s = s.substring(0, s.length() - ok);
-            ((CPacketChatMessage) event.getPacket()).message = s;
+            coloredMessage = coloredMessage.substring(0, coloredMessage.length() - newLine);
+            ((CPacketChatMessage) event.getPacket()).message = coloredMessage;
         }
     }
 }

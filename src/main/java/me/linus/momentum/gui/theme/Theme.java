@@ -3,6 +3,7 @@ package me.linus.momentum.gui.theme;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.themes.DarkTheme;
 import me.linus.momentum.gui.theme.themes.DefaultTheme;
+import me.linus.momentum.managers.AnimationManager;
 import me.linus.momentum.module.Module;
 
 import java.io.IOException;

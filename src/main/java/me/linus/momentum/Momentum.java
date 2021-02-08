@@ -1,20 +1,14 @@
 package me.linus.momentum;
 
-import me.linus.momentum.managers.CommandManager;
-import me.linus.momentum.managers.HUDComponentManager;
+import me.linus.momentum.managers.*;
 import me.linus.momentum.gui.main.console.ConsoleWindow;
 import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.gui.theme.Theme;
-import me.linus.momentum.managers.CapeManager;
-import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.managers.config.ConfigManagerJSON;
 import me.linus.momentum.managers.social.enemy.EnemyManager;
 import me.linus.momentum.managers.social.friend.FriendManager;
-import me.linus.momentum.managers.CrystalManager;
 import me.linus.momentum.managers.config.ShutdownHook;
-import me.linus.momentum.managers.RotationManager;
 import me.linus.momentum.util.render.FontUtil;
-import me.linus.momentum.managers.TickManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -40,7 +34,7 @@ public class Momentum {
 	
     public static final String MODID = "momentum";
     public static final String CLIENTNAME = "Momentum";
-    public static final String VERSION = "1.1.9";
+    public static final String VERSION = "1.2.0";
     public static String NAME = "Momentum";
     public static String PREFIX = "!";
     public static final Logger LOGGER;
@@ -55,6 +49,7 @@ public class Momentum {
     public static TickManager tickManager;
     public static FontUtil fontManager;
     public static CapeManager capeManager;
+    public static AnimationManager animationManager;
 
     @Mod.Instance
     private static Momentum INSTANCE;

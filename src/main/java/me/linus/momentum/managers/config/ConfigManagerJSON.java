@@ -192,10 +192,6 @@ public class ConfigManagerJSON {
             if (moduleObject.get("Name") == null || moduleObject.get("Enabled") == null || moduleObject.get("Drawn") == null || moduleObject.get("Bind") == null)
                 continue;
 
-            module.setEnabled(moduleObject.get("Enabled").getAsBoolean());
-            module.setDrawn(moduleObject.get("Drawn").getAsBoolean());
-            module.getKeybind().setKeyCode(moduleObject.get("Bind").getAsInt());
-
             JsonObject settingObject = moduleObject.get("Settings").getAsJsonObject();
             JsonObject subSettingObject = settingObject.get("SubSettings").getAsJsonObject();
 
@@ -352,6 +348,10 @@ public class ConfigManagerJSON {
                         ((Keybind) setting).setKey(settingValueObject.getAsInt());
                 }
             }
+
+            module.setEnabled(moduleObject.get("Enabled").getAsBoolean());
+            module.setDrawn(moduleObject.get("Drawn").getAsBoolean());
+            module.getKeybind().setKeyCode(moduleObject.get("Bind").getAsInt());
         }
     }
 

@@ -1,42 +1,65 @@
 package me.linus.momentum.managers;
 
-import me.linus.momentum.util.world.Timer;
+import me.linus.momentum.mixin.MixinInterface;
 
 /**
  * @author linustouchtips
  * @since 01/31/2020
  */
 
-public class AnimationManager {
-
-    public State state = State.Static;
-    public Timer animationTimer = new Timer();
-    public long animationFactor = 0;
-
-    public double getRemainingAnimation() {
-        if (this.state == State.Opening)
-            return (System.currentTimeMillis() - animationFactor) / (double) 2000;
-
-        if (this.state == State.Closing)
-            return ((long) 2000 - (System.currentTimeMillis() - animationFactor)) / (double) 2000;
-        else
-            return 1;
+public class AnimationManager implements MixinInterface {
+    
+    private final int length;
+    private boolean state;
+    private Animation prevAnimation = Animation.Static;
+    private Animation animation = Animation.Static;
+    private long animationStart = 0;
+    
+    public AnimationManager(int length, boolean state) {
+        this.length = length;
+        this.state = state;
+        
+        if (state) 
+            prevAnimation = Animation.Expanding;
     }
+    
+    public void updateTime() {
+        if (animation != Animation.Static) {
+            if (System.currentTimeMillis() - animationStart > length) {
+                prevAnimation = animation;
+                animation = Animation.Static;
+                
+                if (prevAnimation == Animation.Retracting) 
+                    state = false;
+            }
+        }
+    }
+    
+    public double getAnimationFactor() {
+        if (animation == Animation.Expanding) 
+            return (System.currentTimeMillis() - animationStart) / (double) length;
+        if (animation == Animation.Retracting) 
+            return ((long) length - (System.currentTimeMillis() - animationStart)) / (double) length;
+        
+        return prevAnimation == Animation.Expanding ? 1 : 0;
+    }
+
 
     public void updateState() {
-        if (animationTimer.passed(2000, Timer.Format.System))
-            this.state = State.Static;
+        if (!state) {
+            animation = Animation.Expanding;
+            state = true;
+        }
+
+        else
+            animation = Animation.Retracting;
+
+        animationStart = System.currentTimeMillis();
     }
-
-    public void setState(State state) {
-        this.state = state;
-
-        animationFactor = System.currentTimeMillis();
-    }
-
-    public enum State {
-        Opening,
-        Closing,
-        Static
+    
+    public enum Animation { 
+        Expanding, 
+        Retracting, 
+        Static 
     }
 }
