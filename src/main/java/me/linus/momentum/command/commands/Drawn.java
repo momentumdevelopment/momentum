@@ -40,4 +40,9 @@ public class Drawn extends Command {
     public String getDescription() {
         return "Hides or draws a module on the arraylist";
     }
+
+    @Override
+    public String getUsageException() {
+        return "[module name]";
+    }
 }

@@ -31,5 +31,10 @@ public class Prefix extends Command {
     public String getDescription() {
         return "Changes the command prefix";
     }
+
+    @Override
+    public String getUsageException() {
+        return "[new prefix]";
+    }
 }
 

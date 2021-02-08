@@ -5,7 +5,7 @@ import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.ESPUtil;
-import me.linus.momentum.util.render.builder.RenderUtil;
+import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;

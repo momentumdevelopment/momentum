@@ -1,6 +1,5 @@
 package me.linus.momentum.util.render.builder;
 
-import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.client.renderer.GlStateManager;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -10,7 +9,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @since 01/12/2021
  */
 
-public class RenderBuilder implements MixinInterface {
+public class RenderBuilder {
 
     public static void glSetup() {
         GlStateManager.pushMatrix();

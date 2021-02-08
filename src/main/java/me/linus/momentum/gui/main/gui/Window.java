@@ -6,7 +6,7 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
-import me.linus.momentum.util.render.gui.GUIUtil;
+import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
 

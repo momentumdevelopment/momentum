@@ -5,7 +5,7 @@ import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.gui.theme.themes.DefaultTheme;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.client.ClickGUI;
-import me.linus.momentum.util.render.gui.GUIUtil;
+import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
@@ -88,8 +88,8 @@ public class ConsoleWindow implements MixinInterface {
 
         if (expanding) {
             mc.player.sendChatMessage("troll");
-            DefaultTheme.consoleWidth = GUIUtil.mX - (lastmX - x);
-            DefaultTheme.consoleHeight = GUIUtil.mY - (lastmY - y);
+            DefaultTheme.consoleWidth = DefaultTheme.consoleWidth + (lastmX - x);
+            DefaultTheme.consoleHeight = DefaultTheme.consoleHeight + (lastmY - y);
         }
 
         lastmX = GUIUtil.mX;

@@ -8,7 +8,7 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
-import me.linus.momentum.util.render.builder.RenderUtil;
+import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.*;
 import me.linus.momentum.util.world.BlockUtil;
 import net.minecraft.entity.player.EntityPlayer;

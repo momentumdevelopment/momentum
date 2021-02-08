@@ -48,4 +48,9 @@ public class Enemy extends Command {
     public String getDescription() {
         return "Adds player to enemies list";
     }
+
+    @Override
+    public String getUsageException() {
+        return "[add/remove] [player name]";
+    }
 }

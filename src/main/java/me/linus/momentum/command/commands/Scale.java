@@ -30,4 +30,9 @@ public class Scale extends Command {
     public String getDescription() {
         return "Allows you to change gui scale";
     }
+
+    @Override
+    public String getUsageException() {
+        return "[scale]";
+    }
 }

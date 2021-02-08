@@ -1,4 +1,4 @@
-package me.linus.momentum.util.render.gui;
+package me.linus.momentum.managers;
 
 import me.linus.momentum.util.world.Timer;
 
@@ -7,7 +7,7 @@ import me.linus.momentum.util.world.Timer;
  * @since 01/31/2020
  */
 
-public class AnimationGUI {
+public class AnimationManager {
 
     public State state = State.Static;
     public Timer animationTimer = new Timer();
@@ -19,7 +19,6 @@ public class AnimationGUI {
 
         if (this.state == State.Closing)
             return ((long) 2000 - (System.currentTimeMillis() - animationFactor)) / (double) 2000;
-
         else
             return 1;
     }

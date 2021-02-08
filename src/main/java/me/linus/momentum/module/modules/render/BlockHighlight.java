@@ -5,7 +5,7 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.render.builder.RenderBuilder;
-import me.linus.momentum.util.render.builder.RenderUtil;
+import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

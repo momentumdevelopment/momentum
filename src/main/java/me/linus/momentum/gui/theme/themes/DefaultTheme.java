@@ -25,11 +25,14 @@ import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.Render2DUtil;
-import me.linus.momentum.util.render.gui.GUIUtil;
+import me.linus.momentum.util.render.GUIUtil;
+import me.linus.momentum.util.render.builder.Render2DBuilder;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.settings.KeyModifier;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -346,7 +349,12 @@ public class DefaultTheme extends Theme implements MixinInterface {
             color = 0xCC383838;
 
             if (GUIUtil.ldown) {
-                module.onValueChange();
+                try {
+                    module.onValueChange();
+                } catch (Exception e) {
+
+                }
+
                 m.setMode(m.nextMode());
             }
 
@@ -372,7 +380,12 @@ public class DefaultTheme extends Theme implements MixinInterface {
             color = 0xCC383838;
 
             if (GUIUtil.ldown) {
-                module.onValueChange();
+                try {
+                    module.onValueChange();
+                } catch (Exception e) {
+
+                }
+
                 sm.setMode(sm.nextMode());
             }
         }
@@ -717,6 +730,9 @@ public class DefaultTheme extends Theme implements MixinInterface {
     public void drawConsole(int x, int y) {
         int outputLength = 0;
 
+        String[] command = getConsoleLine().split(" ");
+        String predictionString = "";
+
         GuiScreen.drawRect(x - 2, y + consoleHeight, (x + consoleWidth + 2), y + consoleHeight + 200, new Color(0, 0, 0, 120).getRGB());
         GuiScreen.drawRect(x - 2, y + consoleHeight + 200, (x + consoleWidth + 2), y + consoleHeight + 216, new Color(36, 36, 36, 171).getRGB());
 
@@ -724,28 +740,42 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
         for (String output : outputs) {
             outputLength++;
-            FontUtil.drawString(output, x, y + consoleHeight + 200 - (16 * outputLength), -1);
+
+            Render2DBuilder.prepareScissor(x, y + consoleHeight, x + consoleWidth + 2, y + consoleHeight + 200);
+            GL11.glEnable(GL11.GL_SCISSOR_TEST);
+            FontUtil.drawString(output, x, y + consoleHeight + 200 - (12 * outputLength), -1);
+            GL11.glDisable(GL11.GL_SCISSOR_TEST);
         }
 
         Collections.reverse(outputs);
 
-        String[] command = getConsoleLine().split(" ");
-        String predictionString = "";
+        try {
+            if ((!CommandManager.predictCommands(command[0]).isEmpty() || CommandManager.predictCommands(command[0]).size() != 0) && typedCharacters.length() > 0)
+                predictionString = CommandManager.predictCommands(command[0]).get(0).getUsage() + " " + CommandManager.predictCommands(command[0]).get(0).getUsageException();
+        } catch (ArrayIndexOutOfBoundsException e) {
 
-        if ((!CommandManager.predictCommands(command[0]).isEmpty() || CommandManager.predictCommands(command[0]).size() != 0))
-            predictionString = CommandManager.predictCommands(command[0]).get(0).getUsage();
+        }
 
-        FontUtil.drawString(predictionString, x, y + consoleHeight + 205, ThemeColor.BRIGHT);
-        FontUtil.drawString(getConsoleLine(), x, y + consoleHeight + 205, -1);
+        FontUtil.drawString(predictionString, x, y + consoleHeight + 205, ThemeColor.COLOR);
+        FontUtil.drawString(getConsoleLine() + (ConsoleWindow.isTyping ? FontUtil.insertionPoint() : ""), x, y + consoleHeight + 205, -1);
     }
 
-    private static void executeCommand(String command) {
-        outputs.add(command);
-        mc.player.sendChatMessage("!" + command);
+    private static void executeCommand(String[] command) {
+        try {
+            outputs.add("> " + command[0]);
+
+            try {
+                CommandManager.getCommandByUsage(command[0]).onCommand(command);
+            } catch (Exception e) {
+                outputs.add(TextFormatting.RED + "Usage Incorrect!");
+            }
+        } catch (Exception e) {
+            outputs.add(TextFormatting.RED + "No such command found!");
+        }
     }
 
     public static void resetText() {
-        executeCommand(typedCharacters);
+        executeCommand(typedCharacters.split(" "));
         typedCharacters = "";
     }
 
@@ -756,7 +786,6 @@ public class DefaultTheme extends Theme implements MixinInterface {
         else {
             if (FontUtil.getStringWidth(ChatFormatting.WHITE + typedCharacters) < width)
                 return typedCharacters;
-
             else
                 resetText();
         }

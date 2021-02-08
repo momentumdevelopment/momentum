@@ -6,7 +6,7 @@ import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
-import me.linus.momentum.util.render.builder.RenderUtil;
+import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;

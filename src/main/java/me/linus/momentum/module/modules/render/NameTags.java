@@ -10,7 +10,7 @@ import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.FontUtil;
-import me.linus.momentum.util.render.builder.RenderUtil;
+import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;

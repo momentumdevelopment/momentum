@@ -4,6 +4,11 @@ import me.linus.momentum.module.Module;
 import net.minecraft.util.ResourceLocation;
 import me.linus.momentum.gui.main.console.Console;
 
+/**
+ * @author linustouchtips
+ * @since 02/07/2021
+ */
+
 public class ConsoleScreen extends Module {
     public ConsoleScreen() {
         super("Console", Category.CLIENT, "Opens the console window");

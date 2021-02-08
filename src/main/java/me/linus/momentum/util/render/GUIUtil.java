@@ -1,4 +1,4 @@
-package me.linus.momentum.util.render.gui;
+package me.linus.momentum.util.render;
 
 /**
  * @author bon

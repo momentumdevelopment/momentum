@@ -1,9 +1,10 @@
-package me.linus.momentum.util.render.builder;
+package me.linus.momentum.util.render;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.render.NameTags;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
+import me.linus.momentum.util.render.builder.RenderBuilder;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;

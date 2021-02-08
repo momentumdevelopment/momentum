@@ -48,4 +48,9 @@ public class Friend extends Command {
     public String getDescription() {
         return "Adds player to friends list";
     }
+
+    @Override
+    public String getUsageException() {
+        return "[add/remove] [player name]";
+    }
 }

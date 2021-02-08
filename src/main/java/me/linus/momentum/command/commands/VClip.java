@@ -35,4 +35,9 @@ public class VClip extends Command implements MixinInterface {
     public String getDescription() {
         return "Teleports you in the vertical direction";
     }
+
+    @Override
+    public String getUsageException() {
+        return "[height]";
+    }
 }

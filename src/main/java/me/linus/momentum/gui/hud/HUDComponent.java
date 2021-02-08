@@ -3,7 +3,7 @@ package me.linus.momentum.gui.hud;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.setting.Setting;
-import me.linus.momentum.util.render.gui.GUIUtil;
+import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;

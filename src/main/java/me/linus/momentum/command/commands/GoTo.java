@@ -21,11 +21,16 @@ public class GoTo extends Command {
             BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(new GoalXZ(Integer.valueOf(args[1]), Integer.valueOf(args[3])));
 
         else
-            MessageUtil.usageException(this, "[x y z]");
+            MessageUtil.usageException(this, "[x] [y] [z]");
     }
 
     @Override
     public String getDescription() {
         return "Sets a baritone xyz goal path";
+    }
+
+    @Override
+    public String getUsageException() {
+        return "[x] [y] [z]";
     }
 }

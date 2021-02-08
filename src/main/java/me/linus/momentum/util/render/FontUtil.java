@@ -5,6 +5,7 @@ import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.ClientFont;
 import me.linus.momentum.util.client.font.FontRender;
+import me.linus.momentum.util.world.Timer;
 
 import java.awt.*;
 import java.io.InputStream;
@@ -21,6 +22,9 @@ public class FontUtil implements MixinInterface {
     public static FontRender ubuntu = null;
     public static FontRender comfortaa = null;
     public static FontRender comicsans = null;
+
+    public static Timer cursorTimer = new Timer();
+    public static boolean blink = false;
 
     public void load() {
         try {
@@ -109,5 +113,17 @@ public class FontUtil implements MixinInterface {
             return Momentum.fontManager.getCustomFont().FONT_HEIGHT;
         else
             return mc.fontRenderer.FONT_HEIGHT;
+    }
+
+    public static String insertionPoint() {
+        if (cursorTimer.passed(500, Timer.Format.System)) {
+            cursorTimer.reset();
+            blink = !blink;
+        }
+
+        if (blink)
+            return ModuleManager.getModuleByName("Font").isEnabled() ? "|" : "｜";
+        else
+            return "";
     }
 }

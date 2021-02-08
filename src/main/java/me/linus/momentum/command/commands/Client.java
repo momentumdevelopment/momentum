@@ -30,4 +30,9 @@ public class Client extends Command {
     public String getDescription() {
         return "Changes the client name";
     }
+
+    @Override
+    public String getUsageException() {
+        return "[new client name]";
+    }
 }

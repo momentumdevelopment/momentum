@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.command.Command;
 import me.linus.momentum.command.commands.*;
+import me.linus.momentum.module.Module;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -42,6 +43,14 @@ public class CommandManager {
 
     public static List<Command> getCommands() {
         return commands;
+    }
+
+    public static Command getCommandByUsage(String name) {
+        return commands.stream().filter(command -> command.getUsage().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public static Command getCommandByClass(Class<?> clazz) {
+        return commands.stream().filter(command -> command.getClass().equals(clazz)).findFirst().orElse(null);
     }
 
     public static List<Command> predictCommands(String command) {

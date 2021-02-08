@@ -19,7 +19,7 @@ import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.player.rotation.Rotation;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.world.*;
-import me.linus.momentum.util.render.builder.RenderUtil;
+import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;

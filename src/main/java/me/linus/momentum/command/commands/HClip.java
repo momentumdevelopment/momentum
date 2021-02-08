@@ -35,4 +35,9 @@ public class HClip extends Command implements MixinInterface {
     public String getDescription() {
         return "Teleports you in the horizontal direction";
     }
+
+    @Override
+    public String getUsageException() {
+        return "[distance]";
+    }
 }

@@ -18,7 +18,7 @@ public class Toggle extends Command {
 
     @Override
     public void onCommand(String[] args) {
-        if (args.length > 0) {
+        if (args.length > 1) {
             for (Module m: Momentum.moduleManager.getModules()) {
                 if (m.getName().equalsIgnoreCase(args[1])) {
                     m.toggle();
@@ -34,5 +34,10 @@ public class Toggle extends Command {
 
         else
             MessageUtil.usageException(this, "[module name]");
+    }
+
+    @Override
+    public String getUsageException() {
+        return "[module name]";
     }
 }

@@ -22,4 +22,9 @@ public class Follow extends Command {
         else
             MessageUtil.usageException(this, "[target name]");
     }
+
+    @Override
+    public String getUsageException() {
+        return "[add/remove] [player name]";
+    }
 }

@@ -9,7 +9,7 @@ import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.ESPUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
-import me.linus.momentum.util.render.builder.RenderUtil;
+import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.*;

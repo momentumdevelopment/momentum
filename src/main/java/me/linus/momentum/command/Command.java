@@ -21,4 +21,8 @@ public class Command{
     public String getDescription() {
         return "";
     }
+
+    public String getUsageException() {
+        return "";
+    }
 }
