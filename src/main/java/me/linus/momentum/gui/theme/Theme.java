@@ -41,6 +41,8 @@ public abstract class Theme {
 
 	public abstract void drawConsole(int left, int top);
 
+	public abstract void drawConsoleWindows();
+
 	/**
 	 * Make sure to add any new themes you create in this arraylist.
 	 */

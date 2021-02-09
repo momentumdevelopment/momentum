@@ -30,10 +30,10 @@ public class HoleESP extends Module {
     }
 
     public static Mode main = new Mode("Main",  "Glow", "Fill", "None");
-    public static SubSlider mainHeight = new SubSlider(main, "Height", -1.0D, 1.0D, 3.0D, 1);
+    public static SubSlider mainHeight = new SubSlider(main, "Main Height", -1.0D, 1.0D, 3.0D, 1);
 
     public static Mode outline = new Mode("Outline", "WireFrame", "None");
-    public static SubSlider outlineHeight = new SubSlider(outline, "Height", -1.0D, 0.0D, 3.0D, 1);
+    public static SubSlider outlineHeight = new SubSlider(outline, "Outline Height", -1.0D, 0.0D, 3.0D, 1);
 
     public static Mode highlight = new Mode("Highlight", "None", "NoRender", "Glow");
 

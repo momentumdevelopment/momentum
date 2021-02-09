@@ -18,7 +18,7 @@ import org.lwjgl.input.Keyboard;
 public class ClickGUI extends Module {
 	public ClickGUI() {
 		super("ClickGUI", Category.CLIENT, "Opens the ClickGUI");
-		this.getKeybind().setKeyCode(Keyboard.KEY_P);
+		this.getKeybind().setKeyCode(Keyboard.KEY_COMMA);
 	}
 
 	public static Slider scrollSpeed = new Slider("Scroll Speed", 0.0D, 10.0D, 20.0D, 0);

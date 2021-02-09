@@ -10,6 +10,7 @@ import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
+import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
 import me.linus.momentum.setting.checkbox.Checkbox;
@@ -27,6 +28,10 @@ import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.Render2DUtil;
 import me.linus.momentum.util.render.GUIUtil;
 import me.linus.momentum.util.render.builder.Render2DBuilder;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.settings.KeyModifier;
@@ -59,6 +64,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
     public static String typedCharacters = "";
     public static List<String> outputs = new ArrayList<>();
+
+    ResourceLocation consoleIcon = new ResourceLocation("momentum:console.png");
 
     public DefaultTheme() {
         super(name, width, height);
@@ -711,20 +718,40 @@ public class DefaultTheme extends Theme implements MixinInterface {
     public void drawConsoleTitle(String name, int x, int y) {
         Render2DUtil.drawRect(x - 2, y, (x + consoleWidth + 2), y + consoleHeight, 0, ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR, -1, false, Render2DBuilder.Render2DMode.Normal);
         FontUtil.drawString(name, x + 1, y + 3, -1);
+
+        int cancelColor = new Color(255, 255, 255, 120).getRGB();
+        if (GUIUtil.mouseOver(x + consoleWidth - 8, y + 2, x + consoleWidth + 2, y + consoleHeight - 2)) {
+            cancelColor = new Color(255, 255, 255, 170).getRGB();
+        }
+
+        Render2DUtil.drawLine(x + consoleWidth + 1, y + consoleHeight - 2, x + consoleWidth - 9, y + 2, 3, cancelColor);
+        Render2DUtil.drawLine(x + consoleWidth + 1, y + 2, x + consoleWidth - 9, y + consoleHeight - 2, 3, cancelColor);
     }
 
     @Override
     public void drawConsole(int x, int y) {
+        int enterColor = ThemeColor.COLOR;
+        if (GUIUtil.mouseOver(x + consoleWidth - 27, y + consoleHeight + 200, x + consoleWidth - 1, y + consoleHeight + 214)) {
+            enterColor = new Color(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getGreen(), Colors.clientPicker.getColor().getBlue(), Colors.clientPicker.getColor().getAlpha() + 15).getRGB();
+
+            if (GUIUtil.ldown)
+                resetText();
+        }
+
+        Render2DUtil.drawRect(x - 2, y + consoleHeight, x + consoleWidth + 2, y + consoleHeight + 216, 1,  new Color(36, 36, 36, 60).getRGB(), ThemeColor.COLOR, false, Render2DBuilder.Render2DMode.Both);
+        Render2DUtil.drawRect(x, y + consoleHeight + 200, x + consoleWidth - 28, y + consoleHeight + 214, 1, new Color(18, 18, 18, 90).getRGB(), new Color(0, 0, 0, 90).getRGB(), false, Render2DBuilder.Render2DMode.Both);
+
+        Render2DUtil.drawRect(x + consoleWidth - 9, y + consoleHeight + 2, x + consoleWidth - 1, y + consoleHeight + 198, 1,  new Color(36, 36, 36, 70).getRGB(), new Color(0, 0, 0, 70).getRGB(), false, Render2DBuilder.Render2DMode.Both);
+
+        Render2DUtil.drawRect(x + consoleWidth - 27, y + consoleHeight + 200, x + consoleWidth - 1, y + consoleHeight + 214, 1,  enterColor, -1, false, Render2DBuilder.Render2DMode.Normal);
+        FontUtil.drawString("Enter", x + consoleWidth - 25, y + consoleHeight + 203, -1);
+
+        Render2DUtil.drawRect(x + consoleWidth - 9, (int) MathUtil.clamp(y + consoleHeight + 183 + MathUtil.clamp(ConsoleWindow.scrollbar, -180, 0), y + consoleHeight, y + consoleHeight + 214), x + consoleWidth - 1, (int) MathUtil.clamp(y + consoleHeight + 198 + MathUtil.clamp(ConsoleWindow.scrollbar, -180, 0), y + consoleHeight, y + consoleHeight + 214), 1,  ThemeColor.COLOR, -1, false, Render2DBuilder.Render2DMode.Normal);
+
         int outputLength = 0;
 
         String[] command = getConsoleLine().split(" ");
         String predictionString = "";
-
-        Render2DUtil.drawRect(x - 2, y + consoleHeight, x + consoleWidth + 2, y + consoleHeight + 216, 1,  new Color(36, 36, 36, 60).getRGB(), ThemeColor.COLOR, false, Render2DBuilder.Render2DMode.Both);
-        Render2DUtil.drawRect(x, y + consoleHeight + 200, x + consoleWidth - 10, y + consoleHeight + 214, 1, new Color(18, 18, 18, 90).getRGB(), new Color(0, 0, 0, 90).getRGB(), false, Render2DBuilder.Render2DMode.Both);
-        Render2DUtil.drawRect(x + consoleWidth - 9, y + consoleHeight + 2, x + consoleWidth - 1, y + consoleHeight + 200, 1,  new Color(36, 36, 36, 70).getRGB(), new Color(0, 0, 0, 70).getRGB(), false, Render2DBuilder.Render2DMode.Both);
-
-        Render2DUtil.drawRect(x + consoleWidth - 9, (int) MathUtil.clamp(y + consoleHeight + MathUtil.clamp(ConsoleWindow.scrollbar, 0, 180), y + consoleHeight, y + consoleHeight + 214), x + consoleWidth - 1, (int) MathUtil.clamp(y + consoleHeight + MathUtil.clamp(ConsoleWindow.scrollbar, 0, 180) + 15, y + consoleHeight, y + consoleHeight + 214), 1,  ThemeColor.COLOR, -1, false, Render2DBuilder.Render2DMode.Normal);
 
         Collections.reverse(outputs);
 
@@ -733,9 +760,9 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
             Render2DBuilder.prepareScissor(x, y + consoleHeight, x + consoleWidth + 2, y + consoleHeight + 200);
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
-            Render2DBuilder.translate(0, ConsoleWindow.scrollbar);
+            Render2DBuilder.translate(0, (int) -MathUtil.clamp(ConsoleWindow.scrollbar, -10000, 0));
             FontUtil.drawString(output, x + 3, y + consoleHeight + 200 - (12 * outputLength), ThemeColor.BRIGHT);
-            Render2DBuilder.translate(0, -ConsoleWindow.scrollbar);
+            Render2DBuilder.translate(0, (int) MathUtil.clamp(ConsoleWindow.scrollbar, -10000, 0));
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
         }
 
@@ -743,13 +770,36 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
         try {
             if ((!CommandManager.predictCommands(command[0]).isEmpty() || CommandManager.predictCommands(command[0]).size() != 0) && typedCharacters.length() > 0)
-                predictionString = CommandManager.predictCommands(command[0]).get(0).getUsage() + " " + CommandManager.predictCommands(command[0]).get(0).getUsageException();
+                predictionString = CommandManager.predictCommands(command[0]).get(0).getUsage() + " " + (command.length < 2 ? CommandManager.predictCommands(command[0]).get(0).getUsageException() : "");
         } catch (ArrayIndexOutOfBoundsException e) {
 
         }
 
         FontUtil.drawString(predictionString, x + 3, y + consoleHeight + 203, ThemeColor.COLOR);
         FontUtil.drawString(getConsoleLine() + (ConsoleWindow.isTyping ? FontUtil.insertionPoint() : ""), x + 3, y + consoleHeight + 203, -1);
+    }
+
+    @Override
+    public void drawConsoleWindows() {
+        Render2DUtil.drawRect(0, 0, 30, new ScaledResolution(mc).getScaledHeight(), 1, new Color(18, 18, 18, 90).getRGB(), new Color(0, 0, 0, 90).getRGB(), false, Render2DBuilder.Render2DMode.Both);
+
+        int windowColor = ThemeColor.COLOR;
+        if (GUIUtil.mouseOver(1, 1, 29, 30)) {
+            windowColor = new Color(Colors.clientPicker.getColor().getRed(), Colors.clientPicker.getColor().getGreen(), Colors.clientPicker.getColor().getBlue(), Colors.clientPicker.getColor().getAlpha() + 15).getRGB();
+        }
+
+        for (ConsoleWindow windows : ConsoleWindow.windows) {
+            Render2DUtil.drawRect(1, 1, 29, 30, 1, windowColor, -1, false, Render2DBuilder.Render2DMode.Normal);
+
+            GlStateManager.enableAlpha();
+            mc.getTextureManager().bindTexture(consoleIcon);
+            GlStateManager.color(1, 1, 1, 0.47f);
+            GL11.glPushMatrix();
+            GuiScreen.drawScaledCustomSizeModalRect(1, 1, 0, 0, 256,256,26,26,256,256);
+            GL11.glPopMatrix();
+            GlStateManager.disableAlpha();
+            GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
+        }
     }
 
     private static void executeCommand(String[] command) {

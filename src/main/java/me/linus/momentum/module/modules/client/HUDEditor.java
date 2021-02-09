@@ -5,6 +5,7 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Keyboard;
 
 /**
  * @author bon & linustouchtips
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class HUDEditor extends Module {
 	public HUDEditor() {
 		super("HUD", Category.CLIENT, "The in-game hud editor");
+		this.getKeybind().setKeyCode(Keyboard.KEY_PERIOD);
 	}
 
 	public static Checkbox allowOverflow = new Checkbox("Allow Overflow", false);

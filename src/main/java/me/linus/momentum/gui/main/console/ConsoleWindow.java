@@ -2,11 +2,13 @@ package me.linus.momentum.gui.main.console;
 
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.gui.theme.themes.DefaultTheme;
+import me.linus.momentum.managers.AnimationManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -32,11 +34,11 @@ public class ConsoleWindow implements MixinInterface {
 
     public int lastmX;
     public int lastmY;
-    public int scaleX = 1;
-    public int scaleY = 1;
     public static int scrollbar = 0;
     public String name;
     public static List<ConsoleWindow> windows = new ArrayList<>();
+
+    AnimationManager animationManager = new AnimationManager(200, true);
 
     public ConsoleWindow(String name, int x, int y) {
         this.name = name;
@@ -45,23 +47,33 @@ public class ConsoleWindow implements MixinInterface {
     }
 
     public static void initConsole() {
-        windows.add(new ConsoleWindow("Console", 2, 2));
+        windows.add(new ConsoleWindow("Console", 100, 100));
     }
 
     public void drawConsole(int mouseX, int mouseY, float partialTicks) {
-        mouseListen();
-
         currentTheme = ClickGUI.theme.getValue();
         Theme current = Theme.getTheme(currentTheme);
-        current.drawConsoleTitle(name, x , y);
+
+        mouseListen();
+
+        current.drawConsoleWindows();
+
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(animationManager.getAnimationFactor(), animationManager.getAnimationFactor(), 0);
+
+        current.drawConsoleTitle(name, x, y);
 
         if (opened)
             current.drawConsole(x, y);
+
+        animationManager.updateTime();
 
         reset();
 
         if (mc != null && !ClickGUI.allowOverflow.getValue())
             resetOverflow();
+
+        GlStateManager.popMatrix();
     }
 
     public void resetOverflow() {
@@ -88,8 +100,7 @@ public class ConsoleWindow implements MixinInterface {
         }
 
         if (expanding) {
-            scaleX = GUIUtil.mX / (x + DefaultTheme.consoleWidth);
-            scaleY = GUIUtil.mY / (y + DefaultTheme.consoleHeight);
+            DefaultTheme.consoleWidth = 305 + GUIUtil.mX - (lastmX - x);
         }
 
         lastmX = GUIUtil.mX;
@@ -108,6 +119,12 @@ public class ConsoleWindow implements MixinInterface {
         if (GUIUtil.mouseOver(x, y, x + DefaultTheme.consoleWidth, y + DefaultTheme.consoleHeight))
             dragging = true;
 
+        if (GUIUtil.mouseOver(x + DefaultTheme.consoleWidth - 8, y, x + DefaultTheme.consoleWidth, y + DefaultTheme.consoleHeight))
+            animationManager.updateState();
+
+        if (GUIUtil.mouseOver(1, 1, 29, 30))
+            animationManager.updateState();
+
         if (GUIUtil.mouseOver(x, y + DefaultTheme.consoleHeight + 200, x + DefaultTheme.consoleWidth, y + DefaultTheme.consoleHeight + 216))
             isTyping = !isTyping;
     }
@@ -120,10 +137,12 @@ public class ConsoleWindow implements MixinInterface {
     public void mouseWheelListen() {
         int scrollWheel = Mouse.getDWheel();
 
+        MessageUtil.sendClientMessage("" + scrollbar);
+
         if (scrollWheel < 0)
-            scrollbar += -11;
-        else if (scrollWheel > 0)
             scrollbar += 11;
+        else if (scrollWheel > 0)
+            scrollbar -= 11;
     }
 
     public void releaseListen(int mouseX, int mouseY, int state) {
