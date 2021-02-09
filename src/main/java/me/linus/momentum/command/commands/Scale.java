@@ -20,6 +20,7 @@ public class Scale extends Command {
     public void onCommand(String[] args) {
         if (args.length > 1) {
             scale = Float.valueOf(args[1]);
+            MessageUtil.addOutput("Set GUI scale to " + args[1] + "!");
         }
 
         else

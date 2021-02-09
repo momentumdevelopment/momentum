@@ -1,6 +1,7 @@
 package me.linus.momentum.util.client;
 
 import me.linus.momentum.command.Command;
+import me.linus.momentum.gui.theme.themes.DefaultTheme;
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -26,8 +27,12 @@ public class MessageUtil implements MixinInterface {
 		mc.player.sendChatMessage(message);
 	}
 
+	public static void addOutput(String message) {
+		DefaultTheme.outputs.add("[Momentum] " + TextFormatting.WHITE + message);
+	}
+
 	public static void usageException(Command command, @Nullable String specialUsage) {
-		mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(TextFormatting.DARK_PURPLE + "[Momentum] " + TextFormatting.RESET + "Usage: " + command.getUsage() + " " + specialUsage), 69);
+		DefaultTheme.outputs.add("[Momentum] " + TextFormatting.WHITE + "Usage: " + command.getUsage() + " " + specialUsage);
 	}
 
 	public static String toUnicode(String s) {

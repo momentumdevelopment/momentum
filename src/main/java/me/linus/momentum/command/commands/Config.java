@@ -1,6 +1,7 @@
 package me.linus.momentum.command.commands;
 
 import me.linus.momentum.command.Command;
+import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -25,6 +26,7 @@ public class Config extends Command {
     public void onCommand(String[] args) {
         try {
             Desktop.getDesktop().open(new File("momentum"));
+            MessageUtil.addOutput("Opened config folder!");
         } catch (IOException e) {
             e.printStackTrace();
         }

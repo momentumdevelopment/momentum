@@ -2,12 +2,14 @@ package me.linus.momentum.util.render;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.ColorUtil;
-import net.minecraft.client.entity.EntityPlayerSP;
+import me.linus.momentum.util.render.builder.Render2DBuilder;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -19,6 +21,73 @@ import static org.lwjgl.opengl.GL11.*;
  */
 
 public class Render2DUtil implements MixinInterface {
+
+    public static void drawRect(int left, int top, int right, int bottom, int borderWidth, int insideColor, int borderColor, boolean scissor, Render2DBuilder.Render2DMode render2DMode) {
+        if (scissor) {
+            Render2DBuilder.prepareScissor(left, top, right, bottom);
+            GL11.glEnable(GL_SCISSOR_TEST);
+        }
+
+        switch (render2DMode) {
+            case Normal:
+                drawRectBase(left, top, right, bottom, insideColor);
+                break;
+            case Border:
+                drawBorder(left, top, right, bottom, borderWidth, insideColor);
+                break;
+            case Both:
+                drawBorderedRect(left, top, right, bottom, borderWidth, insideColor, borderColor);
+                break;
+        }
+
+        if (scissor)
+            GL11.glDisable(GL_SCISSOR_TEST);
+    }
+
+    public static void drawBorderedRect(int left, int top, int right, int bottom, int borderWidth, int insideColor, int borderColor) {
+        drawRectBase(left + borderWidth, top + borderWidth, right - borderWidth, bottom - borderWidth, insideColor);
+
+        drawRectBase(left, top + borderWidth, left + borderWidth, bottom - borderWidth, borderColor);
+        drawRectBase(right - borderWidth, top + borderWidth, right, bottom - borderWidth, borderColor);
+        drawRectBase(left, top, right, top + borderWidth, borderColor);
+        drawRectBase(left, bottom - borderWidth, right, bottom, borderColor);
+    }
+
+    public static void drawBorder(int left, int top, int right, int bottom, int borderWidth, int color) {
+        drawRectBase(left, top + borderWidth, left + borderWidth, bottom - borderWidth, color);
+        drawRectBase(right - borderWidth, top + borderWidth, right, bottom - borderWidth, color);
+        drawRectBase(left, top, right, top + borderWidth, color);
+        drawRectBase(left, bottom - borderWidth, right, bottom, color);
+    }
+    
+    public static void drawRectBase(int left, int top, int right, int bottom, int color) {
+        int side;
+
+        if (left < right) {
+            side = left;
+            left = right;
+            right = side;
+        }
+
+        if (top < bottom) {
+            side = top;
+            top = bottom;
+            bottom = side;
+        }
+
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.color((float) (color >> 16 & 255) / 255.0F, (float) (color >> 8 & 255) / 255.0F, (float) (color & 255) / 255.0F, (float) (color >> 24 & 255) / 255.0F);
+        RenderUtil.bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION);
+        RenderUtil.bufferbuilder.pos(left, bottom, 0.0D).endVertex();
+        RenderUtil.bufferbuilder.pos(right, bottom, 0.0D).endVertex();
+        RenderUtil.bufferbuilder.pos(right, top, 0.0D).endVertex();
+        RenderUtil.bufferbuilder.pos(left, top, 0.0D).endVertex();
+        RenderUtil.tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
 
     public static void drawCircle(int x, int y, double radius, int color) {
         glEnable(GL_BLEND);
@@ -54,16 +123,10 @@ public class Render2DUtil implements MixinInterface {
         glDisable(GL_BLEND);
     }
 
-    public static void drawTriangle(Entity e, double x, double y, int color) {
+    public static void drawTriangle(double x, double y, float rotation, int color) {
         glPushMatrix();
         glScaled(0.5, 0.5, 0.5);
         glTranslated(x, y, 0);
-
-        if (e instanceof EntityPlayerSP)
-            glRotatef(e.rotationYaw, 0F, 0F, 1.0F);
-        else
-            glRotatef(-e.rotationYaw, 0F, 0F, 1.0F);
-
         glColor4f(((color >> 16) & 0xff) / 255F, ((color >> 8) & 0xff) / 255F, (color & 0xff) / 255F, ((color >> 24) & 0xff) / 255F);
         glEnable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
@@ -79,7 +142,7 @@ public class Render2DUtil implements MixinInterface {
         glDisable(GL_LINE_SMOOTH);
         glEnable(GL_LINE_SMOOTH);
         glDisable(GL_TEXTURE_2D);
-        glRotatef(e.rotationYaw, 0F, 0F, 1.0F);
+        glRotatef(rotation, 0F, 0F, 1.0F);
 
         glPopMatrix();
     }

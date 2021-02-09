@@ -3,6 +3,7 @@ package me.linus.momentum.managers;
 import com.google.common.collect.Lists;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.hud.components.*;
+import me.linus.momentum.gui.main.console.Console;
 import me.linus.momentum.gui.main.gui.GUI;
 import me.linus.momentum.gui.main.hud.HUD;
 import me.linus.momentum.mixin.MixinInterface;
@@ -63,7 +64,7 @@ public class HUDComponentManager implements MixinInterface {
 
     @SubscribeEvent
     public void onRender2D(RenderGameOverlayEvent.Text event) {
-        if (!(mc.currentScreen instanceof HUD) && !(mc.currentScreen instanceof GUI)) {
+        if (!(mc.currentScreen instanceof HUD) && !(mc.currentScreen instanceof GUI) && !(mc.currentScreen instanceof Console)) {
             for (HUDComponent component : components) {
                 if (component.isEnabled()) {
                     try {

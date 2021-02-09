@@ -1,7 +1,5 @@
 package me.linus.momentum.module.modules.combat;
 
-import me.linus.momentum.event.events.packet.PacketSendEvent;
-import me.linus.momentum.managers.TickManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.setting.checkbox.Checkbox;
@@ -24,8 +22,6 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEndCrystal;
 import net.minecraft.item.ItemSword;
-import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Comparator;
 
@@ -57,8 +53,9 @@ public class Aura extends Module {
     public static SubCheckbox swordOnly = new SubCheckbox(weaponCheck, "Sword Only", true);
     public static SubCheckbox thirtyTwoKOnly = new SubCheckbox(weaponCheck, "32K Only", false);
 
+    public static Checkbox raytrace = new Checkbox("Ray-Trace", false);
+
     public static Checkbox pause = new Checkbox("Pause", true);
-    public static SubCheckbox cannotSee = new SubCheckbox(pause, "Target Cannot be Seen", false);
     public static SubCheckbox crystalPause = new SubCheckbox(pause, "When Crystalling", false);
     public static SubCheckbox holePause = new SubCheckbox(pause, "When not in Hole", false);
     public static SubCheckbox eatPause = new SubCheckbox(pause, "When Eating", false);
@@ -81,6 +78,7 @@ public class Aura extends Module {
         addSetting(projectiles);
         addSetting(delay);
         addSetting(weaponCheck);
+        addSetting(raytrace);
         addSetting(pause);
         addSetting(rotate);
         addSetting(range);
@@ -123,14 +121,6 @@ public class Aura extends Module {
         killAura();
     }
 
-    @SubscribeEvent
-    public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacket() instanceof CPacketPlayer && auraRotation != null) {
-            ((CPacketPlayer) event.getPacket()).yaw = auraRotation.yaw;
-            ((CPacketPlayer) event.getPacket()).pitch = auraRotation.pitch;
-        }
-    }
-
     public void killAura() {
         switch (mode.getValue()) {
             case 0:
@@ -147,7 +137,7 @@ public class Aura extends Module {
         if (swordOnly.getValue() && !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))
             return;
 
-        if (cannotSee.getValue() && (!mc.player.canEntityBeSeen(currentTarget) && !EntityUtil.canEntityFeetBeSeen(currentTarget)))
+        if (raytrace.getValue() && (!mc.player.canEntityBeSeen(currentTarget) && !EntityUtil.canEntityFeetBeSeen(currentTarget)))
             return;
 
         if (crystalPause.getValue() && (ModuleManager.getModuleByName("AutoCrystal").isEnabled() || mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal))
@@ -170,21 +160,18 @@ public class Aura extends Module {
     }
 
     public void attackEntity(Entity target) {
-        if (useTicks.getValue() && !sync.getValue() && syncTimer.passed((long) (tickDelay.getValue() * 50), Timer.Format.System))
-            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
-
-        if (sync.getValue() && syncTimer.passed((long) (TickManager.TPS[0] / 20), Timer.Format.Ticks))
-            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
+        if (useTicks.getValue() && !sync.getValue() && syncTimer.passed((long) tickDelay.getValue(), Timer.Format.Ticks))
+            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue(), sync.getValue());
 
         if (armorMelt.getValue()) {
             mc.playerController.windowClick(mc.player.inventoryContainer.windowId, 9, mc.player.inventory.currentItem, ClickType.SWAP, mc.player);
-            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
+            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue(), sync.getValue());
             mc.playerController.windowClick(mc.player.inventoryContainer.windowId, 9, mc.player.inventory.currentItem, ClickType.SWAP, mc.player);
-            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
+            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue(), sync.getValue());
         }
 
         else
-            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue());
+            PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue(), sync.getValue());
     }
 
     public Item getItem() {

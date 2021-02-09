@@ -20,25 +20,25 @@ public class TickManager {
     private float lastTick = -1;
 
     public TickManager() {
-        this.prevTime = -1;
+        prevTime = -1;
 
-        for (int i = 0, len = this.TPS.length; i < len; i++) {
-            this.TPS[i] = 0.0f;
+        for (int i = 0, len = TPS.length; i < len; i++) {
+            TPS[i] = 0.0f;
         }
 
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     public float getLastTick() {
-        return this.lastTick;
+        return lastTick;
     }
 
     public float getTickRate() {
         int tickCount = 0;
         float tickRate = 0.0f;
 
-        for (int i = 0; i < this.TPS.length; i++) {
-            final float tick = this.TPS[i];
+        for (int i = 0; i < TPS.length; i++) {
+            float tick = TPS[i];
 
             if (tick > 0.0f) {
                 tickRate += tick;
@@ -52,13 +52,13 @@ public class TickManager {
     @SubscribeEvent
     public void onPacketRecieve(PacketReceiveEvent event) {
         if (event.getPacket() instanceof SPacketTimeUpdate) {
-            if (this.prevTime != -1) {
-                this.TPS[this.currentTick % this.TPS.length] = MathHelper.clamp((20.0f / ((float) (System.currentTimeMillis() - this.prevTime) / 1000.0f)), 0.0f, 20.0f);
-                this.lastTick = this.TPS[this.currentTick % this.TPS.length];
-                this.currentTick++;
+            if (prevTime != -1) {
+                TPS[currentTick % TPS.length] = MathHelper.clamp((20.0f / ((float) (System.currentTimeMillis() - prevTime) / 1000.0f)), 0.0f, 20.0f);
+                lastTick = TPS[currentTick % TPS.length];
+                currentTick++;
             }
 
-            this.prevTime = System.currentTimeMillis();
+            prevTime = System.currentTimeMillis();
         }
     }
 }

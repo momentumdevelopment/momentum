@@ -2,6 +2,7 @@ package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.util.player.PlayerUtil;
@@ -20,14 +21,18 @@ public class Trigger extends Module {
         super("Trigger", Category.COMBAT, "Attacks entities in your crosshair");
     }
 
-    public static Slider attackSpeed = new Slider("Attack Speed", 0.0D, 0.0D, 10.0D, 0);
+    public static Checkbox cooldown = new Checkbox("Cooldown", true);
+    public static Checkbox sync = new Checkbox("TPS Sync", false);
+    public static Checkbox packet = new Checkbox("Packet Swing", true);
     public static Checkbox players = new Checkbox("Players", true);
     public static Checkbox animals = new Checkbox("Animals", false);
     public static Checkbox mobs = new Checkbox("Mobs", false);
 
     @Override
     public void setup() {
-        addSetting(attackSpeed);
+        addSetting(cooldown);
+        addSetting(sync);
+        addSetting(packet);
         addSetting(players);
         addSetting(animals);
         addSetting(mobs);
@@ -36,6 +41,6 @@ public class Trigger extends Module {
     @Override
     public void onUpdate() {
         if (mc.objectMouseOver.typeOfHit.equals(RayTraceResult.Type.ENTITY) && (mc.objectMouseOver.entityHit instanceof EntityPlayer && players.getValue() && (!FriendManager.isFriend(mc.objectMouseOver.entityHit.getName()) && FriendManager.isFriendModuleEnabled())) || (mc.objectMouseOver.entityHit instanceof EntityAnimal && animals.getValue()) || (mc.objectMouseOver.entityHit instanceof EntityMob && mobs.getValue()))
-            PlayerUtil.attackEntity(mc.objectMouseOver.entityHit, false, true);
+            PlayerUtil.attackEntity(mc.objectMouseOver.entityHit, packet.getValue(), cooldown.getValue(), sync.getValue());
     }
 }

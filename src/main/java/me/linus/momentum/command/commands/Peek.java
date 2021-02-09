@@ -24,7 +24,7 @@ public class Peek extends Command implements MixinInterface {
     public void onCommand(String[] args) {
         ItemStack shulker = mc.player.getHeldItemMainhand();
         if (!(mc.player.getHeldItemMainhand().getItem() instanceof ItemShulkerBox)) {
-            MessageUtil.sendClientMessage("You are not holding a shulker box!");
+            MessageUtil.addOutput("You are not holding a shulker box!");
             return;
         }
 

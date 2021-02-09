@@ -1,7 +1,6 @@
 package me.linus.momentum.gui.main.gui;
 
 import me.linus.momentum.gui.theme.Theme;
-import me.linus.momentum.gui.theme.themes.DefaultTheme;
 import me.linus.momentum.managers.AnimationManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;

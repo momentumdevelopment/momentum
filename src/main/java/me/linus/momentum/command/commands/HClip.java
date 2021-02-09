@@ -24,7 +24,7 @@ public class HClip extends Command implements MixinInterface {
         if (direction != null && args.length > 0) {
             (mc.player.isRiding() ? mc.player.getRidingEntity() : mc.player).setPosition(mc.player.posX + direction.x * Double.valueOf(args[1]), mc.player.posY, mc.player.posZ + direction.z * Double.valueOf(args[1]));
 
-            MessageUtil.sendClientMessage("Teleported you " + args[1] + " blocks in the horizontal direction!");
+            MessageUtil.addOutput("Teleported you " + args[1] + " blocks in the horizontal direction!");
         }
 
         else

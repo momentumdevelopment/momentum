@@ -6,6 +6,8 @@ import me.linus.momentum.util.combat.crystal.CrystalPosition;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * stores various information about AutoCrystal
+ *
  * @author linustouchtips
  * @since 02/01/2021
  */

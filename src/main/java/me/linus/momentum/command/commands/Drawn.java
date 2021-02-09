@@ -21,12 +21,12 @@ public class Drawn extends Command {
         if (args.length > 1) {
             for (Module module : Momentum.moduleManager.getModules()) {
                 if (module.getName().equalsIgnoreCase(args[1]) && !module.isDrawn()) {
-                    MessageUtil.sendClientMessage(TextFormatting.AQUA + module.getName() + TextFormatting.WHITE + " is now " + TextFormatting.GREEN + "DRAWN");
+                    MessageUtil.addOutput(TextFormatting.AQUA + module.getName() + TextFormatting.WHITE + " is now " + TextFormatting.GREEN + "DRAWN");
                     module.setDrawn(true);
                 }
 
                 else if (module.getName().equalsIgnoreCase(args[1]) && module.isDrawn()) {
-                    MessageUtil.sendClientMessage(TextFormatting.AQUA + module.getName() + TextFormatting.WHITE + " is now " + TextFormatting.RED + "HIDDEN");
+                    MessageUtil.addOutput(TextFormatting.AQUA + module.getName() + TextFormatting.WHITE + " is now " + TextFormatting.RED + "HIDDEN");
                     module.setDrawn(false);
                 }
             }

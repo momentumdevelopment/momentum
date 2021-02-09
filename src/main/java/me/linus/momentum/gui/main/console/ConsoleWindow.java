@@ -1,10 +1,10 @@
 package me.linus.momentum.gui.main.console;
 
-import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.gui.theme.themes.DefaultTheme;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.client.ClickGUI;
+import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -32,19 +32,20 @@ public class ConsoleWindow implements MixinInterface {
 
     public int lastmX;
     public int lastmY;
+    public int scaleX = 1;
+    public int scaleY = 1;
+    public static int scrollbar = 0;
     public String name;
-    public Screen screen;
     public static List<ConsoleWindow> windows = new ArrayList<>();
 
-    public ConsoleWindow(String name, int x, int y, Screen screen) {
+    public ConsoleWindow(String name, int x, int y) {
         this.name = name;
         this.x = x;
         this.y = y;
-        this.screen = screen;
     }
 
     public static void initConsole() {
-        windows.add(new ConsoleWindow("Console", 2, 2, Screen.Command));
+        windows.add(new ConsoleWindow("Console", 2, 2));
     }
 
     public void drawConsole(int mouseX, int mouseY, float partialTicks) {
@@ -87,9 +88,8 @@ public class ConsoleWindow implements MixinInterface {
         }
 
         if (expanding) {
-            mc.player.sendChatMessage("troll");
-            DefaultTheme.consoleWidth = DefaultTheme.consoleWidth + (lastmX - x);
-            DefaultTheme.consoleHeight = DefaultTheme.consoleHeight + (lastmY - y);
+            scaleX = GUIUtil.mX / (x + DefaultTheme.consoleWidth);
+            scaleY = GUIUtil.mY / (y + DefaultTheme.consoleHeight);
         }
 
         lastmX = GUIUtil.mX;
@@ -120,13 +120,10 @@ public class ConsoleWindow implements MixinInterface {
     public void mouseWheelListen() {
         int scrollWheel = Mouse.getDWheel();
 
-        for (Window windows : Window.windows) {
-            if (scrollWheel < 0)
-                windows.setY((int) (windows.getY() - ClickGUI.scrollSpeed.getValue()));
-
-            else if (scrollWheel > 0)
-                windows.setY((int) (windows.getY() + ClickGUI.scrollSpeed.getValue()));
-        }
+        if (scrollWheel < 0)
+            scrollbar += -11;
+        else if (scrollWheel > 0)
+            scrollbar += 11;
     }
 
     public void releaseListen(int mouseX, int mouseY, int state) {
@@ -171,11 +168,5 @@ public class ConsoleWindow implements MixinInterface {
 
     public void setY(int newY) {
         this.y = newY;
-    }
-
-    public enum Screen {
-        Command,
-        AltManager,
-        Info
     }
 }

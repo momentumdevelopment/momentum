@@ -22,21 +22,21 @@ public class Panic extends Command {
         for (Module m: Momentum.moduleManager.getModules()) {
             if (m.isEnabled()) {
                 m.disable();
-                MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + "All modules toggled off!");
+                MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "All modules toggled off!");
             }
 
             else
-                MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + "No modules to disable!");
+                MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "No modules to disable!");
         }
 
         for (HUDComponent hud : Momentum.componentManager.getComponents()) {
             if (hud.isEnabled()) {
                 hud.toggle();
-                MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + "All HUD elements toggled off!");
+                MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "All HUD elements toggled off!");
             }
 
             else
-                MessageUtil.sendClientMessage(TextFormatting.LIGHT_PURPLE + "No HUD elements to disable!");
+                MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "No HUD elements to disable!");
         }
     }
 

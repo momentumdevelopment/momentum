@@ -19,6 +19,7 @@ public class Console extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         for (ConsoleWindow consoleWindow : ConsoleWindow.windows) {
+            consoleWindow.mouseWheelListen();
             consoleWindow.drawConsole(mouseX, mouseY, partialTicks);
         }
 

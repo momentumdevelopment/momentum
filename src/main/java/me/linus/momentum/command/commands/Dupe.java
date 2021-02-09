@@ -19,7 +19,7 @@ public class Dupe extends Command {
     @Override
     public void onCommand(String[] args) {
         if (args.length > 2) {
-            MessageUtil.sendClientMessage(" Starting position set at " + args[1] + ", " + args[2]  + ", " + args[3] + "!");
+            MessageUtil.addOutput("Starting position set at " + args[1] + ", " + args[2]  + ", " + args[3] + "!");
             startingPosition = new BlockPos(Double.valueOf(args[1]), Double.valueOf(args[2]), Double.valueOf(args[3]));
         }
 

@@ -1,5 +1,7 @@
 package me.linus.momentum.util.player;
 
+import me.linus.momentum.Momentum;
+import me.linus.momentum.managers.TickManager;
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -36,8 +38,8 @@ public class PlayerUtil implements MixinInterface {
         return InventoryUtil.getHeldItem(Items.DIAMOND_PICKAXE) && mc.player.isHandActive();
     }
 
-    public static void attackEntity(Entity entity, boolean packet, boolean cooldown) {
-        if (cooldown ? mc.player.getCooledAttackStrength(0) >= 1 : true) {
+    public static void attackEntity(Entity entity, boolean packet, boolean cooldown, boolean sync) {
+        if (cooldown ? mc.player.getCooledAttackStrength(0) >= (sync ? -(20 - Momentum.tickManager.getTickRate()) : 0) : true) {
             if (packet)
                 mc.player.connection.sendPacket(new CPacketUseEntity(entity));
             else

@@ -19,7 +19,7 @@ public class Client extends Command {
     public void onCommand(String[] args) {
         if (args.length > 0) {
             Momentum.NAME = args[1];
-            MessageUtil.sendClientMessage(ChatFormatting.LIGHT_PURPLE + "Client Name" + ChatFormatting.WHITE + " is now " + ChatFormatting.LIGHT_PURPLE + args[1].toUpperCase());
+            MessageUtil.addOutput(ChatFormatting.LIGHT_PURPLE + "Client Name" + ChatFormatting.WHITE + " is now " + ChatFormatting.LIGHT_PURPLE + args[1].toUpperCase());
         }
 
         else

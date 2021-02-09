@@ -24,7 +24,7 @@ public class VClip extends Command implements MixinInterface {
         if (direction != null && args.length > 1) {
             (mc.player.isRiding() ? mc.player.getRidingEntity() : mc.player).setPosition(mc.player.posX, mc.player.posY + Double.valueOf(args[1]), mc.player.posZ);
 
-            MessageUtil.sendClientMessage("Teleported you " + args[1] + " blocks in the vertical direction!");
+            MessageUtil.addOutput("Teleported you " + args[1] + " blocks in the vertical direction!");
         }
 
         else
