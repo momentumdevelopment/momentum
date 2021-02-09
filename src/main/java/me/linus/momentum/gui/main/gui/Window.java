@@ -1,17 +1,14 @@
 package me.linus.momentum.gui.main.gui;
 
 import me.linus.momentum.gui.theme.Theme;
-import me.linus.momentum.managers.AnimationManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.Module.Category;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.util.render.GUIUtil;
-import me.linus.momentum.util.render.builder.Render2DBuilder;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +29,7 @@ public class Window implements MixinInterface {
 	public boolean ldown;
 	public boolean rdown;
 	public boolean dragging;
-	public boolean opened = false;
+	public boolean opened = true;
 
 	public int currentTheme;
 
@@ -42,7 +39,6 @@ public class Window implements MixinInterface {
 	public Category category;
 	public List<Module> modules;
 	public static List<Window> windows = new ArrayList<>();
-	AnimationManager animationManager = new AnimationManager(200, false);
 
 	public Window(String name, int x, int y, Category category) {
 		this.name = name;
@@ -69,12 +65,7 @@ public class Window implements MixinInterface {
 		Theme current = Theme.getTheme(currentTheme);
 		current.drawTitles(this.name, this.x, this.y);
 
-		Render2DBuilder.prepareScissor(this.x, this.y + 14, this.x + 105, (int) (this.y + 14 + ((this.modules.size() * 14) * animationManager.getAnimationFactor())));
-		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		current.drawModules(this.modules, this.x, this.y, mouseX, mouseY, partialTicks);
-		GL11.glDisable(GL11.GL_SCISSOR_TEST);
-
-		animationManager.updateTime();
 
 		reset();
 
@@ -126,7 +117,6 @@ public class Window implements MixinInterface {
 
 		if (GUIUtil.mouseOver(x, y, x + current.getThemeWidth(), y + current.getThemeHeight())) {
 			opened = !opened;
-			animationManager.updateState();
 		}
 	}
 
