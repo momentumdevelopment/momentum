@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.movement;
 
+import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
@@ -7,6 +8,8 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.player.FlightUtil;
+import net.minecraft.network.play.server.SPacketMoveVehicle;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author linustouchtips
@@ -125,6 +128,12 @@ public class BoatFlight extends Module {
 
         if (mc.player.collidedHorizontally && onCollision.getValue())
             return;
+    }
+
+    @SubscribeEvent
+    public void onPacketRecieve(PacketReceiveEvent event) {
+        if (event.getPacket() instanceof SPacketMoveVehicle)
+            event.setCanceled(true);
     }
 
     @Override

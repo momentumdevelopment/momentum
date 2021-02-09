@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -34,65 +35,63 @@ public class RotationUtil implements MixinInterface {
     // override vanilla packet sending here, we replace them with our own custom values
     public static void updateRotationPackets(RotationEvent event) {
         if (mc.player.isSprinting() != mc.player.serverSprintState) {
-            if (mc.player.isSprinting())
+            if (mc.player.isSprinting()) 
                 mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SPRINTING));
-            else
+            else 
                 mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SPRINTING));
 
             mc.player.serverSprintState = mc.player.isSprinting();
         }
-
+        
         if (mc.player.isSneaking() != mc.player.serverSneakState) {
             if (mc.player.isSneaking())
                 mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
             else
                 mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
-
+            
             mc.player.serverSneakState = mc.player.isSneaking();
         }
-
-        if (mc.getRenderViewEntity() == mc.player) {
-            double changePosX = mc.player.posX - mc.player.lastTickPosX;
-            double changePosY = mc.player.getEntityBoundingBox().minY - mc.player.lastTickPosY;
-            double changePosZ = mc.player.posZ - mc.player.lastTickPosZ;
-            double changeYaw = event.getYaw() - mc.player.prevRotationYaw;
-            double changePitch = event.getPitch() - mc.player.prevRotationPitch;
-
-            mc.player.positionUpdateTicks++;
-
-            boolean playerMoved = changePosX * changePosX + changePosY * changePosY + changePosZ * changePosZ > 9.0E-4D || mc.player.positionUpdateTicks >= 20;
-            boolean playerRotated = changeYaw != 0.0D || changePitch != 0.0D;
-
-            if (mc.player.isRiding()) {
-                mc.player.connection.sendPacket(new CPacketPlayer.PositionRotation(mc.player.motionX, -999.0D, mc.player.motionZ, event.getYaw(), event.getPitch(), mc.player.onGround));
-                playerMoved = false;
-            }
-
-            else if (playerMoved && playerRotated)
-                mc.player.connection.sendPacket(new CPacketPlayer.PositionRotation(mc.player.posX, mc.player.getEntityBoundingBox().minY, mc.player.posZ, event.getYaw(), event.getPitch(), mc.player.onGround));
-            else if (playerMoved)
-                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.getEntityBoundingBox().minY, mc.player.posZ, mc.player.onGround));
-            else if (playerRotated)
-                mc.player.connection.sendPacket(new CPacketPlayer.Rotation(event.getYaw(), event.getPitch(), mc.player.onGround));
-
-            else if (mc.player.prevOnGround != mc.player.onGround)
-                mc.player.connection.sendPacket(new CPacketPlayer(mc.player.onGround));
-
-            if (playerMoved) {
-                mc.player.lastReportedPosX = mc.player.posX;
-                mc.player.lastReportedPosY = mc.player.getEntityBoundingBox().minY;
-                mc.player.lastReportedPosZ = mc.player.posZ;
-                mc.player.positionUpdateTicks = 0;
-            }
-
-            if (playerRotated) {
-                mc.player.lastReportedYaw = event.getYaw();
-                mc.player.lastReportedPitch = event.getPitch();
-            }
-
-            mc.player.prevOnGround = mc.player.onGround;
-            mc.player.autoJumpEnabled = mc.player.mc.gameSettings.autoJump;
+        
+        double updatedPosX = mc.player.posX - mc.player.lastReportedPosX;
+        double updatedPosY = mc.player.getEntityBoundingBox().minY - mc.player.lastReportedPosY;
+        double updatedPosZ = mc.player.posZ - mc.player.lastReportedPosZ;
+        
+        double updatedRotationYaw = event.getYaw() - mc.player.lastReportedYaw;
+        double updatedRotationPitch = event.getPitch() - mc.player.lastReportedPitch;
+        
+        mc.player.positionUpdateTicks++;
+        
+        boolean positionUpdate = updatedPosX * updatedPosX + updatedPosY * updatedPosY + updatedPosZ * updatedPosZ > 9.0E-4D || mc.player.positionUpdateTicks >= 20;
+        boolean rotationUpdate = updatedRotationYaw != 0.0D || updatedRotationPitch != 0.0D;
+        
+        if (mc.player.isRiding()) {
+            mc.player.connection.sendPacket(new CPacketPlayer.PositionRotation(mc.player.motionX, -999.0D, mc.player.motionZ, event.getYaw(), event.getPitch(), mc.player.onGround));
+            positionUpdate = false;
         }
+        
+        else if (positionUpdate && rotationUpdate) 
+            mc.player.connection.sendPacket(new CPacketPlayer.PositionRotation(mc.player.posX, mc.player.getEntityBoundingBox().minY, mc.player.posZ, event.getYaw(), event.getPitch(), mc.player.onGround));
+        else if (positionUpdate)
+            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.getEntityBoundingBox().minY, mc.player.posZ, mc.player.onGround));
+        else if (rotationUpdate) 
+            mc.player.connection.sendPacket(new CPacketPlayer.Rotation(event.getYaw(), event.getPitch(), mc.player.onGround));
+        else if (mc.player.prevOnGround != mc.player.onGround) 
+            mc.player.connection.sendPacket(new CPacketPlayer(mc.player.onGround));
+
+        if (positionUpdate) {
+            mc.player.lastReportedPosX = mc.player.posX;
+            mc.player.lastReportedPosY = mc.player.getEntityBoundingBox().minY;
+            mc.player.lastReportedPosZ = mc.player.posZ;
+            mc.player.positionUpdateTicks = 0;
+        }
+
+        if (rotationUpdate) {
+            mc.player.lastReportedYaw = event.getYaw();
+            mc.player.lastReportedPitch = event.getPitch();
+        }
+
+        mc.player.prevOnGround = mc.player.onGround;
+        mc.player.autoJumpEnabled = mc.player.mc.gameSettings.autoJump;
     }
 
     public static boolean isInViewFrustrum(@Nullable Entity entity, @Nullable BlockPos blockPos, int mode) {

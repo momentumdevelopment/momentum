@@ -39,7 +39,7 @@ public class PlayerUtil implements MixinInterface {
     }
 
     public static void attackEntity(Entity entity, boolean packet, boolean cooldown, boolean sync) {
-        if (cooldown ? mc.player.getCooledAttackStrength(0) >= (sync ? -(20 - Momentum.tickManager.getTickRate()) : 0) : true) {
+        if (cooldown ? mc.player.getCooledAttackStrength(0) >= (sync ? -(20 - TickManager.getTPS()) : 0) : true) {
             if (packet)
                 mc.player.connection.sendPacket(new CPacketUseEntity(entity));
             else

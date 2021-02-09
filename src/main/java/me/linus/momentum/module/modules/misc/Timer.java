@@ -31,10 +31,10 @@ public class Timer extends Module {
 
     @Override
     public void onUpdate() {
-        if (!sync.getValue())
-            mc.timer.tickLength = (float) (50.0f / ticks.getValue());
-        else
-            mc.timer.tickLength = 50.0f / (TickManager.TPS[0] / 20);
+        if (nullCheck())
+            return;
+
+        mc.timer.tickLength = sync.getValue() ? 50.0f / (TickManager.getTPS() / 20) : (float) (50.0f / ticks.getValue());
     }
 
     @Override

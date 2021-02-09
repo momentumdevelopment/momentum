@@ -1,6 +1,7 @@
 package me.linus.momentum.managers;
 
 import me.linus.momentum.event.events.packet.PacketSendEvent;
+import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.player.rotation.Rotation;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -38,11 +39,17 @@ public class RotationManager implements MixinInterface {
     }
 
     @SubscribeEvent
-    public void onPacketSend(PacketSendEvent event) {
-        if (currentRotation != null && currentRotation.mode.equals(Rotation.RotationMode.Packet) && !rotationQueue.isEmpty() && event.getPacket() instanceof CPacketPlayer) {
-            ((CPacketPlayer) event.getPacket()).yaw = currentRotation.yaw;
-            ((CPacketPlayer) event.getPacket()).pitch = currentRotation.pitch;
+    public void onRotate(RotationEvent event) {
+        if (currentRotation != null && currentRotation.mode.equals(Rotation.RotationMode.Packet)) {
+            event.setCanceled(true);
+            event.setYaw(currentRotation.yaw);
+            event.setPitch(currentRotation.pitch);
+        }
+    }
 
+    @SubscribeEvent
+    public void onPacketSend(PacketSendEvent event) {
+        if (currentRotation != null && !rotationQueue.isEmpty() && event.getPacket() instanceof CPacketPlayer) {
             if (((CPacketPlayer) event.getPacket()).rotating)
                 serverRotation = new Rotation(((CPacketPlayer) event.getPacket()).yaw, ((CPacketPlayer) event.getPacket()).pitch, Rotation.RotationMode.Packet);
         }

@@ -33,7 +33,7 @@ public class TickManager {
         return lastTick;
     }
 
-    public float getTickRate() {
+    public static float getTPS() {
         int tickCount = 0;
         float tickRate = 0.0f;
 

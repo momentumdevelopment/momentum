@@ -73,7 +73,7 @@ public class StrictHop extends SpeedMode {
         float forward = mc.player.movementInput.moveForward;
         float strafe = mc.player.movementInput.moveStrafe;
         float yaw = mc.player.rotationYaw;
-        ++ticks;
+        ticks++;
 
         if (ticks > 50)
             ticks = 0;

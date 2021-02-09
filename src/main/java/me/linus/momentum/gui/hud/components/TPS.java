@@ -20,7 +20,7 @@ public class TPS extends HUDComponent {
 
     @Override
     public void renderComponent() {
-        FontUtil.drawString("TPS " + TextFormatting.WHITE + TickManager.TPS[0], this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
-        width = Momentum.fontManager.getCustomFont().getStringWidth(TickManager.TPS[0] + " TPS") + 2;
+        FontUtil.drawString("TPS " + TextFormatting.WHITE + TickManager.getTPS(), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+        width = Momentum.fontManager.getCustomFont().getStringWidth(TickManager.getTPS() + " TPS") + 2;
     }
 }
