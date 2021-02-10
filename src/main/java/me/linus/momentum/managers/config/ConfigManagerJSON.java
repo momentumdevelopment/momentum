@@ -1,6 +1,5 @@
 package me.linus.momentum.managers.config;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.managers.HUDComponentManager;
 import me.linus.momentum.gui.main.gui.Window;

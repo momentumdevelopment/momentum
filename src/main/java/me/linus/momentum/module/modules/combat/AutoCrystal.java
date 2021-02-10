@@ -13,6 +13,7 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.managers.notification.*;
 import me.linus.momentum.managers.RotationManager;
+import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.player.rotation.RotationPriority;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.world.Timer;
@@ -390,8 +391,10 @@ public class AutoCrystal extends Module {
             if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
                 mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> entity.getDistance(((SPacketSoundEffect) event.getPacket()).posX, ((SPacketSoundEffect) event.getPacket()).posY, ((SPacketSoundEffect) event.getPacket()).posZ) <= breakRange.getValue()).forEach(crystal -> {
                     CrystalManager.placedCrystals.forEach(placedCrystal -> {
-                        if (sync.getValue() == 3 && crystal.getDistanceSq(placedCrystal.getCrystalPosition()) < MathUtil.square(breakRange.getValue()))
+                        if (sync.getValue() == 3 && crystal.getDistanceSq(placedCrystal.getCrystalPosition()) < MathUtil.square(breakRange.getValue())) {
+                            MessageUtil.sendClientMessage("trolled");
                             crystal.setDead();
+                        }
                     });
 
                     if (serverConfirm.getValue())

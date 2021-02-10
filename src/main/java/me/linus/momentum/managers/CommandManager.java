@@ -20,7 +20,6 @@ public class CommandManager {
 
     static final List<Command> commands = Lists.newArrayList(
             new Toggle(),
-            new Prefix(),
             new Help(),
             new Dupe(),
             new Friend(),
