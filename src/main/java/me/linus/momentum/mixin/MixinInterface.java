@@ -3,7 +3,7 @@ package me.linus.momentum.mixin;
 import net.minecraft.client.Minecraft;
 
 /**
- * @author bon
+ * @author bon & linustouchtips
  * @since 11/12/20
  */
 
@@ -18,5 +18,5 @@ public interface MixinInterface {
 	 */
 	
 	Minecraft mc = Minecraft.getMinecraft();
-	
+	boolean nullCheck = mc.player == null || mc.world == null;
 }

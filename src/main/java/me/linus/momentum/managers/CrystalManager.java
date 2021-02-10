@@ -3,7 +3,8 @@ package me.linus.momentum.managers;
 import me.linus.momentum.util.combat.crystal.Crystal;
 import me.linus.momentum.util.combat.crystal.CrystalPosition;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * stores various information about AutoCrystal
@@ -14,8 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CrystalManager {
 
-    public static ConcurrentHashMap<CrystalPosition, Integer> placedCrystals = new ConcurrentHashMap<>();
-    public static ConcurrentHashMap<Crystal, Integer> brokenCrystals = new ConcurrentHashMap<>();
+    public static List<CrystalPosition> placedCrystals = new ArrayList<>();
+    public static List<Crystal> brokenCrystals = new ArrayList<>();
     public static int swings = 0;
     public static boolean skipTick = false;
 

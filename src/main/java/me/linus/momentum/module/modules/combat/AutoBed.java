@@ -9,6 +9,7 @@ import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.managers.notification.Notification;
 import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.managers.RotationManager;
+import me.linus.momentum.util.player.rotation.RotationPriority;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.managers.social.friend.FriendManager;
@@ -113,10 +114,10 @@ public class AutoBed extends Module {
         if (currentTarget != null && (!FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled())) {
             switch (rotate.getValue()) {
                 case 0:
-                    bedRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], Rotation.RotationMode.Packet);
+                    bedRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], Rotation.RotationMode.Packet, RotationPriority.Highest);
                     break;
                 case 1:
-                    bedRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], Rotation.RotationMode.Legit);
+                    bedRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], Rotation.RotationMode.Legit, RotationPriority.Highest);
                     break;
             }
 

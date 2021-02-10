@@ -14,22 +14,15 @@ public class Rotation implements MixinInterface {
     public float yaw;
     public float pitch;
     public boolean frame = true;
+    public RotationPriority rotationPriority;
     public RotationMode mode;
     public Timer rotationStay = new Timer();
 
-    public Rotation(float yaw, float pitch, RotationMode mode) {
+    public Rotation(float yaw, float pitch, RotationMode mode, RotationPriority rotationPriority) {
         this.yaw = yaw;
         this.pitch = pitch;
         this.mode = mode;
-
-        rotationStay.reset();
-    }
-
-    public Rotation(float yaw, float pitch, RotationMode mode, boolean frame) {
-        this.yaw = yaw;
-        this.pitch = pitch;
-        this.mode = mode;
-        this.frame = frame;
+        this.rotationPriority = rotationPriority;
 
         rotationStay.reset();
     }
@@ -51,15 +44,11 @@ public class Rotation implements MixinInterface {
     }
 
     public void restoreRotation() {
-        try {
-            this.yaw = mc.player.rotationYaw;
-            this.pitch = mc.player.rotationPitch;
-            mc.player.rotationYawHead = mc.player.rotationYaw;
+        this.yaw = mc.player.rotationYaw;
+        this.pitch = mc.player.rotationPitch;
+        mc.player.rotationYawHead = mc.player.rotationYaw;
 
-            rotationStay.reset();
-        } catch (Exception e) {
-
-        }
+        rotationStay.reset();
     }
 
     public boolean requiresUpdate() {

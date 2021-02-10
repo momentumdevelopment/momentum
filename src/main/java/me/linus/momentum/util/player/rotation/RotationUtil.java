@@ -29,7 +29,7 @@ public class RotationUtil implements MixinInterface {
     public static Rotation rotationStep(Rotation currentRotation, Rotation targetRotation, float rotationStep) {
         float yawDifference = ((targetRotation.yaw - currentRotation.yaw) % 360.0f + 540.0f) % 360.0f - 180.0f;
         float pitchDifference = ((targetRotation.pitch - currentRotation.pitch) % 360.0f + 540.0f) % 360.0f - 180.0f;
-        return new Rotation(currentRotation.yaw + (yawDifference > rotationStep ? rotationStep : Math.max(yawDifference, -rotationStep)), currentRotation.pitch + (pitchDifference > rotationStep ? rotationStep : Math.max(pitchDifference, -rotationStep)), Rotation.RotationMode.Packet);
+        return new Rotation(currentRotation.yaw + (yawDifference > rotationStep ? rotationStep : Math.max(yawDifference, -rotationStep)), currentRotation.pitch + (pitchDifference > rotationStep ? rotationStep : Math.max(pitchDifference, -rotationStep)), Rotation.RotationMode.Packet, targetRotation.rotationPriority);
     }
 
     // override vanilla packet sending here, we replace them with our own custom values
@@ -97,7 +97,7 @@ public class RotationUtil implements MixinInterface {
     public static boolean isInViewFrustrum(@Nullable Entity entity, @Nullable BlockPos blockPos, int mode) {
         switch (mode) {
             case 0:
-                return mc.player.canEntityBeSeen(entity);
+                return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(entity.posX, entity.posY, entity.posZ), false, true, false) == null;
             case 1:
                 return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
         }
