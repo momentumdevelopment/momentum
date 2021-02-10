@@ -82,11 +82,6 @@ public class ElytraFlight extends Module {
                 mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_FALL_FLYING));
         }
     }
-    
-    @Override
-    public void onDisable() {
-        mc.timer.tickLength = 50f;
-    }
 
     @Override
     public void onValueChange() {

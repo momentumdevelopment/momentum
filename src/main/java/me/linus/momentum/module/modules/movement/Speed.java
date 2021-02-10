@@ -87,11 +87,6 @@ public class Speed extends Module {
         speedMode.onMotionUpdate();
     }
 
-    @Override
-    public void onDisable() {
-        mc.timer.tickLength = 50;
-    }
-
     @SubscribeEvent
     public void onMove(MoveEvent event) {
         if (!this.isEnabled())

@@ -82,6 +82,7 @@ public abstract class Module implements MixinInterface {
 	
 	public void onDisable() {
 		remainingAnimation = 0.0f;
+		mc.timer.tickLength = 50;
 
 		if (ModuleManager.getModuleByClass(EnableMessage.class).isEnabled() && !this.name.equalsIgnoreCase("ClickGUI"))
 			MessageUtil.sendClientMessage(this.name + ChatFormatting.RED + " DISABLED");

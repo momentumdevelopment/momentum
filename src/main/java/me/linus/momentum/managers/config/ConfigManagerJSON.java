@@ -9,6 +9,7 @@ import me.linus.momentum.setting.Setting;
 import me.linus.momentum.setting.SubSetting;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.keybind.Keybind;
 import me.linus.momentum.setting.keybind.SubKeybind;
 import me.linus.momentum.setting.mode.Mode;
@@ -22,6 +23,7 @@ import me.linus.momentum.managers.social.friend.FriendManager;
 
 import com.google.gson.*;
 
+import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -108,6 +110,17 @@ public class ConfigManagerJSON {
 
                             if (subSetting instanceof SubKeybind)
                                 subSettingObject.add(((SubKeybind) subSetting).getName(), new JsonPrimitive(((SubKeybind) subSetting).getKey()));
+
+                            if (subSetting instanceof ColorPicker) {
+                                JsonObject subColorObject = new JsonObject();
+
+                                subColorObject.add("Red", new JsonPrimitive(((ColorPicker) subSetting).getRed()));
+                                subColorObject.add("Green", new JsonPrimitive(((ColorPicker) subSetting).getGreen()));
+                                subColorObject.add("Blue", new JsonPrimitive(((ColorPicker) subSetting).getBlue()));
+                                subColorObject.add("Alpha", new JsonPrimitive(((ColorPicker) subSetting).getAlpha()));
+
+                                subSettingObject.add(((ColorPicker) subSetting).getName(), subColorObject);
+                            }
                         }
                     }
                 }
@@ -204,6 +217,11 @@ public class ConfigManagerJSON {
                     for (SubSetting subSetting : ((Checkbox) setting).getSubSettings()) {
                         JsonElement subSettingValueObject = null;
 
+                        JsonElement redValueObject = null;
+                        JsonElement greenValueObject = null;
+                        JsonElement blueValueObject = null;
+                        JsonElement alphaValueObject = null;
+
                         if (subSetting instanceof SubCheckbox)
                             subSettingValueObject = subSettingObject.get(((SubCheckbox) subSetting).getName());
 
@@ -215,6 +233,18 @@ public class ConfigManagerJSON {
 
                         if (subSetting instanceof SubKeybind)
                             subSettingValueObject = subSettingObject.get(((SubKeybind) subSetting).getName());
+
+                        if (subSetting instanceof ColorPicker) {
+                            if (subSettingObject.get(((ColorPicker) subSetting).getName()).getAsJsonObject() == null)
+                                return;
+
+                            JsonObject subColorObject = subSettingObject.get(((ColorPicker) subSetting).getName()).getAsJsonObject();
+
+                            redValueObject = subColorObject.get("Red");
+                            greenValueObject = subColorObject.get("Green");
+                            blueValueObject = subColorObject.get("Blue");
+                            alphaValueObject = subColorObject.get("Alpha");
+                        }
 
                         if (subSettingValueObject != null) {
                             if (subSetting instanceof SubCheckbox)
@@ -229,6 +259,9 @@ public class ConfigManagerJSON {
                             if (subSetting instanceof SubKeybind)
                                 ((SubKeybind) subSetting).setKey(subSettingValueObject.getAsInt());
                         }
+
+                        if (redValueObject != null && greenValueObject != null && blueValueObject != null && alphaValueObject != null)
+                            ((ColorPicker) subSetting).setColor(new Color(redValueObject.getAsInt(), greenValueObject.getAsInt(), blueValueObject.getAsInt(), alphaValueObject.getAsInt()));
                     }
                 }
 

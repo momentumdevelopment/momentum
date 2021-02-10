@@ -36,7 +36,7 @@ public class Aura extends Module {
         super("Aura", Category.COMBAT, "Attacks entities");
     }
 
-    public static Mode mode = new Mode("Mode", "Closest", "Health", "Armor");
+    public static Mode mode = new Mode("Mode", "Closest", "LowestHealth", "LowestArmor");
 
     public static Checkbox players = new Checkbox("Players", true);
     public static Checkbox animals = new Checkbox("Animals", true);
@@ -97,6 +97,8 @@ public class Aura extends Module {
         if (nullCheck())
             return;
 
+        currentTarget = WorldUtil.getTarget(range.getValue(), mode.getValue());
+
         if (teleport.getValue())
             mc.player.setPosition(currentTarget.posX, currentTarget.posY, currentTarget.posZ);
 
@@ -123,17 +125,6 @@ public class Aura extends Module {
     }
 
     public void killAura() {
-        switch (mode.getValue()) {
-            case 0:
-                currentTarget = WorldUtil.getNearbyPlayers(range.getValue()).stream().filter(entity -> EnemyUtil.attackCheck(entity, players.getValue(), animals.getValue(), mobs.getValue())).sorted(Comparator.comparing(e -> mc.player.getDistance(e))).findFirst().orElse(null);
-                break;
-            case 1:
-                currentTarget = WorldUtil.getNearbyPlayers(range.getValue()).stream().min(Comparator.comparing(entityPlayer -> EnemyUtil.getHealth(entityPlayer))).orElse(null);
-                break;
-            case 2:
-                currentTarget = WorldUtil.getNearbyPlayers(range.getValue()).stream().min(Comparator.comparing(entityPlayer -> EnemyUtil.getArmor(entityPlayer))).orElse(null);
-                break;
-        }
 
         if (swordOnly.getValue() && !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))
             return;

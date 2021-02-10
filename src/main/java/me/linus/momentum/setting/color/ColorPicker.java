@@ -65,11 +65,11 @@ public class ColorPicker extends SubSetting {
     }
 
     public int getGreen() {
-        return this.color.getRed();
+        return this.color.getGreen();
     }
 
     public int getBlue() {
-        return this.color.getRed();
+        return this.color.getBlue();
     }
 
     public int getAlpha() {

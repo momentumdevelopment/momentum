@@ -58,7 +58,7 @@ public class AutoCrystal extends Module {
     public static SubMode breakHand = new SubMode(explode, "BreakHand", "OffHand", "MainHand", "Both", "MultiSwing");
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 80.0D, 200.0D, 0);
-    public static SubSlider minBreakDamage = new SubSlider(explode, "Break Damage", 0.0D, 3.0D, 36.0D, 0);
+    public static SubSlider minBreakDamage = new SubSlider(explode, "Break Damage", 0.0D, 4.0D, 36.0D, 0);
     public static SubSlider breakAttempts = new SubSlider(explode, "Break Attempts", 0.0D, 1.0D, 5.0D, 0);
     public static SubMode sync = new SubMode(explode, "Sync", "None", "Instant", "Attack", "Sound", "Unsafe");
     public static SubCheckbox packetBreak = new SubCheckbox(explode, "Packet Break", true);
@@ -115,6 +115,7 @@ public class AutoCrystal extends Module {
     public static Checkbox logic = new Checkbox("Logic", true);
     public static SubMode logicMode = new SubMode(logic, "Crystal Logic", "Break -> Place", "Place -> Break");
     public static SubMode blockCalc = new SubMode(logic, "Block Logic", "Normal", "1.13+");
+    public static SubMode enemyLogic = new SubMode(logic, "Enemy Logic", "Closest", "LowestHealth", "LowestArmor");
 
     public static Checkbox renderCrystal = new Checkbox("Render", true);
     public static ColorPicker colorPicker = new ColorPicker(renderCrystal, "Color Picker", new Color(250, 0, 250, 50));
@@ -164,7 +165,7 @@ public class AutoCrystal extends Module {
             return;
         }
 
-        crystalTarget = WorldUtil.getClosestPlayer(enemyRange.getValue());
+        crystalTarget = WorldUtil.getTarget(enemyRange.getValue(), enemyLogic.getValue());
 
         if (!taiwanTick.getValue())
             autoCrystal();

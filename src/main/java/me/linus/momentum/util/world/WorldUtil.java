@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.managers.social.friend.FriendManager;
+import me.linus.momentum.module.modules.combat.AutoCrystal;
 import me.linus.momentum.util.combat.EnemyUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -51,6 +52,30 @@ public class WorldUtil implements MixinInterface {
             return null;
 
         return closestPlayer;
+    }
+
+    public static EntityPlayer getTarget(double range, int mode) {
+        if (mc.world.getLoadedEntityList().size() == 0)
+            return null;
+
+        EntityPlayer crystalPlayer = null;
+
+        switch (mode) {
+            case 0:
+                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !entityPlayer.isDead).findFirst().orElse(null);
+                break;
+            case 1:
+                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !entityPlayer.isDead).min(Comparator.comparing(entityPlayer -> EnemyUtil.getHealth(entityPlayer))).orElse(null);
+                break;
+            case 2:
+                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !entityPlayer.isDead).min(Comparator.comparing(entityPlayer -> EnemyUtil.getArmor(entityPlayer))).orElse(null);
+                break;
+        }
+
+        if (FriendManager.isFriend(crystalPlayer.getName()) && FriendManager.isFriendModuleEnabled())
+            return null;
+
+        return crystalPlayer;
     }
 
     public static List<EntityPlayer> getNearbyPlayers(double range) {

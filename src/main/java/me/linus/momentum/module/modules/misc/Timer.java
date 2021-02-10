@@ -25,11 +25,6 @@ public class Timer extends Module {
     }
 
     @Override
-    public void onDisable() {
-        mc.timer.tickLength = 50;
-    }
-
-    @Override
     public void onUpdate() {
         if (nullCheck())
             return;

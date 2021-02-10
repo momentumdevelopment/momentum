@@ -65,7 +65,6 @@ public class Step extends Module {
 
     @Override
     public void onDisable() {
-        mc.timer.tickLength = 50;
         mc.player.stepHeight = 0.5f;
     }
 
@@ -91,8 +90,10 @@ public class Step extends Module {
 
         forwardStep = MotionUtil.directionSpeed(0.1);
 
-        if (mc.player.isSneaking() && sneakPause.getValue())
+        if (mc.player.isSneaking() && sneakPause.getValue()) {
+            mc.player.stepHeight = 0.5f;
             return;
+        }
 
         switch (mode.getValue()) {
             case 0:

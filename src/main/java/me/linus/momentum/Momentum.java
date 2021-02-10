@@ -7,7 +7,6 @@ import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.managers.config.ConfigManagerJSON;
 import me.linus.momentum.managers.social.enemy.EnemyManager;
 import me.linus.momentum.managers.social.friend.FriendManager;
-import me.linus.momentum.managers.config.ShutdownHook;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -69,6 +68,9 @@ public class Momentum {
         moduleManager = new ModuleManager();
         LOGGER.info("Modules Initialized!");
 
+        ConfigManagerJSON.loadConfig();
+        LOGGER.info("Config System Loaded!");
+
     	rotationManager = new RotationManager();
         LOGGER.info("Client Rotations Initialized!");
 
@@ -76,13 +78,16 @@ public class Momentum {
         LOGGER.info("AutoCrystal Manager Initialized!");
 
     	Window.initGui();
-    	LOGGER.info("ClickGui Initialized!");
+    	LOGGER.info("ClickGUI Windows Initialized!");
 
         ConsoleWindow.initConsole();
-        LOGGER.info("Console Initialized!");
+        LOGGER.info("Console Windows Initialized!");
 
     	Theme.initThemes();
     	LOGGER.info("GUI Themes Initialized!");
+
+        componentManager = new HUDComponentManager();
+        LOGGER.info("HUD System Initialized!");
 
         friendManager = new FriendManager();
         LOGGER.info("Friends System Initialized!");
@@ -93,23 +98,22 @@ public class Momentum {
         commandManager = new CommandManager();
         LOGGER.info("Commands Initialized!");
 
-        componentManager = new HUDComponentManager();
-        LOGGER.info("HUD System Initialized!");
-
         tickManager = new TickManager();
         LOGGER.info("Tick System Initialized!");
 
-        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            ConfigManagerJSON.saveConfig();
+            Momentum.LOGGER.info("Saving Config!");
+        }));
+
         LOGGER.info("Config System Saved!");
+
     }
     
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         capeManager = new CapeManager();
         LOGGER.info("Cape System Initialized!");
-
-        ConfigManagerJSON.loadConfig();
-        LOGGER.info("Config System Loaded!");
 
         Display.setTitle(NAME + " Utility Mod " + VERSION);
         LOGGER.info("Changed Display Name!");

@@ -1,14 +1,9 @@
 package me.linus.momentum.managers;
 
 import com.google.common.collect.Lists;
-import me.linus.momentum.Momentum;
 import me.linus.momentum.command.Command;
 import me.linus.momentum.command.commands.*;
-import me.linus.momentum.module.Module;
-import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,22 +50,5 @@ public class CommandManager {
 
     public static List<Command> predictCommands(String command) {
         return commands.stream().filter(predictCommand -> predictCommand.getUsage().startsWith(command)).collect(Collectors.toList());
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void chatEvent(ClientChatEvent event) {
-        String[] args = event.getMessage().split(" ");
-        if (event.getMessage().startsWith(Momentum.PREFIX)) {
-            event.setCanceled(true);
-
-            for (Command c: commands) {
-                if (args[0].equalsIgnoreCase(Momentum.PREFIX + c.getUsage()))
-                    try {
-                        c.onCommand(args);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-            }
-        }
     }
 }

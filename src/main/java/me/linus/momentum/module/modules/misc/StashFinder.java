@@ -112,14 +112,11 @@ public class StashFinder extends Module {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent renderEvent) {
-        boolean bobbing = mc.gameSettings.viewBobbing;
-        mc.gameSettings.viewBobbing = false;
         mc.entityRenderer.setupCameraTransform(renderEvent.getPartialTicks(), 0);
 
         Vec3d forward = new Vec3d(0, 0, 1).rotatePitch(-(float) Math.toRadians(mc.player.rotationPitch)).rotateYaw(-(float) Math.toRadians(mc.player.rotationYaw));
         RenderUtil.drawLine3D((float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) forward.z, (float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) (forward.z + 100), (float) 3, new Color(0, 255, 0));
 
-        mc.gameSettings.viewBobbing = bobbing;
         mc.entityRenderer.setupCameraTransform(renderEvent.getPartialTicks(), 0);
     }
 
