@@ -1,10 +1,12 @@
 package me.linus.momentum.module.modules.combat;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtil;
@@ -22,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author yoink
+ * @author yoink & olliem5
  * @since 12/17/2020
  */
 
@@ -51,7 +53,21 @@ public class HoleFill extends Module {
         addSetting(color);
     }
 
+    private int obsidianSlot;
     BlockPos renderBlock;
+
+    @Override
+    public void onEnable() {
+        if (nullCheck())
+            return;
+
+        obsidianSlot = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+
+        if (obsidianSlot == -1) {
+            MessageUtil.sendClientMessage("No Obsidian, " + ChatFormatting.RED + "Disabling!");
+            this.toggle();
+        }
+    }
 
     @Override
     public void onUpdate() {
@@ -74,7 +90,9 @@ public class HoleFill extends Module {
         if (autoSwitch.getValue())
             InventoryUtil.switchToSlot(getItem());
 
-        BlockUtil.placeBlock(blocks.get(0), rotate.getValue());
+        if (obsidianSlot != -1) {
+            BlockUtil.placeBlock(blocks.get(0), rotate.getValue());
+        }
     }
 
     @SubscribeEvent

@@ -1,11 +1,13 @@
 package me.linus.momentum.module.modules.combat;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtil;
@@ -64,6 +66,7 @@ public class Surround extends Module {
         addSetting(renderSurround);
     }
 
+    private int obsidianSlot;
     boolean hasPlaced;
     Vec3d center = Vec3d.ZERO;
     int blocksPlaced = 0;
@@ -76,22 +79,29 @@ public class Surround extends Module {
 
         super.onEnable();
 
-        hasPlaced = false;
-        center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
+        obsidianSlot = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
 
-        switch (centerPlayer.getValue()) {
-            case 0:
-                mc.player.motionX = 0;
-                mc.player.motionZ = 0;
-                mc.player.connection.sendPacket(new CPacketPlayer.Position(center.x, center.y, center.z, true));
-                mc.player.setPosition(center.x, center.y, center.z);
-                break;
-            case 1:
-                mc.player.motionX = (center.x - mc.player.posX) / 2;
-                mc.player.motionZ = (center.z - mc.player.posZ) / 2;
-                break;
-            case 2:
-                break;
+        if (obsidianSlot == -1) {
+            MessageUtil.sendClientMessage("No Obsidian, " + ChatFormatting.RED + "Disabling!");
+            this.toggle();
+        } else {
+            hasPlaced = false;
+            center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
+
+            switch (centerPlayer.getValue()) {
+                case 0:
+                    mc.player.motionX = 0;
+                    mc.player.motionZ = 0;
+                    mc.player.connection.sendPacket(new CPacketPlayer.Position(center.x, center.y, center.z, true));
+                    mc.player.setPosition(center.x, center.y, center.z);
+                    break;
+                case 1:
+                    mc.player.motionX = (center.x - mc.player.posX) / 2;
+                    mc.player.motionZ = (center.z - mc.player.posZ) / 2;
+                    break;
+                case 2:
+                    break;
+            }
         }
     }
 
@@ -127,7 +137,11 @@ public class Surround extends Module {
                 int oldInventorySlot = mc.player.inventory.currentItem;
 
                 InventoryUtil.switchToSlot(onlyObsidian.getValue() ? InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) : InventoryUtil.getAnyBlockInHotbar());
-                BlockUtil.placeBlock(new BlockPos(placePositions.add(mc.player.getPositionVector())), rotate.getValue());
+
+                if (obsidianSlot != -1) {
+                    BlockUtil.placeBlock(new BlockPos(placePositions.add(mc.player.getPositionVector())), rotate.getValue());
+                }
+
                 renderBlock = new BlockPos(placePositions.add(mc.player.getPositionVector()));
                 blocksPlaced++;
 
