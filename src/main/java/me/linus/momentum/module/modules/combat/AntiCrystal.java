@@ -1,9 +1,11 @@
 package me.linus.momentum.module.modules.combat;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.Timer;
@@ -24,11 +26,6 @@ import java.util.Comparator;
 /**
  * @author olliem5 & linustouchtips
  * @since 7/01/20
- *
- * Credit - Max (java!) for the idea
- *
- * TODO: Checks for all types of pressure plates
- * TODO: Stop pressure plates from being placed right after crystal explodes
  */
 
 public class AntiCrystal extends Module {
@@ -48,9 +45,21 @@ public class AntiCrystal extends Module {
         addSetting(placeDelay);
         addSetting(renderPlacement);
     }
-    
+
+    private int woodenPressurePlateSlot;
+    private int heavyWeightedPressurePlateSlot;
+    private int lightWeightedPressurePlateSlot;
+    private int stonePressurePlateSlot;
+
     Timer placeTimer = new Timer();
     BlockPos renderBlock;
+
+    @Override
+    public void onEnable() {
+        if (nullCheck()) return;
+
+        handlePressurePlates(true);
+    }
 
     public void onUpdate() {
         if (nullCheck()) 
@@ -59,15 +68,39 @@ public class AntiCrystal extends Module {
         EntityEnderCrystal entityEnderCrystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity != null).filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> mc.player.getDistance(entity) <= placeRange.getValue()).filter(entity -> !mc.world.getBlockState(entity.getPosition()).getBlock().equals(Blocks.WOODEN_PRESSURE_PLATE)).min(Comparator.comparing(entity -> mc.player.getDistance(entity))).orElse(null);
 
         if (entityEnderCrystal != null) {
-            InventoryUtil.switchToSlot(Blocks.WOODEN_PRESSURE_PLATE);
+            handlePressurePlates(false);
 
             if (placeTimer.passed((long) (placeDelay.getValue() * 100), Timer.Format.System)) {
-                if (InventoryUtil.getHeldItem(Item.getItemFromBlock(Blocks.WOODEN_PRESSURE_PLATE))) {
+                if (mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(Blocks.WOODEN_PRESSURE_PLATE) || mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE) || mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE) || mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(Blocks.STONE_PRESSURE_PLATE)) {
                     mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(entityEnderCrystal.getPosition(), EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
                     renderBlock = entityEnderCrystal.getPosition();
                 }
 
                 placeTimer.reset();
+            }
+        }
+    }
+
+    private void handlePressurePlates(boolean search) {
+        if (search) {
+            woodenPressurePlateSlot = InventoryUtil.getBlockInHotbar(Blocks.WOODEN_PRESSURE_PLATE);
+            heavyWeightedPressurePlateSlot = InventoryUtil.getBlockInHotbar(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
+            lightWeightedPressurePlateSlot = InventoryUtil.getBlockInHotbar(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE);
+            stonePressurePlateSlot = InventoryUtil.getBlockInHotbar(Blocks.STONE_PRESSURE_PLATE);
+
+            if (woodenPressurePlateSlot == -1 && heavyWeightedPressurePlateSlot == -1 && lightWeightedPressurePlateSlot == -1 && stonePressurePlateSlot == -1) {
+                MessageUtil.sendClientMessage("No Pressure Plate, " + ChatFormatting.RED + "Disabling!");
+                this.toggle();
+            }
+        } else {
+            if (woodenPressurePlateSlot != -1) {
+                InventoryUtil.switchToSlot(Blocks.WOODEN_PRESSURE_PLATE);
+            } else if (heavyWeightedPressurePlateSlot != -1) {
+                InventoryUtil.switchToSlot(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
+            } else if (lightWeightedPressurePlateSlot != -1) {
+                InventoryUtil.switchToSlot(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE);
+            } else if (stonePressurePlateSlot != -1) {
+                InventoryUtil.switchToSlot(Blocks.STONE_PRESSURE_PLATE);
             }
         }
     }

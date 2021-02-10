@@ -25,7 +25,6 @@ public class ConsoleWindow implements MixinInterface {
     public boolean ldown;
     public boolean rdown;
     public boolean dragging;
-    public boolean expanding;
     public static boolean isTyping;
 
     public boolean opened = true;
@@ -99,10 +98,6 @@ public class ConsoleWindow implements MixinInterface {
             y = GUIUtil.mY - (lastmY - y);
         }
 
-        if (expanding) {
-            DefaultTheme.consoleWidth = 305 + GUIUtil.mX - (lastmX - x);
-        }
-
         lastmX = GUIUtil.mX;
         lastmY = GUIUtil.mY;
     }
@@ -113,9 +108,6 @@ public class ConsoleWindow implements MixinInterface {
     }
 
     public void lclickListen(int mouseX, int mouseY, int mouseButton) throws IOException {
-        if (GUIUtil.mouseOver(x + DefaultTheme.consoleWidth - 3, y + DefaultTheme.consoleHeight + 213, x + DefaultTheme.consoleWidth, y + DefaultTheme.consoleHeight + 216))
-            expanding = true;
-
         if (GUIUtil.mouseOver(x, y, x + DefaultTheme.consoleWidth, y + DefaultTheme.consoleHeight))
             dragging = true;
 
@@ -148,7 +140,6 @@ public class ConsoleWindow implements MixinInterface {
     public void releaseListen(int mouseX, int mouseY, int state) {
         ldown = false;
         dragging = false;
-        expanding = false;
     }
 
     public void keyListen(char typedChar, int keyCode) {

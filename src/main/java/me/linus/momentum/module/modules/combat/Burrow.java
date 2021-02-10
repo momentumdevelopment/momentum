@@ -1,10 +1,12 @@
 package me.linus.momentum.module.modules.combat;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.managers.notification.Notification;
 import me.linus.momentum.managers.notification.NotificationManager;
+import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
@@ -14,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 /**
- * @author yoink & linustouchtips
+ * @author yoink & linustouchtips & olliem5
  * @since 11/29/2020
  */
 
@@ -36,6 +38,7 @@ public class Burrow extends Module {
         addSetting(onGround);
     }
 
+    private int obsidianSlot;
     BlockPos originalPos;
     Vec3d center = Vec3d.ZERO;
 
@@ -44,21 +47,28 @@ public class Burrow extends Module {
         if (nullCheck())
             return;
 
-        originalPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
-        center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
+        obsidianSlot = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
 
-        if (BlockUtil.isCollidedBlocks(originalPos))
-            this.disable();
+        if (obsidianSlot == -1) {
+            MessageUtil.sendClientMessage("No Obsidian, " + ChatFormatting.RED + "Disabling!");
+            this.toggle();
+        } else {
+            originalPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
+            center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
 
-        if (centerPlayer.getValue()) {
-            mc.player.motionX = 0;
-            mc.player.motionZ = 0;
-            mc.player.connection.sendPacket(new CPacketPlayer.Position(center.x, center.y, center.z, true));
-            mc.player.setPosition(center.x, center.y, center.z);
+            if (BlockUtil.isCollidedBlocks(originalPos))
+                this.disable();
+
+            if (centerPlayer.getValue()) {
+                mc.player.motionX = 0;
+                mc.player.motionZ = 0;
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(center.x, center.y, center.z, true));
+                mc.player.setPosition(center.x, center.y, center.z);
+            }
+
+            NotificationManager.addNotification(new Notification("Attempting to trigger a rubberband!", Notification.Type.Info));
+            mc.player.jump();
         }
-
-        NotificationManager.addNotification(new Notification("Attempting to trigger a rubberband!", Notification.Type.Info));
-        mc.player.jump();
     }
 
     @Override
@@ -66,8 +76,11 @@ public class Burrow extends Module {
         if (mc.player.posY > originalPos.getY() + 1.2) {
             InventoryUtil.switchToSlot(Blocks.OBSIDIAN);
 
-            if (BlockUtil.getBlockResistance(originalPos).equals(BlockUtil.blockResistance.Blank))
-                BlockUtil.placeBlock(originalPos, rotate.getValue());
+            if (BlockUtil.getBlockResistance(originalPos).equals(BlockUtil.blockResistance.Blank)) {
+                if (obsidianSlot != -1) {
+                    BlockUtil.placeBlock(originalPos, rotate.getValue());
+                }
+            }
 
             if (onGround.getValue())
                 mc.player.onGround = true;

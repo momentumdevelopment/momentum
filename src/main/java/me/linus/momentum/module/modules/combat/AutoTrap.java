@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
@@ -56,6 +57,7 @@ public class AutoTrap extends Module {
         addSetting(color);
     }
 
+    private int obsidianSlot;
     BlockPos placeBlock;
     boolean hasPlaced;
 
@@ -66,7 +68,14 @@ public class AutoTrap extends Module {
 
         super.onEnable();
 
-        hasPlaced = false;
+        obsidianSlot = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+
+        if (obsidianSlot == -1) {
+            MessageUtil.sendClientMessage("No Obsidian, " + ChatFormatting.RED + "Disabling!");
+            this.toggle();
+        } else {
+            hasPlaced = false;
+        }
     }
 
     @Override
@@ -87,7 +96,10 @@ public class AutoTrap extends Module {
                     if (autoSwitch.getValue())
                         InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
 
-                    BlockUtil.placeBlock(new BlockPos(autoTrapBox.add(target.getPositionVector())), rotate.getValue());
+                    if (obsidianSlot != -1) {
+                        BlockUtil.placeBlock(new BlockPos(autoTrapBox.add(target.getPositionVector())), rotate.getValue());
+                    }
+
                     placeBlock = new BlockPos(autoTrapBox.add(target.getPositionVector()));
                     MessageUtil.sendClientMessage("Trapping " + target.getName() + "!");
 
