@@ -47,6 +47,8 @@ public class CrystalUtil implements MixinInterface {
             return false;
 
         switch (AutoCrystal.breakMode.getValue()) {
+            case 0:
+                shouldAttack = true;
             case 1:
                 for (CrystalPosition placedCrystal : CrystalManager.placedCrystals) {
                     if (crystal.getDistanceSq(placedCrystal.getCrystalPosition()) < 3);
