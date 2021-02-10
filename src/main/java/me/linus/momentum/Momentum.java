@@ -48,7 +48,7 @@ public class Momentum {
     public static TickManager tickManager;
     public static FontUtil fontManager;
     public static CapeManager capeManager;
-    public static AnimationManager animationManager;
+    public static ReloadManager reloadManager;
 
     @Mod.Instance
     private static Momentum INSTANCE;
@@ -101,13 +101,15 @@ public class Momentum {
         tickManager = new TickManager();
         LOGGER.info("Tick System Initialized!");
 
+        reloadManager = new ReloadManager();
+        LOGGER.info("Reload System Initialized!");
+
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             ConfigManagerJSON.saveConfig();
             Momentum.LOGGER.info("Saving Config!");
         }));
 
         LOGGER.info("Config System Saved!");
-
     }
     
     @EventHandler

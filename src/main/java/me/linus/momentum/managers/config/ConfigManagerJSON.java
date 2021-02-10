@@ -1,5 +1,6 @@
 package me.linus.momentum.managers.config;
 
+import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.managers.HUDComponentManager;
 import me.linus.momentum.gui.main.gui.Window;
@@ -41,16 +42,25 @@ public class ConfigManagerJSON {
     public static void createDirectory() throws IOException {
         if (!Files.exists(Paths.get("momentum/")))
             Files.createDirectories(Paths.get("momentum/"));
+
+        if (!Files.exists(Paths.get("momentum/modules")))
+            Files.createDirectories(Paths.get("momentum/modules"));
+
+        if (!Files.exists(Paths.get("momentum/gui")))
+            Files.createDirectories(Paths.get("momentum/gui"));
+
+        if (!Files.exists(Paths.get("momentum/social")))
+            Files.createDirectories(Paths.get("momentum/social"));
     }
 
-    public static void registerFiles(String name) throws IOException {
-        if (!Files.exists(Paths.get("momentum/" + name + ".json")))
-            Files.createFile(Paths.get("momentum/" + name + ".json"));
+    public static void registerFiles(String name, String path) throws IOException {
+        if (!Files.exists(Paths.get("momentum/" + path + "/" + name + ".json")))
+            Files.createFile(Paths.get("momentum/" + path + "/" + name + ".json"));
 
         else {
-            File file = new File("momentum/" + name + ".json");
+            File file = new File("momentum/" + path + "/" + name + ".json");
             file.delete();
-            Files.createFile(Paths.get("momentum/" + name + ".json"));
+            Files.createFile(Paths.get("momentum/" + path + "/" + name + ".json"));
         }
     }
 
@@ -81,8 +91,8 @@ public class ConfigManagerJSON {
 
     public static void saveModules() throws IOException {
         for (Module module : ModuleManager.getModules()) {
-            registerFiles(module.getName());
-            OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + module.getName() + ".json"), StandardCharsets.UTF_8);
+            registerFiles(module.getName(), "modules");
+            OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/modules/" + module.getName() + ".json"), StandardCharsets.UTF_8);
 
             JsonObject moduleObject = new JsonObject();
             JsonObject settingObject = new JsonObject();
@@ -196,10 +206,10 @@ public class ConfigManagerJSON {
 
     public static void loadModules() throws IOException {
         for (Module module : ModuleManager.getModules()) {
-            if (!Files.exists(Paths.get("momentum/" + module.getName() + ".json")))
+            if (!Files.exists(Paths.get("momentum/modules/" + module.getName() + ".json")))
                 continue;
 
-            InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + module.getName() + ".json"));
+            InputStream inputStream = Files.newInputStream(Paths.get("momentum/modules/" + module.getName() + ".json"));
             JsonObject moduleObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
 
             if (moduleObject.get("Name") == null || moduleObject.get("Enabled") == null || moduleObject.get("Drawn") == null || moduleObject.get("Bind") == null)
@@ -389,9 +399,9 @@ public class ConfigManagerJSON {
     }
 
     public static void saveGUI() throws IOException {
-        registerFiles("GUI");
+        registerFiles("GUI", "gui");
 
-        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "GUI" + ".json"), StandardCharsets.UTF_8);
+        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/gui/GUI.json"), StandardCharsets.UTF_8);
         JsonObject guiObject = new JsonObject();
         JsonObject windowObject = new JsonObject();
 
@@ -412,10 +422,10 @@ public class ConfigManagerJSON {
     }
 
     public static void loadGUI() throws IOException {
-        if (!Files.exists(Paths.get("momentum/" + "GUI" + ".json")))
+        if (!Files.exists(Paths.get("momentum/gui/GUI.json")))
             return;
 
-        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "GUI" + ".json"));
+        InputStream inputStream = Files.newInputStream(Paths.get("momentum/gui/GUI.json"));
         JsonObject guiObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
 
         if (guiObject.get("Windows") == null)
@@ -445,9 +455,9 @@ public class ConfigManagerJSON {
     }
 
     public static void saveHUD() throws IOException {
-        registerFiles("HUD");
+        registerFiles("HUD", "gui");
 
-        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "HUD" + ".json"), StandardCharsets.UTF_8);
+        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/gui/HUD.json"), StandardCharsets.UTF_8);
         JsonObject guiObject = new JsonObject();
         JsonObject hudObject = new JsonObject();
 
@@ -468,10 +478,10 @@ public class ConfigManagerJSON {
     }
 
     public static void loadHUD() throws IOException {
-        if (!Files.exists(Paths.get("momentum/" + "HUD" + ".json")))
+        if (!Files.exists(Paths.get("momentum/gui/HUD.json")))
             return;
 
-        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "HUD" + ".json"));
+        InputStream inputStream = Files.newInputStream(Paths.get("momentum/gui/HUD.json"));
         JsonObject guiObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
 
         if (guiObject.get("Components") == null)
@@ -502,9 +512,9 @@ public class ConfigManagerJSON {
     }
 
     public static void saveFriends() throws IOException {
-        registerFiles("Friends");
+        registerFiles("Friends", "Social");
 
-        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "Friends" + ".json"), StandardCharsets.UTF_8);
+        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/social/Friends.json"), StandardCharsets.UTF_8);
         JsonObject mainObject = new JsonObject();
         JsonArray friendArray = new JsonArray();
 
@@ -519,10 +529,10 @@ public class ConfigManagerJSON {
     }
 
     public static void loadFriends() throws IOException {
-        if (!Files.exists(Paths.get("momentum/" + "Friends" + ".json")))
+        if (!Files.exists(Paths.get("momentum/social/Friends.json")))
             return;
 
-        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "Friends" + ".json"));
+        InputStream inputStream = Files.newInputStream(Paths.get("momentum/social/Friends.json"));
         JsonObject mainObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
 
         if (mainObject.get("Friends") == null)
@@ -538,9 +548,9 @@ public class ConfigManagerJSON {
     }
 
     public static void saveEnemies() throws IOException {
-        registerFiles("Enemies");
+        registerFiles("Enemies", "social");
 
-        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/" + "Enemies" + ".json"), StandardCharsets.UTF_8);
+        OutputStreamWriter fileOutputStreamWriter = new OutputStreamWriter(new FileOutputStream("momentum/social/Enemies.json"), StandardCharsets.UTF_8);
         JsonObject mainObject = new JsonObject();
         JsonArray enemyArray = new JsonArray();
 
@@ -555,10 +565,10 @@ public class ConfigManagerJSON {
     }
 
     public static void loadEnemies() throws IOException {
-        if (!Files.exists(Paths.get("momentum/" + "Enemies" + ".json")))
+        if (!Files.exists(Paths.get("momentum/social/Enemies.json")))
             return;
 
-        InputStream inputStream = Files.newInputStream(Paths.get("momentum/" + "Enemies" + ".json"));
+        InputStream inputStream = Files.newInputStream(Paths.get("momentum/social/Enemies.json"));
         JsonObject mainObject = new JsonParser().parse(new InputStreamReader(inputStream)).getAsJsonObject();
 
         if (mainObject.get("Enemies") == null)

@@ -4,7 +4,7 @@ import me.linus.momentum.mixin.MixinInterface;
 
 /**
  * @author linustouchtips
- * @since 01/31/2020
+ * @since 01/31/2021
  */
 
 public class AnimationManager implements MixinInterface {
