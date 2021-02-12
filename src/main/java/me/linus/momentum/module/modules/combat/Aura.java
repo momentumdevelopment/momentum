@@ -11,7 +11,6 @@ import me.linus.momentum.managers.RotationManager;
 import me.linus.momentum.util.player.rotation.RotationPriority;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.managers.social.friend.FriendManager;
-import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.player.rotation.Rotation;
@@ -23,8 +22,6 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEndCrystal;
 import net.minecraft.item.ItemSword;
-
-import java.util.Comparator;
 
 /**
  * @author linustouchtips
@@ -44,10 +41,12 @@ public class Aura extends Module {
     public static Checkbox projectiles = new Checkbox("Projectiles", true);
 
     public static Checkbox delay = new Checkbox("Delay", true);
-    public static Checkbox cooldown = new Checkbox("Cooldown", true);
+    public static SubCheckbox cooldown = new SubCheckbox(delay, "Cooldown", true);
     public static SubCheckbox useTicks = new SubCheckbox(delay, "Use Ticks", true);
     public static SubSlider tickDelay = new SubSlider(delay, "Tick Delay", 0.0D, 10.0D, 20.0D, 1);
     public static SubCheckbox sync = new SubCheckbox(delay, "TPS Sync", false);
+
+    public static Checkbox useTimer = new Checkbox("Use Timer", true);
 
     public static Mode weaponCheck = new Mode("Weapon", "Swing", "Damage");
     public static SubCheckbox autoSwitch = new SubCheckbox(weaponCheck, "Auto Switch", true);
@@ -62,8 +61,6 @@ public class Aura extends Module {
     public static SubCheckbox eatPause = new SubCheckbox(pause, "When Eating", false);
 
     public static Mode rotate = new Mode("Rotate", "Packet", "Legit", "None");
-    public static SubCheckbox spoof = new SubCheckbox(rotate, "Spoof Angles", false);
-
     public static Slider range = new Slider("Range", 0.0D, 6.0D, 10.0D, 0);
 
     public static Checkbox packet = new Checkbox("Packet Swing", true);
@@ -125,7 +122,6 @@ public class Aura extends Module {
     }
 
     public void killAura() {
-
         if (swordOnly.getValue() && !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))
             return;
 
@@ -147,8 +143,10 @@ public class Aura extends Module {
         if (FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled())
             return;
 
-        if (currentTarget != null)
+        if (currentTarget != null) {
+            mc.timer.tickLength = 50f / 1.2f;
             attackEntity(currentTarget);
+        }
     }
 
     public void attackEntity(Entity target) {

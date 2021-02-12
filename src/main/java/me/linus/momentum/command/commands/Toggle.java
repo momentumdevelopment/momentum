@@ -40,4 +40,9 @@ public class Toggle extends Command {
     public String getUsageException() {
         return "[module name]";
     }
+
+    @Override
+    public String getDescription() {
+        return "Toggles the specified module";
+    }
 }

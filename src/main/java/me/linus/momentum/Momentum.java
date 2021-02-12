@@ -1,7 +1,6 @@
 package me.linus.momentum;
 
 import me.linus.momentum.managers.*;
-import me.linus.momentum.gui.main.console.ConsoleWindow;
 import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.gui.theme.Theme;
 import me.linus.momentum.managers.config.ConfigManagerJSON;
@@ -42,6 +41,7 @@ public class Momentum {
     public static FriendManager friendManager;
     public static EnemyManager enemyManager;
     public static HUDComponentManager componentManager;
+    public static WindowManager windowManager;
     public static RotationManager rotationManager;
     public static CrystalManager crystalManager;
     public static TickManager tickManager;
@@ -67,35 +67,32 @@ public class Momentum {
         moduleManager = new ModuleManager();
         LOGGER.info("Modules Initialized!");
 
-        ConfigManagerJSON.loadConfig();
-        LOGGER.info("Config System Loaded!");
-
-    	rotationManager = new RotationManager();
-        LOGGER.info("Client Rotations Initialized!");
-
-        crystalManager = new CrystalManager();
-        LOGGER.info("AutoCrystal Manager Initialized!");
-
-    	Window.initGui();
-    	LOGGER.info("ClickGUI Windows Initialized!");
-
-        ConsoleWindow.initConsole();
-        LOGGER.info("Console Windows Initialized!");
-
-    	Theme.initThemes();
-    	LOGGER.info("GUI Themes Initialized!");
-
-        componentManager = new HUDComponentManager();
-        LOGGER.info("HUD System Initialized!");
-
         friendManager = new FriendManager();
         LOGGER.info("Friends System Initialized!");
 
         enemyManager = new EnemyManager();
         LOGGER.info("Enemy System Initialized!");
 
+    	Window.initGui();
+    	LOGGER.info("ClickGUI Windows Initialized!");
+
+        Theme.initThemes();
+        LOGGER.info("GUI Themes Initialized!");
+
+        windowManager = new WindowManager();
+        LOGGER.info("Console Windows Initialized!");
+
+        componentManager = new HUDComponentManager();
+        LOGGER.info("HUD System Initialized!");
+
         commandManager = new CommandManager();
         LOGGER.info("Commands Initialized!");
+
+        rotationManager = new RotationManager();
+        LOGGER.info("Client Rotations Initialized!");
+
+        crystalManager = new CrystalManager();
+        LOGGER.info("AutoCrystal Manager Initialized!");
 
         tickManager = new TickManager();
         LOGGER.info("Tick System Initialized!");
@@ -109,6 +106,9 @@ public class Momentum {
         }));
 
         LOGGER.info("Config System Saved!");
+
+        ConfigManagerJSON.loadConfig();
+        LOGGER.info("Config System Loaded!");
     }
     
     @EventHandler

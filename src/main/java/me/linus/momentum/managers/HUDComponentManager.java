@@ -3,9 +3,9 @@ package me.linus.momentum.managers;
 import com.google.common.collect.Lists;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.hud.components.*;
-import me.linus.momentum.gui.main.console.Console;
 import me.linus.momentum.gui.main.gui.GUI;
 import me.linus.momentum.gui.main.hud.HUD;
+import me.linus.momentum.gui.main.window.WindowScreen;
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -23,7 +23,7 @@ public class HUDComponentManager implements MixinInterface {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    static final List<HUDComponent> components = Lists.newArrayList(
+    static List<HUDComponent> components = Lists.newArrayList(
             new ActiveModules(),
             new Armor(),
             new CombatInfo(),
@@ -64,7 +64,7 @@ public class HUDComponentManager implements MixinInterface {
 
     @SubscribeEvent
     public void onRender2D(RenderGameOverlayEvent.Text event) {
-        if (!(mc.currentScreen instanceof HUD) && !(mc.currentScreen instanceof GUI) && !(mc.currentScreen instanceof Console)) {
+        if (!(mc.currentScreen instanceof HUD) && !(mc.currentScreen instanceof GUI) && !(mc.currentScreen instanceof WindowScreen)) {
             for (HUDComponent component : components) {
                 if (component.isEnabled()) {
                     try {

@@ -49,7 +49,6 @@ public class ConfigManager {
         saveHUDPositions();
         saveHUDComponents();
         saveHUDSettings();
-        savePrefix();
         saveBinds();
         saveDrawn();
     }
@@ -65,7 +64,6 @@ public class ConfigManager {
         loadHUDPositions();
         loadHUDComponents();
         loadHUDSettings();
-        loadPrefix();
         loadBinds();
         loadDrawn();
     }
@@ -482,33 +480,6 @@ public class ConfigManager {
                 w.x = Integer.parseInt(regex[1]);
                 w.y = Integer.parseInt(regex[3]);
                 lineIndex++;
-            }
-
-            br.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void savePrefix() {
-        try {
-            File prefix = new File(config.getAbsolutePath(), "Prefix.txt");
-            BufferedWriter bw = new BufferedWriter(new FileWriter(prefix));
-            bw.write("Prefix:" + Momentum.PREFIX);
-            bw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void loadPrefix() {
-        try {
-            File prefix = new File(config.getAbsolutePath(), "Prefix.txt");
-            BufferedReader br = new BufferedReader(new FileReader(prefix));
-            List<String> linezz = Files.readAllLines(prefix.toPath());
-            for (String line : linezz) {
-                String[] regex = line.split(":");
-                Momentum.PREFIX = regex[3];
             }
 
             br.close();

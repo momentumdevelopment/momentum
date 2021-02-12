@@ -539,9 +539,9 @@ public class ConfigManagerJSON {
 
         JsonArray friendObject = mainObject.get("Friends").getAsJsonArray();
 
-        for (JsonElement object : friendObject) {
+        friendObject.forEach(object -> {
             FriendManager.addFriend(object.getAsString());
-        }
+        });
 
         inputStream.close();
     }
@@ -575,9 +575,9 @@ public class ConfigManagerJSON {
 
         JsonArray enemyObject = mainObject.get("Enemies").getAsJsonArray();
 
-        for (JsonElement object : enemyObject) {
+        enemyObject.forEach(object -> {
             EnemyManager.addEnemy(object.getAsString());
-        }
+        });
 
         inputStream.close();
     }

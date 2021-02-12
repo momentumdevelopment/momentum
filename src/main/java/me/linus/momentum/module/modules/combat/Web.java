@@ -21,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
 // TODO: make an aura mode for this
 public class Web extends Module {
     public Web() {
-        super("Web", Category.COMBAT, "Places webs at your feet");
+        super("Web", Category.COMBAT, "Places webs to trap enemies");
     }
 
     public static Mode mode = new Mode("Mode", "Self", "Aura");

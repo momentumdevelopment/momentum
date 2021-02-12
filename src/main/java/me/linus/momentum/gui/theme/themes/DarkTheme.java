@@ -355,21 +355,6 @@ public class DarkTheme extends Theme implements MixinInterface {
 		}
 	}
 
-	@Override
-	public void drawConsoleTitle(String name, int left, int top) {
-
-	}
-
-	@Override
-	public void drawConsole(int left, int top) {
-
-	}
-
-	@Override
-	public void drawConsoleWindows() {
-
-	}
-
 	public static void drawTextWithShadow(String text, float x, float y, int color) {
 		Momentum.fontManager.getCustomFont().drawStringWithShadow(text, x, y, color);
 	}

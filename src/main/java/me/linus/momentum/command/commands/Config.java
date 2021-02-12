@@ -36,5 +36,4 @@ public class Config extends Command {
     public String getDescription() {
         return "Opens the config folder";
     }
-
 }

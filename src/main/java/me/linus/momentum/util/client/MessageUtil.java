@@ -2,6 +2,7 @@ package me.linus.momentum.util.client;
 
 import me.linus.momentum.command.Command;
 import me.linus.momentum.gui.theme.themes.DefaultTheme;
+import me.linus.momentum.gui.window.windows.ConsoleWindow;
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -28,11 +29,11 @@ public class MessageUtil implements MixinInterface {
 	}
 
 	public static void addOutput(String message) {
-		DefaultTheme.outputs.add("[Momentum] " + TextFormatting.WHITE + message);
+		ConsoleWindow.outputs.add("[Momentum] " + TextFormatting.WHITE + message);
 	}
 
 	public static void usageException(Command command, @Nullable String specialUsage) {
-		DefaultTheme.outputs.add("[Momentum] " + TextFormatting.WHITE + "Usage: " + command.getUsage() + " " + specialUsage);
+		ConsoleWindow.outputs.add("[Momentum] " + TextFormatting.WHITE + "Usage: " + command.getUsage() + " " + specialUsage);
 	}
 
 	public static String toUnicode(String s) {

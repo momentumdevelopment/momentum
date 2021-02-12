@@ -57,9 +57,13 @@ public class CrystalUtil implements MixinInterface {
 
                 break;
             case 2:
-                if (calculateDamage(crystal.posX, crystal.posY, crystal.posZ, AutoCrystal.crystalTarget) > AutoCrystal.minBreakDamage.getValue())
-                    shouldAttack = true;
+                if (!(calculateDamage(crystal.posX, crystal.posY, crystal.posZ, AutoCrystal.crystalTarget) > AutoCrystal.minBreakDamage.getValue()))
+                    break;
 
+                if (calculateDamage(crystal.posX, crystal.posY, crystal.posZ, mc.player) > AutoCrystal.maxBreakDamage.getValue())
+                    break;
+
+                shouldAttack = true;
                 break;
         }
 

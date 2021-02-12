@@ -6,7 +6,6 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import net.minecraft.client.gui.GuiChat;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
@@ -61,5 +60,13 @@ public class ClickGUI extends Module {
 
 		if (blurEffect.getValue())
 			mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
+	}
+
+	@Override
+	public void onUpdate() {
+		if (nullCheck()) {
+			this.disable();
+			return;
+		}
 	}
 }

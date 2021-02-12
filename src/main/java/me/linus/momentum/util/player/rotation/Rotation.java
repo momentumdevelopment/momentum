@@ -44,11 +44,15 @@ public class Rotation implements MixinInterface {
     }
 
     public void restoreRotation() {
-        this.yaw = mc.player.rotationYaw;
-        this.pitch = mc.player.rotationPitch;
-        mc.player.rotationYawHead = mc.player.rotationYaw;
+        try {
+            this.yaw = mc.player.rotationYaw;
+            this.pitch = mc.player.rotationPitch;
+            mc.player.rotationYawHead = mc.player.rotationYaw;
 
-        rotationStay.reset();
+            rotationStay.reset();
+        } catch (Exception e) {
+
+        }
     }
 
     public boolean requiresUpdate() {

@@ -90,10 +90,8 @@ public class Step extends Module {
 
         forwardStep = MotionUtil.directionSpeed(0.1);
 
-        if (mc.player.isSneaking() && sneakPause.getValue()) {
-            mc.player.stepHeight = 0.5f;
-            return;
-        }
+        if (mc.player.isSneaking() && sneakPause.getValue())
+            height.setValue(0.5f);
 
         switch (mode.getValue()) {
             case 0:

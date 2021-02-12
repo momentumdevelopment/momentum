@@ -1,8 +1,8 @@
 package me.linus.momentum.module.modules.client;
 
+import me.linus.momentum.gui.main.window.WindowScreen;
 import me.linus.momentum.module.Module;
 import net.minecraft.util.ResourceLocation;
-import me.linus.momentum.gui.main.console.Console;
 import org.lwjgl.input.Keyboard;
 
 /**
@@ -10,13 +10,13 @@ import org.lwjgl.input.Keyboard;
  * @since 02/07/2021
  */
 
-public class ConsoleScreen extends Module {
-    public ConsoleScreen() {
+public class Console extends Module {
+    public Console() {
         super("Console", Category.CLIENT, "Opens the console window");
         this.getKeybind().setKeyCode(Keyboard.KEY_SLASH);
     }
 
-     Console console = new Console();
+    public static WindowScreen windowScreen = new WindowScreen();
 
     @Override
     public void onEnable() {
@@ -24,8 +24,16 @@ public class ConsoleScreen extends Module {
             return;
 
         super.onEnable();
-        mc.displayGuiScreen(console);
+        mc.displayGuiScreen(windowScreen);
 
         mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
+    }
+
+    @Override
+    public void onUpdate() {
+        if (nullCheck()) {
+            this.disable();
+            return;
+        }
     }
 }

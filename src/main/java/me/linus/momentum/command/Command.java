@@ -5,7 +5,8 @@ package me.linus.momentum.command;
  * @since 12/01/2020
  */
 
-public class Command{
+public class Command {
+
     String usage;
 
     public Command(String usage) {

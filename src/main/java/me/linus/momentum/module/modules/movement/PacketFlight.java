@@ -6,6 +6,7 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
+import net.minecraft.network.play.client.CPacketConfirmTeleport;
 
 /**
  * @author linustouchtips
@@ -43,7 +44,13 @@ public class PacketFlight extends Module {
         addSetting(gravity);
     }
 
+    @Override
+    public void onUpdate() {
+        if (nullCheck())
+            return;
 
+        mc.player.connection.sendPacket(new CPacketConfirmTeleport(mc.player.ticksExisted));
+    }
 
     @Override
     public String getHUDData() {

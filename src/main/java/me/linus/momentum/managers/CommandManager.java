@@ -18,9 +18,8 @@ public class CommandManager {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    static final List<Command> commands = Lists.newArrayList(
+    static List<Command> commands = Lists.newArrayList(
             new Toggle(),
-            new Help(),
             new Dupe(),
             new Friend(),
             new HClip(),
@@ -32,7 +31,9 @@ public class CommandManager {
             new Peek(),
             new Drawn(),
             new Client(),
-            new Enemy()
+            new Enemy(),
+            new Commands(),
+            new Modules()
     );
 
     public static List<Command> getCommands() {

@@ -22,24 +22,29 @@ public class ReloadManager implements MixinInterface {
     }
 
     List<Module> enabledModules = new ArrayList<>();
+    boolean reloaded = true;
 
     @SubscribeEvent
     public void onUpdate(TickEvent.ClientTickEvent event) {
         if (mc.player == null)
             return;
 
-        if (mc.player.ticksExisted == 20) {
-            for (Module module : ModuleManager.getModules()) {
-                if (module.isEnabled()) {
-                    enabledModules.add(module);
-                    module.disable();
+        if (reloaded) {
+            if (mc.player.ticksExisted == 20) {
+                for (Module module : ModuleManager.getModules()) {
+                    if (module.isEnabled()) {
+                        enabledModules.add(module);
+                        module.disable();
+                    }
                 }
             }
-        }
 
-        else if (mc.player.ticksExisted == 25) {
-            for (Module module : enabledModules) {
-                module.enable();
+            else if (mc.player.ticksExisted == 25) {
+                for (Module module : enabledModules) {
+                    module.enable();
+                }
+
+                reloaded = false;
             }
         }
     }

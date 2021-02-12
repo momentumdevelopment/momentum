@@ -30,13 +30,13 @@ public class ModuleManager implements MixinInterface {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	static final List<Module> modules = Arrays.asList(
+	static List<Module> modules = Arrays.asList(
 			// client
 			new Baritone(),
 			new Capes(),
 			new ClickGUI(),
 			new Colors(),
-			new ConsoleScreen(),
+			new Console(),
 			new ClientFont(),
 			new HUDEditor(),
 			new Social(),

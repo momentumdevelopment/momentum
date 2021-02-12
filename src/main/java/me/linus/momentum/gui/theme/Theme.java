@@ -3,10 +3,8 @@ package me.linus.momentum.gui.theme;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.themes.DarkTheme;
 import me.linus.momentum.gui.theme.themes.DefaultTheme;
-import me.linus.momentum.managers.AnimationManager;
 import me.linus.momentum.module.Module;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +34,6 @@ public abstract class Theme {
 	public abstract void drawModules(List<Module> modules, int left, int top, int mouseX, int mouseY, float partialTicks);
 
 	public abstract void drawHUDModules(List<HUDComponent> modules, int left, int top);
-
-	public abstract void drawConsoleTitle(String name, int left, int top);
-
-	public abstract void drawConsole(int left, int top);
-
-	public abstract void drawConsoleWindows();
 
 	/**
 	 * Make sure to add any new themes you create in this arraylist.

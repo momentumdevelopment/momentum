@@ -60,6 +60,7 @@ public class AutoCrystal extends Module {
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 80.0D, 200.0D, 0);
     public static SubSlider minBreakDamage = new SubSlider(explode, "Break Damage", 0.0D, 4.0D, 36.0D, 0);
+    public static SubSlider maxBreakDamage = new SubSlider(explode, "Max Break Damage", 0.0D, 4.0D, 36.0D, 0);
     public static SubSlider breakAttempts = new SubSlider(explode, "Break Attempts", 0.0D, 1.0D, 5.0D, 0);
     public static SubMode sync = new SubMode(explode, "Sync", "None", "Instant", "Attack", "Sound", "Unsafe");
     public static SubCheckbox packetBreak = new SubCheckbox(explode, "Packet Break", true);
@@ -83,7 +84,7 @@ public class AutoCrystal extends Module {
     public static SubCheckbox multiPlace = new SubCheckbox(place, "MultiPlace", false);
 
     public static Checkbox rotate = new Checkbox("Rotate", true);
-    public static SubMode rotateDuring = new SubMode(rotate, "When", "Break", "Place", "Both");
+    public static SubMode rotateDuring = new SubMode(rotate, "When", "Place", "Break", "Both");
     public static SubMode rotateMode = new SubMode(rotate, "Type", "Packet", "Legit", "None");
     public static SubSlider rotateDelay = new SubSlider(rotate, "Rotation Delay", 0.0D, 0.0D, 5000.0D, 0);
     public static SubSlider rotateStep = new SubSlider(rotate, "Rotation Step", 0.0D, 180.0D, 360.0D, 0);
@@ -389,10 +390,11 @@ public class AutoCrystal extends Module {
 
         if (event.getPacket() instanceof SPacketSoundEffect) {
             if (((SPacketSoundEffect) event.getPacket()).getCategory() == SoundCategory.BLOCKS && ((SPacketSoundEffect) event.getPacket()).getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
+                MessageUtil.sendClientMessage("trolled");
                 mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> entity.getDistance(((SPacketSoundEffect) event.getPacket()).posX, ((SPacketSoundEffect) event.getPacket()).posY, ((SPacketSoundEffect) event.getPacket()).posZ) <= breakRange.getValue()).forEach(crystal -> {
                     CrystalManager.placedCrystals.forEach(placedCrystal -> {
                         if (sync.getValue() == 3 && crystal.getDistanceSq(placedCrystal.getCrystalPosition()) < MathUtil.square(breakRange.getValue())) {
-                            MessageUtil.sendClientMessage("trolled");
+                            MessageUtil.sendClientMessage("working");
                             crystal.setDead();
                         }
                     });

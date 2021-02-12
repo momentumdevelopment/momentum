@@ -3,7 +3,6 @@ package me.linus.momentum.managers;
 import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.event.events.player.RotationEvent;
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.player.rotation.Rotation;
 import me.linus.momentum.util.player.rotation.RotationPriority;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -46,8 +45,6 @@ public class RotationManager implements MixinInterface {
     @SubscribeEvent
     public void onRotate(RotationEvent event) {
         try {
-            MessageUtil.sendClientMessage("Rotating to " + currentRotation.yaw + ", " + currentRotation.pitch + " with a priority of " + currentRotation.rotationPriority.toString());
-
             if (currentRotation != null && currentRotation.mode.equals(Rotation.RotationMode.Packet)) {
                 event.setCanceled(true);
                 event.setYaw(currentRotation.yaw);
