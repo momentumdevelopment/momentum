@@ -14,14 +14,14 @@ import net.minecraft.util.text.TextFormatting;
  * @since 12/17/2020
  */
 
-public class XP extends HUDComponent {
-    public XP() {
-        super("XP", 2, 57);
+public class EXP extends HUDComponent {
+    public EXP() {
+        super("EXP", 2, 57);
     }
 
     @Override
     public void renderComponent() {
-        FontUtil.drawString("XP: " + InventoryUtil.getItemCount(Items.EXPERIENCE_BOTTLE), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
-        width = Momentum.fontManager.getCustomFont().getStringWidth("XP: " + InventoryUtil.getItemCount(Items.EXPERIENCE_BOTTLE)) + 2;
+        FontUtil.drawString("EXP: " + InventoryUtil.getItemCount(Items.EXPERIENCE_BOTTLE), this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : ThemeColor.GRAY);
+        width = Momentum.fontManager.getCustomFont().getStringWidth("EXP: " + InventoryUtil.getItemCount(Items.EXPERIENCE_BOTTLE)) + 2;
     }
 }

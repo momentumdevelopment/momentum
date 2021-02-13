@@ -24,7 +24,7 @@ public class DiscordPresence implements MixinInterface {
         rpc.Discord_Initialize("734272177959993365", handlers, true, "");
         rp.startTimestamp = System.currentTimeMillis() / 1000L;
         rp.largeImageKey = "momentum";
-        rp.largeImageText = Momentum.NAME + " Utility Mod " + Momentum.VERSION;
+        rp.largeImageText = Momentum.NAME + " " + Momentum.VERSION;
         rpc.Discord_UpdatePresence(rp);
 
         new Thread(() -> {

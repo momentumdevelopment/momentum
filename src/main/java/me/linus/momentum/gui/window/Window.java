@@ -4,7 +4,6 @@ import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.managers.AnimationManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.ColorUtil;
-import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
 import me.linus.momentum.util.render.Render2DUtil;
@@ -105,7 +104,6 @@ public class Window implements MixinInterface {
         }
 
         if (expanding) {
-            MessageUtil.sendClientMessage("lol");
             this.width = GUIUtil.mX - this.x;
             this.height = GUIUtil.mY - this.y;
         }
@@ -123,10 +121,10 @@ public class Window implements MixinInterface {
         if (GUIUtil.mouseOver(this.x, this.y, this.x + this.width, this.y + 14))
             this.dragging = true;
 
-        if (GUIUtil.mouseOver(this.x + this.width - 20, this.y + this.height - 20, this.x + this.width, this.y + this.height))
+        if (GUIUtil.mouseOver(this.x + this.width - 20, this.y + this.height, this.x + this.width, this.y + this.height + 30))
             this.expanding = true;
 
-        if (GUIUtil.mouseOver(this.x, this.y + 14 + this.height, this.x + this.width, this.y + 30 + this.height))
+        if (GUIUtil.mouseOver(this.x, this.y + 14 + this.height, this.x + this.width - 30, this.y + this.height + 30))
             this.isTyping = !this.isTyping;
     }
 

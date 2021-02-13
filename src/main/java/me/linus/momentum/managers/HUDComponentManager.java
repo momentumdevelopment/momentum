@@ -29,7 +29,9 @@ public class HUDComponentManager implements MixinInterface {
             new CombatInfo(),
             new Coordinates(),
             new Crystal(),
+            new CrystalsPerSecond(),
             new Direction(),
+            new EXP(),
             new FPS(),
             new Inventory(),
             new LagNotifier(),
@@ -46,8 +48,7 @@ public class HUDComponentManager implements MixinInterface {
             new Totem(),
             new TPS(),
             new WaterMark(),
-            new Welcomer(),
-            new XP()
+            new Welcomer()
     );
 
     public static List<HUDComponent> getComponents(){

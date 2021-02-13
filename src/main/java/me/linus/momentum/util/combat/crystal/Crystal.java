@@ -12,10 +12,13 @@ public class Crystal implements MixinInterface {
 
     public EntityEnderCrystal crystal;
     public EntityEnderCrystal lastCrystal;
-    public int swings = 0;
+    double targetDamage;
+    double selfDamage;
 
-    public Crystal(EntityEnderCrystal crystal) {
+    public Crystal(EntityEnderCrystal crystal, double targetDamage, double selfDamage) {
         this.crystal = crystal;
+        this.targetDamage = targetDamage;
+        this.selfDamage = selfDamage;
     }
 
     public EntityEnderCrystal getCrystal() {
@@ -26,7 +29,11 @@ public class Crystal implements MixinInterface {
         return this.crystal;
     }
 
-    public int getSwings() {
-        return this.swings;
+    public double getTargetDamage() {
+        return this.targetDamage;
+    }
+
+    public double getSelfDamage() {
+        return this.selfDamage;
     }
 }

@@ -35,13 +35,13 @@ public class SocialWindow extends Window {
         Render2DUtil.drawRect(x - 2, y + 14, x + this.width + 2, y + 29 + this.height, 1,  new Color(36, 36, 36, 60).getRGB(), ThemeColor.COLOR, false, Render2DBuilder.Render2DMode.Both);
 
         Render2DUtil.drawRect(x + this.width - 9, y + 14 + 2, x + this.width - 1, y + 27 + this.height, 1,  new Color(36, 36, 36, 70).getRGB(), new Color(0, 0, 0, 70).getRGB(), false, Render2DBuilder.Render2DMode.Both);
-        Render2DUtil.drawRect(x + this.width - 9, (int) MathUtil.clamp(y + this.height - 2 + MathUtil.clamp(this.scrollbar, -180, 0), y + 14, y + 12 + this.height), x + this.width - 1, (int) MathUtil.clamp(y + 12 + this.height + MathUtil.clamp(this.scrollbar, -180, 0), y + 14, y + 12 + this.height), 1, ThemeColor.COLOR, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x + this.width - 9, (int) MathUtil.clamp(this.y + 16 + MathUtil.clamp(this.scrollbar, 0, 216), y + 14, y + 12 + this.height), x + this.width - 1, (int) MathUtil.clamp(this.y + 31 + MathUtil.clamp(this.scrollbar, 0, 216), y + 14, y + 12 + this.height), 1, ThemeColor.COLOR, -1, false, Render2DBuilder.Render2DMode.Normal);
 
         int playerOffset = 0;
 
         for (EntityPlayer player : mc.world.playerEntities) {
             int friendColor = 0xCC232323;
-            if (GUIUtil.mouseOver(x + this.width - 41, y + 14 + 1 + (16 * playerOffset), x + this.width - 5, y + 14 + 18 + (16 * playerOffset))) {
+            if (GUIUtil.mouseOver(x + this.width - 41, (int) (y + 14 + 1 + (16 * playerOffset) + MathUtil.clamp(this.scrollbar, 0, 10000)), x + this.width - 5, (int) (y + 14 + 18 + (16 * playerOffset) + MathUtil.clamp(this.scrollbar, 0, 10000)))) {
                 friendColor = 0xCC383838;
 
                 if (GUIUtil.ldown) {
@@ -55,7 +55,7 @@ public class SocialWindow extends Window {
 
             Render2DBuilder.prepareScissor(x, y + 14, x + this.width - 9, y + 29 + this.height);
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
-            Render2DBuilder.translate(0, (int) -MathUtil.clamp(this.scrollbar, -10000, 0));
+            Render2DBuilder.translate(0, (int) MathUtil.clamp(this.scrollbar, 0, 10000));
 
             Render2DUtil.drawRect(x + 1, y + 14 + 1 + (16 * playerOffset), x + this.width - 5, y + 14 + 18 + (16 * playerOffset), 1, new Color(18, 18, 18, 90).getRGB(), new Color(0, 0, 0, 90).getRGB(), false, Render2DBuilder.Render2DMode.Both);
             FontUtil.drawString(player.getName(), x + 23, y + 14 + 6 + (16 * playerOffset), FriendManager.isFriend(player.getName()) ? new Color(85, 231, 215).getRGB() : -1);
@@ -72,7 +72,7 @@ public class SocialWindow extends Window {
             Render2DUtil.drawRect(x + this.width - 41, y + 14 + 1 + (16 * playerOffset), x + this.width - 5, y + 14 + 18 + (16 * playerOffset), 0, FriendManager.isFriend(player.getName()) ? ThemeColor.COLOR : friendColor, -1, false, Render2DBuilder.Render2DMode.Normal);
             FontUtil.drawString("Friend", x + this.width - 38, y + 14 + 4 + (16 * playerOffset) + 1, -1);
 
-            Render2DBuilder.translate(0, (int) MathUtil.clamp(this.scrollbar, -10000, 0));
+            Render2DBuilder.translate(0, (int) -MathUtil.clamp(this.scrollbar, 0, 10000));
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
             playerOffset++;

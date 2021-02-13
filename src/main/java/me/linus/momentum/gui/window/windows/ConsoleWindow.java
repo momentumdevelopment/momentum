@@ -51,7 +51,7 @@ public class ConsoleWindow extends Window {
         Render2DUtil.drawRect(x - 2, y + 14, x + this.width + 2, y + 30 + this.height, 1, new Color(36, 36, 36, 60).getRGB(), ThemeColor.COLOR, false, Render2DBuilder.Render2DMode.Both);
         Render2DUtil.drawRect(x, y + 14 + this.height, x + this.width - 28, y + 28 + this.height, 1, new Color(18, 18, 18, 90).getRGB(), new Color(0, 0, 0, 90).getRGB(), false, Render2DBuilder.Render2DMode.Both);
 
-        Render2DUtil.drawRect(x + this.width - 9, y + 14 + 2, x + this.width - 1, y + 14 + 198, 1, new Color(36, 36, 36, 70).getRGB(), new Color(0, 0, 0, 70).getRGB(), false, Render2DBuilder.Render2DMode.Both);
+        Render2DUtil.drawRect(x + this.width - 9, y + 14 + 2, x + this.width - 1, y + 12 + this.height, 1, new Color(36, 36, 36, 70).getRGB(), new Color(0, 0, 0, 70).getRGB(), false, Render2DBuilder.Render2DMode.Both);
 
         Render2DUtil.drawRect(x + this.width - 27, y + 14 + this.height, x + this.width - 1, y + 28 + this.height, 1, enterColor, -1, false, Render2DBuilder.Render2DMode.Normal);
         FontUtil.drawString("Enter", x + this.width - 25, y + 17 + this.height, -1);

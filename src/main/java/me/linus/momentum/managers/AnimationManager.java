@@ -18,10 +18,7 @@ public class AnimationManager implements MixinInterface {
     }
 
     public void updateTime() {
-        if (System.currentTimeMillis() - animationStart < length)
-            animationFactor = System.currentTimeMillis() - animationStart / (double) length;
-        else
-            animationFactor = 1;
+        animationFactor = System.currentTimeMillis() - animationStart < length ? System.currentTimeMillis() - animationStart / (double) length : 1;
     }
     
     public void updateState() {

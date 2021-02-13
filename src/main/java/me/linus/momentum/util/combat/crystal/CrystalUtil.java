@@ -3,7 +3,6 @@ package me.linus.momentum.util.combat.crystal;
 import me.linus.momentum.managers.CrystalManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.combat.AutoCrystal;
-import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -33,6 +32,10 @@ import java.util.stream.Collectors;
 
 public class CrystalUtil implements MixinInterface {
 
+    public static List<Entity> crystalEntities() {
+        return mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> attackCheck(entity)).collect(Collectors.toList());
+    }
+
     public static void attackCrystal(EntityEnderCrystal crystal, boolean packet) {
         if (packet)
             mc.player.connection.sendPacket(new CPacketUseEntity(crystal));
@@ -49,21 +52,13 @@ public class CrystalUtil implements MixinInterface {
         switch (AutoCrystal.breakMode.getValue()) {
             case 0:
                 shouldAttack = true;
+                break;
             case 1:
                 for (CrystalPosition placedCrystal : CrystalManager.placedCrystals) {
                     if (crystal.getDistanceSq(placedCrystal.getCrystalPosition()) < 3);
                         shouldAttack = true;
                 }
 
-                break;
-            case 2:
-                if (!(calculateDamage(crystal.posX, crystal.posY, crystal.posZ, AutoCrystal.crystalTarget) > AutoCrystal.minBreakDamage.getValue()))
-                    break;
-
-                if (calculateDamage(crystal.posX, crystal.posY, crystal.posZ, mc.player) > AutoCrystal.maxBreakDamage.getValue())
-                    break;
-
-                shouldAttack = true;
                 break;
         }
 
