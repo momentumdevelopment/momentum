@@ -105,7 +105,7 @@ public class FontUtil implements MixinInterface {
         if (ModuleManager.getModuleByName("Font").isEnabled())
             return Momentum.fontManager.getCustomFont().getStringWidth(text);
         else
-            return mc.fontRenderer.getStringWidth(text);
+            return mc.fontRenderer.getStringWidth(text) + 4;
     }
 
     public static float getFontHeight() {

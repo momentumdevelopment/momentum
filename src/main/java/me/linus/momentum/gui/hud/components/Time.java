@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.HUDEditor;
@@ -15,7 +16,7 @@ import java.util.Date;
 
 public class Time extends HUDComponent {
     public Time() {
-        super("Time", 2, 35);
+        super("Time", 2, 35, AnchorPoint.BottomRight);
     }
 
     @Override

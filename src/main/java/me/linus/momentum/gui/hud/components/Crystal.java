@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.HUDEditor;
@@ -16,7 +17,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class Crystal extends HUDComponent {
     public Crystal() {
-        super("Crystal", 2, 57);
+        super("Crystal", 2, 57, AnchorPoint.None);
     }
 
     @Override

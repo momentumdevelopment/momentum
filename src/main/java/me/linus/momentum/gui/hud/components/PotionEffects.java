@@ -2,6 +2,7 @@ package me.linus.momentum.gui.hud.components;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.managers.TickManager;
 import me.linus.momentum.util.render.FontUtil;
@@ -17,7 +18,7 @@ import java.text.DecimalFormat;
 
 public class PotionEffects extends HUDComponent {
     public PotionEffects() {
-        super("PotionEffects", 400, 400);
+        super("PotionEffects", 400, 400, AnchorPoint.BottomRight);
     }
 
     int count;

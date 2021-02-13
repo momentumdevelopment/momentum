@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.HUDEditor;
@@ -17,7 +18,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class Coordinates extends HUDComponent {
     public Coordinates() {
-        super("Coordinates", 2, 350);
+        super("Coordinates", 2, 350, AnchorPoint.BottomLeft);
     }
 
     public static Mode mode = new Mode("Mode", "Normal", "In-Line");

@@ -2,10 +2,12 @@ package me.linus.momentum.gui.main.hud;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.managers.HUDComponentManager;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 
 import java.io.IOException;
@@ -16,13 +18,55 @@ import java.io.IOException;
  */
 
 public class HUD extends GuiScreen {
-	
+
+	int topRightHeight;
+	int topLeftHeight;
+	int bottomRightHeight;
+	int bottomLeftHeight;
+
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		GlStateManager.enableTexture2D();
 		HUDWindow.hw.drawHud(mouseX, mouseY);
 		GUIUtil.mouseListen(mouseX, mouseY);
+
+		/*
+
+		int screenWidth = new ScaledResolution(mc).getScaledWidth();
+		int screenHeight = new ScaledResolution(mc).getScaledHeight();
+
+		topRightHeight = 0;
+		topLeftHeight = 0;
+		bottomRightHeight = 0;
+		bottomLeftHeight = 0;
+
+		for (HUDComponent component : HUDComponentManager.getComponents()) {
+			switch (component.anchorPoint) {
+				case TopRight:
+					component.setX(screenWidth - 2 - component.width);
+					component.setY(2 + topRightHeight);
+					topRightHeight += component.height;
+					break;
+				case TopLeft:
+					component.setX(2);
+					component.setY(2 + topLeftHeight);
+					topLeftHeight += component.height;
+					break;
+				case BottomRight:
+					component.setX(screenWidth - 2 - component.width);
+					component.setY(screenHeight - 2 - bottomRightHeight);
+					bottomRightHeight += component.height;
+					break;
+				case BottomLeft:
+					component.setX(2);
+					component.setY(screenHeight - 2 - bottomLeftHeight);
+					bottomLeftHeight += component.height;
+					break;
+			}
+		}
+
+		 */
 
 		for (HUDComponent component : Momentum.componentManager.getComponents()) {
 			GlStateManager.enableTexture2D();

@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.hud.HUD;
 import me.linus.momentum.gui.theme.ThemeColor;
@@ -20,7 +21,7 @@ import java.text.DecimalFormat;
 
 public class LagNotifier extends HUDComponent {
     public LagNotifier() {
-        super("LagNotifier", 300, 2);
+        super("LagNotifier", 300, 2, AnchorPoint.None);
 
         width = (int) FontUtil.getStringWidth("Server has stopped responding for X.X seconds!");
         MinecraftForge.EVENT_BUS.register(this);

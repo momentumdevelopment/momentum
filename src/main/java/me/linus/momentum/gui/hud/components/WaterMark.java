@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.HUDEditor;
@@ -16,7 +17,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class WaterMark extends HUDComponent {
 	public WaterMark() {
-		super("WaterMark", 2, 2);
+		super("WaterMark", 2, 2, AnchorPoint.TopRight);
 	}
 
 	public static Slider scale = new Slider("Scale", 0.0D, 1.0D, 10.0D, 1);

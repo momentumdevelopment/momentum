@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.hud.HUD;
 import me.linus.momentum.module.modules.client.ClickGUI;
@@ -22,7 +23,7 @@ import java.awt.*;
 
 public class Notifications extends HUDComponent {
     public Notifications() {
-        super("Notifications", 43, 360);
+        super("Notifications", 43, 360, AnchorPoint.None);
         this.toggle();
     }
 

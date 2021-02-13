@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.HUDEditor;
@@ -14,7 +15,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class Ping extends HUDComponent {
     public Ping() {
-        super("Ping", 2, 24);
+        super("Ping", 2, 24, AnchorPoint.BottomRight);
     }
 
     @Override

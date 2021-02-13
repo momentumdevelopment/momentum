@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.render.Render2DUtil;
@@ -13,7 +14,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 
 public class PlayerViewer extends HUDComponent {
     public PlayerViewer() {
-        super("PlayerViewer", 400, 70);
+        super("PlayerViewer", 400, 70, AnchorPoint.None);
         height = 80;
         width = 50;
     }

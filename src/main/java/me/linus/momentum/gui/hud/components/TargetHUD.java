@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.FontUtil;
@@ -30,7 +31,7 @@ import java.util.Objects;
 // TODO: this desperately needs a rewrite
 public class TargetHUD extends HUDComponent {
         public TargetHUD() {
-            super("TargetHUD", 400, 160);
+            super("TargetHUD", 400, 160, AnchorPoint.None);
             width = 183;
             height = 90;
         }

@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,7 +16,7 @@ import java.awt.*;
 
 public class Inventory extends HUDComponent {
     public Inventory() {
-        super("Inventory", 400, 2);
+        super("Inventory", 400, 2, AnchorPoint.None);
         width = 146;
         height = 50;
     }

@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.util.client.ColorUtil;
@@ -13,7 +14,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class TextRadar extends HUDComponent {
     public TextRadar() {
-        super("TextRadar", 2, 80);
+        super("TextRadar", 2, 80, AnchorPoint.TopLeft);
     }
 
     int count;

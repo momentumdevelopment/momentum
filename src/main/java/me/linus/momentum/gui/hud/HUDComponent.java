@@ -33,14 +33,17 @@ public class HUDComponent implements MixinInterface {
     boolean dragging = false;
     boolean enabled;
 
+    public AnchorPoint anchorPoint;
+
     public List<Setting> settingsList = new ArrayList<>();
 
-    public HUDComponent(String name, int x, int y) {
+    public HUDComponent(String name, int x, int y, AnchorPoint anchorPoint) {
         this.name = name;
         this.x = x;
         this.enabled = false;
         this.y = y;
         this.opened = false;
+        this.anchorPoint = anchorPoint;
 
         this.setup();
     }
@@ -59,15 +62,17 @@ public class HUDComponent implements MixinInterface {
         if (getBackground())
             GuiScreen.drawRect(x - 1, y - 1, x + width, y + height, colors);
 
+        if (!HUDEditor.allowOverflow.getValue())
+            resetOverflow();
+
         renderComponent();
     }
 
-    public void renderComponent() {
-        if (mc != null && !HUDEditor.allowOverflow.getValue())
-            resetOverflow();
+    public void setup() {
+
     }
 
-    public void setup() {
+    public void renderComponent() {
 
     }
 
@@ -75,17 +80,27 @@ public class HUDComponent implements MixinInterface {
         int screenWidth = new ScaledResolution(mc).getScaledWidth();
         int screenHeight = new ScaledResolution(mc).getScaledHeight();
 
-        if (this.x > screenWidth)
-            this.x = screenWidth;
+        if (this.width < 0) {
+            if (this.x > screenWidth)
+                this.x = screenWidth;
 
-        if (this.y > screenHeight)
-            this.y = screenHeight;
+            if (this.x + this.width < 0)
+                this.x = -this.width;
+        }
 
-        if (this.x < 0)
-            this.x = 0;
+        else {
+            if (this.x < 0)
+                this.x = 0;
 
-        if (y < 0)
+            if (this.x + this.width > screenWidth)
+                this.x = screenWidth - this.width;
+        }
+
+        if (this.y < 0)
             this.y = 0;
+
+        if (this.y + this.height > screenHeight)
+            this.y = screenHeight - this.height;
     }
 
     public void mouseClicked(int mouseX, int mouseY, int button) {

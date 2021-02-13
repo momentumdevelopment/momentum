@@ -1,6 +1,7 @@
 package me.linus.momentum.gui.hud.components;
 
 import me.linus.momentum.Momentum;
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.managers.TickManager;
@@ -15,7 +16,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class TPS extends HUDComponent {
     public TPS() {
-        super("TPS", 2, 57);
+        super("TPS", 2, 57, AnchorPoint.BottomRight);
     }
 
     @Override

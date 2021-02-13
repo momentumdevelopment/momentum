@@ -65,11 +65,12 @@ public class Window implements MixinInterface {
 		Theme current = Theme.getTheme(currentTheme);
 		current.drawTitles(this.name, this.x, this.y);
 
-		current.drawModules(this.modules, this.x, this.y, mouseX, mouseY, partialTicks);
+		if (opened)
+			current.drawModules(this.modules, this.x, this.y, mouseX, mouseY, partialTicks);
 
 		reset();
 
-		if (mc != null && !ClickGUI.allowOverflow.getValue())
+		if (!ClickGUI.allowOverflow.getValue())
 			resetOverflow();
 	}
 
@@ -77,17 +78,27 @@ public class Window implements MixinInterface {
 		int screenWidth = new ScaledResolution(mc).getScaledWidth();
 		int screenHeight = new ScaledResolution(mc).getScaledHeight();
 
-		if (this.x > screenWidth)
-			this.x = screenWidth;
+		if (this.width < 0) {
+			if (this.x > screenWidth)
+				this.x = screenWidth;
 
-		if (this.y > screenHeight)
-			this.y = screenHeight;
+			if (this.x + this.width < 0)
+				this.x = -this.width;
+		}
 
-		if (this.x < 0)
-			this.x = 0;
+		else {
+			if (this.x < 0)
+				this.x = 0;
 
-		if (y < 0)
+			if (this.x + this.width > screenWidth)
+				this.x = screenWidth - this.width;
+		}
+
+		if (this.y < 0)
 			this.y = 0;
+
+		if (this.y + this.height > screenHeight)
+			this.y = screenHeight - this.height;
 	}
 
 	void mouseListen() {
@@ -115,9 +126,8 @@ public class Window implements MixinInterface {
 	public void rclickListen(int mouseX, int mouseY, int mouseButton) throws IOException {
 		Theme current = Theme.getTheme(currentTheme);
 
-		if (GUIUtil.mouseOver(x, y, x + current.getThemeWidth(), y + current.getThemeHeight())) {
+		if (GUIUtil.mouseOver(x, y, x + current.getThemeWidth(), y + current.getThemeHeight()))
 			opened = !opened;
-		}
 	}
 
 	public void mouseWheelListen() {

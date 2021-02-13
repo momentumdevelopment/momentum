@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 
 /**
@@ -9,7 +10,7 @@ import me.linus.momentum.gui.hud.HUDComponent;
 
 public class ElytraHUD extends HUDComponent {
     public ElytraHUD() {
-        super("ElytraHUD", 0, 0);
+        super("ElytraHUD", 0, 0, AnchorPoint.None);
     }
 
 

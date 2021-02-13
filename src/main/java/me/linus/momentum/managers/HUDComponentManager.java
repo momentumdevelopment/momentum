@@ -29,7 +29,6 @@ public class HUDComponentManager implements MixinInterface {
             new CombatInfo(),
             new Coordinates(),
             new Crystal(),
-            new CrystalsPerSecond(),
             new Direction(),
             new EXP(),
             new FPS(),

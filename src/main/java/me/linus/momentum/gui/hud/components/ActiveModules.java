@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
@@ -25,7 +26,7 @@ import java.util.Comparator;
 
 public class ActiveModules extends HUDComponent {
     public ActiveModules() {
-        super("ActiveModules", 200, 2);
+        super("ActiveModules", 200, 2, AnchorPoint.TopRight);
     }
 
     public static Mode mode = new Mode("Mode", "AlphaStep", "Rainbow", "Rainbow-Static", "Category", "Static");

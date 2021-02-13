@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.hud.components;
 
+import me.linus.momentum.gui.hud.AnchorPoint;
 import me.linus.momentum.gui.hud.HUDComponent;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
@@ -12,7 +13,7 @@ import net.minecraft.item.ItemStack;
 
 public class Armor extends HUDComponent {
     public Armor() {
-        super("Armor", 200, 200);
+        super("Armor", 200, 200, AnchorPoint.None);
     }
 
     @Override
