@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * @since 11/26/2020
  */
 
-@Mixin(RenderLivingBase.class)
+@Mixin(value = RenderLivingBase.class, priority = 1006)
 public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends Render<T> implements MixinInterface {
     protected MixinRenderLivingBase() {
         super(null);

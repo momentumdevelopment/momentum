@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * @since 12/17/2020
  */
 
-@Mixin(RenderEnderCrystal.class)
+@Mixin(value = RenderEnderCrystal.class, priority = 1006)
 public abstract class MixinRenderEnderCrystal implements MixinInterface {
 
     @Shadow
