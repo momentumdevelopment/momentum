@@ -3,6 +3,7 @@ package me.linus.momentum.util.world;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.player.InventoryUtil;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketEntityAction;
@@ -26,7 +27,7 @@ public class BlockUtil implements MixinInterface {
 
     public static void placeBlock(BlockPos pos, boolean rotate) {
         for (EnumFacing enumFacing : EnumFacing.values()) {
-            if (!(getBlockResistance(pos.offset(enumFacing)) == blockResistance.Blank) && !EntityUtil.isIntercepted(pos)) {
+            if (!(getBlockResistance(pos.offset(enumFacing)) == BlockResistance.Blank) && !EntityUtil.isIntercepted(pos)) {
                 Vec3d vec = new Vec3d(pos.getX() + 0.5D + (double) enumFacing.getFrontOffsetX() * 0.5D, pos.getY() + 0.5D + (double) enumFacing.getFrontOffsetY() * 0.5D, pos.getZ() + 0.5D + (double) enumFacing.getFrontOffsetZ() * 0.5D);
 
                 float[] old = new float[] {
@@ -50,19 +51,19 @@ public class BlockUtil implements MixinInterface {
     }
 
     public static boolean isCollidedBlocks(BlockPos pos) {
-        return BlockUtil.getBlockResistance(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ)) == blockResistance.Resistant || isInterceptedByOther(pos) || InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) == -1;
+        return getBlockResistance(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ)) == BlockResistance.Resistant || isInterceptedByOther(pos) || InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) == -1;
     }
 
-    public static boolean isInterceptedByOther(BlockPos pos) {
-        mc.world.loadedEntityList.forEach(entity -> {
+    public static boolean isInterceptedByOther(BlockPos blockPos) {
+        for (Entity entity : mc.world.loadedEntityList) {
             if (entity.equals(mc.player))
-                return;
+                continue;
 
-            if (!new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox()))
-                return;
-        });
+            if (new AxisAlignedBB(blockPos).intersects(entity.getEntityBoundingBox()))
+                return true;
+        }
 
-        return true;
+        return false;
     }
 
     public static List<BlockPos> getNearbyBlocks(EntityPlayer player, double blockRange, boolean motion) {
@@ -80,23 +81,23 @@ public class BlockUtil implements MixinInterface {
         return nearbyBlocks;
     }
 
-    public static blockResistance getBlockResistance(BlockPos block) {
-        if (mc.world.getBlockState(block).getBlock().equals(Blocks.AIR) || mc.world.getBlockState(block).getBlock().equals(Blocks.WATER) || mc.world.getBlockState(block).getBlock().equals(Blocks.LAVA))
-            return blockResistance.Blank;
+    public static BlockResistance getBlockResistance(BlockPos block) {
+        if (mc.world.isAirBlock(block))
+            return BlockResistance.Blank;
 
-        else if (mc.world.getBlockState(block).getBlock().getBlockHardness(mc.world.getBlockState(block), mc.world, block) != -1)
-            return blockResistance.Breakable;
+        else if (mc.world.getBlockState(block).getBlock().getBlockHardness(mc.world.getBlockState(block), mc.world, block) != -1 && !(mc.world.getBlockState(block).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(block).getBlock().equals(Blocks.ANVIL) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENCHANTING_TABLE) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENDER_CHEST)))
+            return BlockResistance.Breakable;
 
         else if (mc.world.getBlockState(block).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(block).getBlock().equals(Blocks.ANVIL) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENCHANTING_TABLE) || mc.world.getBlockState(block).getBlock().equals(Blocks.ENDER_CHEST))
-            return blockResistance.Resistant;
+            return BlockResistance.Resistant;
 
         else if (mc.world.getBlockState(block).getBlock().equals(Blocks.BEDROCK))
-            return blockResistance.Unbreakable;
+            return BlockResistance.Unbreakable;
 
         return null;
     }
 
-    public enum blockResistance {
+    public enum BlockResistance {
         Blank,
         Breakable,
         Resistant,

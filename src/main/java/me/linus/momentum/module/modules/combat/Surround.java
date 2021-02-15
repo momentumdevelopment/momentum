@@ -83,8 +83,10 @@ public class Surround extends Module {
 
         if (obsidianSlot == -1) {
             MessageUtil.sendClientMessage("No Obsidian, " + ChatFormatting.RED + "Disabling!");
-            this.toggle();
-        } else {
+            this.disable();
+        }
+
+        else {
             hasPlaced = false;
             center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
 
@@ -133,7 +135,7 @@ public class Surround extends Module {
 
     public void surroundPlayer() {
         for (Vec3d placePositions : getSurround()) {
-            if (BlockUtil.getBlockResistance(new BlockPos(placePositions.add(mc.player.getPositionVector()))).equals(BlockUtil.blockResistance.Blank)) {
+            if (BlockUtil.getBlockResistance(new BlockPos(placePositions.add(mc.player.getPositionVector()))).equals(BlockUtil.BlockResistance.Blank)) {
                 int oldInventorySlot = mc.player.inventory.currentItem;
 
                 InventoryUtil.switchToSlot(onlyObsidian.getValue() ? InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) : InventoryUtil.getAnyBlockInHotbar());

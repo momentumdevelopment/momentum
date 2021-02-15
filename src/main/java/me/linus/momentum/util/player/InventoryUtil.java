@@ -3,6 +3,7 @@ package me.linus.momentum.util.player;
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -115,8 +116,11 @@ public class InventoryUtil implements MixinInterface {
     }
 
     public static int getItemCount(Item item) {
-        int count = mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == item).mapToInt(ItemStack::getCount).sum();
-        return count;
+        return mc.player.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == item).mapToInt(ItemStack::getCount).sum();
+    }
+
+    public static int getItemCount(EntityPlayer entityPlayer, Item item) {
+        return entityPlayer.inventory.mainInventory.stream().filter(itemStack -> itemStack.getItem() == item).mapToInt(ItemStack::getCount).sum();
     }
 
     public static boolean Is32k(ItemStack stack) {

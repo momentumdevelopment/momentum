@@ -7,6 +7,7 @@ import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.BlockUtil.BlockResistance;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
@@ -50,7 +51,7 @@ public class Web extends Module {
         if (autoSwitch.getValue())
             InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.WEB));
 
-        if (BlockUtil.getBlockResistance(new BlockPos(PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ))).equals(BlockUtil.blockResistance.Blank))
+        if (BlockUtil.getBlockResistance(new BlockPos(PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ))).equals(BlockResistance.Blank))
             mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(new BlockPos(PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ)), EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
 
         if (disable.getValue())

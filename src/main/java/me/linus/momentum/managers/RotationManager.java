@@ -31,7 +31,7 @@ public class RotationManager implements MixinInterface {
     public void onUpdate(TickEvent.ClientTickEvent event) {
         rotationQueue.stream().sorted(Comparator.comparing(rotation -> rotation.rotationPriority.getPriority()));
 
-        if (currentRotation != null && currentRotation.requiresUpdate()) {
+        if (currentRotation != null) {
             currentRotation.restoreRotation();
             currentRotation = null;
         }

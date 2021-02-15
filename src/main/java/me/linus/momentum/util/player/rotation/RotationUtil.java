@@ -94,17 +94,6 @@ public class RotationUtil implements MixinInterface {
         mc.player.autoJumpEnabled = mc.player.mc.gameSettings.autoJump;
     }
 
-    public static boolean isInViewFrustrum(@Nullable Entity entity, @Nullable BlockPos blockPos, int mode) {
-        switch (mode) {
-            case 0:
-                return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(entity.posX, entity.posY, entity.posZ), false, true, false) == null;
-            case 1:
-                return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true, false) == null;
-        }
-
-        return false;
-    }
-
     public static float[] getAngles(Entity entity) {
        return MathUtil.calcAngle(EntityUtil.interpolateEntityTime(mc.player, mc.getRenderPartialTicks()), EntityUtil.interpolateEntityTime(entity, mc.getRenderPartialTicks()));
     }

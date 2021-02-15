@@ -12,6 +12,7 @@ import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.*;
 import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.BlockUtil.BlockResistance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -92,7 +93,7 @@ public class AutoTrap extends Module {
             EntityPlayer target = WorldUtil.getClosestPlayer(range.getValue());
 
             if (target != null) {
-                if (BlockUtil.getBlockResistance(new BlockPos(autoTrapBox.add(target.getPositionVector()))).equals(BlockUtil.blockResistance.Blank)) {
+                if (BlockUtil.getBlockResistance(new BlockPos(autoTrapBox.add(target.getPositionVector()))).equals(BlockResistance.Blank)) {
                     if (autoSwitch.getValue())
                         InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
 

@@ -10,6 +10,7 @@ import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.BlockUtil.BlockResistance;
 import me.linus.momentum.util.player.InventoryUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -67,10 +68,11 @@ public class SelfTrap extends Module {
 
         if (obsidianSlot == -1) {
             MessageUtil.sendClientMessage("No Obsidian, " + ChatFormatting.RED + "Disabling!");
-            this.toggle();
-        } else {
-            hasPlaced = false;
+            this.disable();
         }
+
+        else
+            hasPlaced = false;
     }
 
     @Override
@@ -84,12 +86,11 @@ public class SelfTrap extends Module {
         int blocksPlaced = 0;
 
         for (Vec3d autoTrapBox : getTrap()) {
-            if (BlockUtil.getBlockResistance(new BlockPos(autoTrapBox.add(mc.player.getPositionVector()))).equals(BlockUtil.blockResistance.Blank)) {
+            if (BlockUtil.getBlockResistance(new BlockPos(autoTrapBox.add(mc.player.getPositionVector()))).equals(BlockResistance.Blank)) {
                 InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
 
-                if (obsidianSlot != -1) {
+                if (obsidianSlot != -1)
                     BlockUtil.placeBlock(new BlockPos(autoTrapBox.add(mc.player.getPositionVector())), rotate.getValue());
-                }
 
                 placeBlock = new BlockPos(autoTrapBox.add(mc.player.getPositionVector()));
                 blocksPlaced++;

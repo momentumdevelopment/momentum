@@ -55,10 +55,6 @@ public class Rotation implements MixinInterface {
         }
     }
 
-    public boolean requiresUpdate() {
-        return rotationStay.passed((long) AutoCrystal.rotateDelay.getValue(), Timer.Format.System);
-    }
-
     public enum RotationMode {
         Packet,
         Legit

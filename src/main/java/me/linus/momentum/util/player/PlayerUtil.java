@@ -35,7 +35,7 @@ public class PlayerUtil implements MixinInterface {
     }
 
     public static boolean isMining() {
-        return InventoryUtil.getHeldItem(Items.DIAMOND_PICKAXE) && mc.player.isHandActive();
+        return InventoryUtil.getHeldItem(Items.DIAMOND_PICKAXE) && mc.playerController.isHittingBlock;
     }
 
     public static void attackEntity(Entity entity, boolean packet, boolean cooldown, boolean sync) {

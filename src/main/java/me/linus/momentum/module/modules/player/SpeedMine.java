@@ -33,7 +33,7 @@ public class SpeedMine extends Module {
         if (!this.isEnabled())
             return;
 
-        if (BlockUtil.getBlockResistance(mc.objectMouseOver.getBlockPos()).equals(BlockUtil.blockResistance.Breakable) && mc.playerController.isHittingBlock) {
+        if (BlockUtil.getBlockResistance(mc.objectMouseOver.getBlockPos()).equals(BlockUtil.BlockResistance.Breakable) && mc.playerController.isHittingBlock) {
             switch (mode.getValue()) {
                 case 0:
                     mc.player.swingArm(EnumHand.MAIN_HAND);

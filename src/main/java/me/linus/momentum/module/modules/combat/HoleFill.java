@@ -65,7 +65,7 @@ public class HoleFill extends Module {
 
         if (obsidianSlot == -1) {
             MessageUtil.sendClientMessage("No Obsidian, " + ChatFormatting.RED + "Disabling!");
-            this.toggle();
+            this.disable();
         }
     }
 

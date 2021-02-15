@@ -1,6 +1,7 @@
 package me.linus.momentum.util.combat;
 
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +27,7 @@ public class EnemyUtil implements MixinInterface {
     public static float getHealth(EntityPlayer entityPlayer) {
         return entityPlayer.getHealth() + entityPlayer.getAbsorptionAmount();
     }
+
     public static float getArmor(EntityPlayer target) {
         float armorDurability = 0;
         for (ItemStack stack : target.getArmorInventoryList()) {
@@ -46,6 +48,13 @@ public class EnemyUtil implements MixinInterface {
             if (melt && durability >= ((float) (stack.getMaxDamage() - stack.getItemDamage()) / (float) stack.getMaxDamage()) * 100.0f)
                 return true;
         }
+
+        return false;
+    }
+
+    public static boolean getGearPlay(EntityPlayer target, double stacks) {
+        if (InventoryUtil.getItemCount(target, Items.DIAMOND_HELMET) < 1 && (InventoryUtil.getItemCount(target, Items.EXPERIENCE_BOTTLE) / 64) < stacks)
+            return true;
 
         return false;
     }

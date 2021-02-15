@@ -1,11 +1,8 @@
 package me.linus.momentum.module.modules.combat;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
-import me.linus.momentum.managers.notification.Notification;
-import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.player.InventoryUtil;
@@ -25,62 +22,59 @@ public class Burrow extends Module {
         super("Burrow", Category.COMBAT, "Rubberbands you into a block");
     }
 
-    public static Mode mode = new Mode("Mode", "Rubberband", "Teleport", "Clip");
-    public static Checkbox rotate = new Checkbox("Rotate", true);
-    public static Checkbox centerPlayer = new Checkbox("Center", false);
-    public static Checkbox onGround = new Checkbox("On Ground", false);
+    private static final Mode mode = new Mode("Mode", "Rubberband", "Teleport", "Clip");
+    private static final Checkbox rotate = new Checkbox("Rotate", true);
+    private static final Checkbox centerPlayer = new Checkbox("Center", false);
+    private static final Checkbox instant = new Checkbox("Instant", true);
+    private static final Checkbox onGround = new Checkbox("On Ground", false);
 
     @Override
     public void setup() {
         addSetting(mode);
         addSetting(rotate);
         addSetting(centerPlayer);
+        addSetting(instant);
         addSetting(onGround);
     }
 
-    private int obsidianSlot;
     BlockPos originalPos;
-    Vec3d center = Vec3d.ZERO;
+    Vec3d center = null;
 
     @Override
     public void onEnable() {
         if (nullCheck())
             return;
 
-        obsidianSlot = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+        originalPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
+        center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
 
-        if (obsidianSlot == -1) {
-            MessageUtil.sendClientMessage("No Obsidian, " + ChatFormatting.RED + "Disabling!");
-            this.toggle();
-        } else {
-            originalPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
-            center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
+        if (BlockUtil.isCollidedBlocks(originalPos))
+            this.disable();
 
-            if (BlockUtil.isCollidedBlocks(originalPos))
-                this.disable();
-
-            if (centerPlayer.getValue()) {
-                mc.player.motionX = 0;
-                mc.player.motionZ = 0;
-                mc.player.connection.sendPacket(new CPacketPlayer.Position(center.x, center.y, center.z, true));
-                mc.player.setPosition(center.x, center.y, center.z);
-            }
-
-            NotificationManager.addNotification(new Notification("Attempting to trigger a rubberband!", Notification.Type.Info));
-            mc.player.jump();
+        if (centerPlayer.getValue()) {
+            mc.player.motionX = 0;
+            mc.player.motionZ = 0;
+            mc.player.connection.sendPacket(new CPacketPlayer.Position(center.x, center.y, center.z, true));
+            mc.player.setPosition(center.x, center.y, center.z);
         }
+
+        MessageUtil.sendClientMessage("Attempting to trigger a rubberband!");
+
+        if (instant.getValue())
+            mc.timer.tickLength = 1;
+
+        mc.player.jump();
     }
 
     @Override
     public void onUpdate() {
+        if (nullCheck())
+            return;
+
         if (mc.player.posY > originalPos.getY() + 1.2) {
             InventoryUtil.switchToSlot(Blocks.OBSIDIAN);
 
-            if (BlockUtil.getBlockResistance(originalPos).equals(BlockUtil.blockResistance.Blank)) {
-                if (obsidianSlot != -1) {
-                    BlockUtil.placeBlock(originalPos, rotate.getValue());
-                }
-            }
+            BlockUtil.placeBlock(originalPos, rotate.getValue());
 
             if (onGround.getValue())
                 mc.player.onGround = true;

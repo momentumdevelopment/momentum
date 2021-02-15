@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class CrystalUtil implements MixinInterface {
 
     public static List<Entity> crystalEntities() {
-        return mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> attackCheck(entity)).collect(Collectors.toList());
+        return mc.world.loadedEntityList.stream().filter(entity -> entity instanceof EntityEnderCrystal).collect(Collectors.toList());
     }
 
     public static void attackCrystal(EntityEnderCrystal crystal, boolean packet) {
@@ -122,10 +122,10 @@ public class CrystalUtil implements MixinInterface {
 
     public static boolean canPlaceCrystal(BlockPos blockPos, boolean antiSurround, boolean thirteen) {
         try {
-            if (BlockUtil.getBlockResistance(blockPos) != BlockUtil.blockResistance.Unbreakable && mc.world.getBlockState(blockPos).getBlock() != Blocks.OBSIDIAN)
+            if (BlockUtil.getBlockResistance(blockPos) != BlockUtil.BlockResistance.Unbreakable && mc.world.getBlockState(blockPos).getBlock() != Blocks.OBSIDIAN)
                 return false;
 
-            if (!thirteen && BlockUtil.getBlockResistance(blockPos.add(0, 2, 0)) != BlockUtil.blockResistance.Blank || BlockUtil.getBlockResistance(blockPos.add(0, 1, 0)) != BlockUtil.blockResistance.Blank)
+            if (!thirteen && BlockUtil.getBlockResistance(blockPos.add(0, 2, 0)) != BlockUtil.BlockResistance.Blank || BlockUtil.getBlockResistance(blockPos.add(0, 1, 0)) != BlockUtil.BlockResistance.Blank)
                 return false;
 
             for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 1, 0)))) {
