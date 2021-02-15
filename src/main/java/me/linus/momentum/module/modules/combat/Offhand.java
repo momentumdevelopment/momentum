@@ -92,7 +92,7 @@ public class Offhand extends Module {
         if (mc.currentScreen != null)
             return;
 
-        if (InventoryUtil.getInventoryItemSlot(searching, hotbar.getValue()) != -1) {
+        if (InventoryUtil.getInventoryItemSlot(searching, !hotbar.getValue()) != -1) {
             InventoryUtil.moveItemToOffhand(InventoryUtil.getInventoryItemSlot(searching, hotbar.getValue()));
             return;
         }
@@ -118,7 +118,7 @@ public class Offhand extends Module {
         if (mc.player.getHeldItemOffhand().getItem() == searching)
             return;
 
-        if (InventoryUtil.getInventoryItemSlot(searching, hotbar.getValue()) != -1)
+        if (InventoryUtil.getInventoryItemSlot(searching, !hotbar.getValue()) != -1)
             InventoryUtil.moveItemToOffhand(InventoryUtil.getInventoryItemSlot(searching, hotbar.getValue()));
     }
 

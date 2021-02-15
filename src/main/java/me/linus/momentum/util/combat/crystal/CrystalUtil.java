@@ -4,6 +4,7 @@ import me.linus.momentum.managers.CrystalManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.combat.AutoCrystal;
 import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.BlockUtil.BlockResistance;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -122,10 +123,10 @@ public class CrystalUtil implements MixinInterface {
 
     public static boolean canPlaceCrystal(BlockPos blockPos, boolean antiSurround, boolean thirteen) {
         try {
-            if (BlockUtil.getBlockResistance(blockPos) != BlockUtil.BlockResistance.Unbreakable && mc.world.getBlockState(blockPos).getBlock() != Blocks.OBSIDIAN)
+            if (BlockUtil.getBlockResistance(blockPos) != BlockResistance.Unbreakable && mc.world.getBlockState(blockPos).getBlock() != Blocks.OBSIDIAN)
                 return false;
 
-            if (!thirteen && BlockUtil.getBlockResistance(blockPos.add(0, 2, 0)) != BlockUtil.BlockResistance.Blank || BlockUtil.getBlockResistance(blockPos.add(0, 1, 0)) != BlockUtil.BlockResistance.Blank)
+            if (!thirteen && BlockUtil.getBlockResistance(blockPos.add(0, 2, 0)) != BlockResistance.Blank || BlockUtil.getBlockResistance(blockPos.add(0, 1, 0)) != BlockResistance.Blank)
                 return false;
 
             for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos.add(0, 1, 0)))) {

@@ -1,6 +1,9 @@
 package me.linus.momentum.module.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.Notification.Type;
+import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
@@ -41,6 +44,7 @@ public class AutoTrap extends Module {
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
     public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
     public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static Checkbox strict = new Checkbox("NCP Strict", true);
     public static Checkbox disable = new Checkbox("Disables", true);
 
     public static Checkbox color = new Checkbox("Color", true);
@@ -54,11 +58,12 @@ public class AutoTrap extends Module {
         addSetting(autoSwitch);
         addSetting(blocksPerTick);
         addSetting(rotate);
+        addSetting(strict);
         addSetting(disable);
         addSetting(color);
     }
 
-    private int obsidianSlot;
+    int obsidianSlot;
     BlockPos placeBlock;
     boolean hasPlaced;
 
@@ -72,11 +77,12 @@ public class AutoTrap extends Module {
         obsidianSlot = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
 
         if (obsidianSlot == -1) {
-            MessageUtil.sendClientMessage("No Obsidian, " + ChatFormatting.RED + "Disabling!");
+            NotificationManager.addNotification(new Notification("No Obsidian, " + ChatFormatting.RED + "Disabling!", Type.Info));
             this.toggle();
-        } else {
-            hasPlaced = false;
         }
+
+        else
+            hasPlaced = false;
     }
 
     @Override
@@ -97,9 +103,8 @@ public class AutoTrap extends Module {
                     if (autoSwitch.getValue())
                         InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
 
-                    if (obsidianSlot != -1) {
-                        BlockUtil.placeBlock(new BlockPos(autoTrapBox.add(target.getPositionVector())), rotate.getValue());
-                    }
+                    if (obsidianSlot != -1)
+                        BlockUtil.placeBlock(new BlockPos(autoTrapBox.add(target.getPositionVector())), rotate.getValue(), strict.getValue());
 
                     placeBlock = new BlockPos(autoTrapBox.add(target.getPositionVector()));
                     MessageUtil.sendClientMessage("Trapping " + target.getName() + "!");

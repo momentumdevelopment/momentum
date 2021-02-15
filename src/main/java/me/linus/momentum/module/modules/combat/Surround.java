@@ -1,13 +1,15 @@
 package me.linus.momentum.module.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.BlockUtil;
@@ -44,6 +46,7 @@ public class Surround extends Module {
     public static SubSlider timeoutTick = new SubSlider(timeout, "Timeout Ticks", 1.0D, 15.0D, 20.0D, 1);
 
     public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static Checkbox strict = new Checkbox("NCP Strict", true);
     public static Checkbox onlyObsidian = new Checkbox("Only Obsidian", true);
     public static Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
     public static Checkbox chorusSave = new Checkbox("Chorus Save", false);
@@ -59,6 +62,7 @@ public class Surround extends Module {
         addSetting(blocksPerTick);
         addSetting(timeout);
         addSetting(rotate);
+        addSetting(strict);
         addSetting(centerPlayer);
         addSetting(onlyObsidian);
         addSetting(antiChainPop);
@@ -66,7 +70,7 @@ public class Surround extends Module {
         addSetting(renderSurround);
     }
 
-    private int obsidianSlot;
+    int obsidianSlot;
     boolean hasPlaced;
     Vec3d center = Vec3d.ZERO;
     int blocksPlaced = 0;
@@ -82,7 +86,7 @@ public class Surround extends Module {
         obsidianSlot = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
 
         if (obsidianSlot == -1) {
-            MessageUtil.sendClientMessage("No Obsidian, " + ChatFormatting.RED + "Disabling!");
+            NotificationManager.addNotification(new Notification("No Obsidian, " + ChatFormatting.RED + "Disabling!", Type.Info));
             this.disable();
         }
 
@@ -141,7 +145,7 @@ public class Surround extends Module {
                 InventoryUtil.switchToSlot(onlyObsidian.getValue() ? InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) : InventoryUtil.getAnyBlockInHotbar());
 
                 if (obsidianSlot != -1) {
-                    BlockUtil.placeBlock(new BlockPos(placePositions.add(mc.player.getPositionVector())), rotate.getValue());
+                    BlockUtil.placeBlock(new BlockPos(placePositions.add(mc.player.getPositionVector())), rotate.getValue(), strict.getValue());
                 }
 
                 renderBlock = new BlockPos(placePositions.add(mc.player.getPositionVector()));

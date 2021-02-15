@@ -47,14 +47,14 @@ import java.util.List;
  * @since 11/24/2020
  */
 
-// TODO: break calc & better wall placements
+// TODO: fix break calcs and wall placements
 public class AutoCrystal extends Module {
     public AutoCrystal() {
         super("AutoCrystal", Category.COMBAT, "Automatically places and explodes crystals");
     }
 
     public static Checkbox explode = new Checkbox("Break", true);
-    public static SubMode breakMode = new SubMode(explode, "Mode", "All");
+    public static SubMode breakMode = new SubMode(explode, "Mode", "All", "Only Own");
     public static SubMode breakHand = new SubMode(explode, "BreakHand", "OffHand", "MainHand", "Both", "MultiSwing");
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 80.0D, 200.0D, 0);
@@ -197,11 +197,7 @@ public class AutoCrystal extends Module {
         if (handlePause() && (pauseMode.getValue() == 0 || pauseMode.getValue() == 2))
             return;
 
-        EntityEnderCrystal calculatedCrystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> CrystalUtil.attackCheck(entity)).min(Comparator.comparing(crystal -> crystalTarget.getDistance(crystal))).orElse(null);
-        double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedCrystal.posX + 0.5, calculatedCrystal.posY + 1, calculatedCrystal.posZ, crystalTarget);
-        double calculatedSelfDamage = mc.player.capabilities.isCreativeMode ? 0 : CrystalUtil.calculateDamage(calculatedCrystal.posX + 0.5, calculatedCrystal.posY + 1, calculatedCrystal.posZ, mc.player);
-
-        crystal = new Crystal(calculatedCrystal, calculatedTargetDamage, calculatedSelfDamage);
+        crystal = new Crystal((EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> CrystalUtil.attackCheck(entity)).min(Comparator.comparing(crystal -> mc.player.getDistance(crystal))).orElse(null), 0, 0);
         if (crystal.getCrystal() != null && explode.getValue()) {
             if (crystal.getCrystal().getDistance(mc.player) > breakRange.getValue())
                 return;
@@ -244,7 +240,7 @@ public class AutoCrystal extends Module {
             if (!RaytraceUtil.raytraceBlock(calculatedPosition) && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(wallRange.getValue()))
                 continue;
 
-            if (verifyPlace.getValue() && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(breakRange.getValue()))
+            if (verifyPlace.getValue() && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(!RaytraceUtil.raytraceBlock(calculatedPosition) ? wallRange.getValue() : breakRange.getValue()))
                 continue;
 
             double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, crystalTarget);
@@ -296,7 +292,7 @@ public class AutoCrystal extends Module {
                 return true;
         }
 
-        if (PlayerUtil.getHealth() < pauseHealth.getValue() && (EnemyUtil.getHealth(crystalTarget) - crystalPosition.getTargetDamage() > threshold.getValue()))
+        if (PlayerUtil.getHealth() < pauseHealth.getValue())
             return true;
         else if (PlayerUtil.isEating() && whenEating.getValue() || PlayerUtil.isMining() && whenMining.getValue())
             return true;

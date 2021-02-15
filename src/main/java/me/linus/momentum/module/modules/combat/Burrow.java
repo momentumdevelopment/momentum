@@ -1,9 +1,11 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.managers.notification.Notification.Type;
+import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
-import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
@@ -58,10 +60,7 @@ public class Burrow extends Module {
             mc.player.setPosition(center.x, center.y, center.z);
         }
 
-        MessageUtil.sendClientMessage("Attempting to trigger a rubberband!");
-
-        if (instant.getValue())
-            mc.timer.tickLength = 1;
+        NotificationManager.addNotification(new Notification("Attempting to trigger a rubberband!", Type.Info));
 
         mc.player.jump();
     }
@@ -74,10 +73,13 @@ public class Burrow extends Module {
         if (mc.player.posY > originalPos.getY() + 1.2) {
             InventoryUtil.switchToSlot(Blocks.OBSIDIAN);
 
-            BlockUtil.placeBlock(originalPos, rotate.getValue());
+            BlockUtil.placeBlock(originalPos, rotate.getValue(), false);
 
             if (onGround.getValue())
                 mc.player.onGround = true;
+
+            if (instant.getValue())
+                mc.timer.tickLength = 1;
 
             switch (mode.getValue()) {
                 case 0:

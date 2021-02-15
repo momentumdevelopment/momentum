@@ -5,6 +5,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import me.linus.momentum.util.world.BlockUtil.BlockResistance;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author linustouchtips
  * @since 12/29/2020
@@ -44,5 +47,9 @@ public class HoleUtil implements MixinInterface {
 
     public static boolean isHole(BlockPos blockPos) {
         return BlockUtil.getBlockResistance(blockPos.add(0, 1, 0)) == BlockResistance.Blank && BlockUtil.getBlockResistance(blockPos.add(0, 0, 0)) == BlockResistance.Blank && BlockUtil.getBlockResistance(blockPos.add(0, 2, 0)) == BlockResistance.Blank && (BlockUtil.getBlockResistance(blockPos.add(0, 0, -1)) == BlockResistance.Resistant || BlockUtil.getBlockResistance(blockPos.add(0, 0, -1)) == BlockResistance.Unbreakable) && ((BlockUtil.getBlockResistance(blockPos.add(1, 0, 0)) == BlockResistance.Resistant || (BlockUtil.getBlockResistance(blockPos.add(1, 0, 0)) == BlockResistance.Unbreakable)) && ((BlockUtil.getBlockResistance(blockPos.add(-1, 0, 0)) == BlockResistance.Resistant) || (BlockUtil.getBlockResistance(blockPos.add(-1, 0, 0)) == BlockResistance.Unbreakable)) && ((BlockUtil.getBlockResistance(blockPos.add(0, 0, 1)) == BlockResistance.Resistant) || (BlockUtil.getBlockResistance(blockPos.add(0, 0, 1)) == BlockResistance.Unbreakable)) && (BlockUtil.getBlockResistance(blockPos.add(0.5, 0.5, 0.5)) == BlockResistance.Blank) && ((BlockUtil.getBlockResistance(blockPos.add(0, -1, 0)) == BlockResistance.Resistant) || (BlockUtil.getBlockResistance(blockPos.add(0, -1, 0)) == BlockResistance.Unbreakable)));
+    }
+
+    public static List<BlockPos> getNearbyHoles(double range) {
+        return BlockUtil.getNearbyBlocks(mc.player, range, false).stream().filter(blockPos -> HoleUtil.isHole(blockPos)).collect(Collectors.toList());
     }
 }

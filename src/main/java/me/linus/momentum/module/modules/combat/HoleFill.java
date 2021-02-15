@@ -1,18 +1,22 @@
 package me.linus.momentum.module.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.Notification.Type;
+import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.HoleUtil;
-import me.linus.momentum.util.player.InventoryUtil;
-import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -24,20 +28,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author yoink & olliem5
+ * @author linustouchtips & olliem5
  * @since 12/17/2020
  */
 
-// TODO: rewrite this
 public class HoleFill extends Module {
     public HoleFill() {
         super("HoleFill", Category.COMBAT, "Automatically fills in nearby holes");
     }
 
-    public static Mode mode = new Mode("Mode", "Obsidian", "Ender Chest", "Web");
-    public static Slider range = new Slider("Range", 0.0D, 2.0D, 10.0D, 0);
+    public static Mode mode = new Mode("Mode", "Target", "All");
+    public static Mode block = new Mode("Block", "Obsidian", "Ender Chest", "Web", "Pressure Plate");
+    public static Slider range = new Slider("Range", 0.0D, 5.0D, 10.0D, 0);
     public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
-    public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static Checkbox rotate = new Checkbox("Rotate", false);
+    public static Checkbox strict = new Checkbox("NCP Strict", true);
     public static Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
@@ -46,14 +51,16 @@ public class HoleFill extends Module {
     @Override
     public void setup() {
         addSetting(mode);
+        addSetting(block);
         addSetting(range);
         addSetting(autoSwitch);
         addSetting(rotate);
+        addSetting(strict);
         addSetting(disable);
         addSetting(color);
     }
 
-    private int obsidianSlot;
+    int obsidianSlot;
     BlockPos renderBlock;
 
     @Override
@@ -64,7 +71,7 @@ public class HoleFill extends Module {
         obsidianSlot = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
 
         if (obsidianSlot == -1) {
-            MessageUtil.sendClientMessage("No Obsidian, " + ChatFormatting.RED + "Disabling!");
+            NotificationManager.addNotification(new Notification("No Obsidian, " + ChatFormatting.RED + "Disabling!", Type.Info));
             this.disable();
         }
     }
@@ -91,7 +98,7 @@ public class HoleFill extends Module {
             InventoryUtil.switchToSlot(getItem());
 
         if (obsidianSlot != -1) {
-            BlockUtil.placeBlock(blocks.get(0), rotate.getValue());
+            BlockUtil.placeBlock(blocks.get(0), rotate.getValue(), strict.getValue());
         }
     }
 

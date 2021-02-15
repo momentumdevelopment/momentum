@@ -1,8 +1,12 @@
 package me.linus.momentum.util.world;
 
+import me.linus.momentum.managers.RotationManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.player.InventoryUtil;
+import me.linus.momentum.util.player.rotation.Rotation;
+import me.linus.momentum.util.player.rotation.Rotation.RotationMode;
+import me.linus.momentum.util.player.rotation.RotationPriority;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,7 +29,7 @@ import java.util.List;
 
 public class BlockUtil implements MixinInterface {
 
-    public static void placeBlock(BlockPos pos, boolean rotate) {
+    public static void placeBlock(BlockPos pos, boolean rotate, boolean strict) {
         for (EnumFacing enumFacing : EnumFacing.values()) {
             if (!(getBlockResistance(pos.offset(enumFacing)) == BlockResistance.Blank) && !EntityUtil.isIntercepted(pos)) {
                 Vec3d vec = new Vec3d(pos.getX() + 0.5D + (double) enumFacing.getFrontOffsetX() * 0.5D, pos.getY() + 0.5D + (double) enumFacing.getFrontOffsetY() * 0.5D, pos.getZ() + 0.5D + (double) enumFacing.getFrontOffsetZ() * 0.5D);
@@ -33,6 +37,9 @@ public class BlockUtil implements MixinInterface {
                 float[] old = new float[] {
                         mc.player.rotationYaw, mc.player.rotationPitch
                 };
+
+                if (strict)
+                    RotationManager.rotationQueue.add(new Rotation((float) Math.toDegrees(Math.atan2((vec.z - mc.player.posZ), (vec.x - mc.player.posX))) - 90.0F, (float) (-Math.toDegrees(Math.atan2((vec.y - (mc.player.posY + (double) mc.player.getEyeHeight())), (Math.sqrt((vec.x - mc.player.posX) * (vec.x - mc.player.posX) + (vec.z - mc.player.posZ) * (vec.z - mc.player.posZ)))))), RotationMode.Packet, RotationPriority.High));
 
                 if (rotate)
                     mc.player.connection.sendPacket(new CPacketPlayer.Rotation((float) Math.toDegrees(Math.atan2((vec.z - mc.player.posZ), (vec.x - mc.player.posX))) - 90.0F, (float) (-Math.toDegrees(Math.atan2((vec.y - (mc.player.posY + (double) mc.player.getEyeHeight())), (Math.sqrt((vec.x - mc.player.posX) * (vec.x - mc.player.posX) + (vec.z - mc.player.posZ) * (vec.z - mc.player.posZ)))))), mc.player.onGround));

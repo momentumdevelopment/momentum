@@ -66,7 +66,7 @@ public class InventoryUtil implements MixinInterface {
         mc.playerController.windowClick(0, slot < 9 ? slot + 36 : slot, 0, ClickType.PICKUP, mc.player);
         mc.playerController.windowClick(0, 45, 0, ClickType.PICKUP, mc.player);
 
-        for (int i = 9; i < 45; i++) {
+        for (int i = 0; i < 45; i++) {
             if (mc.player.inventory.getStackInSlot(i).isEmpty()) {
                 returnSlot = i;
                 break;
@@ -87,7 +87,7 @@ public class InventoryUtil implements MixinInterface {
     }
 
     public static int getInventoryItemSlot(Item item, boolean hotbar) {
-        for (int i = 0; hotbar ? i < 36 : i < 45; i++) {
+        for (int i = hotbar ? 9 : 0; i < 45; i++) {
             if (mc.player.inventory.getStackInSlot(i).getItem() == item)
                 return i;
         }
