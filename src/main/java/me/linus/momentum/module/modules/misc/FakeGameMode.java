@@ -1,6 +1,7 @@
 package me.linus.momentum.module.modules.misc;
 
 import me.linus.momentum.module.Module;
+import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.world.GameType;
@@ -15,11 +16,13 @@ public class FakeGameMode extends Module {
         super("FakeGameMode", Category.MISC, "Changes gamemode to creative client-side");
     }
 
-    public static Mode mode = new Mode("Mode", "Creative", "Spectator", "Adventure");
+    public static Mode mode = new Mode("Mode", "Creative", "Spectator", "Adventure", "Survival");
+    public static Checkbox noHandshake = new Checkbox("No Handshake", true);
 
     @Override
     public void setup() {
         addSetting(mode);
+        addSetting(noHandshake);
     }
 
     @Override
@@ -44,6 +47,9 @@ public class FakeGameMode extends Module {
                 break;
             case 2:
                 mc.playerController.setGameType(GameType.ADVENTURE);
+                break;
+            case 3:
+                mc.player.setGameType(GameType.SURVIVAL);
                 break;
         }
     }

@@ -94,7 +94,6 @@ public class ModuleManager implements MixinInterface {
 			new FakeGameMode(),
 			new FakePlayer(),
 			new MiddleClickFriend(),
-			new NoHandShake(),
 			new Notifier(),
 			new Portal(),
 			new Refill(),

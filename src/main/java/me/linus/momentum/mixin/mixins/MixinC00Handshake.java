@@ -1,6 +1,7 @@
 package me.linus.momentum.mixin.mixins;
 
 import me.linus.momentum.managers.ModuleManager;
+import me.linus.momentum.module.modules.misc.FakeGameMode;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.handshake.client.C00Handshake;
@@ -32,7 +33,7 @@ public class MixinC00Handshake {
 
     @Inject(method = "writePacketData", at = @At(value = "HEAD"), cancellable = true)
     public void writePacketData(PacketBuffer buf, CallbackInfo info) {
-        if (ModuleManager.getModuleByName("NoHandShake").isEnabled()) {
+        if (ModuleManager.getModuleByName("FakeGameMode").isEnabled() && FakeGameMode.noHandshake.getValue()) {
             info.cancel();
             buf.writeVarInt(protocolVersion);
             buf.writeString(ip);

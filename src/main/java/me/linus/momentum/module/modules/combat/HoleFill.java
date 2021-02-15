@@ -10,15 +10,17 @@ import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.HoleUtil;
+import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -37,8 +39,8 @@ public class HoleFill extends Module {
         super("HoleFill", Category.COMBAT, "Automatically fills in nearby holes");
     }
 
-    public static Mode mode = new Mode("Mode", "Target", "All");
-    public static Mode block = new Mode("Block", "Obsidian", "Ender Chest", "Web", "Pressure Plate");
+    public static Mode mode = new Mode("Mode", "Smart", "All");
+    public static Mode block = new Mode("Block", "Obsidian", "EnderChest", "Web", "Pressure Plate");
     public static Slider range = new Slider("Range", 0.0D, 5.0D, 10.0D, 0);
     public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
     public static Checkbox rotate = new Checkbox("Rotate", false);
@@ -61,12 +63,16 @@ public class HoleFill extends Module {
     }
 
     int obsidianSlot;
-    BlockPos renderBlock;
+
+    BlockPos fillBlock;
+    EntityPlayer fillTarget;
 
     @Override
     public void onEnable() {
         if (nullCheck())
             return;
+
+        super.onEnable();
 
         obsidianSlot = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
 
@@ -81,31 +87,29 @@ public class HoleFill extends Module {
         if (nullCheck())
             return;
 
-        List<BlockPos> blocks = getHoles();
+        fillTarget = WorldUtil.getClosestPlayer(15);
 
-        for (BlockPos block : blocks)
-            blocks.removeIf(blockPos -> PlayerUtil.inPlayer(block));
+        List<BlockPos> fillHoles = getHoles();
+        BlockPos currentFill = null;
 
-        if (blocks.size() == 0) {
-            if (disable.getValue())
-                disable();
-            return;
+        for (BlockPos hole : fillHoles) {
+            if (mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(hole)).isEmpty())
+                currentFill = hole;
         }
 
-        renderBlock = blocks.get(0);
+        fillBlock = currentFill;
 
         if (autoSwitch.getValue())
             InventoryUtil.switchToSlot(getItem());
 
-        if (obsidianSlot != -1) {
-            BlockUtil.placeBlock(blocks.get(0), rotate.getValue(), strict.getValue());
-        }
+        if (obsidianSlot != -1)
+            BlockUtil.placeBlock(fillBlock, rotate.getValue(), strict.getValue());
     }
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
-        if (renderBlock != null)
-            RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
+        if (fillBlock != null)
+            RenderUtil.drawBoxBlockPos(fillBlock, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
     }
 
     public Block getItem() {
@@ -116,12 +120,21 @@ public class HoleFill extends Module {
                 return Blocks.ENDER_CHEST;
             case 3:
                 return Blocks.WEB;
+            case 4:
+                return Blocks.WOODEN_PRESSURE_PLATE;
         }
 
         return Blocks.OBSIDIAN;
     }
 
     List<BlockPos> getHoles() {
-        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.isHole(blockPos)).collect(Collectors.toList());
+        switch (mode.getValue()) {
+            case 0:
+                return BlockUtil.getNearbyBlocks(fillTarget, range.getValue(), false).stream().filter(HoleUtil::isHole).filter(blockPos -> mc.player.getDistanceSq(blockPos) < MathUtil.square(range.getValue())).collect(Collectors.toList());
+            case 1:
+                return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(HoleUtil::isHole).collect(Collectors.toList());
+        }
+
+        return null;
     }
 }
