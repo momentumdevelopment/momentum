@@ -50,10 +50,6 @@ public class EntityUtil implements MixinInterface {
         return e instanceof EntityLivingBase;
     }
 
-    public static boolean canEntityFeetBeSeen(Entity entity) {
-        return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(entity.posX, entity.posY, entity.posZ), false, true, false) == null;
-    }
-
     public static boolean isIntercepted(BlockPos pos) {
         for (Entity entity : mc.world.loadedEntityList) {
             if (new AxisAlignedBB(pos).intersects(entity.getEntityBoundingBox()))
@@ -62,10 +58,6 @@ public class EntityUtil implements MixinInterface {
 
         return false;
     }
-
-    /**
-     * interpolations
-     */
 
     public static Vec3d interpolateEntity(Entity entity, float n) {
         return new Vec3d(entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * n, entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * n, entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * n);

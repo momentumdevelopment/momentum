@@ -39,6 +39,10 @@ public class SelfTrap extends Module {
     public static Mode mode = new Mode("Mode", "Head", "Anti-FacePlace", "Full");
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
+    public static Checkbox raytrace = new Checkbox("Raytrace", false);
+    public static Checkbox packet = new Checkbox("Packet", false);
+    public static Checkbox swingArm = new Checkbox("Swing Arm", true);
+    public static Checkbox antiGlitch = new Checkbox("Anti-Glitch", false);
     public static Checkbox rotate = new Checkbox("Rotate", true);
     public static Checkbox strict = new Checkbox("NCP Strict", false);
     public static Checkbox disable = new Checkbox("Disables", false);
@@ -51,6 +55,10 @@ public class SelfTrap extends Module {
         addSetting(mode);
         addSetting(delay);
         addSetting(blocksPerTick);
+        addSetting(raytrace);
+        addSetting(packet);
+        addSetting(swingArm);
+        addSetting(antiGlitch);
         addSetting(rotate);
         addSetting(disable);
         addSetting(strict);
@@ -94,7 +102,7 @@ public class SelfTrap extends Module {
                 InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
 
                 if (obsidianSlot != -1)
-                    BlockUtil.placeBlock(new BlockPos(autoTrapBox.add(mc.player.getPositionVector())), rotate.getValue(), strict.getValue());
+                    BlockUtil.placeBlock(new BlockPos(autoTrapBox.add(mc.player.getPositionVector())), rotate.getValue(), strict.getValue(), raytrace.getValue(), packet.getValue(), swingArm.getValue(), antiGlitch.getValue());
 
                 placeBlock = new BlockPos(autoTrapBox.add(mc.player.getPositionVector()));
                 blocksPlaced++;

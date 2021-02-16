@@ -1,6 +1,5 @@
 package me.linus.momentum.util.player;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.managers.TickManager;
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.block.Block;
@@ -8,10 +7,8 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -39,18 +36,15 @@ public class PlayerUtil implements MixinInterface {
     }
 
     public static void attackEntity(Entity entity, boolean packet, boolean cooldown, boolean sync) {
-        if (cooldown ? mc.player.getCooledAttackStrength(0) >= (sync ? -(20 - TickManager.getTPS()) : 0) : true) {
+        if (!cooldown || (mc.player.getCooledAttackStrength(sync ? (20 - TickManager.getTPS()) : 0) >= 1)) {
             if (packet)
                 mc.player.connection.sendPacket(new CPacketUseEntity(entity));
             else
                 mc.playerController.attackEntity(mc.player, entity);
 
             mc.player.swingArm(EnumHand.MAIN_HAND);
+            mc.player.resetCooldown();
         }
-    }
-
-    public static boolean inPlayer(BlockPos pos) {
-        return new AxisAlignedBB(pos).intersects(mc.player.getEntityBoundingBox());
     }
 
     public static boolean isTrapped() {

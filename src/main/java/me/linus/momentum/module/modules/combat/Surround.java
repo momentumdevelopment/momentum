@@ -45,6 +45,10 @@ public class Surround extends Module {
     public static Checkbox timeout = new Checkbox("Timeout", true);
     public static SubSlider timeoutTick = new SubSlider(timeout, "Timeout Ticks", 1.0D, 15.0D, 20.0D, 1);
 
+    public static Checkbox raytrace = new Checkbox("Raytrace", false);
+    public static Checkbox packet = new Checkbox("Packet", false);
+    public static Checkbox swingArm = new Checkbox("Swing Arm", true);
+    public static Checkbox antiGlitch = new Checkbox("Anti-Glitch", false);
     public static Checkbox rotate = new Checkbox("Rotate", true);
     public static Checkbox strict = new Checkbox("NCP Strict", true);
     public static Checkbox onlyObsidian = new Checkbox("Only Obsidian", true);
@@ -61,6 +65,10 @@ public class Surround extends Module {
         addSetting(disable);
         addSetting(blocksPerTick);
         addSetting(timeout);
+        addSetting(raytrace);
+        addSetting(packet);
+        addSetting(swingArm);
+        addSetting(antiGlitch);
         addSetting(rotate);
         addSetting(strict);
         addSetting(centerPlayer);
@@ -75,6 +83,7 @@ public class Surround extends Module {
     Vec3d center = Vec3d.ZERO;
     int blocksPlaced = 0;
     BlockPos renderBlock;
+    BlockPos originalPos;
 
     @Override
     public void onEnable() {
@@ -84,6 +93,7 @@ public class Surround extends Module {
         super.onEnable();
 
         obsidianSlot = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
+        originalPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
 
         if (obsidianSlot == -1) {
             NotificationManager.addNotification(new Notification("No Obsidian, " + ChatFormatting.RED + "Disabling!", Type.Info));
@@ -117,7 +127,7 @@ public class Surround extends Module {
 
         switch (disable.getValue()) {
             case 0:
-                if (!mc.player.onGround)
+                if (mc.player.posY > originalPos.getY())
                     this.disable();
                 break;
             case 1:
@@ -144,9 +154,8 @@ public class Surround extends Module {
 
                 InventoryUtil.switchToSlot(onlyObsidian.getValue() ? InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) : InventoryUtil.getAnyBlockInHotbar());
 
-                if (obsidianSlot != -1) {
-                    BlockUtil.placeBlock(new BlockPos(placePositions.add(mc.player.getPositionVector())), rotate.getValue(), strict.getValue());
-                }
+                if (obsidianSlot != -1)
+                    BlockUtil.placeBlock(new BlockPos(placePositions.add(mc.player.getPositionVector())), rotate.getValue(), strict.getValue(), raytrace.getValue(), packet.getValue(), swingArm.getValue(), antiGlitch.getValue());
 
                 renderBlock = new BlockPos(placePositions.add(mc.player.getPositionVector()));
                 blocksPlaced++;

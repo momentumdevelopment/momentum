@@ -9,7 +9,6 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.RenderUtil;
@@ -43,6 +42,10 @@ public class AutoTrap extends Module {
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
     public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
+    public static Checkbox raytrace = new Checkbox("Raytrace", false);
+    public static Checkbox packet = new Checkbox("Packet", false);
+    public static Checkbox swingArm = new Checkbox("Swing Arm", true);
+    public static Checkbox antiGlitch = new Checkbox("Anti-Glitch", false);
     public static Checkbox rotate = new Checkbox("Rotate", true);
     public static Checkbox strict = new Checkbox("NCP Strict", true);
     public static Checkbox disable = new Checkbox("Disables", true);
@@ -57,6 +60,10 @@ public class AutoTrap extends Module {
         addSetting(range);
         addSetting(autoSwitch);
         addSetting(blocksPerTick);
+        addSetting(raytrace);
+        addSetting(packet);
+        addSetting(swingArm);
+        addSetting(antiGlitch);
         addSetting(rotate);
         addSetting(strict);
         addSetting(disable);
@@ -104,10 +111,10 @@ public class AutoTrap extends Module {
                         InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
 
                     if (obsidianSlot != -1)
-                        BlockUtil.placeBlock(new BlockPos(autoTrapBox.add(target.getPositionVector())), rotate.getValue(), strict.getValue());
+                        BlockUtil.placeBlock(new BlockPos(autoTrapBox.add(target.getPositionVector())), rotate.getValue(), strict.getValue(), raytrace.getValue(), packet.getValue(), swingArm.getValue(), antiGlitch.getValue());
 
                     placeBlock = new BlockPos(autoTrapBox.add(target.getPositionVector()));
-                    MessageUtil.sendClientMessage("Trapping " + target.getName() + "!");
+                    NotificationManager.addNotification(new Notification("Trapping: " + target.getName() + "!", Type.Info));
 
                     blocksPlaced++;
 

@@ -43,6 +43,10 @@ public class HoleFill extends Module {
     public static Mode block = new Mode("Block", "Obsidian", "EnderChest", "Web", "Pressure Plate");
     public static Slider range = new Slider("Range", 0.0D, 5.0D, 10.0D, 0);
     public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
+    public static Checkbox raytrace = new Checkbox("Raytrace", false);
+    public static Checkbox packet = new Checkbox("Packet", false);
+    public static Checkbox swingArm = new Checkbox("Swing Arm", true);
+    public static Checkbox antiGlitch = new Checkbox("Anti-Glitch", false);
     public static Checkbox rotate = new Checkbox("Rotate", false);
     public static Checkbox strict = new Checkbox("NCP Strict", true);
     public static Checkbox disable = new Checkbox("Disables", false);
@@ -56,6 +60,10 @@ public class HoleFill extends Module {
         addSetting(block);
         addSetting(range);
         addSetting(autoSwitch);
+        addSetting(raytrace);
+        addSetting(packet);
+        addSetting(swingArm);
+        addSetting(antiGlitch);
         addSetting(rotate);
         addSetting(strict);
         addSetting(disable);
@@ -103,7 +111,7 @@ public class HoleFill extends Module {
             InventoryUtil.switchToSlot(getItem());
 
         if (obsidianSlot != -1)
-            BlockUtil.placeBlock(fillBlock, rotate.getValue(), strict.getValue());
+            BlockUtil.placeBlock(fillBlock, rotate.getValue(), strict.getValue(), raytrace.getValue(), packet.getValue(), swingArm.getValue(), antiGlitch.getValue());
     }
 
     @SubscribeEvent

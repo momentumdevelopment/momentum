@@ -46,7 +46,8 @@ public class Aura extends Module {
     public static SubSlider tickDelay = new SubSlider(delay, "Tick Delay", 0.0D, 10.0D, 20.0D, 1);
     public static SubCheckbox sync = new SubCheckbox(delay, "TPS Sync", false);
 
-    public static Checkbox useTimer = new Checkbox("Use Timer", true);
+    public static Checkbox useTimer = new Checkbox("Use Timer", false);
+    public static SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.1D, 1.2D, 2.0D, 2);
 
     public static Mode weaponCheck = new Mode("Weapon", "Swing", "Damage");
     public static SubCheckbox autoSwitch = new SubCheckbox(weaponCheck, "Auto Switch", true);
@@ -56,7 +57,7 @@ public class Aura extends Module {
     public static Checkbox raytrace = new Checkbox("Ray-Trace", false);
 
     public static Checkbox pause = new Checkbox("Pause", true);
-    public static SubCheckbox crystalPause = new SubCheckbox(pause, "When Crystalling", false);
+    public static SubCheckbox crystalPause = new SubCheckbox(pause, "When Crystalling", true);
     public static SubCheckbox holePause = new SubCheckbox(pause, "When not in Hole", false);
     public static SubCheckbox eatPause = new SubCheckbox(pause, "When Eating", false);
 
@@ -75,6 +76,7 @@ public class Aura extends Module {
         addSetting(animals);
         addSetting(projectiles);
         addSetting(delay);
+        addSetting(useTimer);
         addSetting(weaponCheck);
         addSetting(raytrace);
         addSetting(pause);
@@ -93,6 +95,9 @@ public class Aura extends Module {
     public void onUpdate() {
         if (nullCheck())
             return;
+
+        if (useTimer.getValue())
+            mc.timer.tickLength = (float) (50f / timerTicks.getValue());
 
         currentTarget = WorldUtil.getTarget(range.getValue(), mode.getValue());
 
@@ -125,7 +130,7 @@ public class Aura extends Module {
         if (swordOnly.getValue() && !(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword))
             return;
 
-        if (raytrace.getValue() && (!mc.player.canEntityBeSeen(currentTarget) && !EntityUtil.canEntityFeetBeSeen(currentTarget)))
+        if (raytrace.getValue() && (!RaytraceUtil.raytraceEntity(currentTarget) && !RaytraceUtil.raytraceFeet(currentTarget)))
             return;
 
         if (crystalPause.getValue() && (ModuleManager.getModuleByName("AutoCrystal").isEnabled() || mc.player.getHeldItemMainhand().getItem() instanceof ItemEndCrystal))

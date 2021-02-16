@@ -1,6 +1,7 @@
 package me.linus.momentum.managers;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
+import me.linus.momentum.util.client.MathUtil;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
@@ -13,11 +14,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class TickManager {
 
-    private long prevTime;
+    public long prevTime;
     public static float[] TPS = new float[20];
-    private int currentTick;
-
-    private float lastTick = -1;
+    public int currentTick;
 
     public TickManager() {
         prevTime = -1;
@@ -27,10 +26,6 @@ public class TickManager {
         }
 
         MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    public float getLastTick() {
-        return lastTick;
     }
 
     public static float getTPS() {
@@ -46,7 +41,7 @@ public class TickManager {
             }
         }
 
-        return MathHelper.clamp((tickRate / tickCount), 0.0f, 20.0f);
+        return (float) MathUtil.roundAvoid(MathUtil.clamp((tickRate / tickCount), 0.0f, 20.0f), 2);
     }
 
     @SubscribeEvent
@@ -54,7 +49,6 @@ public class TickManager {
         if (event.getPacket() instanceof SPacketTimeUpdate) {
             if (prevTime != -1) {
                 TPS[currentTick % TPS.length] = MathHelper.clamp((20.0f / ((float) (System.currentTimeMillis() - prevTime) / 1000.0f)), 0.0f, 20.0f);
-                lastTick = TPS[currentTick % TPS.length];
                 currentTick++;
             }
 

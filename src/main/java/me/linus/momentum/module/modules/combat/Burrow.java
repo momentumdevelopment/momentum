@@ -33,6 +33,7 @@ public class Burrow extends Module {
     @Override
     public void setup() {
         addSetting(mode);
+
         addSetting(rotate);
         addSetting(centerPlayer);
         addSetting(instant);
@@ -73,7 +74,7 @@ public class Burrow extends Module {
         if (mc.player.posY > originalPos.getY() + 1.2) {
             InventoryUtil.switchToSlot(Blocks.OBSIDIAN);
 
-            BlockUtil.placeBlock(originalPos, rotate.getValue(), false);
+            BlockUtil.placeBlock(originalPos, rotate.getValue(), false, false, false, true, false);
 
             if (onGround.getValue())
                 mc.player.onGround = true;
