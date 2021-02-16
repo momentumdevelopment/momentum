@@ -47,17 +47,18 @@ import java.util.List;
  * @since 11/24/2020
  */
 
-// TODO: fix break calcs and wall placements
+// TODO: fix wall placements
 public class AutoCrystal extends Module {
     public AutoCrystal() {
         super("AutoCrystal", Category.COMBAT, "Automatically places and explodes crystals");
     }
 
     public static Checkbox explode = new Checkbox("Break", true);
-    public static SubMode breakMode = new SubMode(explode, "Mode", "All", "Only Own");
+    public static SubMode breakMode = new SubMode(explode, "Mode", "All");
     public static SubMode breakHand = new SubMode(explode, "BreakHand", "OffHand", "MainHand", "Both", "MultiSwing");
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 80.0D, 200.0D, 0);
+    public static SubSlider minBreakDamage = new SubSlider(explode, "Break Damage", 0.0D, 4.0D, 36.0D, 0);
     public static SubSlider breakAttempts = new SubSlider(explode, "Break Attempts", 0.0D, 1.0D, 5.0D, 0);
     public static SubMode sync = new SubMode(explode, "Sync", "None", "Instant", "Attack", "Sound", "Unsafe");
     public static SubCheckbox packetBreak = new SubCheckbox(explode, "Packet Break", true);
@@ -221,7 +222,7 @@ public class AutoCrystal extends Module {
                 if (sync.getValue() == 1)
                     crystal.getCrystal().setDead();
 
-               breakTimer.reset();
+                breakTimer.reset();
             }
 
             if (!serverConfirm.getValue())
@@ -325,8 +326,8 @@ public class AutoCrystal extends Module {
             return false;
         else if (Keyboard.isKeyDown(forceFaceplace.getKey()))
             return false;
-
-        return true;
+        else
+            return true;
     }
 
     public void handleRotations() {

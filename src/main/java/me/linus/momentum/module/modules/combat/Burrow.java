@@ -63,6 +63,9 @@ public class Burrow extends Module {
 
         NotificationManager.addNotification(new Notification("Attempting to trigger a rubberband!", Type.Info));
 
+        if (instant.getValue())
+            mc.timer.tickLength = 5;
+
         mc.player.jump();
     }
 
@@ -78,9 +81,6 @@ public class Burrow extends Module {
 
             if (onGround.getValue())
                 mc.player.onGround = true;
-
-            if (instant.getValue())
-                mc.timer.tickLength = 1;
 
             switch (mode.getValue()) {
                 case 0:

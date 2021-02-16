@@ -18,7 +18,7 @@ public class SpeedMine extends Module {
         super("SpeedMine", Category.PLAYER, "Allows you to mine faster");
     }
 
-    public static Mode mode = new Mode("Mode", "Packet", "Damage", "Creative", "Instant", "Delay", "Vanilla");
+    public static Mode mode = new Mode("Mode", "Packet", "Damage", "Creative", "Instant", "Delay", "Vanilla", "Fake");
 
     @Override
     public void setup() {
@@ -28,9 +28,6 @@ public class SpeedMine extends Module {
     @Override
     public void onUpdate() {
         if (nullCheck())
-            return;
-
-        if (!this.isEnabled())
             return;
 
         if (BlockUtil.getBlockResistance(mc.objectMouseOver.getBlockPos()).equals(BlockUtil.BlockResistance.Breakable) && mc.playerController.isHittingBlock) {
@@ -59,6 +56,9 @@ public class SpeedMine extends Module {
                     break;
                 case 5:
                     mc.player.addPotionEffect(new PotionEffect(new PotionEffect(MobEffects.HASTE, 10000, 1, false, false)));
+                    break;
+                case 6:
+                    mc.world.setBlockToAir(mc.objectMouseOver.getBlockPos());
                     break;
             }
         }
