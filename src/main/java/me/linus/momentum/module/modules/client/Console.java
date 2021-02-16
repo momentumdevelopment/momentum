@@ -13,7 +13,7 @@ import org.lwjgl.input.Keyboard;
 public class Console extends Module {
     public Console() {
         super("Console", Category.CLIENT, "Opens the console window");
-        this.getKeybind().setKeyCode(Keyboard.KEY_SLASH);
+        this.getKeybind().setKeyCode(Keyboard.KEY_SEMICOLON);
     }
 
     public static WindowScreen windowScreen = new WindowScreen();
