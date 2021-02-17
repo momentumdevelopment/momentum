@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 @Cancelable
 public class PacketSendEvent extends PacketEvent {
-	public PacketSendEvent(Packet<?> packet, Stage stage) {
+	public PacketSendEvent(Packet packet, Stage stage) {
 		super(packet, stage);
 	}
 }

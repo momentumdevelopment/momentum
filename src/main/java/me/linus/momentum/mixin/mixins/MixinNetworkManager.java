@@ -28,6 +28,7 @@ public class MixinNetworkManager {
 	public void onPacketSend(Packet<?> packet, CallbackInfo ci) {
 		PacketSendEvent event = new PacketSendEvent(packet, Stage.PRE);
 		MinecraftForge.EVENT_BUS.post(event);
+
 		if (event.isCanceled())
 			ci.cancel();
 	}
@@ -36,7 +37,8 @@ public class MixinNetworkManager {
 	public void onPacketReceive(ChannelHandlerContext chc, Packet<?> packet, CallbackInfo ci) {
 		PacketReceiveEvent event = new PacketReceiveEvent(packet, Stage.PRE);
 		MinecraftForge.EVENT_BUS.post(event);
-		if (event.isCanceled()) 
+
+		if (event.isCanceled())
 			ci.cancel();
 	}
 

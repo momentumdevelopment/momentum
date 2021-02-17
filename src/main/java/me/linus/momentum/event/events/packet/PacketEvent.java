@@ -10,14 +10,14 @@ import net.minecraft.network.Packet;
 
 public class PacketEvent extends MomentumEvent {
 
-	Packet<?> packet;
+	Packet packet;
 
-	public PacketEvent(final Packet<?> packet, Stage stage) {
+	public PacketEvent(final Packet packet, Stage stage) {
 		super(stage);
 		this.packet = packet;
 	}
 	
-	public Packet<?> getPacket(){
+	public Packet getPacket(){
 		return this.packet;
 	}
 }

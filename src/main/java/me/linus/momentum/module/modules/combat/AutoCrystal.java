@@ -104,7 +104,7 @@ public class AutoCrystal extends Module {
     public static SubSlider armorScale = new SubSlider(facePlace, "Armor Scale", 0.0D, 15.0D, 100.0D, 0);
     public static SubCheckbox gearPlay = new SubCheckbox(facePlace, "Gear Play", false);
     public static SubSlider expScale = new SubSlider(facePlace, "EXP Scale", 0.0D, 1.0D, 6.0D, 0);
-    public static SubCheckbox facePlaceInHole = new SubCheckbox(facePlace, "FacePlace HoleCampers", false);
+    public static SubCheckbox facePlaceInHole = new SubCheckbox(facePlace, "HoleCampers", false);
     public static SubKeybind forceFaceplace = new SubKeybind(facePlace, "Force FacePlace", Keyboard.KEY_O);
 
     public static Checkbox calculations = new Checkbox("Calculations", true);
