@@ -1,5 +1,6 @@
 package me.linus.momentum.event;
 
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
@@ -7,6 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * @since 11/21/2020
  */
 
+@Cancelable
 public class MomentumEvent extends Event {
 	
 	Stage stage;

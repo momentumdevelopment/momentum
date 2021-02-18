@@ -16,6 +16,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.client.CPacketUseEntity;
+import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.CombatRules;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -42,6 +43,13 @@ public class CrystalUtil implements MixinInterface {
             mc.player.connection.sendPacket(new CPacketUseEntity(crystal));
         else
             mc.playerController.attackEntity(mc.player, crystal);
+    }
+
+    public static void attackCrystal(int entityId) {
+        CPacketUseEntity sequentialCrystal = new CPacketUseEntity();
+        sequentialCrystal.entityId = entityId;
+        sequentialCrystal.action = CPacketUseEntity.Action.ATTACK;
+        mc.player.connection.sendPacket(sequentialCrystal);
     }
 
     public static boolean attackCheck(Entity crystal) {

@@ -42,7 +42,7 @@ public class ESP extends Module {
     public static ColorPicker vehiclePicker = new ColorPicker(vehicles, "Vehicle Picker", new Color(199, 103, 19));
 
     public static Checkbox crystals = new Checkbox("Crystals", true);
-    public static ColorPicker crystalPicker = new ColorPicker(crystals, "Crystal Picker", new Color(199, 19, 139));
+    public static ColorPicker crystalPicker = new ColorPicker(crystals, "Crystal Picker", new Color(199, 19, 139, 30));
 
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 2.5D, 5.0D, 1);
 

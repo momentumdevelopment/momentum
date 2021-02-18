@@ -42,6 +42,7 @@ public class HoleFill extends Module {
     public static Mode mode = new Mode("Mode", "Smart", "All");
     public static Mode block = new Mode("Block", "Obsidian", "EnderChest", "Web", "Pressure Plate");
     public static Slider range = new Slider("Range", 0.0D, 5.0D, 10.0D, 0);
+    public static Slider smartRange = new Slider("Smart Range", 0.0D, 2.0D, 10.0D, 0);
     public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
     public static Checkbox raytrace = new Checkbox("Raytrace", false);
     public static Checkbox packet = new Checkbox("Packet", false);
@@ -138,7 +139,7 @@ public class HoleFill extends Module {
     List<BlockPos> getHoles() {
         switch (mode.getValue()) {
             case 0:
-                return BlockUtil.getNearbyBlocks(fillTarget, range.getValue(), false).stream().filter(HoleUtil::isHole).filter(blockPos -> mc.player.getDistanceSq(blockPos) < MathUtil.square(range.getValue())).collect(Collectors.toList());
+                return BlockUtil.getNearbyBlocks(fillTarget, smartRange.getValue(), false).stream().filter(HoleUtil::isHole).filter(blockPos -> mc.player.getDistanceSq(blockPos) < MathUtil.square(range.getValue())).collect(Collectors.toList());
             case 1:
                 return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(HoleUtil::isHole).collect(Collectors.toList());
         }

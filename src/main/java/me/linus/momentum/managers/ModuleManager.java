@@ -143,20 +143,20 @@ public class ModuleManager implements MixinInterface {
 			new NoRender(),
 			new Skeleton(),
 			new SkyColor(),
-		 	new StorageESP(),
-		 	new Tracers(),
+			new StorageESP(),
+			new Tracers(),
 			new Trajectories(),
 			new VoidESP(),
 			new Weather(),
 
 			// bot
 			new Milo()
-		);
-	
+	);
+
 	public static List<Module> getModules(){
 		return new ArrayList<>(modules);
 	}
-	
+
 	public static List<Module> getModulesInCategory(Category cat){
 		List<Module> module = new ArrayList<>();
 
@@ -167,11 +167,11 @@ public class ModuleManager implements MixinInterface {
 
 		return module;
 	}
-	
+
 	public static Module getModuleByName(String name) {
 		return modules.stream().filter(module -> module.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
-	
+
 	public static Module getModuleByClass(Class<?> clazz) {
 		return modules.stream().filter(module -> module.getClass().equals(clazz)).findFirst().orElse(null);
 	}
@@ -188,6 +188,11 @@ public class ModuleManager implements MixinInterface {
 		ModuleManager.onFastUpdate();
 	}
 
+	@SubscribeEvent
+	public void onServerTick(TickEvent.ServerTickEvent event) {
+		ModuleManager.onServerUpdate();
+	}
+
 	// TODO: add null checks to every override so the try catch in this is unneccesary
 	public static void onUpdate() {
 		for (Module m : modules) {
@@ -199,7 +204,7 @@ public class ModuleManager implements MixinInterface {
 			}
 		}
 	}
-	
+
 	public static void onFastUpdate() {
 		for (Module m : modules) {
 			try {
@@ -210,7 +215,18 @@ public class ModuleManager implements MixinInterface {
 			}
 		}
 	}
-	
+
+	public static void onServerUpdate() {
+		for (Module m : modules) {
+			try {
+				if (m.isEnabled())
+					m.onServerUpdate();
+			} catch (Exception exception) {
+				exception.printStackTrace();
+			}
+		}
+	}
+
 	public static void keyListen() {
 		if (mc.currentScreen == null) {
 			for (Module m : modules) {

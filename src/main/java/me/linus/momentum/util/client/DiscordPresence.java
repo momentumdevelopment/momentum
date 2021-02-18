@@ -28,10 +28,7 @@ public class DiscordPresence implements MixinInterface {
         rpc.Discord_UpdatePresence(rp);
 
         new Thread(() -> {
-            if (mc.player == null)
-                return;
-
-            while (!Thread.currentThread().isInterrupted()) {
+           while (!Thread.currentThread().isInterrupted()) {
                 try {
                     details = "Main Menu";
                     state = mc.player.getName();

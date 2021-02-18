@@ -27,16 +27,16 @@ public abstract class Module implements MixinInterface {
 	private Category category;
 	private String description;
 	private KeyBinding key;
-	
+
 	private boolean enabled;
 	private boolean opened;
 	private boolean drawn;
 	public boolean isKeyDown = false;
 	private boolean isBinding;
 	public float remainingAnimation = 0.0f;
-	
+
 	public List<Setting> settingsList = new ArrayList<>();
-	
+
 	public Module(String name, Category category, @Nullable String description) {
 		this.name = name;
 		this.category = category;
@@ -44,29 +44,29 @@ public abstract class Module implements MixinInterface {
 		this.enabled = false;
 		this.opened = false;
 		this.drawn = true;
-		
+
 		this.key = new KeyBinding(name, Keyboard.KEY_NONE, Momentum.NAME);
 		ClientRegistry.registerKeyBinding(this.key);
-		
+
 		this.setup();
 	}
-	
+
 	public void setup() {
-		
+
 	}
 
 	public void addSetting(Setting s) {
 		settingsList.add(s);
 	}
-	
+
 	public boolean isEnabled() {
 		return this.enabled;
 	}
-	
+
 	public boolean isKeyDown() {
 		return this.isKeyDown;
 	}
-	
+
 	public void setKeyDown(boolean b) {
 		this.isKeyDown = b;
 	}
@@ -79,7 +79,7 @@ public abstract class Module implements MixinInterface {
 
 		MinecraftForge.EVENT_BUS.register(this);
 	}
-	
+
 	public void onDisable() {
 		remainingAnimation = 0.0f;
 		mc.timer.tickLength = 50;
@@ -93,19 +93,23 @@ public abstract class Module implements MixinInterface {
 	public void onToggle() {
 		remainingAnimation = 0.0f;
 	}
-	
+
 	public void onUpdate() {
-		
+
 	}
 
 	public void onFastUpdate() {
-		
+
+	}
+
+	public void onServerUpdate() {
+
 	}
 
 	public void onValueChange() {
 
 	}
-	
+
 	public void toggle() {
 		this.enabled = !this.enabled;
 		try {
@@ -118,7 +122,7 @@ public abstract class Module implements MixinInterface {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void enable() {
 		if (!this.isEnabled()) {
 			this.enabled = true;
@@ -129,7 +133,7 @@ public abstract class Module implements MixinInterface {
 			}
 		}
 	}
-	
+
 	public void disable() {
 		if (this.isEnabled()) {
 			this.enabled = false;
@@ -148,19 +152,19 @@ public abstract class Module implements MixinInterface {
 	public boolean nullCheck() {
 		return (mc.player == null || mc.world == null);
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public Category getCategory() {
 		return this.category;
 	}
-	
+
 	public String getDescription() {
 		return this.description;
 	}
-	
+
 	public KeyBinding getKeybind() {
 		return this.key;
 	}
@@ -168,23 +172,23 @@ public abstract class Module implements MixinInterface {
 	public String getHUDData() {
 		return "";
 	}
-	
+
 	public boolean hasSettings() {
 		return this.settingsList.size() > 0;
 	}
-	
+
 	public List<Setting> getSettings(){
 		return this.settingsList;
 	}
-	
+
 	public void toggleState() {
 		this.opened = !this.opened;
 	}
-	
+
 	public boolean isOpened() {
 		return this.opened;
 	}
-	
+
 	public boolean isBinding() {
 		return this.isBinding;
 	}
@@ -192,7 +196,7 @@ public abstract class Module implements MixinInterface {
 	public boolean isDrawn() {
 		return this.drawn;
 	}
-	
+
 	public void setBinding(boolean b) {
 		this.isBinding = b;
 	}
@@ -209,13 +213,13 @@ public abstract class Module implements MixinInterface {
 		MOVEMENT("Movement"),
 		RENDER("Render"),
 		BOT("Bot");
-		
+
 		String name;
 
 		Category(String name) {
 			this.name = name;
 		}
-		
+
 		public String getName() {
 			return this.name;
 		}

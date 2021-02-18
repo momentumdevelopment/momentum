@@ -62,7 +62,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
     @Override
     public void drawTitles(String name, int x, int y) {
         Render2DUtil.drawRect(x - 2, y, (x + width + 2), y + height, 0, ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR, -1, false, Render2DBuilder.Render2DMode.Normal);
-        FontUtil.drawString(name, (x + ((x + width) - x) / 2 - (ModuleManager.getModuleByName("Font").isEnabled() ? FontUtil.getStringWidth(name) : mc.fontRenderer.getStringWidth(name)) / 2), y + 3, -1);
+        FontUtil.drawString(name, (x + ((x + width) - x) / 2 - FontUtil.getStringWidth(name) / 2), y + 3, -1);
     }
 
     @Override

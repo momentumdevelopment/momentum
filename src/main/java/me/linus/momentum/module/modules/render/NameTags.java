@@ -12,6 +12,7 @@ import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
+import me.linus.momentum.util.world.RaytraceUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.enchantment.Enchantment;
@@ -79,7 +80,7 @@ public class NameTags extends Module {
         mc.world.playerEntities.stream().filter(entity -> entity instanceof EntityPlayer && EntityUtil.isLiving(entity) && entity != mc.getRenderViewEntity()).forEach(entityPlayer -> {
             RenderUtil.camera.setPosition(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
 
-            if (!mc.player.canEntityBeSeen(entityPlayer) && onlyInViewFrustrum.getValue())
+            if (!RaytraceUtil.raytraceEntity(entityPlayer) && onlyInViewFrustrum.getValue())
                 return;
 
             nametagEntities.add(entityPlayer);
@@ -88,7 +89,6 @@ public class NameTags extends Module {
         nametagEntities.sort((entity1, entity2) -> Double.compare(entity2.getDistance(mc.getRenderViewEntity()), entity1.getDistance(mc.getRenderViewEntity())));
         nametagEntities.stream().forEach(entityPlayer -> {
             Entity entity2 = mc.getRenderViewEntity();
-
             Vec3d pos = EntityUtil.interpolateEntityByTicks(entityPlayer, event.getPartialTicks());
 
             double x = pos.x;
@@ -121,32 +121,35 @@ public class NameTags extends Module {
             RenderUtil.drawNametag(nameTag, x, y, z, width, height, distanceScale, background.getValue());
             GlStateManager.pushMatrix();
 
-            if (armor.getValue()) {
-                Iterator<ItemStack> items = entityPlayer.getArmorInventoryList().iterator();
-                ArrayList<ItemStack> stacks = new ArrayList<>();
+            Iterator<ItemStack> armorStack = entityPlayer.getArmorInventoryList().iterator();
+            ArrayList<ItemStack> stacks = new ArrayList<>();
 
+            if (item.getValue())
                 stacks.add(entityPlayer.getHeldItemOffhand());
 
-                while (items.hasNext()) {
-                    ItemStack stack = items.next();
-                    if (!stack.isEmpty())
-                        stacks.add(stack);
-                }
+            while (armorStack.hasNext()) {
+                ItemStack stack = armorStack.next();
+                if (!stack.isEmpty() && armor.getValue())
+                    stacks.add(stack);
+            }
 
+            if (item.getValue())
                 stacks.add(entityPlayer.getHeldItemMainhand());
 
-                Collections.reverse(stacks);
+            Collections.reverse(stacks);
 
-                int currX = (int) -width;
+            int currX = (int) ((x + ((x + width) - x) / 2) - width / 2);
 
-                for (ItemStack stack : stacks) {
-                    renderItemStack(stack, currX, -32, 0);
+            for (ItemStack stack : stacks) {
+                renderItemStack(stack, currX, -32, 0);
+
+                if (enchants.getValue())
                     renderItemEnchantments(stack, currX, -62);
-                    currX += 16;
-                }
 
-                GlStateManager.popMatrix();
+                currX += 16;
             }
+
+            GlStateManager.popMatrix();
 
             GlStateManager.enableDepth();
             GlStateManager.disableBlend();
@@ -185,53 +188,50 @@ public class NameTags extends Module {
     }
 
     public void renderItemEnchantments(ItemStack itemStack, int x, int y) {
-        if (enchants.getValue()) {
-            GlStateManager.scale(0.5f, 0.5f, 0.5f);
-            Iterator<Enchantment> iterator2;
-            Iterator<Enchantment> iterator = iterator2 = EnchantmentHelper.getEnchantments(itemStack).keySet().iterator();
-            while (iterator.hasNext()) {
-                Enchantment enchantment;
-                if ((enchantment = iterator2.next()) == null)
-                    iterator = iterator2;
+        GlStateManager.scale(0.5f, 0.5f, 0.5f);
+        Iterator<Enchantment> iterator2;
+        Iterator<Enchantment> iterator = iterator2 = EnchantmentHelper.getEnchantments(itemStack).keySet().iterator();
 
-                else {
-                    FontUtil.drawString(getEnchantName(enchantment, EnchantmentHelper.getEnchantmentLevel(enchantment, itemStack)), (float) (x * 2), (float) y, -1);
+        while (iterator.hasNext()) {
+            Enchantment enchantment;
+            if ((enchantment = iterator2.next()) == null)
+                iterator = iterator2;
 
-                    y += 8;
-                    iterator = iterator2;
-                }
+            else {
+                FontUtil.drawString(getEnchantName(enchantment, EnchantmentHelper.getEnchantmentLevel(enchantment, itemStack)), (float) (x * 2), (float) y, -1);
+
+                y += 8;
+                iterator = iterator2;
             }
-
-            if (itemStack.getItem().equals(Items.GOLDEN_APPLE) && itemStack.hasEffect())
-                FontUtil.drawString(TextFormatting.DARK_RED + "God", (float) (x * 2), (float) y, -1);
-
-            GlStateManager.scale(2.0f, 2.0f, 2.0f);
         }
+
+        if (itemStack.getItem().equals(Items.GOLDEN_APPLE) && itemStack.hasEffect())
+            FontUtil.drawString(TextFormatting.DARK_RED + "God", (float) (x * 2), (float) y, -1);
+
+        GlStateManager.scale(2.0f, 2.0f, 2.0f);
     }
 
     public void renderItemStack(ItemStack itemStack, int x, int y, int scaled) {
-        if (item.getValue()) {
-            GlStateManager.pushMatrix();
-            GlStateManager.depthMask(true);
-            GlStateManager.clear(256);
-            RenderHelper.enableStandardItemLighting();
-            mc.getRenderItem().zLevel = -150.0f;
-            GlStateManager.disableAlpha();
-            GlStateManager.enableDepth();
-            GlStateManager.disableCull();
-            int scaledFinal = (scaled > 4) ? ((scaled - 4) * 8 / 2) : 0;
-            mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, x, y + scaledFinal);
-            mc.getRenderItem().renderItemOverlays(mc.fontRenderer, itemStack, x, y + scaledFinal);
-            mc.getRenderItem().zLevel = 0.0f;
-            RenderHelper.disableStandardItemLighting();
-            GlStateManager.enableCull();
-            GlStateManager.enableAlpha();
-            GlStateManager.scale(0.5f, 0.5f, 0.5f);
-            GlStateManager.disableDepth();
-            GlStateManager.enableDepth();
-            GlStateManager.scale(2.0f, 2.0f, 2.0f);
-            GlStateManager.popMatrix();
-        }
+        GlStateManager.pushMatrix();
+        GlStateManager.depthMask(true);
+        GlStateManager.clear(256);
+        RenderHelper.enableStandardItemLighting();
+        mc.getRenderItem().zLevel = -150.0f;
+        GlStateManager.disableAlpha();
+        GlStateManager.enableDepth();
+        GlStateManager.disableCull();
+        int scaledFinal = (scaled > 4) ? ((scaled - 4) * 8 / 2) : 0;
+        mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, x, y + scaledFinal);
+        mc.getRenderItem().renderItemOverlays(mc.fontRenderer, itemStack, x, y + scaledFinal);
+        mc.getRenderItem().zLevel = 0.0f;
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.enableCull();
+        GlStateManager.enableAlpha();
+        GlStateManager.scale(0.5f, 0.5f, 0.5f);
+        GlStateManager.disableDepth();
+        GlStateManager.enableDepth();
+        GlStateManager.scale(2.0f, 2.0f, 2.0f);
+        GlStateManager.popMatrix();
     }
 
     public String generateNameTag(EntityPlayer entityPlayer) {
@@ -274,15 +274,9 @@ public class NameTags extends Module {
     }
 
     public String generatePing(EntityPlayer entityPlayer) {
-        try {
-            if (!mc.isSingleplayer())
-                return ping.getValue() ? " " + mc.getConnection().getPlayerInfo(entityPlayer.getUniqueID()).getResponseTime() + "ms" : "";
-            else
-                return ping.getValue() ? " -1 ms" : "";
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return " ";
+        if (!mc.isSingleplayer())
+            return ping.getValue() ? " " + mc.getConnection().getPlayerInfo(entityPlayer.getUniqueID()).getResponseTime() + "ms" : "";
+        else
+            return ping.getValue() ? " -1 ms" : "";
     }
 }
