@@ -111,7 +111,6 @@ public class AutoCrystal extends Module {
     public static SubMode timing = new SubMode(calculations, "Timing", "Linear", "Sequential", "Synchronous", "Tick");
     public static SubMode tick = new SubMode(calculations, "Tick", "Client", "Server", "Taiwan");
     public static SubMode heuristic = new SubMode(calculations, "Heuristic", "Damage", "MiniMax", "Atomic");
-    public static SubMode damageCalculation = new SubMode(calculations, "Damage Calculation", "Semi", "Full");
     public static SubCheckbox serverConfirm = new SubCheckbox(calculations, "Server Confirm", true);
     public static SubCheckbox verifyPlace = new SubCheckbox(calculations, "Verify Placements", false);
 
@@ -252,13 +251,37 @@ public class AutoCrystal extends Module {
         if (handlePause() && (pauseMode.getValue() == 0 || pauseMode.getValue() == 2))
             return;
 
-        if (damageCalculation.getValue() == 1)
-            for (EntityPlayer calculatedTarget : WorldUtil.getNearbyPlayers(enemyRange.getValue())) {
-                crystalPosition = searchPosition(calculatedTarget);
-            }
+        List<CrystalPosition> crystalPositions = new ArrayList<>();
+        CrystalPosition tempPosition;
 
-        else
-            crystalPosition = searchPosition(crystalTarget);
+        for (BlockPos calculatedPosition : CrystalUtil.crystalBlocks(mc.player, placeRange.getValue(), prediction.getValue(), !multiPlace.getValue(), blockCalc.getValue())) {
+            if (!RaytraceUtil.raytraceBlock(calculatedPosition) && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(wallRange.getValue()))
+                continue;
+
+            if (verifyPlace.getValue() && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(!RaytraceUtil.raytraceBlock(calculatedPosition) ? wallRange.getValue() : breakRange.getValue()))
+                continue;
+
+            double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, crystalTarget);
+            double calculatedSelfDamage = mc.player.capabilities.isCreativeMode ? 0 : CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, mc.player);
+
+            if (calculatedTargetDamage < minDamage.getValue() && handleMinDamage())
+                continue;
+
+            if (calculatedSelfDamage > maxLocalDamage.getValue())
+                continue;
+
+            crystalPositions.add(new CrystalPosition(calculatedPosition, calculatedTargetDamage, calculatedSelfDamage));
+        }
+
+        tempPosition = crystalPositions.stream().max(Comparator.comparing(idealCrystalPosition -> CrystalUtil.getHeuristic(idealCrystalPosition, heuristic.getValue()))).orElse(null);
+
+        if (tempPosition == null) {
+            crystalTarget = null;
+            crystalRotation.restoreRotation();
+            return;
+        }
+
+        crystalPosition = tempPosition;
 
         switch (autoSwitch.getValue()) {
             case 1:
@@ -286,40 +309,6 @@ public class AutoCrystal extends Module {
                 }
             }
         }
-    }
-
-    public CrystalPosition searchPosition(EntityPlayer calculatedTarget) {
-        List<CrystalPosition> crystalPositions = new ArrayList<>();
-        CrystalPosition tempPosition;
-
-        for (BlockPos calculatedPosition : CrystalUtil.crystalBlocks(mc.player, placeRange.getValue(), prediction.getValue(), !multiPlace.getValue(), blockCalc.getValue())) {
-            if (!RaytraceUtil.raytraceBlock(calculatedPosition) && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(wallRange.getValue()))
-                continue;
-
-            if (verifyPlace.getValue() && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(!RaytraceUtil.raytraceBlock(calculatedPosition) ? wallRange.getValue() : breakRange.getValue()))
-                continue;
-
-            double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, calculatedTarget);
-            double calculatedSelfDamage = mc.player.capabilities.isCreativeMode ? 0 : CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, mc.player);
-
-            if (calculatedTargetDamage < minDamage.getValue() && handleMinDamage())
-                continue;
-
-            if (calculatedSelfDamage > maxLocalDamage.getValue())
-                continue;
-
-            crystalPositions.add(new CrystalPosition(calculatedPosition, calculatedTargetDamage, calculatedSelfDamage));
-        }
-
-        tempPosition = crystalPositions.stream().max(Comparator.comparing(idealCrystalPosition -> CrystalUtil.getHeuristic(idealCrystalPosition, heuristic.getValue()))).orElse(null);
-
-        if (tempPosition == null) {
-            tempPosition = new CrystalPosition(BlockPos.ORIGIN, 0, 0);
-            crystalTarget = null;
-            crystalRotation.restoreRotation();
-        }
-
-        return tempPosition;
     }
 
     public boolean handlePause() {
