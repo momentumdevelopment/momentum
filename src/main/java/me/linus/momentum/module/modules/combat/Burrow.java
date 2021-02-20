@@ -40,13 +40,16 @@ public class Burrow extends Module {
         addSetting(onGround);
     }
 
-    BlockPos originalPos;
-    Vec3d center = null;
+    private BlockPos originalPos;
+    private Vec3d center = null;
+    private float oldTickLength = mc.timer.tickLength;
 
     @Override
     public void onEnable() {
         if (nullCheck())
             return;
+
+        oldTickLength = mc.timer.tickLength;
 
         originalPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
         center = PlayerUtil.getCenter(mc.player.posX, mc.player.posY, mc.player.posZ);
@@ -64,7 +67,7 @@ public class Burrow extends Module {
         NotificationManager.addNotification(new Notification("Attempting to trigger a rubberband!", Type.Info));
 
         if (instant.getValue())
-            mc.timer.tickLength = 5;
+            mc.timer.tickLength = 1f;
 
         mc.player.jump();
     }
@@ -96,6 +99,11 @@ public class Burrow extends Module {
 
             this.disable();
         }
+    }
+
+    @Override
+    public void onDisable() {
+        mc.timer.tickLength = oldTickLength;
     }
 
     @Override
