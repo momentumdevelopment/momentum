@@ -3,7 +3,6 @@ package me.linus.momentum.module.modules.render.esp;
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.util.ResourceLocation;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;

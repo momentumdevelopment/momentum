@@ -29,9 +29,5 @@
       "MixinTileEntityBeaconRenderer",
       "MixinTileEntityEnchantmentTableRenderer",
       "MixinRender"
-    ],
-
-    "client": [
-
     ]
 }

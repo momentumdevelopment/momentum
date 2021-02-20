@@ -1,13 +1,13 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.managers.RotationManager;
+import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.rotation.Rotation;
-import me.linus.momentum.managers.RotationManager;
 import me.linus.momentum.util.player.rotation.RotationPriority;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.world.WorldUtil;

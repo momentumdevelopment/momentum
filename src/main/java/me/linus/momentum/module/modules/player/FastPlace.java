@@ -5,7 +5,6 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.util.player.InventoryUtil;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemEndCrystal;
 
 /**
  * @author linustouchtips

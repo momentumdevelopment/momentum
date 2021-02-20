@@ -6,10 +6,10 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.MessageUtil;
-import me.linus.momentum.util.render.builder.RenderBuilder;
-import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.player.InventoryUtil;
+import me.linus.momentum.util.render.RenderUtil;
+import me.linus.momentum.util.render.builder.RenderBuilder;
+import me.linus.momentum.util.world.Timer;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -71,7 +71,7 @@ public class AntiCrystal extends Module {
             handlePressurePlates(false);
 
             if (placeTimer.passed((long) (placeDelay.getValue() * 100), Timer.Format.System)) {
-                if (mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(Blocks.WOODEN_PRESSURE_PLATE) || mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE) || mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE) || mc.player.getHeldItemMainhand().getItem() == Item.getItemFromBlock(Blocks.STONE_PRESSURE_PLATE)) {
+                if (InventoryUtil.getHeldItem(Item.getItemFromBlock(Blocks.WOODEN_PRESSURE_PLATE)) || InventoryUtil.getHeldItem(Item.getItemFromBlock(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE)) || InventoryUtil.getHeldItem(Item.getItemFromBlock(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE)) || InventoryUtil.getHeldItem(Item.getItemFromBlock(Blocks.STONE_PRESSURE_PLATE))) {
                     mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(entityEnderCrystal.getPosition(), EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
                     renderBlock = entityEnderCrystal.getPosition();
                 }

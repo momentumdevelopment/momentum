@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_LINE_SMOOTH;
 
 /**
  * @author linustouchtips

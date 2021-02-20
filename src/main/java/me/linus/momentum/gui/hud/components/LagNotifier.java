@@ -7,8 +7,8 @@ import me.linus.momentum.gui.main.hud.HUD;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.render.FontUtil;
+import me.linus.momentum.util.world.Timer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.text.DecimalFormat;

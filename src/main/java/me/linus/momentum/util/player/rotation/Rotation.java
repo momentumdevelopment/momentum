@@ -1,7 +1,6 @@
 package me.linus.momentum.util.player.rotation;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.module.modules.combat.AutoCrystal;
 import me.linus.momentum.util.world.Timer;
 
 /**

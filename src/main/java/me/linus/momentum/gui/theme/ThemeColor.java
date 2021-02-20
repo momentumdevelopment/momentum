@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.theme;
 
-import me.linus.momentum.gui.theme.themes.DefaultTheme;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.util.client.ColorUtil;
 

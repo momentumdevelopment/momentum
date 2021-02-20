@@ -5,7 +5,6 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.world.WorldUtil;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

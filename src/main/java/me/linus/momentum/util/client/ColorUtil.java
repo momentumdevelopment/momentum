@@ -1,12 +1,12 @@
 package me.linus.momentum.util.client;
 
+import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.StorageESP;
 import me.linus.momentum.module.modules.render.Tracers;
-import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;

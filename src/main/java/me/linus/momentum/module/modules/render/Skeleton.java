@@ -4,7 +4,6 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.setting.slider.SubSlider;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;

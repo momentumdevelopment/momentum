@@ -1,10 +1,8 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.checkbox.SubCheckbox;
-import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.util.player.PlayerUtil;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;

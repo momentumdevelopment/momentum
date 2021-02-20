@@ -3,12 +3,12 @@ package me.linus.momentum.util.render;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.builder.Render2DBuilder;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
-import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;

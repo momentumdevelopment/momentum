@@ -1,9 +1,9 @@
 package me.linus.momentum.util.world;
 
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.util.world.BlockUtil.BlockResistance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
-import me.linus.momentum.util.world.BlockUtil.BlockResistance;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,9 +1,7 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.slider.Slider;
-import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 

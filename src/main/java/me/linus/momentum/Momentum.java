@@ -1,8 +1,8 @@
 package me.linus.momentum;
 
-import me.linus.momentum.managers.*;
 import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.gui.theme.Theme;
+import me.linus.momentum.managers.*;
 import me.linus.momentum.managers.config.ConfigManagerJSON;
 import me.linus.momentum.managers.social.enemy.EnemyManager;
 import me.linus.momentum.managers.social.friend.FriendManager;

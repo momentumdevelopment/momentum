@@ -3,7 +3,6 @@ package me.linus.momentum.module.modules.render;
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.network.play.server.SPacketEffect;
 import net.minecraft.network.play.server.SPacketParticles;

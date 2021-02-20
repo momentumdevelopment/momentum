@@ -16,10 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.awt.*;
-
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_POLYGON_OFFSET_FILL;
 
 /**
  * @author linustouchtips

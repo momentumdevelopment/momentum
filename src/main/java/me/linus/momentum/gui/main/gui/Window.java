@@ -1,10 +1,10 @@
 package me.linus.momentum.gui.main.gui;
 
 import me.linus.momentum.gui.theme.Theme;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.Module.Category;
-import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.ScaledResolution;

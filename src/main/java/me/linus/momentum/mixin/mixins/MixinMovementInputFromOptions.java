@@ -1,7 +1,7 @@
 package me.linus.momentum.mixin.mixins;
 
-import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.managers.ModuleManager;
+import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.movement.NoSlow;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.settings.KeyBinding;

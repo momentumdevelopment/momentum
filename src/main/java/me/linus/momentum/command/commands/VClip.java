@@ -4,7 +4,6 @@ import me.linus.momentum.command.Command;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.player.rotation.RotationUtil;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
 
 /**

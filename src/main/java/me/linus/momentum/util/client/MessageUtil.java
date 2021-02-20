@@ -1,7 +1,6 @@
 package me.linus.momentum.util.client;
 
 import me.linus.momentum.command.Command;
-import me.linus.momentum.gui.theme.themes.DefaultTheme;
 import me.linus.momentum.gui.window.windows.ConsoleWindow;
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.util.text.TextComponentString;

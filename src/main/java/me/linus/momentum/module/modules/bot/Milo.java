@@ -2,12 +2,12 @@ package me.linus.momentum.module.modules.bot;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalBlock;
-import me.linus.momentum.module.Module;
 import me.linus.momentum.managers.ModuleManager;
+import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.combat.Aura;
+import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.HoleUtil;
-import me.linus.momentum.util.player.PlayerUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;

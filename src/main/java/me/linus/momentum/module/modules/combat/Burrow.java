@@ -1,14 +1,14 @@
 package me.linus.momentum.module.modules.combat;
 
-import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.mode.Mode;
-import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
+import me.linus.momentum.util.world.BlockUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.BlockPos;

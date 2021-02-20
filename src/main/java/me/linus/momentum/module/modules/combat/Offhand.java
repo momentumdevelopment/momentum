@@ -1,7 +1,7 @@
 package me.linus.momentum.module.modules.combat;
 
-import me.linus.momentum.module.Module;
 import me.linus.momentum.managers.ModuleManager;
+import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;

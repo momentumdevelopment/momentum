@@ -4,7 +4,7 @@ import me.linus.momentum.module.modules.render.esp.ESPMode;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_POLYGON_OFFSET_FILL;
 
 /**
  * @author linustouchtips

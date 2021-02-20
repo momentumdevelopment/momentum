@@ -2,12 +2,10 @@ package me.linus.momentum.gui.main.hud;
 
 import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.managers.HUDComponentManager;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 
 import java.io.IOException;

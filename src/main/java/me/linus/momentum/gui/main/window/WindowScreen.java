@@ -1,5 +1,6 @@
 package me.linus.momentum.gui.main.window;
 
+import me.linus.momentum.gui.window.Window;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.managers.WindowManager;
 import me.linus.momentum.module.modules.client.ClickGUI;
@@ -7,7 +8,6 @@ import me.linus.momentum.util.render.GUIUtil;
 import me.linus.momentum.util.render.Render2DUtil;
 import me.linus.momentum.util.render.builder.Render2DBuilder;
 import net.minecraft.client.gui.GuiScreen;
-import me.linus.momentum.gui.window.Window;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 
