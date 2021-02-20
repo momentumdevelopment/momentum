@@ -6,6 +6,7 @@ import me.linus.momentum.setting.Setting;
 import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -137,6 +138,11 @@ public class HUDComponent implements MixinInterface {
     }
 
     public void toggleState() {
+        if (this.opened)
+            MinecraftForge.EVENT_BUS.unregister(this);
+        else
+            MinecraftForge.EVENT_BUS.register(this);
+
         this.opened = !this.opened;
     }
 

@@ -36,6 +36,7 @@ import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 
@@ -49,7 +50,6 @@ import java.util.stream.Collectors;
  * @since 11/24/2020
  */
 
-// TODO: fix wall placements
 public class AutoCrystal extends Module {
     public AutoCrystal() {
         super("AutoCrystal", Category.COMBAT, "Automatically places and explodes crystals");
@@ -75,6 +75,7 @@ public class AutoCrystal extends Module {
     public static SubSlider placeDelay = new SubSlider(place, "Place Delay", 0.0D, 0.0D, 500.0D, 0);
     public static SubSlider minDamage = new SubSlider(place, "Minimum Damage", 0.0D, 7.0D, 36.0D, 0);
     public static SubSlider maxLocalDamage = new SubSlider(place, "Maximum Local Damage", 0.0D, 8.0D, 36.0D, 0);
+    public static SubSlider offset = new SubSlider(place, "Offset", 0.0D, 1.0D, 1.0D, 2);
     public static SubSlider threshold = new SubSlider(place, "Threshold", 0.0D, 5.0D, 10.0D, 0);
     public static SubMode autoSwitch = new SubMode(place, "Switch", "None", "Normal", "Packet");
     public static SubCheckbox packetPlace = new SubCheckbox(place, "Packet Place", true);
@@ -219,13 +220,13 @@ public class AutoCrystal extends Module {
             if (antiWeakness.getValue() && mc.player.isPotionActive(MobEffects.WEAKNESS))
                 InventoryUtil.switchToSlot(Items.DIAMOND_SWORD);
 
-            BlockPos pos = null;
+            BlockPos syncPosition = null;
             
             if (breakTimer.passed(CrystalManager.skipTick ? 200 : (long) breakDelay.getValue(), Timer.Format.System)) {
                 if (rotateDuring.getValue() == 0 || rotateDuring.getValue() == 2)
                     handleRotations();
-                
-                pos = crystal.getCrystal().getPosition();
+
+                syncPosition = crystal.getCrystal().getPosition();
 
                 for (int i = 0; i < breakAttempts.getValue(); i++) {
                     CrystalUtil.attackCrystal(crystal.getCrystal(), packetBreak.getValue());
@@ -243,7 +244,7 @@ public class AutoCrystal extends Module {
                 CrystalManager.placedCrystals.remove(crystal.getCrystal().getPosition());
             
             if (timing.getValue() == 2)
-                CrystalUtil.placeCrystal(pos, CrystalUtil.getEnumFacing(rayTrace.getValue(), pos), packetPlace.getValue());
+                CrystalUtil.placeCrystal(syncPosition, CrystalUtil.getEnumFacing(rayTrace.getValue(), syncPosition), packetPlace.getValue());
         }
     }
 
@@ -255,10 +256,10 @@ public class AutoCrystal extends Module {
         CrystalPosition tempPosition;
 
         for (BlockPos calculatedPosition : CrystalUtil.crystalBlocks(mc.player, placeRange.getValue(), prediction.getValue(), !multiPlace.getValue(), blockCalc.getValue())) {
-            if (!RaytraceUtil.raytraceBlock(calculatedPosition) && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(wallRange.getValue()))
+            if (!RaytraceUtil.raytraceBlock(crystalPosition.getCrystalPosition(), offset.getValue()) && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(wallRange.getValue()))
                 continue;
 
-            if (verifyPlace.getValue() && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(!RaytraceUtil.raytraceBlock(calculatedPosition) ? wallRange.getValue() : breakRange.getValue()))
+            if (verifyPlace.getValue() && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(breakRange.getValue()))
                 continue;
 
             double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, crystalTarget);
@@ -361,7 +362,7 @@ public class AutoCrystal extends Module {
     }
 
     public void handleRotations() {
-        if (rotateDuring.getValue() == 0 ? !RaytraceUtil.raytraceEntity(crystal.getCrystal()) : RaytraceUtil.raytraceBlock(crystalPosition.getCrystalPosition()) && onlyInViewFrustrum.getValue())
+        if (!RaytraceUtil.raytraceEntity(crystal.getCrystal()) && onlyInViewFrustrum.getValue())
             return;
 
         float[] rotations = null;
@@ -390,7 +391,7 @@ public class AutoCrystal extends Module {
         RotationManager.rotationQueue.add(crystalRotation);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (renderCrystal.getValue() && crystalPosition.getCrystalPosition() != BlockPos.ORIGIN && crystalPosition != null && crystalPosition.getCrystalPosition() != null && crystalTarget != null) {
             switch (renderMode.getValue()) {
@@ -410,16 +411,10 @@ public class AutoCrystal extends Module {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPacketReceive(PacketReceiveEvent event) {
-        if (nullCheck())
-            return;
-
         if (event.getPacket() instanceof SPacketSpawnObject && ((SPacketSpawnObject) event.getPacket()).getType() == 51 && timing.getValue() == 0 && explode.getValue()) {
             if (mc.player.getDistance(((SPacketSpawnObject) event.getPacket()).getX(), ((SPacketSpawnObject) event.getPacket()).getY(), ((SPacketSpawnObject) event.getPacket()).getZ()) > breakRange.getValue())
-                return;
-
-            if (!RaytraceUtil.raytraceBlock(new BlockPos(((SPacketSpawnObject) event.getPacket()).getX(), ((SPacketSpawnObject) event.getPacket()).getY(), ((SPacketSpawnObject) event.getPacket()).getZ())) && !walls.getValue())
                 return;
 
             CrystalUtil.attackCrystal(((SPacketSpawnObject) event.getPacket()).getEntityID());
@@ -431,11 +426,8 @@ public class AutoCrystal extends Module {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPacketSend(PacketSendEvent event) {
-        if (nullCheck())
-            return;
-
         if (event.getPacket() instanceof CPacketUseEntity && ((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world) instanceof EntityEnderCrystal) {
             if (sync.getValue() == 2)
                 ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world).setDead();

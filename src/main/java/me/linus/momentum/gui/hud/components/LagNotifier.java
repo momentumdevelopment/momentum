@@ -9,7 +9,6 @@ import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.render.FontUtil;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.text.DecimalFormat;
@@ -22,9 +21,6 @@ import java.text.DecimalFormat;
 public class LagNotifier extends HUDComponent {
     public LagNotifier() {
         super("LagNotifier", 300, 2, AnchorPoint.None);
-
-        width = (int) FontUtil.getStringWidth("Server has stopped responding for X.X seconds!");
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public static Slider threshHold = new Slider("Threshold", 0.0D, 3.0D, 10.0D, 0);
@@ -39,6 +35,7 @@ public class LagNotifier extends HUDComponent {
     @Override
     public void renderComponent() {
         float seconds = ((System.currentTimeMillis() - lagTimer.time) / 1000.0f) % 60.0f;
+        width = (int) FontUtil.getStringWidth("Server has stopped responding for X.X seconds!");
 
         if (mc.currentScreen instanceof HUD)
             FontUtil.drawString("Server has stopped responding for X seconds!", this.x, this.y, HUDEditor.colorSync.getValue() ? ThemeColor.BRIGHT : -1);

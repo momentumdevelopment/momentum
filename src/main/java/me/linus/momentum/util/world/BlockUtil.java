@@ -40,9 +40,6 @@ public class BlockUtil implements MixinInterface {
                         mc.player.rotationYaw, mc.player.rotationPitch
                 };
 
-                if (raytrace && !RaytraceUtil.raytraceBlock(pos))
-                    return;
-
                 if (strict)
                     RotationManager.rotationQueue.add(new Rotation((float) Math.toDegrees(Math.atan2((vec.z - mc.player.posZ), (vec.x - mc.player.posX))) - 90.0F, (float) (-Math.toDegrees(Math.atan2((vec.y - (mc.player.posY + (double) mc.player.getEyeHeight())), (Math.sqrt((vec.x - mc.player.posX) * (vec.x - mc.player.posX) + (vec.z - mc.player.posZ) * (vec.z - mc.player.posZ)))))), RotationMode.Packet, RotationPriority.High));
 
@@ -52,9 +49,9 @@ public class BlockUtil implements MixinInterface {
                 mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
 
                 if (packet)
-                    mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, enumFacing, EnumHand.MAIN_HAND, 0, 0, 0));
+                    mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, raytrace ? enumFacing : EnumFacing.UP, EnumHand.MAIN_HAND, 0, 0, 0));
                 else
-                    mc.playerController.processRightClickBlock(mc.player, mc.world, pos.offset(enumFacing), enumFacing.getOpposite(), new Vec3d(pos), EnumHand.MAIN_HAND);
+                    mc.playerController.processRightClickBlock(mc.player, mc.world, pos.offset(enumFacing), raytrace ? enumFacing.getOpposite() : EnumFacing.UP, new Vec3d(pos), EnumHand.MAIN_HAND);
 
                 if (swingArm)
                     mc.player.swingArm(EnumHand.MAIN_HAND);

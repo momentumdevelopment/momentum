@@ -56,11 +56,14 @@ public class Outline extends ESPMode {
     @Override
     public void drawESPCrystal(ModelBase modelEnderCrystal, ModelBase modelEnderCrystalNoBase, EntityEnderCrystal entity, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo callback, ResourceLocation texture) {
         float rotation = entity.innerRotation + partialTicks;
+
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
         mc.renderManager.renderEngine.bindTexture(texture);
+
         float rotationRounded = MathHelper.sin(rotation * 0.2f) / 2.0f + 0.5f;
         rotationRounded += MathUtil.square(rotationRounded);
+
         GL11.glLineWidth((float) ESP.lineWidth.getValue());
 
         if (entity.shouldShowBottom())

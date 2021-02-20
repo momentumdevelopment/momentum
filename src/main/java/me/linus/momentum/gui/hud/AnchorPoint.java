@@ -3,6 +3,11 @@ package me.linus.momentum.gui.hud;
 import me.linus.momentum.mixin.MixinInterface;
 import net.minecraft.client.gui.ScaledResolution;
 
+/**
+ * @author linustouchtips
+ * @since 02/17/2021
+ */
+
 public enum AnchorPoint implements MixinInterface {
     TopRight(new ScaledResolution(mc).getScaledWidth() - 2, 2),
     TopLeft(2, 2),
