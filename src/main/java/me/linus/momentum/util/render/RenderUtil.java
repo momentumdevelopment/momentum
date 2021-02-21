@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL32.GL_DEPTH_CLAMP;
+import static org.lwjgl.opengl.GL32.*;
 
 
 /**
@@ -46,7 +46,7 @@ public class RenderUtil implements MixinInterface {
                 break;
             case Both:
                 drawSelectionBox(axisAlignedBB, height, color);
-                drawSelectionBoundingBox(axisAlignedBB, height, color);
+                drawSelectionBoundingBox(axisAlignedBB, height, new Color(color.getRed(), color.getGreen(), color.getBlue(), 144));
                 break;
             case Glow:
                 RenderBuilder.glPrepare();

@@ -18,10 +18,15 @@ public class CrystalManager {
     public static List<CrystalPosition> placedCrystals = new ArrayList<>();
     public static List<Crystal> brokenCrystals = new ArrayList<>();
     public static int swings = 0;
+    public static int placements = 0;
     public static boolean skipTick = false;
 
     public static void updateSwings() {
         swings++;
+    }
+
+    public static void updatePlacements() {
+        placements++;
     }
 
     public static void updateTicks(boolean in) {

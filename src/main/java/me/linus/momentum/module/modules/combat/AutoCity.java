@@ -2,15 +2,17 @@ package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
+import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.BlockUtil.BlockResistance;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.util.EnumFacing;
@@ -40,6 +42,9 @@ public class AutoCity extends Module {
     public static Checkbox packet = new Checkbox("Packet", true);
     public static Checkbox disable = new Checkbox("Disable", true);
 
+    public static Checkbox color = new Checkbox("Color", true);
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", new Color(255, 0, 0, 55));
+
     @Override
     public void setup() {
         addSetting(range);
@@ -60,10 +65,17 @@ public class AutoCity extends Module {
 
         super.onEnable();
 
-        for (BlockPos cityBlock : EnemyUtil.getCityBlocks(currentTarget, false))
+        for (BlockPos cityBlock : EnemyUtil.getCityBlocks(currentTarget, false)) {
             cityBlocks.add(cityBlock);
+        }
 
-        breakTarget = cityBlocks.stream().filter(blockPos -> mc.player.getDistanceSq(blockPos) > range.getValue()).min(Comparator.comparing(blockPos -> mc.player.getDistanceSq(blockPos))).orElse(null);
+       if (BlockUtil.getBlockResistance(breakTarget) == BlockResistance.Blank && disable.getValue()) {
+            MessageUtil.sendClientMessage("Finished citying!");
+            this.disable();
+            return;
+       }
+
+       breakTarget = cityBlocks.stream().filter(blockPos -> mc.player.getDistanceSq(blockPos) > range.getValue()).min(Comparator.comparing(blockPos -> mc.player.getDistanceSq(blockPos))).orElse(null);
     }
 
     @Override
@@ -88,17 +100,12 @@ public class AutoCity extends Module {
 
         if (packet.getValue())
             this.disable();
-
-        else if (mc.world.getBlockState(breakTarget).getBlock().equals(Blocks.AIR) && disable.getValue()) {
-            this.disable();
-            MessageUtil.sendClientMessage("Finished citying!");
-        }
     }
 
     @SubscribeEvent
     public void onWorldRender(RenderWorldLastEvent eventRender) {
         if (breakTarget != null)
-            RenderUtil.drawBoxBlockPos(breakTarget, 0, new Color(0, 255, 0, 50), RenderBuilder.RenderMode.Fill);
+            RenderUtil.drawBoxBlockPos(breakTarget, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
     }
 
     @Override

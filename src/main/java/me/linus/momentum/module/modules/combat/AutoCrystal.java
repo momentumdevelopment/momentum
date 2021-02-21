@@ -25,7 +25,7 @@ import me.linus.momentum.util.player.rotation.Rotation;
 import me.linus.momentum.util.player.rotation.RotationPriority;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.render.builder.RenderBuilder;
+import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
 import me.linus.momentum.util.world.HoleUtil;
 import me.linus.momentum.util.world.RaytraceUtil;
 import me.linus.momentum.util.world.Timer;
@@ -88,6 +88,7 @@ public class AutoCrystal extends Module {
     public static SubCheckbox prediction = new SubCheckbox(place, "Prediction", true);
     public static SubCheckbox rayTrace = new SubCheckbox(place, "Ray-Trace", true);
     public static SubCheckbox multiPlace = new SubCheckbox(place, "MultiPlace", false);
+    public static SubCheckbox doublePacket = new SubCheckbox(place, "DoublePacket", false);
 
     public static Checkbox rotate = new Checkbox("Rotate", true);
     public static SubMode rotateDuring = new SubMode(rotate, "When", "Break", "Place", "Both");
@@ -119,7 +120,7 @@ public class AutoCrystal extends Module {
     public static SubMode tick = new SubMode(calculations, "Tick", "Client", "Server", "Taiwan");
     public static SubMode heuristic = new SubMode(calculations, "Heuristic", "Damage", "MiniMax", "Atomic");
     public static SubCheckbox serverConfirm = new SubCheckbox(calculations, "Server Confirm", true);
-    public static SubCheckbox verifyPlace = new SubCheckbox(calculations, "Verify Placements", false);
+    public static SubCheckbox verifyPlacements = new SubCheckbox(calculations, "Verify Placements", false);
 
     public static Checkbox logic = new Checkbox("Logic", true);
     public static SubMode logicMode = new SubMode(logic, "Crystal Logic", "Break -> Place", "Place -> Break");
@@ -155,15 +156,15 @@ public class AutoCrystal extends Module {
         if (nullCheck())
             return;
 
-        CrystalManager.swings = 0;
         super.onEnable();
+        CrystalManager.swings = 0;
         CrystalManager.placedCrystals.clear();
     }
 
     @Override
     public void onDisable() {
-        CrystalManager.swings = 0;
         super.onDisable();
+        CrystalManager.swings = 0;
         CrystalManager.placedCrystals.clear();
     }
 
@@ -174,6 +175,7 @@ public class AutoCrystal extends Module {
             return;
         }
 
+        mc.renderManager.playerViewY = (float) (mc.player.posY + mc.player.eyeHeight + 1);
         crystalTarget = WorldUtil.getTarget(enemyRange.getValue(), enemyLogic.getValue());
 
         if (tick.getValue() == 0)
@@ -265,7 +267,7 @@ public class AutoCrystal extends Module {
             if (!RaytraceUtil.raytraceBlock(crystalPosition.getCrystalPosition(), offset.getValue()) && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(wallRange.getValue()))
                 continue;
 
-            if (verifyPlace.getValue() && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(breakRange.getValue()))
+            if (verifyPlacements.getValue() && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(breakRange.getValue()))
                 continue;
 
             double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, crystalTarget);
@@ -304,6 +306,11 @@ public class AutoCrystal extends Module {
                 handleRotations();
 
             CrystalUtil.placeCrystal(crystalPosition.getCrystalPosition(), CrystalUtil.getEnumFacing(rayTrace.getValue(), crystalPosition.getCrystalPosition()), packetPlace.getValue());
+
+            if (doublePacket.getValue())
+                CrystalUtil.placeCrystal(crystalPosition.getCrystalPosition(), CrystalUtil.getEnumFacing(rayTrace.getValue(), crystalPosition.getCrystalPosition()), packetPlace.getValue());
+
+            CrystalManager.updatePlacements();
             placeTimer.reset();
         }
 
@@ -371,7 +378,7 @@ public class AutoCrystal extends Module {
         if (!RaytraceUtil.raytraceEntity(crystal.getCrystal()) && onlyInViewFrustrum.getValue())
             return;
 
-        float[] rotations = null;
+        float[] rotations = {};
 
         switch (rotateDuring.getValue()) {
             case 0:
@@ -402,16 +409,16 @@ public class AutoCrystal extends Module {
         if (renderCrystal.getValue() && crystalPosition.getCrystalPosition() != BlockPos.ORIGIN && crystalPosition != null && crystalPosition.getCrystalPosition() != null && crystalTarget != null) {
             switch (renderMode.getValue()) {
                 case 0:
-                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
+                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderMode.Fill);
                     break;
                 case 1:
-                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderBuilder.RenderMode.Outline);
+                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderMode.Outline);
                     break;
                 case 2:
-                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderBuilder.RenderMode.Both);
+                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderMode.Both);
                     break;
                 case 3:
-                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderBuilder.RenderMode.Claw);
+                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderMode.Claw);
                     break;
             }
 

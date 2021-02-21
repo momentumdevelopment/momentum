@@ -26,7 +26,7 @@ public class HoleUtil implements MixinInterface {
 
         int validHorizontalBlocks = 0;
         for (BlockPos touching : touchingBlocks) {
-            if ((BlockUtil.getBlockResistance(touching) != BlockResistance.Blank) && mc.world.getBlockState(touching).isFullBlock())
+            if (BlockUtil.getBlockResistance(touching) != BlockResistance.Blank && BlockUtil.getBlockResistance(touching) == BlockResistance.Resistant)
                 validHorizontalBlocks++;
         }
 

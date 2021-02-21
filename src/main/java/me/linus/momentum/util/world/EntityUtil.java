@@ -7,15 +7,16 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author linustouchtips
@@ -24,14 +25,38 @@ import net.minecraft.util.math.Vec3d;
 
 public class EntityUtil implements MixinInterface {
 
-    public static boolean isPassive(Entity e) {
-        if (e instanceof EntityWolf && ((EntityWolf) e).isAngry())
+    public static List<Class<?>> getPassives() {
+        List<Class<?>> passives = new ArrayList<>();
+
+        passives.addAll(Arrays.asList(EntityPigZombie.class, EntitySquid.class, EntityIronGolem.class, EntityWolf.class, EntityEnderman.class, EntityChicken.class, EntityCow.class, EntitySheep.class, EntityRabbit.class));
+
+        return passives;
+    }
+
+    public static List<Class<?>> getHostiles() {
+        List<Class<?>> hostiles = new ArrayList<>();
+
+        hostiles.addAll(Arrays.asList(EntitySpider.class, EntitySkeleton.class, EntityZombie.class, EntityShulker.class, EntityBlaze.class, EntityCreeper.class, EntityCaveSpider.class, EntityBlaze.class, EntityGhast.class, EntityZombieVillager.class, EntityWitch.class));
+
+        return hostiles;
+    }
+
+    public static List<Class<?>> getVehicles() {
+        List<Class<?>> vehicles = new ArrayList<>();
+
+        vehicles.addAll(Arrays.asList(EntityBoat.class, EntityMinecart.class));
+
+        return vehicles;
+    }
+
+    public static boolean isPassive(Entity entity) {
+        if (entity instanceof EntityWolf && ((EntityWolf) entity).isAngry())
             return false;
 
-        if (e instanceof EntityAnimal || e instanceof EntityAgeable || e instanceof EntityTameable || e instanceof EntityAmbientCreature || e instanceof EntitySquid)
+        if (entity instanceof EntityAnimal || entity instanceof EntityAgeable || entity instanceof EntityTameable || entity instanceof EntityAmbientCreature || entity instanceof EntitySquid)
             return true;
 
-        return e instanceof EntityIronGolem && ((EntityIronGolem) e).getRevengeTarget() == null;
+        return entity instanceof EntityIronGolem && ((EntityIronGolem) entity).getRevengeTarget() == null;
     }
 
     public static boolean isVehicle(Entity entity) {
@@ -46,8 +71,8 @@ public class EntityUtil implements MixinInterface {
         return entity instanceof EntityPigZombie || entity instanceof EntityWolf || entity instanceof EntityEnderman;
     }
 
-    public static boolean isLiving(Entity e) {
-        return e instanceof EntityLivingBase;
+    public static boolean isLiving(Entity entity) {
+        return entity instanceof EntityLivingBase;
     }
 
     public static boolean isIntercepted(BlockPos pos) {

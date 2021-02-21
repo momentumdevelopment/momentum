@@ -1,9 +1,10 @@
 package me.linus.momentum.module.modules.movement;
 
+import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.Notification.Type;
+import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
-import me.linus.momentum.util.client.MessageUtil;
-import net.minecraft.util.text.TextFormatting;
 
 /**
  * @author linustouchtips
@@ -15,7 +16,7 @@ public class AntiVoid extends Module {
         super("AntiVoid", Category.MOVEMENT, "Pulls you out of the void");
     }
 
-    public static Mode mode = new Mode("Mode", "Float", "Freeze", "SlowFall", "Teleport");
+    public static Mode mode = new Mode("Mode", "Float", "Freeze", "SlowFall", "Teleport", "Timer");
 
     @Override
     public void setup() {
@@ -28,7 +29,7 @@ public class AntiVoid extends Module {
             return;
 
         if (mc.player.posY <= 0) {
-            MessageUtil.sendClientMessage(TextFormatting.RED + "Attempting to get you out of the void!");
+            NotificationManager.addNotification(new Notification("Attempting to get you out of the void!", Type.Info));
 
             switch (mode.getValue()) {
                 case 0:
@@ -42,6 +43,9 @@ public class AntiVoid extends Module {
                     break;
                 case 3:
                     mc.player.setPosition(mc.player.posX, mc.player.posY + 2, mc.player.posZ);
+                    break;
+                case 4:
+                    mc.timer.tickLength = 50f / 0.1f;
                     break;
             }
         }

@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.render;
 
+import me.linus.momentum.managers.ColorManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.module.modules.render.esp.modes.*;
@@ -7,7 +8,14 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.world.EntityUtil;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -59,6 +67,7 @@ public class ESP extends Module {
     }
 
     public static ESPMode espMode;
+    public static ColorManager colorManager = new ColorManager();
 
     @Override
     public void onUpdate() {
@@ -66,6 +75,13 @@ public class ESP extends Module {
             return;
 
         mc.gameSettings.fancyGraphics = true;
+
+        colorManager.registerColor(EntityOtherPlayerMP.class, playerPicker.getColor());
+        colorManager.registerColorList(EntityUtil.getPassives(), animalPicker.getColor());
+        colorManager.registerColorList(EntityUtil.getHostiles(), mobsPicker.getColor());
+        colorManager.registerColor(EntityItem.class, itemsPicker.getColor());
+        colorManager.registerColorList(EntityUtil.getVehicles(), vehiclePicker.getColor());
+        colorManager.registerColor(EntityEnderCrystal.class, crystalPicker.getColor());
 
         switch (mode.getValue()) {
             case 0:

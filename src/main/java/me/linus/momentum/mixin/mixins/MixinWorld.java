@@ -25,8 +25,10 @@ public class MixinWorld implements MixinInterface {
 
     @Inject(method = "onEntityRemoved", at = @At("HEAD"), cancellable = true)
     public void onEntityRemoved(Entity entity, CallbackInfo info) {
-        if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) < AutoCrystal.breakRange.getValue())
+        if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) < AutoCrystal.breakRange.getValue()) {
             CrystalManager.swings = 0;
+            CrystalManager.placements = 0;
+        }
     }
 
     @Inject(method = "getSkyColor", at = @At("HEAD"), cancellable = true)

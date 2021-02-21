@@ -32,7 +32,6 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> extends 
     @Shadow
     protected abstract boolean isVisible(EntityLivingBase entityLivingBaseIn);
 
-
     @Redirect(method = "renderModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V"))
     private void renderModelHook(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
         try {
