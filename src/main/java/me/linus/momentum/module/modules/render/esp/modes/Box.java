@@ -21,7 +21,7 @@ public class Box extends ESPMode {
         mc.world.loadedEntityList.stream().filter(entity -> (mc.player != entity)).forEach(entitylivingbaseIn -> {
             if (entitylivingbaseIn instanceof EntityPlayer && !(entitylivingbaseIn instanceof EntityPlayerSP) && ESP.players.getValue() || (EntityUtil.isPassive(entitylivingbaseIn) && ESP.animals.getValue()) || (EntityUtil.isHostileMob(entitylivingbaseIn) && ESP.mobs.getValue()) || (EntityUtil.isVehicle(entitylivingbaseIn) && ESP.vehicles.getValue()) || (entitylivingbaseIn instanceof EntityEnderCrystal && ESP.crystals.getValue())) {
                 Color color = ColorUtil.getEntityColor(entitylivingbaseIn);
-                RenderUtil.drawSelectionBoundingBox(entitylivingbaseIn.boundingBox, 0, color.getRed(), color.getGreen(), color.getBlue(), 255);
+                RenderUtil.drawSelectionBoundingBox(entitylivingbaseIn.boundingBox, 0, color);
             }
         });
     }

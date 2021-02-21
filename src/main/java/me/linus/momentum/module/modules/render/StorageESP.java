@@ -9,7 +9,7 @@ import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.ESPUtil;
 import me.linus.momentum.util.render.RenderUtil;
-import me.linus.momentum.util.render.builder.RenderBuilder;
+import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.*;
@@ -109,14 +109,14 @@ public class StorageESP extends Module {
                 switch (mode.getValue()) {
                     case 0:
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderBuilder.RenderMode.Outline);
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderMode.Outline);
                         break;
                     case 1:
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderBuilder.RenderMode.Fill);
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderMode.Fill);
                         break;
                     case 2:
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderBuilder.RenderMode.Both);
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderMode.Both);
                         break;
                 }
             }

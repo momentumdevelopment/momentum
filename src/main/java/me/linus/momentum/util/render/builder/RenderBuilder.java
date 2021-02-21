@@ -48,6 +48,7 @@ public class RenderBuilder {
         Fill,
         Outline,
         Both,
+        Claw,
         Glow
     }
 }

@@ -128,7 +128,7 @@ public class AutoCrystal extends Module {
 
     public static Checkbox renderCrystal = new Checkbox("Render", true);
     public static ColorPicker colorPicker = new ColorPicker(renderCrystal, "Color Picker", new Color(250, 0, 250, 50));
-    public static SubMode renderMode = new SubMode(renderCrystal, "Render Mode", "Fill", "Outline", "Both");
+    public static SubMode renderMode = new SubMode(renderCrystal, "Render Mode", "Fill", "Outline", "Both", "Claw");
     public static SubCheckbox renderDamage = new SubCheckbox(renderCrystal, "Render Damage", true);
 
     @Override
@@ -409,6 +409,9 @@ public class AutoCrystal extends Module {
                     break;
                 case 2:
                     RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderBuilder.RenderMode.Both);
+                    break;
+                case 3:
+                    RenderUtil.drawBoxBlockPos(crystalPosition.getCrystalPosition(), 0, colorPicker.getColor(), RenderBuilder.RenderMode.Claw);
                     break;
             }
 
