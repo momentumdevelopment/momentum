@@ -248,6 +248,9 @@ public class ConfigManagerJSON {
 
                             JsonObject subColorObject = subSettingObject.get(((ColorPicker) subSetting).getName()).getAsJsonObject();
 
+                            if (subColorObject.get("Red") == null || subColorObject.get("Green") == null || subColorObject.get("Blue") == null || subColorObject.get("Alpha") == null)
+                                return;
+
                             redValueObject = subColorObject.get("Red");
                             greenValueObject = subColorObject.get("Green");
                             blueValueObject = subColorObject.get("Blue");

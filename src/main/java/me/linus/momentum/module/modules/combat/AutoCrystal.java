@@ -31,8 +31,6 @@ import me.linus.momentum.util.world.RaytraceUtil;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.world.Timer.Format;
 import me.linus.momentum.util.world.WorldUtil;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -92,7 +90,6 @@ public class AutoCrystal extends Module {
     public static SubCheckbox prediction = new SubCheckbox(place, "Prediction", true);
     public static SubCheckbox rayTrace = new SubCheckbox(place, "Ray-Trace", true);
     public static SubCheckbox multiPlace = new SubCheckbox(place, "MultiPlace", false);
-    public static SubCheckbox doublePacket = new SubCheckbox(place, "DoublePacket", false);
 
     public static Checkbox rotate = new Checkbox("Rotate", true);
     public static SubMode rotateDuring = new SubMode(rotate, "When", "Break", "Place", "Both");
@@ -274,8 +271,8 @@ public class AutoCrystal extends Module {
             if (verifyPlacements.getValue() && mc.player.getDistanceSq(calculatedPosition) > MathUtil.square(breakRange.getValue()))
                 continue;
 
-            double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, crystalTarget);
-            double calculatedSelfDamage = mc.player.capabilities.isCreativeMode ? 0 : CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, mc.player);
+            double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + offset.getValue(), calculatedPosition.getZ() + 0.5, crystalTarget);
+            double calculatedSelfDamage = mc.player.capabilities.isCreativeMode ? 0 : CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + offset.getValue(), calculatedPosition.getZ() + 0.5, mc.player);
 
             if (calculatedTargetDamage < minDamage.getValue() && handleMinDamage())
                 continue;
@@ -336,7 +333,7 @@ public class AutoCrystal extends Module {
             return true;
 
         for (EntityPlayer friend : WorldUtil.getNearbyFriends(placeRange.getValue())) {
-            if (EnemyUtil.getHealth(friend) - (CrystalUtil.calculateDamage(crystal.crystal.posX + 0.5, crystal.crystal.posY + 1, crystal.crystal.posZ + 0.5, friend)) <= pauseHealth.getValue() && friendProtect.getValue() == 0)
+            if (EnemyUtil.getHealth(friend) - (CrystalUtil.calculateDamage(crystal.crystal.posX + 0.5, crystal.crystal.posY + offset.getValue(), crystal.crystal.posZ + 0.5, friend)) <= pauseHealth.getValue() && friendProtect.getValue() == 0)
                 return true;
         }
 

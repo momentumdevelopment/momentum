@@ -5,12 +5,12 @@ import me.linus.momentum.managers.social.enemy.EnemyManager;
 import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
-import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
@@ -22,7 +22,9 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -48,17 +50,22 @@ public class NameTags extends Module {
     public static Checkbox ping = new Checkbox("Ping", true);
     public static Checkbox gamemode = new Checkbox("GameMode", false);
     public static Checkbox armor = new Checkbox("Armor", true);
-    public static Checkbox item = new Checkbox("Items", true);
+    public static Checkbox durability = new Checkbox("Durability", true);
+
+    public static Checkbox mainhand = new Checkbox("Mainhand", true);
+    public static SubCheckbox itemName = new SubCheckbox(mainhand, "Item Name", false);
+
+    public static Checkbox offhand = new Checkbox("Offhand", true);
     public static Checkbox enchants = new Checkbox("Enchants", true);
     public static Checkbox exp = new Checkbox("EXP", true);
-
-    public static Checkbox background = new Checkbox("Background", true);
-    public static ColorPicker colorPicker = new ColorPicker(background, "Color Picker", new Color(0, 0, 0, 70));
 
     public static Checkbox onlyInViewFrustrum = new Checkbox("View Frustrum", false);
 
     public static Slider scale = new Slider("Scale", 0.0D, 2.0D, 10.0D, 1);
     public static Checkbox scaleByDistance = new Checkbox("Scale By Distance", false);
+
+    public static Checkbox background = new Checkbox("Background", true);
+    public static ColorPicker colorPicker = new ColorPicker(background, "Color Picker", new Color(0, 0, 0, 70));
 
     @Override
     public void setup() {
@@ -66,13 +73,15 @@ public class NameTags extends Module {
         addSetting(ping);
         addSetting(gamemode);
         addSetting(armor);
-        addSetting(item);
+        addSetting(durability);
+        addSetting(mainhand);
+        addSetting(offhand);
         addSetting(enchants);
         addSetting(exp);
-        addSetting(background);
         addSetting(onlyInViewFrustrum);
         addSetting(scale);
         addSetting(scaleByDistance);
+        addSetting(background);
     }
 
     @SubscribeEvent
@@ -129,7 +138,7 @@ public class NameTags extends Module {
             Iterator<ItemStack> armorStack = entityPlayer.getArmorInventoryList().iterator();
             ArrayList<ItemStack> stacks = new ArrayList<>();
 
-            if (item.getValue())
+            if (offhand.getValue())
                 stacks.add(entityPlayer.getHeldItemOffhand());
 
             while (armorStack.hasNext()) {
@@ -138,7 +147,7 @@ public class NameTags extends Module {
                     stacks.add(stack);
             }
 
-            if (item.getValue())
+            if (mainhand.getValue())
                 stacks.add(entityPlayer.getHeldItemMainhand());
 
             Collections.reverse(stacks);
@@ -151,6 +160,9 @@ public class NameTags extends Module {
                 offset++;
                 offsetScaled += 16;
             }
+
+            if (itemName.getValue())
+                renderItemName(entityPlayer.getHeldItemMainhand(), (int) -width, -78);
 
             for (ItemStack stack : stacks) {
                 renderItemStack(entityPlayer, stack, offsetScaled, -32, 0, false);
@@ -183,20 +195,27 @@ public class NameTags extends Module {
                 return TextFormatting.RED + "Bind";
 
             String substring = enchantment.getTranslatedName(translated);
-            int n2 = (translated > 1) ? 2 : 3;
-            if (substring.length() > n2)
-                substring = substring.substring(0, n2);
+            int translation = (translated > 1) ? 2 : 3;
+            if (substring.length() > translation)
+                substring = substring.substring(0, translation);
 
-            StringBuilder sb = new StringBuilder();
-            String s = substring;
-            String s2 = sb.insert(0, s.substring(0, 1).toUpperCase()).append(substring.substring(1)).toString();
+            StringBuilder builder = new StringBuilder();
+            String rawString = substring;
+            String finalString = builder.insert(0, rawString.substring(0, 1).toUpperCase()).append(substring.substring(1)).toString();
+
             if (translated > 1)
-                s2 = new StringBuilder().insert(0, s2).append(translated).toString();
+                finalString = new StringBuilder().insert(0, finalString).append(translated).toString();
 
-            return s2;
+            return finalString;
         }
 
         return "";
+    }
+
+    public void renderItemName(ItemStack itemStack, int x, int y) {
+        GlStateManager.scale(0.5f, 0.5f, 0.5f);
+        FontUtil.drawString(itemStack.getDisplayName(), (float) (x * 2), (float) y, -1);
+        GlStateManager.scale(2.0f, 2.0f, 2.0f);
     }
 
     public void renderItemEnchantments(ItemStack itemStack, int x, int y) {
@@ -223,6 +242,25 @@ public class NameTags extends Module {
         GlStateManager.scale(2.0f, 2.0f, 2.0f);
     }
 
+    public void renderItemDurability(ItemStack itemStack, int x, int y) {
+        float durability = ((float) (itemStack.getMaxDamage() - itemStack.getItemDamage()) / (float) itemStack.getMaxDamage()) * 100.0f;
+
+        int color = 0x1FFF00;
+
+        if (durability > 30 && durability < 70)
+            color = 0xFFFF00;
+        else if (durability <= 30)
+            color = 0xFF0000;
+
+        GlStateManager.scale(0.5f, 0.5f, 0.5f);
+        GlStateManager.disableDepth();
+
+        FontUtil.drawString(new StringBuilder().insert(0, ((int) (durability))).append('%').toString(), (float) (x * 2), (float) y, color);
+
+        GlStateManager.enableDepth();
+        GlStateManager.scale(2.5f, 2.5f, 2.5f);
+    }
+
     public void renderItemStack(EntityPlayer entityPlayer, ItemStack itemStack, int x, int y, int scaled, boolean custom) {
         GlStateManager.pushMatrix();
         GlStateManager.depthMask(true);
@@ -246,6 +284,10 @@ public class NameTags extends Module {
         GlStateManager.enableAlpha();
         GlStateManager.scale(0.5f, 0.5f, 0.5f);
         GlStateManager.disableDepth();
+
+        if (durability.getValue() && (itemStack.getItem() instanceof ItemArmor || itemStack.getItem() instanceof ItemTool))
+            renderItemDurability(itemStack, x * 2, y - 100);
+
         GlStateManager.enableDepth();
         GlStateManager.scale(2.0f, 2.0f, 2.0f);
         GlStateManager.popMatrix();
