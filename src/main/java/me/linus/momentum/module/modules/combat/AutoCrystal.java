@@ -29,7 +29,10 @@ import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
 import me.linus.momentum.util.world.HoleUtil;
 import me.linus.momentum.util.world.RaytraceUtil;
 import me.linus.momentum.util.world.Timer;
+import me.linus.momentum.util.world.Timer.Format;
 import me.linus.momentum.util.world.WorldUtil;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,7 +70,7 @@ public class AutoCrystal extends Module {
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 80.0D, 200.0D, 0);
     public static SubSlider minBreakDamage = new SubSlider(explode, "Break Damage", 0.0D, 4.0D, 36.0D, 0);
-    public static SubSlider breakAttempts = new SubSlider(explode, "Break Attempts", 0.0D, 1.0D, 5.0D, 0);
+    public static SubSlider breakAttempts = new SubSlider(explode, "Attacks", 0.0D, 1.0D, 5.0D, 0);
     public static SubMode sync = new SubMode(explode, "Sync", "None", "Instant", "Attack", "Sound", "Unsafe");
     public static SubCheckbox packetBreak = new SubCheckbox(explode, "Packet Break", true);
     public static SubCheckbox walls = new SubCheckbox(explode, "Through Walls", true);
@@ -82,6 +85,7 @@ public class AutoCrystal extends Module {
     public static SubSlider minDamage = new SubSlider(place, "Minimum Damage", 0.0D, 7.0D, 36.0D, 0);
     public static SubSlider maxLocalDamage = new SubSlider(place, "Maximum Local Damage", 0.0D, 8.0D, 36.0D, 0);
     public static SubSlider offset = new SubSlider(place, "Offset", 0.0D, 1.0D, 1.0D, 2);
+    public static SubSlider placeAttempts = new SubSlider(explode, "Attempts", 0.0D, 1.0D, 5.0D, 0);
     public static SubSlider threshold = new SubSlider(place, "Threshold", 0.0D, 5.0D, 10.0D, 0);
     public static SubMode autoSwitch = new SubMode(place, "Switch", "None", "Normal", "Packet");
     public static SubCheckbox packetPlace = new SubCheckbox(place, "Packet Place", true);
@@ -97,6 +101,7 @@ public class AutoCrystal extends Module {
     public static SubCheckbox onlyInViewFrustrum = new SubCheckbox(rotate, "Only In View Frustrum", false);
     public static SubCheckbox randomRotate = new SubCheckbox(rotate, "Random Rotations", false);
     public static SubCheckbox strict = new SubCheckbox(rotate, "NCP Strict", false);
+    public static SubCheckbox rubberbandDetect = new SubCheckbox(rotate, "Rubberband Detect", false);
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubMode pauseMode = new SubMode(pause, "Pause Mode", "Place", "Break", "Both");
@@ -157,14 +162,14 @@ public class AutoCrystal extends Module {
             return;
 
         super.onEnable();
-        CrystalManager.swings = 0;
+        CrystalManager.resetCount();
         CrystalManager.placedCrystals.clear();
     }
 
     @Override
     public void onDisable() {
         super.onDisable();
-        CrystalManager.swings = 0;
+        CrystalManager.resetCount();
         CrystalManager.placedCrystals.clear();
     }
 
@@ -175,7 +180,6 @@ public class AutoCrystal extends Module {
             return;
         }
 
-        mc.renderManager.playerViewY = (float) (mc.player.posY + mc.player.eyeHeight + 1);
         crystalTarget = WorldUtil.getTarget(enemyRange.getValue(), enemyLogic.getValue());
 
         if (tick.getValue() == 0)
@@ -230,7 +234,7 @@ public class AutoCrystal extends Module {
 
             BlockPos syncPosition = null;
             
-            if (breakTimer.passed(CrystalManager.skipTick ? 200 : (long) breakDelay.getValue(), Timer.Format.System)) {
+            if (breakTimer.passed(CrystalManager.skipTick ? 200 : (long) breakDelay.getValue(), Format.System)) {
                 if (rotateDuring.getValue() == 0 || rotateDuring.getValue() == 2)
                     handleRotations();
 
@@ -301,16 +305,15 @@ public class AutoCrystal extends Module {
                 break;
         }
 
-        if (placeTimer.passed((long) placeDelay.getValue(), Timer.Format.System) && place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && crystalPosition.getCrystalPosition() != BlockPos.ORIGIN) {
+        if (placeTimer.passed((long) placeDelay.getValue(), Format.System) && place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && crystalPosition.getCrystalPosition() != BlockPos.ORIGIN) {
             if (rotateDuring.getValue() == 1 || rotateDuring.getValue() == 2)
                 handleRotations();
 
-            CrystalUtil.placeCrystal(crystalPosition.getCrystalPosition(), CrystalUtil.getEnumFacing(rayTrace.getValue(), crystalPosition.getCrystalPosition()), packetPlace.getValue());
-
-            if (doublePacket.getValue())
+            for (int i = 0; i < placeAttempts.getValue(); i++) {
                 CrystalUtil.placeCrystal(crystalPosition.getCrystalPosition(), CrystalUtil.getEnumFacing(rayTrace.getValue(), crystalPosition.getCrystalPosition()), packetPlace.getValue());
+                CrystalManager.updatePlacements();
+            }
 
-            CrystalManager.updatePlacements();
             placeTimer.reset();
         }
 
@@ -436,7 +439,7 @@ public class AutoCrystal extends Module {
             CrystalUtil.attackCrystal(((SPacketSpawnObject) event.getPacket()).getEntityID());
         }
 
-        if (event.getPacket() instanceof SPacketPlayerPosLook) {
+        if (event.getPacket() instanceof SPacketPlayerPosLook && rubberbandDetect.getValue()) {
             NotificationManager.addNotification(new Notification("Rubberband detected! Reset Rotations!", Notification.Type.Warning));
             crystalRotation.restoreRotation();
         }

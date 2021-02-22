@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.monster.*;
@@ -28,7 +29,7 @@ public class EntityUtil implements MixinInterface {
     public static List<Class<?>> getPassives() {
         List<Class<?>> passives = new ArrayList<>();
 
-        passives.addAll(Arrays.asList(EntityPigZombie.class, EntitySquid.class, EntityIronGolem.class, EntityWolf.class, EntityEnderman.class, EntityChicken.class, EntityCow.class, EntitySheep.class, EntityRabbit.class));
+        passives.addAll(Arrays.asList(EntityPigZombie.class, EntitySquid.class, EntityIronGolem.class, EntityWolf.class, EntityEnderman.class, EntityChicken.class, EntityCow.class, EntitySheep.class, EntityRabbit.class, EntityPig.class, EntityBat.class, EntityHorse.class, EntitySkeletonHorse.class, EntitySnowman.class));
 
         return passives;
     }
@@ -36,7 +37,7 @@ public class EntityUtil implements MixinInterface {
     public static List<Class<?>> getHostiles() {
         List<Class<?>> hostiles = new ArrayList<>();
 
-        hostiles.addAll(Arrays.asList(EntitySpider.class, EntitySkeleton.class, EntityZombie.class, EntityShulker.class, EntityBlaze.class, EntityCreeper.class, EntityCaveSpider.class, EntityBlaze.class, EntityGhast.class, EntityZombieVillager.class, EntityWitch.class));
+        hostiles.addAll(Arrays.asList(EntitySpider.class, EntitySkeleton.class, EntityZombie.class, EntityShulker.class, EntityBlaze.class, EntityCreeper.class, EntityCaveSpider.class, EntityBlaze.class, EntityGhast.class, EntityZombieVillager.class, EntityWitch.class, EntityVex.class, EntitySlime.class, EntityEvoker.class, EntitySpellcasterIllager.class, EntityIllusionIllager.class, EntityWitherSkeleton.class, EntityWither.class));
 
         return hostiles;
     }

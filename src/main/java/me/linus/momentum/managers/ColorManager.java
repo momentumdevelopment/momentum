@@ -4,6 +4,11 @@ import java.util.List;
 import java.awt.*;
 import java.util.HashMap;
 
+/**
+ * @author linustouchtips
+ * @since 02/21/2021
+ */
+
 public class ColorManager {
 
     public HashMap<Class<?>, Color> colorRegistry = new HashMap<>();

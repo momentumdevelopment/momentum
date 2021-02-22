@@ -17,6 +17,7 @@ import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.world.HoleUtil;
 import me.linus.momentum.util.world.RaytraceUtil;
 import me.linus.momentum.util.world.Timer;
+import me.linus.momentum.util.world.Timer.Format;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
@@ -157,10 +158,10 @@ public class Aura extends Module {
     }
 
     public void attackEntity(Entity target) {
-        if (useTicks.getValue() && !sync.getValue() && syncTimer.passed((long) tickDelay.getValue(), Timer.Format.Ticks))
+        if (useTicks.getValue() && !sync.getValue() && syncTimer.passed((long) tickDelay.getValue(), Format.Ticks))
             PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue(), sync.getValue());
 
-        if (armorMelt.getValue()) {
+        else if (armorMelt.getValue()) {
             mc.playerController.windowClick(mc.player.inventoryContainer.windowId, 9, mc.player.inventory.currentItem, ClickType.SWAP, mc.player);
             PlayerUtil.attackEntity(target, packet.getValue(), cooldown.getValue(), sync.getValue());
             mc.playerController.windowClick(mc.player.inventoryContainer.windowId, 9, mc.player.inventory.currentItem, ClickType.SWAP, mc.player);

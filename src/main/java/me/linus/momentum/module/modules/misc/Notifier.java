@@ -9,6 +9,7 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.world.Timer;
+import me.linus.momentum.util.world.Timer.Format;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.passive.EntityDonkey;
 import net.minecraft.entity.passive.EntityLlama;
@@ -56,21 +57,21 @@ public class Notifier extends Module {
         if (nullCheck())
             return;
 
-        if (armor.getValue() && mc.player.getArmorInventoryList() != null && EnemyUtil.getArmor(mc.player) < 15 && notificationTimer.passed(60, Timer.Format.Ticks))
+        if (armor.getValue() && mc.player.getArmorInventoryList() != null && EnemyUtil.getArmor(mc.player) < 15 && notificationTimer.passed(60, Format.Ticks))
             MessageUtil.sendClientMessage("Your armor durability is getting low!");
 
         mc.world.loadedEntityList.forEach(entity -> {
-            if (entity instanceof EntityDonkey && donkeys.getValue() && notificationTimer.passed(60, Timer.Format.Ticks)) {
+            if (entity instanceof EntityDonkey && donkeys.getValue() && notificationTimer.passed(60, Format.Ticks)) {
                 MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "donkey " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
                 mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
             }
 
-            if (entity instanceof EntityLlama && llamas.getValue() && notificationTimer.passed(60, Timer.Format.Ticks)) {
+            if (entity instanceof EntityLlama && llamas.getValue() && notificationTimer.passed(60, Format.Ticks)) {
                 MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "llama " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
                 mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
             }
 
-            if (entity instanceof EntityMule && mules.getValue() && notificationTimer.passed(60, Timer.Format.Ticks)) {
+            if (entity instanceof EntityMule && mules.getValue() && notificationTimer.passed(60, Format.Ticks)) {
                 MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "mule " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
                 mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
             }
@@ -88,10 +89,10 @@ public class Notifier extends Module {
                 }
             }
 
-            if (player != mc.player && visualRange.getValue() && notificationTimer.passed(60, Timer.Format.Ticks)) {
+            if (player != mc.player && visualRange.getValue() && notificationTimer.passed(60, Format.Ticks)) {
                 if (Momentum.friendManager.isFriend(player.getName()))
                     MessageUtil.sendClientMessage("Your friend, " + player.getName() + ", has entered your visual range!");
-                else if (notificationTimer.passed(60, Timer.Format.Ticks))
+                else if (notificationTimer.passed(60, Format.Ticks))
                     MessageUtil.sendClientMessage(player.getName() + "has entered your visual range!");
             }
         });

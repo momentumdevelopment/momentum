@@ -1,7 +1,7 @@
 package me.linus.momentum.mixin.mixins;
 
 import me.linus.momentum.managers.ModuleManager;
-import me.linus.momentum.util.client.ColorUtil;
+import me.linus.momentum.module.modules.render.ESP;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,9 +19,9 @@ public class MixinRender<T extends Entity> {
 
     @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
     public void getTeamColor(T entityIn, CallbackInfoReturnable callbackInfo) {
-        if (ModuleManager.getModuleByName("ESP").isEnabled()) {
+        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.colorManager.colorRegistry.containsKey(entityIn.getClass())) {
             callbackInfo.cancel();
-            callbackInfo.setReturnValue(ColorUtil.getEntityColor(entityIn).getRGB());
+            callbackInfo.setReturnValue(ESP.colorManager.colorRegistry.get(entityIn.getClass()).getRGB());
         }
     }
 }

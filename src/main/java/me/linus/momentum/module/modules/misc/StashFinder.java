@@ -12,6 +12,7 @@ import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.Timer;
+import me.linus.momentum.util.world.Timer.Format;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.init.SoundEvents;
@@ -89,7 +90,7 @@ public class StashFinder extends Module {
             return;
 
         if (mc.player.isElytraFlying()) {
-            if (rotate.getValue() && timer.passed((long) (1000 * delay.getValue()), Timer.Format.System))
+            if (rotate.getValue() && timer.passed((long) (1000 * delay.getValue()), Format.System))
                 MessageUtil.sendClientMessage("No stashes found! Rotated you 90 degrees!");
                 mc.player.rotationYaw += 90f;
 

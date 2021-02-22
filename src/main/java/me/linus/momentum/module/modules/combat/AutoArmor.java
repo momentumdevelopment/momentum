@@ -4,6 +4,7 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.world.Timer;
+import me.linus.momentum.util.world.Timer.Format;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.init.Items;
@@ -39,7 +40,7 @@ public class AutoArmor extends Module {
         if (nullCheck())
             return;
 
-        if (delayTimer.passed((long) delay.getValue(), Timer.Format.Ticks))
+        if (delayTimer.passed((long) delay.getValue(), Format.Ticks))
             return;
 
         if (mc.currentScreen instanceof GuiContainer && !(mc.currentScreen instanceof InventoryEffectRenderer))

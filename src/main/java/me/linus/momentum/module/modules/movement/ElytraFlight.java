@@ -11,6 +11,8 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.player.MotionUtil;
+import me.linus.momentum.util.world.Timer;
+import me.linus.momentum.util.world.Timer.Format;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
@@ -69,6 +71,7 @@ public class ElytraFlight extends Module {
     }
 
     ElytraMode elytraMode = new Control();
+    Timer takeOffTimer = new Timer();
 
     @Override
     public void onEnable() {
@@ -78,7 +81,7 @@ public class ElytraFlight extends Module {
         if (takeoff.getValue()) {
             if (mc.player.onGround && !mc.player.isElytraFlying())
                 mc.player.motionY = 0.405f;
-            else if (!mc.player.isElytraFlying() && mc.player.ticksExisted % 5 == 0)
+            else if (!mc.player.isElytraFlying() && takeOffTimer.passed(5, Format.Ticks))
                 mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_FALL_FLYING));
         }
     }

@@ -19,10 +19,11 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.render.AnimationUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
 import me.linus.momentum.util.render.Render2DUtil;
-import me.linus.momentum.util.render.builder.Render2DBuilder;
+import me.linus.momentum.util.render.builder.Render2DBuilder.Render2DMode;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.settings.KeyModifier;
 import org.lwjgl.input.Keyboard;
@@ -60,7 +61,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
     @Override
     public void drawTitles(String name, int x, int y) {
-        Render2DUtil.drawRect(x - 2, y, (x + width + 2), y + height, 0, ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x - 2, y, (x + width + 2), y + height, 0, ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR, -1, false, Render2DMode.Normal);
         FontUtil.drawString(name, (x + ((x + width) - x) / 2 - FontUtil.getStringWidth(name) / 2), y + 3, -1);
     }
 
@@ -70,15 +71,14 @@ public class DefaultTheme extends Theme implements MixinInterface {
         for (Module m : modules) {
             int color = 0xCC232323;
             if (GUIUtil.mouseOver(x, y + height + 1 + (boost * height), (x + width) - 1, y + height * 2 + (boost * height))) {
-                color = 0xCC383838;
                 if (GUIUtil.ldown)
                     m.toggle();
 
                 if (GUIUtil.rdown)
                     m.toggleState();
             }
-
-            Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, m.isEnabled() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color, -1, false, Render2DBuilder.Render2DMode.Normal);
+            
+            Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, m.isEnabled() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color, -1, false, Render2DMode.Normal);
             FontUtil.drawString(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
 
             if (m.hasSettings() && !m.isOpened() && ClickGUI.indicators.getValue())
@@ -294,8 +294,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
                 checkbox.toggleState();
         }
 
-        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DBuilder.Render2DMode.Normal);
-        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, checkbox.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DMode.Normal);
+        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, checkbox.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color, -1, false, Render2DMode.Normal);
         FontUtil.drawString(checkbox.getName(), x + 7, (y + height) + 4 + (boost * height), -1);
 
         if (checkbox.hasSubSettings() && !checkbox.isOpened() && ClickGUI.indicators.getValue())
@@ -314,8 +314,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
                 sc.toggleValue();
         }
 
-        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DBuilder.Render2DMode.Normal);
-        Render2DUtil.drawRect(x + 8, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, sc.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DMode.Normal);
+        Render2DUtil.drawRect(x + 8, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, sc.getValue() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color, -1, false, Render2DMode.Normal);
         FontUtil.drawString(sc.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
     }
 
@@ -338,8 +338,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
                 m.toggleState();
         }
 
-        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DBuilder.Render2DMode.Normal);
-        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DMode.Normal);
+        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DMode.Normal);
         FontUtil.drawString(m.getName() + ": " + m.getMode(m.getValue()), x + 7, (y + height) + 4 + (boost * height), -1);
 
         if (m.hasSubSettings() && !m.isOpened() && ClickGUI.indicators.getValue())
@@ -366,8 +366,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
             }
         }
 
-        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DBuilder.Render2DMode.Normal);
-        Render2DUtil.drawRect(x + 8, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DMode.Normal);
+        Render2DUtil.drawRect(x + 8, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DMode.Normal);
         FontUtil.drawString(sm.getName() + ": " + sm.getMode(sm.getValue()), x + 12, (y + height) + 4 + (boost * height), -1);
     }
 
@@ -397,9 +397,9 @@ public class DefaultTheme extends Theme implements MixinInterface {
             }
         }
 
-        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DBuilder.Render2DMode.Normal);
-        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DBuilder.Render2DMode.Normal);
-        Render2DUtil.drawRect(x + 4, y + height + (boost * height), x + 4 + (rectAdd > width - 1 ? (width - 5) : rectAdd), (y + height) + height + (boost * height), 0, ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DMode.Normal);
+        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DMode.Normal);
+        Render2DUtil.drawRect(x + 4, y + height + (boost * height), x + 4 + (rectAdd > width - 1 ? (width - 5) : rectAdd), (y + height) + height + (boost * height), 0, ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR, -1, false, Render2DMode.Normal);
         FontUtil.drawString(sl.getName() + " " + sl.getValue(), x + 6, (y + height) + 4 + (boost * height), -1);
 
         if (sl.hasSubSettings() && !sl.isOpened() && ClickGUI.indicators.getValue())
@@ -435,9 +435,9 @@ public class DefaultTheme extends Theme implements MixinInterface {
             }
         }
 
-        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DBuilder.Render2DMode.Normal);
-        Render2DUtil.drawRect(x + 8, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DBuilder.Render2DMode.Normal);
-        Render2DUtil.drawRect(x + 8, y + height + (boost * height), x + 8 + (rectAdd > width ? (width - 8) : rectAdd), (y + height) + height + (boost * height), 0, ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DMode.Normal);
+        Render2DUtil.drawRect(x + 8, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DMode.Normal);
+        Render2DUtil.drawRect(x + 8, y + height + (boost * height), x + 8 + (rectAdd > width ? (width - 8) : rectAdd), (y + height) + height + (boost * height), 0, ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR, -1, false, Render2DMode.Normal);
         FontUtil.drawString(ssl.getName() + " " + ssl.getValue(), x + 10, (y + height) + 4 + (boost * height), -1);
     }
 
@@ -457,8 +457,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
         if (keybind.isBinding() && key == Keyboard.KEY_ESCAPE)
             keybind.setBinding(false);
 
-        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DBuilder.Render2DMode.Normal);
-        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DMode.Normal);
+        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DMode.Normal);
 
         if (!keybind.isBinding())
             FontUtil.drawString(keybind.getName() + ": " + (keybind.getKey() == -2 ? "None" : Keyboard.getKeyName(keybind.getKey())), x + 7, (y + height) + 4 + (boost * height), -1);
@@ -482,8 +482,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
         if (skb.isBinding() && key == Keyboard.KEY_ESCAPE)
             skb.setBinding(false);
 
-        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DBuilder.Render2DMode.Normal);
-        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DMode.Normal);
+        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DMode.Normal);
 
         if (!skb.isBinding())
             FontUtil.drawString(skb.getName() + ": " + (skb.getKey() == -2 ? "None" : Keyboard.getKeyName(skb.getKey())), x + 7, (y + height) + 4 + (boost * height), -1);
@@ -519,8 +519,8 @@ public class DefaultTheme extends Theme implements MixinInterface {
         if (m.isBinding() && key == Keyboard.KEY_ESCAPE)
             m.setBinding(false);
 
-        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DBuilder.Render2DMode.Normal);
-        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, 0x99202020, -1, false, Render2DMode.Normal);
+        Render2DUtil.drawRect(x + 4, y + height + (boost * height), (x + width) - 1, (y + height) + height + (boost * height), 0, color, -1, false, Render2DMode.Normal);
 
         if (!m.isBinding())
             FontUtil.drawString("Keybind: " + (m.getKeybind().getDisplayName().equalsIgnoreCase("NONE") ? "None" : m.getKeybind().getDisplayName()), x + 7, (y + height) + 4 + (boost * height), -1);
@@ -581,7 +581,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             color[2] = 1 - (restrictedY - (float) pickerY) / pickerHeight;
         }
 
-        Render2DUtil.drawRect(pickerX - 2, pickerY - 2, pickerX + pickerWidth + 2, pickerY + pickerHeight + 50, 0, 0xCC232323, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(pickerX - 2, pickerY - 2, pickerX + pickerWidth + 2, pickerY + pickerHeight + 50, 0, 0xCC232323, -1, false, Render2DMode.Normal);
 
         int selectedColor = Color.HSBtoRGB(color[0], 1.0f, 1.0f);
 
@@ -596,7 +596,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         int cursorX = (int) (pickerX + color[1] * pickerWidth);
         int cursorY = (int) ((pickerY + pickerHeight) - color[2] * pickerHeight);
 
-        Render2DUtil.drawRect(cursorX - 2, cursorY - 2, cursorX + 2, cursorY + 2, 0, -1, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(cursorX - 2, cursorY - 2, cursorX + 2, cursorY + 2, 0, -1, -1, false, Render2DMode.Normal);
 
         drawAlphaSlider(alphaSliderX, alphaSliderY, alphaSliderWidth, alphaSliderHeight, selectedRed, selectedGreen, selectedBlue, finalAlpha);
 
@@ -607,7 +607,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         int step = 0;
 
         if (height > width) {
-            Render2DUtil.drawRect(x, y, x + width, y + 4, 0, 0xFFFF0000, -1, false, Render2DBuilder.Render2DMode.Normal);
+            Render2DUtil.drawRect(x, y, x + width, y + 4, 0, 0xFFFF0000, -1, false, Render2DMode.Normal);
             y += 4;
 
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
@@ -618,7 +618,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             }
 
             int sliderMinY = (int) (y + (height * hue)) - 4;
-            Render2DUtil.drawRect(x, sliderMinY - 1, x + width, sliderMinY + 1, 0, -1, -1, false, Render2DBuilder.Render2DMode.Normal);
+            Render2DUtil.drawRect(x, sliderMinY - 1, x + width, sliderMinY + 1, 0, -1, -1, false, Render2DMode.Normal);
         } else {
             for (int colorIndex = 0; colorIndex < 6; colorIndex++) {
                 int previousStep = Color.HSBtoRGB((float) step / 6, 1.0f, 1.0f);
@@ -628,7 +628,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             }
 
             int sliderMinX = (int) (x + (width * hue));
-            Render2DUtil.drawRect(sliderMinX - 1, y, sliderMinX + 1, y + height, 0, -1, -1, false, Render2DBuilder.Render2DMode.Normal);
+            Render2DUtil.drawRect(sliderMinX - 1, y, sliderMinX + 1, y + height, 0, -1, -1, false, Render2DMode.Normal);
         }
     }
 
@@ -638,14 +638,14 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
         for (int squareIndex = -checkerBoardSquareSize; squareIndex < width; squareIndex += checkerBoardSquareSize) {
             if (!left) {
-                Render2DUtil.drawRect(x + squareIndex, y, x + squareIndex + checkerBoardSquareSize, y + height, 0, 0xFFFFFFFF, -1, false, Render2DBuilder.Render2DMode.Normal);
-                Render2DUtil.drawRect(x + squareIndex, y + checkerBoardSquareSize, x + squareIndex + checkerBoardSquareSize, y + height, 0, 0xFF909090, -1, false, Render2DBuilder.Render2DMode.Normal);
+                Render2DUtil.drawRect(x + squareIndex, y, x + squareIndex + checkerBoardSquareSize, y + height, 0, 0xFFFFFFFF, -1, false, Render2DMode.Normal);
+                Render2DUtil.drawRect(x + squareIndex, y + checkerBoardSquareSize, x + squareIndex + checkerBoardSquareSize, y + height, 0, 0xFF909090, -1, false, Render2DMode.Normal);
 
                 if (squareIndex < width - checkerBoardSquareSize) {
                     int minX = x + squareIndex + checkerBoardSquareSize;
                     int maxX = Math.min(x + width, x + squareIndex + checkerBoardSquareSize * 2);
-                    Render2DUtil.drawRect(minX, y, maxX, y + height, 0, 0xFF909090, -1, false, Render2DBuilder.Render2DMode.Normal);
-                    Render2DUtil.drawRect(minX, y + checkerBoardSquareSize, maxX, y + height, 0, 0xFFFFFFFF, -1, false, Render2DBuilder.Render2DMode.Normal);
+                    Render2DUtil.drawRect(minX, y, maxX, y + height, 0, 0xFF909090, -1, false, Render2DMode.Normal);
+                    Render2DUtil.drawRect(minX, y + checkerBoardSquareSize, maxX, y + height, 0, 0xFFFFFFFF, -1, false, Render2DMode.Normal);
                 }
             }
 
@@ -654,7 +654,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
         Render2DUtil.drawLeftGradientRect(x, y, x + width, y + height, new Color(red, green, blue, 1).getRGB(), 0);
         int sliderMinX = (int) (x + width - (width * alpha));
-        Render2DUtil.drawRect(sliderMinX - 1, y, sliderMinX + 1, y + height, 0, -1, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(sliderMinX - 1, y, sliderMinX + 1, y + height, 0, -1, -1, false, Render2DMode.Normal);
     }
 
     @Override
@@ -671,7 +671,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
                     component.toggleState();
             }
 
-            Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, component.isEnabled() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color, -1, false, Render2DBuilder.Render2DMode.Normal);
+            Render2DUtil.drawRect(x, y + height + (boost * height), x + width, y + height * 2 + (boost * height), 0, component.isEnabled() ? (ThemeColor.GRADIENT ? ColorUtil.rainbow(boost) : ThemeColor.COLOR) : color, -1, false, Render2DMode.Normal);
             FontUtil.drawString(component.getName(), x + 4, y + height + 3 + (boost * height), -1);
 
             if (component.hasSettings() && !component.isOpened() && ClickGUI.indicators.getValue())

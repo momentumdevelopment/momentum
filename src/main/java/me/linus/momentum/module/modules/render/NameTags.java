@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.render;
 
+import me.linus.momentum.managers.GearManager;
 import me.linus.momentum.managers.social.enemy.EnemyManager;
 import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.Module;
@@ -9,6 +10,7 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
+import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
@@ -48,6 +50,7 @@ public class NameTags extends Module {
     public static Checkbox armor = new Checkbox("Armor", true);
     public static Checkbox item = new Checkbox("Items", true);
     public static Checkbox enchants = new Checkbox("Enchants", true);
+    public static Checkbox exp = new Checkbox("EXP", true);
 
     public static Checkbox background = new Checkbox("Background", true);
     public static ColorPicker colorPicker = new ColorPicker(background, "Color Picker", new Color(0, 0, 0, 70));
@@ -64,6 +67,8 @@ public class NameTags extends Module {
         addSetting(gamemode);
         addSetting(armor);
         addSetting(item);
+        addSetting(enchants);
+        addSetting(exp);
         addSetting(background);
         addSetting(onlyInViewFrustrum);
         addSetting(scale);
@@ -88,24 +93,24 @@ public class NameTags extends Module {
 
         nametagEntities.sort((entity1, entity2) -> Double.compare(entity2.getDistance(mc.getRenderViewEntity()), entity1.getDistance(mc.getRenderViewEntity())));
         nametagEntities.stream().forEach(entityPlayer -> {
-            Entity entity2 = mc.getRenderViewEntity();
-            Vec3d pos = EntityUtil.interpolateEntityByTicks(entityPlayer, event.getPartialTicks());
+            Entity viewEntity = mc.getRenderViewEntity();
+            Vec3d nametagPosition = EntityUtil.interpolateEntityByTicks(entityPlayer, event.getPartialTicks());
 
-            double x = pos.x;
-            double distance = pos.y + 0.65;
-            double z = pos.z;
+            double x = nametagPosition.x;
+            double distance = nametagPosition.y + 0.65;
+            double z = nametagPosition.z;
 
             double y = distance + (entityPlayer.isSneaking() ? 0.0 : 0.08);
 
-            pos = EntityUtil.interpolateEntityByTicks(entity2, event.getPartialTicks());
+            nametagPosition = EntityUtil.interpolateEntityByTicks(viewEntity, event.getPartialTicks());
 
-            double posX = entity2.posX;
-            double posY = entity2.posY;
-            double posZ = entity2.posZ;
+            double posX = viewEntity.posX;
+            double posY = viewEntity.posY;
+            double posZ = viewEntity.posZ;
 
-            entity2.posX = pos.x;
-            entity2.posY = pos.y;
-            entity2.posZ = pos.z;
+            viewEntity.posX = nametagPosition.x;
+            viewEntity.posY = nametagPosition.y;
+            viewEntity.posZ = nametagPosition.z;
 
             double distanceScale = scale.getValue();
 
@@ -138,15 +143,22 @@ public class NameTags extends Module {
 
             Collections.reverse(stacks);
 
-            int currX = (int) ((x + ((x + width) - x) / 2) - width / 2);
+            int offset = stacks.size();
+            int offsetScaled = -(8 * offset);
+
+            if (exp.getValue()) {
+                renderItemStack(entityPlayer, Items.EXPERIENCE_BOTTLE.getDefaultInstance(), offsetScaled, -32, 0, true);
+                offset++;
+                offsetScaled += 16;
+            }
 
             for (ItemStack stack : stacks) {
-                renderItemStack(stack, currX, -32, 0);
+                renderItemStack(entityPlayer, stack, offsetScaled, -32, 0, false);
 
                 if (enchants.getValue())
-                    renderItemEnchantments(stack, currX, -62);
+                    renderItemEnchantments(stack, offsetScaled, -62);
 
-                currX += 16;
+                offsetScaled += 16;
             }
 
             GlStateManager.popMatrix();
@@ -211,7 +223,7 @@ public class NameTags extends Module {
         GlStateManager.scale(2.0f, 2.0f, 2.0f);
     }
 
-    public void renderItemStack(ItemStack itemStack, int x, int y, int scaled) {
+    public void renderItemStack(EntityPlayer entityPlayer, ItemStack itemStack, int x, int y, int scaled, boolean custom) {
         GlStateManager.pushMatrix();
         GlStateManager.depthMask(true);
         GlStateManager.clear(256);
@@ -222,7 +234,12 @@ public class NameTags extends Module {
         GlStateManager.disableCull();
         int scaledFinal = (scaled > 4) ? ((scaled - 4) * 8 / 2) : 0;
         mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, x, y + scaledFinal);
-        mc.getRenderItem().renderItemOverlays(mc.fontRenderer, itemStack, x, y + scaledFinal);
+
+        if (custom)
+            mc.fontRenderer.drawStringWithShadow(GearManager.expMap.get(entityPlayer) == null ? String.valueOf(0) : String.valueOf(GearManager.expMap.get(entityPlayer)), (float) (x + 17 - mc.fontRenderer.getStringWidth(GearManager.expMap.get(entityPlayer) == null ? String.valueOf(0) : String.valueOf(GearManager.expMap.get(entityPlayer)))), (float) (y + 9), 16777215);
+        else
+            mc.getRenderItem().renderItemOverlays(mc.fontRenderer, itemStack, x, y + scaledFinal);
+
         mc.getRenderItem().zLevel = 0.0f;
         RenderHelper.disableStandardItemLighting();
         GlStateManager.enableCull();

@@ -20,8 +20,7 @@ public class Glow extends ESPMode {
     @Override
     public void drawESP() {
         for (Entity entitylivingbaseIn : mc.world.loadedEntityList) {
-            if (!entitylivingbaseIn.isGlowing() && (entitylivingbaseIn instanceof EntityPlayer && !(entitylivingbaseIn instanceof EntityPlayerSP) && ESP.players.getValue()) || (EntityUtil.isPassive(entitylivingbaseIn) && ESP.animals.getValue()) || (EntityUtil.isHostileMob(entitylivingbaseIn) && ESP.mobs.getValue()) || (EntityUtil.isVehicle(entitylivingbaseIn) && ESP.vehicles.getValue()) || (entitylivingbaseIn instanceof EntityEnderCrystal && ESP.crystals.getValue()) || (entitylivingbaseIn instanceof EntityItem && ESP.items.getValue()))
-                entitylivingbaseIn.setGlowing(true);
+            entitylivingbaseIn.setGlowing(true);
 
             if (ESP.mode.getValue() != 1)
                 entitylivingbaseIn.setGlowing(false);
