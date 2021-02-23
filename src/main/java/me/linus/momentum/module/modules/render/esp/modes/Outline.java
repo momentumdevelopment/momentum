@@ -22,6 +22,9 @@ import java.awt.*;
  */
 
 public class Outline extends ESPMode {
+    public Outline() {
+        isMixin = true;
+    }
 
     @Override
     public void drawESPMixin(ModelBase mainModel, Entity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
@@ -33,8 +36,8 @@ public class Outline extends ESPMode {
         if (!RenderUtil.camera.isBoundingBoxInFrustum(entitylivingbaseIn.getEntityBoundingBox()))
             return;
 
-        if (ESP.colorManager.colorRegistry.containsKey(entitylivingbaseIn.getClass())) {
-            ESPUtil.setColor(ESP.colorManager.colorRegistry.get(entitylivingbaseIn.getClass()));
+        if (ESP.colorManager.abstractColorRegistry.containsKey(entitylivingbaseIn.getClass())) {
+            ESPUtil.setColor(ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             ESPUtil.renderOne((float) ESP.lineWidth.getValue());
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
@@ -42,7 +45,7 @@ public class Outline extends ESPMode {
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             ESPUtil.renderThree();
             ESPUtil.renderFour();
-            ESPUtil.setColor(ESP.colorManager.colorRegistry.get(entitylivingbaseIn.getClass()));
+            ESPUtil.setColor(ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             ESPUtil.renderFive();
             ESPUtil.setColor(Color.WHITE);
@@ -51,7 +54,7 @@ public class Outline extends ESPMode {
 
     @Override
     public void drawESPCrystal(ModelBase modelEnderCrystal, ModelBase modelEnderCrystalNoBase, EntityEnderCrystal entity, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo callback, ResourceLocation texture) {
-        if (ESP.colorManager.colorRegistry.containsKey(entity.getClass())) {
+        if (ESP.colorManager.abstractColorRegistry.containsKey(entity.getClass())) {
             float rotation = entity.innerRotation + partialTicks;
 
             GlStateManager.pushMatrix();
@@ -61,14 +64,14 @@ public class Outline extends ESPMode {
             float rotationRounded = MathHelper.sin(rotation * 0.2f) / 2.0f + 0.5f;
             rotationRounded += MathUtil.square(rotationRounded);
 
-            GL11.glLineWidth((float) ESP.lineWidth.getValue());
+            GL11.glLineWidth((float) (3 + ESP.lineWidth.getValue()));
 
             if (entity.shouldShowBottom())
                 modelEnderCrystal.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
             else
                 modelEnderCrystalNoBase.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
 
-            ESPUtil.renderOne((float) ESP.lineWidth.getValue());
+            ESPUtil.renderOne((float) (3 + ESP.lineWidth.getValue()));
 
             if (entity.shouldShowBottom())
                 modelEnderCrystal.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
@@ -84,7 +87,7 @@ public class Outline extends ESPMode {
 
             ESPUtil.renderThree();
             ESPUtil.renderFour();
-            ESPUtil.setColor(ESP.colorManager.colorRegistry.get(entity.getClass()));
+            ESPUtil.setColor(ESP.colorManager.abstractColorRegistry.get(entity.getClass()));
 
             if (entity.shouldShowBottom())
                 modelEnderCrystal.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);

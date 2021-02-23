@@ -14,15 +14,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class ESPMode implements MixinInterface {
 
+    public boolean isMixin = false;
+
     public void drawESP() {
-
-    }
-
-    public void drawESPPre(double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo info) {
-
-    }
-
-    public void drawESPPost(double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo info) {
 
     }
 

@@ -51,7 +51,7 @@ public class MotionUtil implements MixinInterface {
         return Math.toRadians(yaw);
     }
 
-    static float getRoundedMovementInput(Float input) {
+    static float getRoundedMovementInput(float input) {
         if (input > 0)
             input = 1f;
         else if (input < 0)

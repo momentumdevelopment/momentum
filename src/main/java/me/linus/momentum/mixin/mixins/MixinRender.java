@@ -19,9 +19,9 @@ public class MixinRender<T extends Entity> {
 
     @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
     public void getTeamColor(T entityIn, CallbackInfoReturnable callbackInfo) {
-        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.colorManager.colorRegistry.containsKey(entityIn.getClass())) {
+        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.colorManager.abstractColorRegistry.containsKey(entityIn.getClass())) {
             callbackInfo.cancel();
-            callbackInfo.setReturnValue(ESP.colorManager.colorRegistry.get(entityIn.getClass()).getRGB());
+            callbackInfo.setReturnValue(ESP.colorManager.abstractColorRegistry.get(entityIn.getClass()).getRGB());
         }
     }
 }

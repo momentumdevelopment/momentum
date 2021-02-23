@@ -10,12 +10,9 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -32,7 +29,7 @@ public class ESP extends Module {
         super("ESP", Category.RENDER, "Highlights entities");
     }
 
-    public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "Wire-Frame", "CS:GO", "Normal", "Textured", "Box");
+    public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "CS:GO", "Box");
 
     public static Checkbox players = new Checkbox("Players", true);
     public static ColorPicker playerPicker = new ColorPicker(players, "Player Picker", new Color(215, 46, 46));
@@ -50,7 +47,10 @@ public class ESP extends Module {
     public static ColorPicker vehiclePicker = new ColorPicker(vehicles, "Vehicle Picker", new Color(199, 103, 19));
 
     public static Checkbox crystals = new Checkbox("Crystals", true);
-    public static ColorPicker crystalPicker = new ColorPicker(crystals, "Crystal Picker", new Color(199, 19, 139, 30));
+    public static ColorPicker crystalPicker = new ColorPicker(crystals, "Crystal Picker", new Color(199, 19, 139, 255));
+
+    public static Checkbox xqz = new Checkbox("XQZ", false);
+    public static ColorPicker xqzPicker = new ColorPicker(xqz, "XQZ Picker", new Color(19, 70, 199, 255));
 
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 2.5D, 5.0D, 1);
 
@@ -63,6 +63,7 @@ public class ESP extends Module {
         addSetting(items);
         addSetting(vehicles);
         addSetting(crystals);
+        addSetting(xqz);
         addSetting(lineWidth);
     }
 
@@ -76,12 +77,13 @@ public class ESP extends Module {
 
         mc.gameSettings.fancyGraphics = true;
 
-        colorManager.registerColor(EntityOtherPlayerMP.class, playerPicker.getColor());
-        colorManager.registerColorList(EntityUtil.getPassives(), animalPicker.getColor());
-        colorManager.registerColorList(EntityUtil.getHostiles(), mobsPicker.getColor());
-        colorManager.registerColor(EntityItem.class, itemsPicker.getColor());
-        colorManager.registerColorList(EntityUtil.getVehicles(), vehiclePicker.getColor());
-        colorManager.registerColor(EntityEnderCrystal.class, crystalPicker.getColor());
+        colorManager.registerAbstractColor(EntityOtherPlayerMP.class, playerPicker.getColor());
+        colorManager.registerAbstractColorList(EntityUtil.getPassives(), animalPicker.getColor());
+        colorManager.registerAbstractColorList(EntityUtil.getHostiles(), mobsPicker.getColor());
+        colorManager.registerAbstractColor(EntityItem.class, itemsPicker.getColor());
+        colorManager.registerAbstractColorList(EntityUtil.getVehicles(), vehiclePicker.getColor());
+        colorManager.registerAbstractColor(EntityEnderCrystal.class, crystalPicker.getColor());
+        colorManager.registerColor("XQZ", xqzPicker.getColor());
 
         switch (mode.getValue()) {
             case 0:
@@ -94,18 +96,9 @@ public class ESP extends Module {
                 espMode = new TwoD();
                 break;
             case 3:
-                espMode = new WireFrame();
-                break;
-            case 4:
                 espMode = new CSGO();
                 break;
-            case 5:
-                espMode = new Normal();
-                break;
-            case 6:
-                espMode = new Textured();
-                break;
-            case 7:
+            case 4:
                 espMode = new Box();
                 break;
         }
