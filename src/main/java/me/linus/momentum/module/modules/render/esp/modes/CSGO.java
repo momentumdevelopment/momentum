@@ -69,10 +69,7 @@ public class CSGO extends ESPMode {
             mc.renderManager.renderEngine.bindTexture(texture);
             float rotationMoved = MathHelper.sin(rotation * 0.2f) / 2.0f + 0.5f;
             rotationMoved += rotationMoved * rotationMoved;
-            glPushAttrib(GL_ALL_ATTRIB_BITS);
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             glDisable(GL_ALPHA_TEST);
-            glDisable(GL_LIGHTING);
             glDisable(GL_DEPTH_TEST);
 
             if (ESP.xqz.getValue())
@@ -102,7 +99,6 @@ public class CSGO extends ESPMode {
 
             glEnable(GL_TEXTURE_2D);
             glEnable(GL_ALPHA_TEST);
-            glPopAttrib();
             glPopMatrix();
         }
     }

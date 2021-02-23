@@ -8,11 +8,13 @@ import me.linus.momentum.module.modules.misc.EnableMessage;
 import me.linus.momentum.setting.Setting;
 import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +85,11 @@ public abstract class Module implements MixinInterface {
 	public void onDisable() {
 		remainingAnimation = 0.0f;
 		mc.timer.tickLength = 50;
+
+		for (Entity entity : mc.world.loadedEntityList) {
+			if (entity.isGlowing())
+				entity.setGlowing(false);
+		}
 
 		if (ModuleManager.getModuleByClass(EnableMessage.class).isEnabled() && !this.name.equalsIgnoreCase("ClickGUI"))
 			MessageUtil.sendClientMessage(this.name + ChatFormatting.RED + " DISABLED");
@@ -206,22 +213,28 @@ public abstract class Module implements MixinInterface {
 	}
 
 	public enum Category {
-		CLIENT("Client"),
-		COMBAT("Combat"),
-		PLAYER("Player"),
-		MISC("Miscellaneous"),
-		MOVEMENT("Movement"),
-		RENDER("Render"),
-		BOT("Bot");
+		CLIENT("Client", new Color(234, 71, 71)),
+		COMBAT("Combat", new Color(56, 103, 224)),
+		PLAYER("Player", new Color(37, 205, 84)),
+		MISC("Miscellaneous", new Color(122, 61, 217)),
+		MOVEMENT("Movement", new Color(217, 49, 103)),
+		RENDER("Render", new Color(231, 164, 73)),
+		BOT("Bot", new Color(208, 68, 195));
 
 		String name;
+		Color color;
 
-		Category(String name) {
+		Category(String name, Color color) {
 			this.name = name;
+			this.color = color;
 		}
 
 		public String getName() {
 			return this.name;
+		}
+
+		public Color getColor() {
+			return this.color;
 		}
 	}
 }

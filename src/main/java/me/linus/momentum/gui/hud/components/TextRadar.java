@@ -25,8 +25,8 @@ public class TextRadar extends HUDComponent {
         int screenWidth = new ScaledResolution(mc).getScaledWidth();
         WorldUtil.getNearbyPlayers(20).forEach(entityPlayer -> {
             int screenWidthScaled = new ScaledResolution(mc).getScaledWidth();
-            float modWidth = FontUtil.getStringWidth(ColorUtil.getHealthText(EnemyUtil.getHealth(entityPlayer)) + String.valueOf(EnemyUtil.getHealth(entityPlayer)) + (FriendManager.isFriend(entityPlayer.getName()) ? TextFormatting.AQUA : TextFormatting.RESET) + entityPlayer.getName() + TextFormatting.WHITE + mc.player.getDistance(entityPlayer));
-            String modText = ColorUtil.getHealthText(EnemyUtil.getHealth(entityPlayer)) + String.valueOf(MathUtil.roundAvoid(EnemyUtil.getHealth(entityPlayer), 1)) +  " " + (FriendManager.isFriend(entityPlayer.getName()) ? TextFormatting.AQUA : TextFormatting.RESET) + entityPlayer.getName() + TextFormatting.WHITE + " " + MathUtil.roundAvoid(mc.player.getDistance(entityPlayer), 1);
+            float modWidth = FontUtil.getStringWidth(getHealthText(EnemyUtil.getHealth(entityPlayer)) + String.valueOf(EnemyUtil.getHealth(entityPlayer)) + (FriendManager.isFriend(entityPlayer.getName()) ? TextFormatting.AQUA : TextFormatting.RESET) + entityPlayer.getName() + TextFormatting.WHITE + mc.player.getDistance(entityPlayer));
+            String modText = getHealthText(EnemyUtil.getHealth(entityPlayer)) + String.valueOf(MathUtil.roundAvoid(EnemyUtil.getHealth(entityPlayer), 1)) +  " " + (FriendManager.isFriend(entityPlayer.getName()) ? TextFormatting.AQUA : TextFormatting.RESET) + entityPlayer.getName() + TextFormatting.WHITE + " " + MathUtil.roundAvoid(mc.player.getDistance(entityPlayer), 1);
 
             if (this.x < (screenWidthScaled / 2))
                 FontUtil.drawString(modText, this.x - 2, this.y + (10 * count), ThemeColor.BRIGHT);
@@ -42,5 +42,18 @@ public class TextRadar extends HUDComponent {
         });
 
         height = ((mc.fontRenderer.FONT_HEIGHT + 1) * count);
+    }
+
+    public TextFormatting getHealthText(float health) {
+        if (health <= 4)
+            return TextFormatting.RED;
+        else if (health <= 8)
+            return TextFormatting.GOLD;
+        else if (health <= 12)
+            return TextFormatting.YELLOW;
+        else if (health <= 16)
+            return TextFormatting.DARK_GREEN;
+        else
+            return TextFormatting.GREEN;
     }
 }

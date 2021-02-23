@@ -162,7 +162,7 @@ public class NameTags extends Module {
             }
 
             if (itemName.getValue())
-                renderItemName(entityPlayer.getHeldItemMainhand(), (int) -width, -78);
+                renderItemName(entityPlayer.getHeldItemMainhand(), (int) -width / 2, -78);
 
             for (ItemStack stack : stacks) {
                 renderItemStack(entityPlayer, stack, offsetScaled, -32, 0, false);
@@ -223,6 +223,21 @@ public class NameTags extends Module {
         Iterator<Enchantment> iterator2;
         Iterator<Enchantment> iterator = iterator2 = EnchantmentHelper.getEnchantments(itemStack).keySet().iterator();
 
+        float durabilityScaled = ((float) (itemStack.getMaxDamage() - itemStack.getItemDamage()) / (float) itemStack.getMaxDamage()) * 100.0f;
+
+        int color = 0x1FFF00;
+
+        if (durabilityScaled > 30 && durabilityScaled < 70)
+            color = 0xFFFF00;
+        else if (durabilityScaled <= 30)
+            color = 0xFF0000;
+
+        if (durability.getValue() && (itemStack.getItem() instanceof ItemArmor || itemStack.getItem() instanceof ItemTool)) {
+            GlStateManager.disableDepth();
+            FontUtil.drawString(new StringBuilder().insert(0, ((int) (durabilityScaled))).append('%').toString(), (float) (x * 2), (float) y - 8, color);
+            GlStateManager.enableDepth();
+        }
+
         while (iterator.hasNext()) {
             Enchantment enchantment;
             if ((enchantment = iterator2.next()) == null)
@@ -240,25 +255,6 @@ public class NameTags extends Module {
             FontUtil.drawString(TextFormatting.DARK_RED + "God", (float) (x * 2), (float) y, -1);
 
         GlStateManager.scale(2.0f, 2.0f, 2.0f);
-    }
-
-    public void renderItemDurability(ItemStack itemStack, int x, int y) {
-        float durability = ((float) (itemStack.getMaxDamage() - itemStack.getItemDamage()) / (float) itemStack.getMaxDamage()) * 100.0f;
-
-        int color = 0x1FFF00;
-
-        if (durability > 30 && durability < 70)
-            color = 0xFFFF00;
-        else if (durability <= 30)
-            color = 0xFF0000;
-
-        GlStateManager.scale(0.5f, 0.5f, 0.5f);
-        GlStateManager.disableDepth();
-
-        FontUtil.drawString(new StringBuilder().insert(0, ((int) (durability))).append('%').toString(), (float) (x * 2), (float) y, color);
-
-        GlStateManager.enableDepth();
-        GlStateManager.scale(2.5f, 2.5f, 2.5f);
     }
 
     public void renderItemStack(EntityPlayer entityPlayer, ItemStack itemStack, int x, int y, int scaled, boolean custom) {
@@ -284,10 +280,6 @@ public class NameTags extends Module {
         GlStateManager.enableAlpha();
         GlStateManager.scale(0.5f, 0.5f, 0.5f);
         GlStateManager.disableDepth();
-
-        if (durability.getValue() && (itemStack.getItem() instanceof ItemArmor || itemStack.getItem() instanceof ItemTool))
-            renderItemDurability(itemStack, x * 2, y - 100);
-
         GlStateManager.enableDepth();
         GlStateManager.scale(2.0f, 2.0f, 2.0f);
         GlStateManager.popMatrix();
@@ -295,9 +287,9 @@ public class NameTags extends Module {
 
     public String generateNameTag(EntityPlayer entityPlayer) {
         try {
-            return generateName(entityPlayer) + generateGamemode(entityPlayer) + ColorUtil.getPingText(mc.getConnection().getPlayerInfo(entityPlayer.getUniqueID()).getResponseTime()) + generatePing(entityPlayer) + ColorUtil.getHealthText(EnemyUtil.getHealth(entityPlayer)) + generateHealth(entityPlayer);
+            return generateName(entityPlayer) + generateGamemode(entityPlayer) + getPingText(entityPlayer, mc.getConnection().getPlayerInfo(entityPlayer.getUniqueID()).getResponseTime()) + generatePing(entityPlayer) + getHealthText(EnemyUtil.getHealth(entityPlayer)) + generateHealth(entityPlayer);
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
 
         return "";
@@ -321,15 +313,15 @@ public class NameTags extends Module {
     public String generateGamemode(EntityPlayer entityPlayer) {
         if (gamemode.getValue()) {
             if (entityPlayer.isCreative())
-                return " [C]";
+                return (FriendManager.isFriend(entityPlayer.getName()) ? TextFormatting.AQUA : "") + " [C]";
             else if (entityPlayer.isSpectator())
-                return " [I]";
+                return (FriendManager.isFriend(entityPlayer.getName()) ? TextFormatting.AQUA : "") + " [I]";
             else
-                return " [S]";
+                return (FriendManager.isFriend(entityPlayer.getName()) ? TextFormatting.AQUA : "") + " [S]";
         }
 
         else
-            return " ";
+            return "";
     }
 
     public String generatePing(EntityPlayer entityPlayer) {
@@ -337,5 +329,33 @@ public class NameTags extends Module {
             return ping.getValue() ? " " + mc.getConnection().getPlayerInfo(entityPlayer.getUniqueID()).getResponseTime() + "ms" : "";
         else
             return ping.getValue() ? " -1 ms" : "";
+    }
+
+    public TextFormatting getPingText(EntityPlayer entityPlayer, float ping) {
+        if (FriendManager.isFriend(entityPlayer.getName()))
+            return TextFormatting.AQUA;
+        else if (ping <= 20)
+            return TextFormatting.DARK_GREEN;
+        else if (ping <= 50)
+            return TextFormatting.GREEN;
+        else if (ping <= 90)
+            return TextFormatting.YELLOW;
+        else if (ping <= 130)
+            return TextFormatting.GOLD;
+        else
+            return TextFormatting.RED;
+    }
+
+    public TextFormatting getHealthText(float health) {
+        if (health <= 4)
+            return TextFormatting.RED;
+        else if (health <= 8)
+            return TextFormatting.GOLD;
+        else if (health <= 12)
+            return TextFormatting.YELLOW;
+        else if (health <= 16)
+            return TextFormatting.DARK_GREEN;
+        else
+            return TextFormatting.GREEN;
     }
 }

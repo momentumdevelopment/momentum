@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ESPMode implements MixinInterface {
 
     public boolean isMixin = false;
+    public boolean isRender = false;
 
     public void drawESP() {
 

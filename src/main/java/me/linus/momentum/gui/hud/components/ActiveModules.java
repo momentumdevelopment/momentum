@@ -97,7 +97,7 @@ public class ActiveModules extends HUDComponent {
             case 2:
                 return ColorUtil.rainbow(1);
             case 3:
-                return ColorUtil.getColorByCategory(mod);
+                return mod.getCategory().getColor().getRGB();
             case 4:
                 return ThemeColor.BRIGHT;
         }

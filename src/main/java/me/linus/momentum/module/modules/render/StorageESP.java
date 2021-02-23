@@ -1,19 +1,16 @@
 package me.linus.momentum.module.modules.render;
 
+import me.linus.momentum.managers.ColorManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.render.ESPUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.*;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -29,7 +26,7 @@ public class StorageESP extends Module {
         super("StorageESP", Category.RENDER, "Highlights containers");
     }
 
-    public static Mode mode = new Mode("Mode", "Outline", "Fill", "Both");
+    public static Mode mode = new Mode("Mode", "Claw", "Outline", "Fill", "Both");
 
     public static Checkbox chests = new Checkbox("Chests", true);
     public static ColorPicker chestPicker = new ColorPicker(chests, "Chest Picker", new Color(46, 83, 215));
@@ -69,6 +66,22 @@ public class StorageESP extends Module {
         addSetting(lineWidth);
     }
 
+    ColorManager colorManager = new ColorManager();
+
+    @Override
+    public void onUpdate() {
+        if (nullCheck())
+            return;
+
+        colorManager.registerAbstractColor(TileEntityChest.class, chestPicker.getColor());
+        colorManager.registerAbstractColor(TileEntityEnderChest.class, enderPicker.getColor());
+        colorManager.registerAbstractColor(TileEntityShulkerBox.class, shulkerPicker.getColor());
+        colorManager.registerAbstractColor(TileEntityHopper.class, hopperPicker.getColor());
+        colorManager.registerAbstractColor(TileEntityDropper.class, dropperPicker.getColor());
+        colorManager.registerAbstractColor(TileEntityFurnace.class, furnacePicker.getColor());
+        colorManager.registerAbstractColor(TileEntityBed.class, bedPicker.getColor());
+    }
+
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (nullCheck())
@@ -77,46 +90,24 @@ public class StorageESP extends Module {
         renderTileEntities();
     }
 
-    public static void renderShaderTileEntities(TileEntitySpecialRenderer<TileEntity> tileentityspecialrenderer, TileEntity tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage, float renderOffset) {
-        AxisAlignedBB bb = new AxisAlignedBB(tileEntityIn.getPos().getX() - mc.getRenderManager().viewerPosX, tileEntityIn.getPos().getY() - mc.getRenderManager().viewerPosY, tileEntityIn.getPos().getZ() - mc.getRenderManager().viewerPosZ, tileEntityIn.getPos().getX() + 1 - mc.getRenderManager().viewerPosX, tileEntityIn.getPos().getY() + 1 - mc.getRenderManager().viewerPosY, tileEntityIn.getPos().getZ() + 1 - mc.getRenderManager().viewerPosZ);
-
-        RenderUtil.camera.setPosition(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
-
-        if (!RenderUtil.camera.isBoundingBoxInFrustum(new AxisAlignedBB(bb.minX + mc.getRenderManager().viewerPosX, bb.minY + mc.getRenderManager().viewerPosY, bb.minZ + mc.getRenderManager().viewerPosZ, bb.maxX + mc.getRenderManager().viewerPosX, bb.maxY + mc.getRenderManager().viewerPosY, bb.maxZ + mc.getRenderManager().viewerPosZ)))
-            return;
-
-        if ((tileEntityIn instanceof TileEntityChest && chests.getValue()) || (tileEntityIn instanceof TileEntityShulkerBox && shulkers.getValue()) || (tileEntityIn instanceof TileEntityEnderChest && enderChests.getValue()) || (tileEntityIn instanceof TileEntityChest && chests.getValue()) || (tileEntityIn instanceof TileEntityDropper && droppers.getValue()) || (tileEntityIn instanceof TileEntityHopper && hoppers.getValue()) || (tileEntityIn instanceof TileEntityFurnace && furnaces.getValue() || (tileEntityIn instanceof TileEntityBed && beds.getValue()))) {
-            GlStateManager.pushMatrix();
-            ESPUtil.setColor(ColorUtil.getStorageColor(tileEntityIn));
-            tileentityspecialrenderer.render(tileEntityIn, x, y, z, partialTicks, destroyStage, renderOffset);
-            ESPUtil.renderOne((float) lineWidth.getValue());
-            tileentityspecialrenderer.render(tileEntityIn, x, y, z, partialTicks, destroyStage, renderOffset);
-            ESPUtil.renderTwo();
-            tileentityspecialrenderer.render(tileEntityIn, x, y, z, partialTicks, destroyStage, renderOffset);
-            ESPUtil.renderThree();
-            ESPUtil.renderFour();
-            ESPUtil.setColor(ColorUtil.getStorageColor(tileEntityIn));
-            tileentityspecialrenderer.render(tileEntityIn, x, y, z, partialTicks, destroyStage, renderOffset);
-            ESPUtil.renderFive();
-            ESPUtil.setColor(Color.WHITE);
-            GlStateManager.popMatrix();
-        }
-    }
-
     public void renderTileEntities() {
         mc.world.loadedTileEntityList.stream().filter(tileEntity -> mc.player.getDistanceSq(tileEntity.getPos()) <= MathUtil.square(range.getValue())).forEach(tileEntity -> {
-            if (tileEntity instanceof TileEntityChest && chests.getValue() || (tileEntity instanceof TileEntityEnderChest && enderChests.getValue()) || (tileEntity instanceof TileEntityHopper && hoppers.getValue()) || (tileEntity instanceof TileEntityFurnace && furnaces.getValue()) || (tileEntity instanceof TileEntityBed && beds.getValue() || (tileEntity instanceof TileEntityDropper && droppers.getValue()) || (tileEntity instanceof TileEntityShulkerBox && shulkers.getValue()))) {
+            if (colorManager.abstractColorRegistry.containsKey(tileEntity)) {
                 switch (mode.getValue()) {
                     case 0:
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderMode.Outline);
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Claw);
                         break;
                     case 1:
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderMode.Fill);
+                        GlStateManager.glLineWidth((float) lineWidth.getValue());
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Outline);
                         break;
                     case 2:
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Fill);
+                        break;
+                    case 3:
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, ColorUtil.getStorageColor(tileEntity), RenderMode.Both);
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Both);
                         break;
                 }
             }

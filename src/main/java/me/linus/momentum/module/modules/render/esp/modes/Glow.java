@@ -16,6 +16,9 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 
 public class Glow extends ESPMode {
+    public Glow() {
+        isRender = true;
+    }
 
     @Override
     public void drawESP() {

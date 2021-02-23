@@ -1,15 +1,15 @@
 package me.linus.momentum.module.modules.render;
 
+import me.linus.momentum.managers.ColorManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -35,8 +35,8 @@ public class Tracers extends Module {
     public static Checkbox mobs = new Checkbox("Mobs", true);
     public static ColorPicker mobsPicker = new ColorPicker(mobs, "Mob Picker", new Color(131, 19, 199));
 
-    public static Checkbox items = new Checkbox("Vehicles", true);
-    public static ColorPicker itemsPicker = new ColorPicker(items, "Vehicle Picker",  new Color(199, 103, 19));
+    public static Checkbox items = new Checkbox("Items", true);
+    public static ColorPicker itemsPicker = new ColorPicker(items, "Items Picker",  new Color(199, 103, 19));
 
     public static Checkbox crystals = new Checkbox("Crystals", true);
     public static ColorPicker crystalPicker = new ColorPicker(crystals, "Crystal Picker", new Color(199, 19, 139));
@@ -53,10 +53,18 @@ public class Tracers extends Module {
         addSetting(lineWidth);
     }
 
+    ColorManager colorManager = new ColorManager();
+
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent event) {
         if (nullCheck())
             return;
+
+        colorManager.registerAbstractColor(EntityOtherPlayerMP.class, playerPicker.getColor());
+        colorManager.registerAbstractColorList(EntityUtil.getPassives(), animalPicker.getColor());
+        colorManager.registerAbstractColorList(EntityUtil.getHostiles(), mobsPicker.getColor());
+        colorManager.registerAbstractColor(EntityItem.class, itemsPicker.getColor());
+        colorManager.registerAbstractColor(EntityEnderCrystal.class, crystalPicker.getColor());
 
         if (mc.getRenderManager() == null || mc.getRenderManager().options == null)
             return;
@@ -64,11 +72,11 @@ public class Tracers extends Module {
         mc.world.loadedEntityList.stream().filter(entity -> mc.player != entity).forEach(entity -> {
             Vec3d pos = EntityUtil.interpolateEntity(entity, event.getPartialTicks()).subtract(mc.getRenderManager().renderPosX, mc.getRenderManager().renderPosY, mc.getRenderManager().renderPosZ);
 
-            if (entity instanceof EntityPlayer && !(entity instanceof EntityPlayerSP) && players.getValue() || (EntityUtil.isPassive(entity) && animals.getValue()) || (EntityUtil.isHostileMob(entity) && mobs.getValue()) || entity instanceof EntityItem && items.getValue() && pos != null) {
+            if (colorManager.abstractColorRegistry.containsKey(entity.getClass())) {
                 mc.entityRenderer.setupCameraTransform(event.getPartialTicks(), 0);
 
                 Vec3d forward = new Vec3d(0, 0, 1).rotatePitch(-(float) Math.toRadians(mc.player.rotationPitch)).rotateYaw(-(float) Math.toRadians(mc.player.rotationYaw));
-                RenderUtil.drawLine3D((float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) forward.z, (float) pos.x, (float) pos.y, (float) pos.z, (float) lineWidth.getValue(), ColorUtil.getTracerColor(entity));
+                RenderUtil.drawLine3D((float) forward.x, (float) forward.y + mc.player.getEyeHeight(), (float) forward.z, (float) pos.x, (float) pos.y, (float) pos.z, (float) lineWidth.getValue(), colorManager.abstractColorRegistry.get(entity.getClass()));
 
                 mc.entityRenderer.setupCameraTransform(event.getPartialTicks(), 0);
             }

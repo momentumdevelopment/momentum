@@ -243,18 +243,22 @@ public class ConfigManagerJSON {
                             subSettingValueObject = subSettingObject.get(((SubKeybind) subSetting).getName());
 
                         if (subSetting instanceof ColorPicker) {
-                            if (subSettingObject.get(((ColorPicker) subSetting).getName()).getAsJsonObject() == null)
-                                return;
+                            try {
+                                if (subSettingObject.get(((ColorPicker) subSetting).getName()).getAsJsonObject() == null)
+                                    return;
 
-                            JsonObject subColorObject = subSettingObject.get(((ColorPicker) subSetting).getName()).getAsJsonObject();
+                                JsonObject subColorObject = subSettingObject.get(((ColorPicker) subSetting).getName()).getAsJsonObject();
 
-                            if (subColorObject.get("Red") == null || subColorObject.get("Green") == null || subColorObject.get("Blue") == null || subColorObject.get("Alpha") == null)
-                                return;
+                                if (subColorObject.get("Red") == null || subColorObject.get("Green") == null || subColorObject.get("Blue") == null || subColorObject.get("Alpha") == null)
+                                    return;
 
-                            redValueObject = subColorObject.get("Red");
-                            greenValueObject = subColorObject.get("Green");
-                            blueValueObject = subColorObject.get("Blue");
-                            alphaValueObject = subColorObject.get("Alpha");
+                                redValueObject = subColorObject.get("Red");
+                                greenValueObject = subColorObject.get("Green");
+                                blueValueObject = subColorObject.get("Blue");
+                                alphaValueObject = subColorObject.get("Alpha");
+                            } catch (Exception e) {
+
+                            }
                         }
 
                         if (subSettingValueObject != null) {
