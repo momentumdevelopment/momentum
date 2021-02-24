@@ -16,7 +16,7 @@ import java.io.InputStream;
  */
 
 public class FontUtil implements MixinInterface {
-    
+
     public static FontRender verdana = null;
     public static FontRender lato = null;
     public static FontRender ubuntu = null;

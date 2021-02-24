@@ -3,11 +3,10 @@ package me.linus.momentum.gui.window;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.managers.AnimationManager;
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
 import me.linus.momentum.util.render.Render2DUtil;
-import me.linus.momentum.util.render.builder.Render2DBuilder;
+import me.linus.momentum.util.render.builder.Render2DBuilder.Render2DMode;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
@@ -49,7 +48,7 @@ public class Window implements MixinInterface {
     }
     
     public void drawWindowTitle() {
-        Render2DUtil.drawRect(x - 2, y, (x + this.width + 2), y + 14, 0, ThemeColor.GRADIENT ? ColorUtil.rainbow(1) : ThemeColor.COLOR, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(x - 2, y, (x + this.width + 2), y + 14, 0, ThemeColor.COLOR, -1, false, Render2DMode.Normal);
         FontUtil.drawString(name, x + 1, y + 3, -1);
 
         int cancelColor = new Color(255, 255, 255, 190).getRGB();
@@ -83,7 +82,7 @@ public class Window implements MixinInterface {
             }
         }
 
-        Render2DUtil.drawRect(1, 1 + (windowsOffset * 35), 29, 30 + (windowsOffset * 35), 1, this.visible ? ThemeColor.COLOR : windowColor, -1, false, Render2DBuilder.Render2DMode.Normal);
+        Render2DUtil.drawRect(1, 1 + (windowsOffset * 35), 29, 30 + (windowsOffset * 35), 1, this.visible ? ThemeColor.COLOR : windowColor, -1, false, Render2DMode.Normal);
 
         GlStateManager.enableAlpha();
         mc.getTextureManager().bindTexture(this.icon);

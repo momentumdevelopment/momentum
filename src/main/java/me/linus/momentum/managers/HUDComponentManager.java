@@ -41,7 +41,6 @@ public class HUDComponentManager implements MixinInterface {
             new Server(),
             new Speed(),
             new TabGUI(),
-            new TargetHUD(),
             new TextRadar(),
             new Time(),
             new Totem(),

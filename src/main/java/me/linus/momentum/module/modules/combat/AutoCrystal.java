@@ -287,6 +287,7 @@ public class AutoCrystal extends Module {
 
         if (tempPosition == null) {
             crystalTarget = null;
+            crystalPosition = null; 
             crystalRotation.restoreRotation();
             return;
         }
@@ -302,7 +303,7 @@ public class AutoCrystal extends Module {
                 break;
         }
 
-        if (placeTimer.passed((long) placeDelay.getValue(), Format.System) && place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && crystalPosition.getCrystalPosition() != BlockPos.ORIGIN) {
+        if (placeTimer.passed((long) placeDelay.getValue(), Format.System) && place.getValue() && InventoryUtil.getHeldItem(Items.END_CRYSTAL) && crystalPosition.getCrystalPosition() != BlockPos.ORIGIN && crystalPosition != null) {
             if (rotateDuring.getValue() == 1 || rotateDuring.getValue() == 2)
                 handleRotations();
 

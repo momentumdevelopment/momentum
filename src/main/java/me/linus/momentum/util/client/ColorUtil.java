@@ -31,6 +31,12 @@ public abstract class ColorUtil implements MixinInterface {
 		return new Color(red, green, blue);
 	}
 
+	public static Color dynamicRainbow(long offset, float brightness, int speed) {
+		float hue = (float) (System.nanoTime() + offset * speed) / 1.0E10f % 1.0f;
+		int color = (int) Long.parseLong(Integer.toHexString(Color.HSBtoRGB(hue, brightness, 1.0f)), 16);
+		return new Color(new Color(color).getRed() / 255.0f, new Color(color).getGreen() / 255.0f, new Color(color).getBlue() / 255.0f, new Color(color).getAlpha() / 255.0f);
+	}
+
 	public static Color alphaStep(Color color, int index, int count) {
 		float[] hsb = new float[3];
 		Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb);

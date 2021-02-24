@@ -45,7 +45,7 @@ public class WorldUtil implements MixinInterface {
         if (mc.world.getLoadedEntityList().size() == 0)
             return null;
 
-        EntityPlayer closestPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !entityPlayer.isDead).findFirst().orElse(null);
+        EntityPlayer closestPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !(EnemyUtil.getHealth(entityPlayer) < 0)).findFirst().orElse(null);
 
         if (FriendManager.isFriend(closestPlayer.getName()) && FriendManager.isFriendModuleEnabled())
             return null;
@@ -61,13 +61,13 @@ public class WorldUtil implements MixinInterface {
 
         switch (mode) {
             case 0:
-                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !entityPlayer.isDead).findFirst().orElse(null);
+                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !(EnemyUtil.getHealth(entityPlayer) < 0)).findFirst().orElse(null);
                 break;
             case 1:
-                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !entityPlayer.isDead).min(Comparator.comparing(entityPlayer -> EnemyUtil.getHealth(entityPlayer))).orElse(null);
+                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !(EnemyUtil.getHealth(entityPlayer) < 0)).min(Comparator.comparing(entityPlayer -> EnemyUtil.getHealth(entityPlayer))).orElse(null);
                 break;
             case 2:
-                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !entityPlayer.isDead).min(Comparator.comparing(entityPlayer -> EnemyUtil.getArmor(entityPlayer))).orElse(null);
+                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !(EnemyUtil.getHealth(entityPlayer) < 0)).min(Comparator.comparing(entityPlayer -> EnemyUtil.getArmor(entityPlayer))).orElse(null);
                 break;
         }
 
@@ -81,7 +81,7 @@ public class WorldUtil implements MixinInterface {
         if (mc.world.getLoadedEntityList().size() == 0)
             return null;
 
-        List<EntityPlayer> nearbyPlayers = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !entityPlayer.isDead).collect(Collectors.toList());
+        List<EntityPlayer> nearbyPlayers = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !(EnemyUtil.getHealth(entityPlayer) < 0)).collect(Collectors.toList());
 
         for (EntityPlayer closestPlayer : nearbyPlayers)
             if (FriendManager.isFriend(closestPlayer.getName()) && FriendManager.isFriendModuleEnabled())

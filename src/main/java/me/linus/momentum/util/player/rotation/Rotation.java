@@ -12,7 +12,6 @@ public class Rotation implements MixinInterface {
 
     public float yaw;
     public float pitch;
-    public boolean frame = true;
     public RotationPriority rotationPriority;
     public RotationMode mode;
     public Timer rotationStay = new Timer();
@@ -28,17 +27,19 @@ public class Rotation implements MixinInterface {
 
     // updates player rotations here
     public void updateRotations() {
+        try {
         switch (this.mode) {
             case Packet:
-                if (frame)
-                    mc.player.renderYawOffset = this.yaw;
-
+                mc.player.renderYawOffset = this.yaw;
                 mc.player.rotationYawHead = this.yaw;
                 break;
             case Legit:
                 mc.player.rotationYaw = this.yaw;
                 mc.player.rotationPitch = this.pitch;
                 break;
+        }
+        } catch (Exception e) {
+
         }
     }
 

@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 /**
- * @author yoink & linustouchtips & olliem5
+ * @author yoink & linustouchtips & olliem5 && ciruu
  * @since 11/29/2020
  */
 
@@ -24,25 +24,26 @@ public class Burrow extends Module {
         super("Burrow", Category.COMBAT, "Rubberbands you into a block");
     }
 
-    private static final Mode mode = new Mode("Mode", "Rubberband", "Teleport", "Clip");
-    private static final Checkbox rotate = new Checkbox("Rotate", true);
-    private static final Checkbox centerPlayer = new Checkbox("Center", false);
-    private static final Checkbox instant = new Checkbox("Instant", true);
-    private static final Checkbox onGround = new Checkbox("On Ground", false);
+    public static Mode mode = new Mode("Mode", "Rubberband", "Teleport", "Clip");
+    public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static Checkbox instant = new Checkbox("Instant", true);
+    public static Checkbox centerPlayer = new Checkbox("Center", false);
+    public static Checkbox silent = new Checkbox("Silent", false);
+    public static Checkbox onGround = new Checkbox("On Ground", false);
 
     @Override
     public void setup() {
         addSetting(mode);
-
         addSetting(rotate);
-        addSetting(centerPlayer);
         addSetting(instant);
+        addSetting(centerPlayer);
+        addSetting(silent);
         addSetting(onGround);
     }
 
-    private BlockPos originalPos;
-    private Vec3d center = null;
-    private float oldTickLength = mc.timer.tickLength;
+    BlockPos originalPos;
+    Vec3d center = null;
+    float oldTickLength = mc.timer.tickLength;
 
     @Override
     public void onEnable() {
@@ -66,10 +67,18 @@ public class Burrow extends Module {
 
         NotificationManager.addNotification(new Notification("Attempting to trigger a rubberband!", Type.Info));
 
-        if (instant.getValue())
+        if (silent.getValue())
             mc.timer.tickLength = 1f;
 
-        mc.player.jump();
+        if (instant.getValue()) {
+            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.41999998688698D, mc.player.posZ, true));
+            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.7531999805211997D, mc.player.posZ, true));
+            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 1.00133597911214D, mc.player.posZ, true));
+            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 1.16610926093821D, mc.player.posZ, true));
+        }
+
+        else
+            mc.player.jump();
     }
 
     @Override
@@ -84,6 +93,12 @@ public class Burrow extends Module {
 
             if (onGround.getValue())
                 mc.player.onGround = true;
+
+            if (instant.getValue()) {
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 7, mc.player.posZ, false));
+                this.disable();
+                return;
+            }
 
             switch (mode.getValue()) {
                 case 0:
