@@ -29,7 +29,7 @@ public class ESP extends Module {
         super("ESP", Category.RENDER, "Highlights entities");
     }
 
-    public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "CS:GO", "Box");
+    public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "CS:GO", "Wireframe");
 
     public static Checkbox players = new Checkbox("Players", true);
     public static ColorPicker playerPicker = new ColorPicker(players, "Player Picker", new Color(215, 46, 46));
@@ -99,7 +99,7 @@ public class ESP extends Module {
                 espMode = new CSGO();
                 break;
             case 4:
-                espMode = new Box();
+                espMode = new Wireframe();
                 break;
         }
     }

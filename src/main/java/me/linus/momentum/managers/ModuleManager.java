@@ -130,7 +130,6 @@ public class ModuleManager implements MixinInterface {
 			// render
 			new BlockHighlight(),
 			new BreakESP(),
-			new BurrowESP(),
 			new CityESP(),
 			new CrossHairs(),
 			new CustomFOV(),

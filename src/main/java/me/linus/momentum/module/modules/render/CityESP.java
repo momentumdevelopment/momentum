@@ -8,6 +8,8 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
+import me.linus.momentum.util.world.BlockUtil;
+import me.linus.momentum.util.world.BlockUtil.BlockResistance;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -29,6 +31,7 @@ public class CityESP extends Module {
 
     public static Mode mode = new Mode("Mode", "Fill", "Outline", "Both", "Claw");
     public static Slider range = new Slider("Range", 0.0D, 12.0D, 20.0D, 0);
+    public static Checkbox burrow = new Checkbox("Burrow", true);
 
     public static Checkbox color = new Checkbox("Color", true);
     public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", new Color(255, 0, 0, 55));
@@ -36,21 +39,31 @@ public class CityESP extends Module {
     @Override
     public void setup() {
         addSetting(mode);
+        addSetting(burrow);
         addSetting(range);
         addSetting(color);
     }
 
     List<BlockPos> cityBlocks = new ArrayList<>();
+    List<BlockPos> burrowList = new ArrayList<>();
 
     @Override
     public void onUpdate() {
         cityBlocks.clear();
+        burrowList.clear();
 
         WorldUtil.getNearbyPlayers(20).forEach(entityPlayer -> {
             EnemyUtil.getCityBlocks(entityPlayer, false).stream().filter(blockPos -> mc.player.getDistanceSq(blockPos) <= range.getValue()).forEach(blockPos -> {
                 cityBlocks.add(blockPos);
             });
         });
+
+        if (burrow.getValue()) {
+            WorldUtil.getNearbyPlayers(20).forEach(entityPlayer -> {
+                if (BlockUtil.getBlockResistance(new BlockPos(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ)) == BlockResistance.Resistant)
+                    burrowList.add(new BlockPos(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ));
+            });
+        }
     }
 
     @SubscribeEvent
@@ -71,6 +84,23 @@ public class CityESP extends Module {
                     break;
                 case 3:
                     RenderUtil.drawBoxBlockPos(cityPos, 0, colorPicker.getColor(), RenderMode.Claw);
+                    break;
+            }
+        }
+
+        for (BlockPos burrowPos : burrowList) {
+            switch (mode.getValue()) {
+                case 0:
+                    RenderUtil.drawBoxBlockPos(burrowPos, 0, colorPicker.getColor(), RenderMode.Fill);
+                    break;
+                case 1:
+                    RenderUtil.drawBoxBlockPos(burrowPos, 0, colorPicker.getColor(), RenderMode.Outline);
+                    break;
+                case 2:
+                    RenderUtil.drawBoxBlockPos(burrowPos, 0, colorPicker.getColor(), RenderMode.Both);
+                    break;
+                case 3:
+                    RenderUtil.drawBoxBlockPos(burrowPos, 0, colorPicker.getColor(), RenderMode.Claw);
                     break;
             }
         }
