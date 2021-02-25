@@ -112,8 +112,6 @@ public class AutoCrystal extends Module {
     public static SubSlider facePlaceHealth = new SubSlider(facePlace, "FacePlace Health", 0.0D, 16.0D, 36.0D, 0);
     public static SubCheckbox armorBreaker = new SubCheckbox(facePlace, "Armor Breaker", false);
     public static SubSlider armorScale = new SubSlider(facePlace, "Armor Scale", 0.0D, 15.0D, 100.0D, 0);
-    public static SubCheckbox gearPlay = new SubCheckbox(facePlace, "Gear Play", false);
-    public static SubSlider expScale = new SubSlider(facePlace, "EXP Scale", 0.0D, 1.0D, 6.0D, 0);
     public static SubCheckbox facePlaceHole = new SubCheckbox(facePlace, "HoleCampers", false);
     public static SubKeybind forceFaceplace = new SubKeybind(facePlace, "Force FacePlace", Keyboard.KEY_O);
 
@@ -364,8 +362,6 @@ public class AutoCrystal extends Module {
         if (EnemyUtil.getHealth(crystalTarget) < facePlaceHealth.getValue())
             return false;
         else if (EnemyUtil.getArmor(crystalTarget, armorBreaker.getValue(), armorScale.getValue()))
-            return false;
-        else if (EnemyUtil.getGearPlay(crystalTarget, expScale.getValue()) && gearPlay.getValue())
             return false;
         else if (facePlaceHole.getValue() && HoleUtil.isInHole(crystalTarget))
             return false;

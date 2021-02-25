@@ -44,7 +44,7 @@ public class Criticals extends Module {
     @SubscribeEvent
     public void onPacketSend(PacketSendEvent event) {
         if (event.getPacket() instanceof CPacketUseEntity) {
-            if (((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && mc.player.onGround) {
+            if (((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && mc.player.onGround && ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world) != null) {
                 if (mc.player.fallDistance > 0.0f && whenFalling.getValue())
                     return;
 

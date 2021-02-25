@@ -148,11 +148,21 @@ public class Render2DUtil implements MixinInterface {
     }
 
     public static void drawHitMarkers(Color color) {
-        ScaledResolution resolution = new ScaledResolution(mc);
-        drawLine(resolution.getScaledWidth() / 2.0F - 4.0F, resolution.getScaledHeight() / 2.0F - 4.0F, resolution.getScaledWidth() / 2.0F - 8.0F, resolution.getScaledHeight() / 2.0F - 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
-        drawLine(resolution.getScaledWidth() / 2.0F + 4.0F, resolution.getScaledHeight() / 2.0F - 4.0F, resolution.getScaledWidth() / 2.0F + 8.0F, resolution.getScaledHeight() / 2.0F - 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
-        drawLine(resolution.getScaledWidth() / 2.0F - 4.0F, resolution.getScaledHeight() / 2.0F + 4.0F, resolution.getScaledWidth() / 2.0F - 8.0F, resolution.getScaledHeight() / 2.0F + 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
-        drawLine(resolution.getScaledWidth() / 2.0F + 4.0F, resolution.getScaledHeight() / 2.0F + 4.0F, resolution.getScaledWidth() / 2.0F + 8.0F, resolution.getScaledHeight() / 2.0F + 8.0F, 0.5F, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
+        int screenWidth = new ScaledResolution(mc).getScaledWidth();
+        int screenHeight = new ScaledResolution(mc).getScaledHeight();
+        drawLine(screenWidth / 2.0f - 4.0f, screenHeight / 2.0f - 4.0f, screenWidth / 2.0f - 8.0f, screenHeight / 2.0f - 8.0f, 0.75f, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
+        drawLine(screenWidth / 2.0f + 4.0f, screenHeight / 2.0f - 4.0f, screenWidth / 2.0f + 8.0f, screenHeight / 2.0f - 8.0f, 0.75f, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
+        drawLine(screenWidth / 2.0f - 4.0f, screenHeight / 2.0f + 4.0f, screenWidth / 2.0f - 8.0f, screenHeight / 2.0f + 8.0f, 0.75f, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
+        drawLine(screenWidth / 2.0f + 4.0f, screenHeight / 2.0f + 4.0f, screenWidth / 2.0f + 8.0f, screenHeight / 2.0f + 8.0f, 0.75f, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
+    }
+    
+    public static void drawCrosshairs(double separation, double bend, double width, double thickness, int color) {
+        int screenWidth = new ScaledResolution(mc).getScaledWidth();
+        int screenHeight = new ScaledResolution(mc).getScaledHeight();
+        Render2DUtil.drawLine((float) ((screenWidth / 2) - separation), (float) ((screenHeight / 2) - (bend / 2)), (float) ((screenWidth / 2) - separation - width), (float) ((screenHeight / 2) - (bend / 2)), (int) thickness, color);
+        Render2DUtil.drawLine((float) ((screenWidth / 2) + separation), (float) ((screenHeight / 2) - (bend / 2)), (float) ((screenWidth / 2) + separation + width), (float) ((screenHeight / 2) + (bend / 2)), (int) thickness, color);
+        Render2DUtil.drawLine((float) ((screenWidth / 2) - (bend / 2)), (float) ((screenHeight / 2) - separation), (float) ((screenWidth / 2) - (bend / 2)), (float) ((screenHeight / 2) - separation - width), (int) thickness, color);
+        Render2DUtil.drawLine((float) ((screenWidth / 2) - (bend / 2)), (float) ((screenHeight / 2) + separation), (float) ((screenWidth / 2) + (bend / 2)), (float) ((screenHeight / 2) + separation + width), (int) thickness, color);
     }
 
     public static void drawLine(float x, float y, float x1, float y1, float thickness, int color) {
