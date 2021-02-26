@@ -3,6 +3,7 @@ package me.linus.momentum.module.modules.misc;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.Momentum;
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
+import me.linus.momentum.managers.GearManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
@@ -48,9 +49,7 @@ public class Notifier extends Module {
         addSetting(entityAlert);
     }
 
-    HashMap<String, Integer> totemPopContainer = new HashMap<>();
     Timer notificationTimer = new Timer();
-    int count = 1;
 
     @Override
     public void onUpdate() {
@@ -79,13 +78,12 @@ public class Notifier extends Module {
 
         mc.world.playerEntities.stream().forEach(player -> {
             if (totem.getValue()) {
-                if (!totemPopContainer.containsKey(player.getName()))
+                if (!GearManager.totemMap.containsKey(player.getName()))
                     return;
 
                 if (EnemyUtil.getHealth(player) <= 0.0f) {
-                    totemPopContainer.remove(player.getName());
-
-                    MessageUtil.sendClientMessage(player.getName() + " died after popping " + TextFormatting.RED + totemPopContainer.get(player.getName()).intValue() + TextFormatting.WHITE + " totems!");
+                    GearManager.totemMap.remove(player.getName());
+                    MessageUtil.sendClientMessage(player.getName() + " died after popping " + TextFormatting.RED + GearManager.totemMap.get(player.getName()) + TextFormatting.WHITE + " totems!");
                 }
             }
 
@@ -96,20 +94,5 @@ public class Notifier extends Module {
                     MessageUtil.sendClientMessage(player.getName() + "has entered your visual range!");
             }
         });
-    }
-
-    @SubscribeEvent
-    public void onPacketRecieve(PacketReceiveEvent event) {
-        if (event.getPacket() instanceof SPacketEntityStatus && totem.getValue() && ((SPacketEntityStatus) event.getPacket()).getOpCode() == 35) {
-            if (totemPopContainer.containsKey(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()))
-                totemPopContainer.put(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName(), count++);
-            else
-                totemPopContainer.put(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName(), count);
-
-            if (Momentum.friendManager.isFriend(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()))
-                MessageUtil.sendClientMessage("Your friend, " + ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + ", popped " + TextFormatting.RED + count + TextFormatting.WHITE + " totems!");
-            else
-                MessageUtil.sendClientMessage(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + " popped " + count + " totems!");
-        }
     }
 }

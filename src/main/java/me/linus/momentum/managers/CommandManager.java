@@ -33,7 +33,8 @@ public class CommandManager {
             new Client(),
             new Enemy(),
             new Commands(),
-            new Modules()
+            new Modules(),
+            new Spawn()
     );
 
     public static List<Command> getCommands() {

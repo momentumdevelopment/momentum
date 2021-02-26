@@ -2,6 +2,7 @@ package me.linus.momentum.util.render;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.ColorUtil;
+import me.linus.momentum.util.player.MotionUtil;
 import me.linus.momentum.util.render.builder.Render2DBuilder;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -156,9 +157,10 @@ public class Render2DUtil implements MixinInterface {
         drawLine(screenWidth / 2.0f + 4.0f, screenHeight / 2.0f + 4.0f, screenWidth / 2.0f + 8.0f, screenHeight / 2.0f + 8.0f, 0.75f, ColorUtil.toRGBA(color.getRed(), color.getGreen(), color.getBlue(), 255));
     }
     
-    public static void drawCrosshairs(double separation, double bend, double width, double thickness, int color) {
+    public static void drawCrosshairs(double separation, double bend, double width, double thickness, boolean dynamic, int color) {
         int screenWidth = new ScaledResolution(mc).getScaledWidth();
         int screenHeight = new ScaledResolution(mc).getScaledHeight();
+        separation += (MotionUtil.isMoving() && dynamic) ? 1 : 0;
         Render2DUtil.drawLine((float) ((screenWidth / 2) - separation), (float) ((screenHeight / 2) - (bend / 2)), (float) ((screenWidth / 2) - separation - width), (float) ((screenHeight / 2) - (bend / 2)), (int) thickness, color);
         Render2DUtil.drawLine((float) ((screenWidth / 2) + separation), (float) ((screenHeight / 2) - (bend / 2)), (float) ((screenWidth / 2) + separation + width), (float) ((screenHeight / 2) + (bend / 2)), (int) thickness, color);
         Render2DUtil.drawLine((float) ((screenWidth / 2) - (bend / 2)), (float) ((screenHeight / 2) - separation), (float) ((screenWidth / 2) - (bend / 2)), (float) ((screenHeight / 2) - separation - width), (int) thickness, color);

@@ -6,6 +6,7 @@ import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
@@ -44,12 +45,14 @@ public class HoleFill extends Module {
     public static Slider range = new Slider("Range", 0.0D, 5.0D, 10.0D, 0);
     public static Slider smartRange = new Slider("Smart Range", 0.0D, 2.0D, 10.0D, 0);
     public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
-    public static Checkbox raytrace = new Checkbox("Raytrace", false);
+    public static Checkbox raytrace = new Checkbox("Raytrace", true);
     public static Checkbox packet = new Checkbox("Packet", false);
     public static Checkbox swingArm = new Checkbox("Swing Arm", true);
     public static Checkbox antiGlitch = new Checkbox("Anti-Glitch", false);
+
     public static Checkbox rotate = new Checkbox("Rotate", false);
-    public static Checkbox strict = new Checkbox("NCP Strict", true);
+    public static SubCheckbox strict = new SubCheckbox(rotate, "NCP Strict", false);
+
     public static Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
@@ -66,13 +69,12 @@ public class HoleFill extends Module {
         addSetting(swingArm);
         addSetting(antiGlitch);
         addSetting(rotate);
-        addSetting(strict);
         addSetting(disable);
         addSetting(color);
     }
 
     int obsidianSlot;
-
+    public static boolean processing = false;
     BlockPos fillBlock;
     EntityPlayer fillTarget;
 
@@ -100,6 +102,11 @@ public class HoleFill extends Module {
 
         List<BlockPos> fillHoles = getHoles();
         BlockPos currentFill = null;
+
+        if (fillHoles.size() > 0)
+            processing = true;
+        else
+            processing = false;
 
         for (BlockPos hole : fillHoles) {
             if (mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(hole)).isEmpty())
@@ -136,7 +143,7 @@ public class HoleFill extends Module {
         return Blocks.OBSIDIAN;
     }
 
-    List<BlockPos> getHoles() {
+    public List<BlockPos> getHoles() {
         switch (mode.getValue()) {
             case 0:
                 return BlockUtil.getNearbyBlocks(fillTarget, smartRange.getValue(), false).stream().filter(HoleUtil::isHole).filter(blockPos -> mc.player.getDistanceSq(blockPos) < MathUtil.square(range.getValue())).collect(Collectors.toList());

@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -45,10 +46,23 @@ public class WorldUtil implements MixinInterface {
         if (mc.world.getLoadedEntityList().size() == 0)
             return null;
 
-        EntityPlayer closestPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !(EnemyUtil.getHealth(entityPlayer) < 0)).findFirst().orElse(null);
+        EntityPlayer closestPlayer = null;
 
-        if (FriendManager.isFriend(closestPlayer.getName()) && FriendManager.isFriendModuleEnabled())
-            return null;
+        for (EntityPlayer nearbyPlayer : mc.world.playerEntities) {
+            if (nearbyPlayer == mc.player)
+                continue;
+
+            if (EnemyUtil.getHealth(nearbyPlayer) < 0)
+                continue;
+
+            if (mc.player.getDistance(nearbyPlayer) > range)
+                continue;
+
+            if (FriendManager.isFriend(nearbyPlayer.getName()) && FriendManager.isFriendModuleEnabled())
+                continue;
+
+            closestPlayer = nearbyPlayer;
+        }
 
         return closestPlayer;
     }
@@ -57,24 +71,38 @@ public class WorldUtil implements MixinInterface {
         if (mc.world.getLoadedEntityList().size() == 0)
             return null;
 
-        EntityPlayer crystalPlayer = null;
+        EntityPlayer targetPlayer = null;
+        List<EntityPlayer> selectionPlayers = new ArrayList<>();
+
+        for (EntityPlayer nearbyPlayer : mc.world.playerEntities) {
+            if (nearbyPlayer == mc.player)
+                continue;
+
+            if (EnemyUtil.getHealth(nearbyPlayer) < 0)
+                continue;
+
+            if (mc.player.getDistance(nearbyPlayer) > range)
+                continue;
+
+            if (FriendManager.isFriend(nearbyPlayer.getName()) && FriendManager.isFriendModuleEnabled())
+                continue;
+
+            selectionPlayers.add(nearbyPlayer);
+        }
 
         switch (mode) {
             case 0:
-                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !(EnemyUtil.getHealth(entityPlayer) < 0)).findFirst().orElse(null);
+                targetPlayer = selectionPlayers.stream().min(Comparator.comparing(target -> mc.player.getDistance(target))).orElse(null);
                 break;
             case 1:
-                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !(EnemyUtil.getHealth(entityPlayer) < 0)).min(Comparator.comparing(entityPlayer -> EnemyUtil.getHealth(entityPlayer))).orElse(null);
+                targetPlayer = selectionPlayers.stream().min(Comparator.comparing(target -> EnemyUtil.getHealth(target))).orElse(null);
                 break;
             case 2:
-                crystalPlayer = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !(EnemyUtil.getHealth(entityPlayer) < 0)).min(Comparator.comparing(entityPlayer -> EnemyUtil.getArmor(entityPlayer))).orElse(null);
+                targetPlayer = selectionPlayers.stream().min(Comparator.comparing(target -> EnemyUtil.getArmor(target))).orElse(null);
                 break;
         }
 
-        if (FriendManager.isFriend(crystalPlayer.getName()) && FriendManager.isFriendModuleEnabled())
-            return null;
-
-        return crystalPlayer;
+        return targetPlayer;
     }
 
     public static List<EntityPlayer> getNearbyPlayers(double range) {

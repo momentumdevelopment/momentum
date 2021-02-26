@@ -15,7 +15,7 @@ public class LongJump extends Module {
         super("LongJump", Category.MOVEMENT, "Increases player jump distance");
     }
 
-    public static Mode mode = new Mode("Mode", "ByPass", "Glide", "Deer");
+    public static Mode mode = new Mode("Mode", "Bypass", "Glide", "Deer");
     public static Slider speed = new Slider("Speed", 0.0D, 4.0D, 10.0D, 0);
     public static Checkbox packet = new Checkbox("Packet", true);
     public static Checkbox knockback = new Checkbox("Knockback", true);

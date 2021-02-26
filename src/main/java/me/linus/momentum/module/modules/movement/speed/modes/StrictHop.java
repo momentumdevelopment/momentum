@@ -85,12 +85,12 @@ public class StrictHop extends SpeedMode {
 
         else if (forward != 0.0f) {
             if (strafe >= 1.0f) {
-                yaw += (float)(forward > 0.0f ? -45 : 45);
+                yaw += (float) (forward > 0.0f ? -45 : 45);
                 strafe = 0.0f;
             }
 
             else if (strafe <= -1.0f) {
-                yaw += (float)(forward > 0.0f ? 45 : -45);
+                yaw += (float) (forward > 0.0f ? 45 : -45);
                 strafe = 0.0f;
             }
 

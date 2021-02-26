@@ -29,6 +29,7 @@ public class Wireframe extends ESPMode {
             glDisable(GL_ALPHA_TEST);
             glDisable(GL_DEPTH_TEST);
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            glEnable(GL_LINE_SMOOTH);
             glLineWidth((float) (ESP.lineWidth.getValue() - 1));
 
             if (ESP.xqz.getValue())
@@ -70,6 +71,7 @@ public class Wireframe extends ESPMode {
             glDisable(GL_DEPTH_TEST);
             glPushAttrib(GL_ALL_ATTRIB_BITS);
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            glEnable(GL_LINE_SMOOTH);
             glLineWidth((float) (ESP.lineWidth.getValue() - 1));
 
             if (ESP.xqz.getValue())

@@ -260,7 +260,7 @@ public class RenderUtil implements MixinInterface {
         GlStateManager.enableBlend();
 
         if (background)
-            GuiScreen.drawRect((int) -width - 1, (int) -(height - 1), (int) width + 2, 3, ColorUtil.toRGBA(NameTags.colorPicker.getColor().getRed(), NameTags.colorPicker.getColor().getGreen(), NameTags.colorPicker.getColor().getBlue(), NameTags.colorPicker.getColor().getAlpha()));
+            GuiScreen.drawRect((int) -width - 1, (int) -(height - 1), (int) width + 2, 3, ColorUtil.toRGBA(NameTags.colorPicker.getRed(), NameTags.colorPicker.getGreen(), NameTags.colorPicker.getBlue(), NameTags.colorPicker.getAlpha()));
 
         GlStateManager.disableBlend();
         FontUtil.drawString(text, -width + 1, -height + 3, -1);

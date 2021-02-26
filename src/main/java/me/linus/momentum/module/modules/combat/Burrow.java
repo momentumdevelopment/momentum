@@ -91,8 +91,7 @@ public class Burrow extends Module {
 
             BlockUtil.placeBlock(originalPos, rotate.getValue(), false, false, false, true, false);
 
-            if (onGround.getValue())
-                mc.player.onGround = true;
+            mc.player.onGround = onGround.getValue();
 
             if (instant.getValue()) {
                 mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 7, mc.player.posZ, false));

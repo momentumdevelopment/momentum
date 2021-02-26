@@ -6,6 +6,7 @@ import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
@@ -42,12 +43,14 @@ public class AutoTrap extends Module {
     public static Slider range = new Slider("Range", 0.0D, 7.0D, 10.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
     public static Checkbox autoSwitch = new Checkbox("AutoSwitch", true);
-    public static Checkbox raytrace = new Checkbox("Raytrace", false);
+    public static Checkbox raytrace = new Checkbox("Raytrace", true);
     public static Checkbox packet = new Checkbox("Packet", false);
     public static Checkbox swingArm = new Checkbox("Swing Arm", true);
     public static Checkbox antiGlitch = new Checkbox("Anti-Glitch", false);
-    public static Checkbox rotate = new Checkbox("Rotate", true);
-    public static Checkbox strict = new Checkbox("NCP Strict", true);
+
+    public static Checkbox rotate = new Checkbox("Rotate", false);
+    public static SubCheckbox strict = new SubCheckbox(rotate, "NCP Strict", false);
+
     public static Checkbox disable = new Checkbox("Disables", true);
 
     public static Checkbox color = new Checkbox("Color", true);
@@ -65,14 +68,13 @@ public class AutoTrap extends Module {
         addSetting(swingArm);
         addSetting(antiGlitch);
         addSetting(rotate);
-        addSetting(strict);
         addSetting(disable);
         addSetting(color);
     }
 
     int obsidianSlot;
     BlockPos placeBlock;
-    boolean hasPlaced;
+    public static boolean hasPlaced;
 
     @Override
     public void onEnable() {

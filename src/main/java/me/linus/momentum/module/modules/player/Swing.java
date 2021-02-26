@@ -21,12 +21,14 @@ public class Swing extends Module {
     public static Mode mode = new Mode("Mode", "Offhand", "Mainhand", "Switch");
     public static Checkbox noAnimation = new Checkbox("Cancel Animation", true);
     public static Checkbox noReset = new Checkbox("No Reset", false);
+    public static Checkbox dropSwing = new Checkbox("Drop Swing", false);
 
     @Override
     public void setup() {
         addSetting(mode);
         addSetting(noAnimation);
         addSetting(noReset);
+        addSetting(dropSwing);
     }
 
     @Override
@@ -42,6 +44,9 @@ public class Swing extends Module {
                 mc.player.swingingHand = EnumHand.MAIN_HAND;
                 break;
         }
+
+        if (mc.gameSettings.keyBindDrop.isPressed() && dropSwing.getValue())
+            mc.player.swingArm(EnumHand.MAIN_HAND);
     }
 
     @SubscribeEvent
@@ -52,6 +57,6 @@ public class Swing extends Module {
 
     @Override
     public String getHUDData() {
-        return " " + mode.getValue();
+        return " " + mode.getMode(mode.getValue());
     }
 }

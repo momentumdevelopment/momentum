@@ -3,6 +3,7 @@ package me.linus.momentum.util.combat.crystal;
 import me.linus.momentum.managers.CrystalManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.combat.AutoCrystal;
+import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.BlockUtil.BlockResistance;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -52,25 +53,15 @@ public class CrystalUtil implements MixinInterface {
     }
 
     public static boolean attackCheck(Entity crystal) {
-        boolean shouldAttack = false;
-
         if (!(crystal instanceof EntityEnderCrystal))
             return false;
 
         switch (AutoCrystal.breakMode.getValue()) {
             case 0:
-                shouldAttack = true;
-                break;
-            case 1:
-                for (CrystalPosition placedCrystal : CrystalManager.placedCrystals) {
-                    if (crystal.getDistanceSq(placedCrystal.getCrystalPosition()) < 3);
-                        shouldAttack = true;
-                }
-
-                break;
+                return true;
         }
 
-        return shouldAttack;
+        return false;
     }
 
     public static void swingArm(int mode) {

@@ -4,6 +4,7 @@ import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
+import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.render.Render2DUtil;
 import me.linus.momentum.util.world.Timer;
@@ -25,6 +26,7 @@ public class CrossHairs extends Module {
     }
 
     public static Checkbox custom = new Checkbox("Custom", true);
+    public static SubMode mode = new SubMode(custom, "Mode", "Dynamic", "Static");
     public static SubSlider thickness = new SubSlider(custom, "Thickness", 0.0D, 2.0D, 5.0D, 1);
     public static SubSlider separation = new SubSlider(custom, "Separation", 0.0D, 2.0D, 10.0D, 1);
     public static SubSlider width = new SubSlider(custom, "Width", 0.0D, 4.0D, 10.0D, 1);
@@ -59,6 +61,6 @@ public class CrossHairs extends Module {
         if (custom.getValue() && event.getType() == ElementType.CROSSHAIRS)
             event.setCanceled(true);
 
-        Render2DUtil.drawCrosshairs(separation.getValue(), bend.getValue(), width.getValue(), thickness.getValue(), colorPicker.getColor().getRGB());
+        Render2DUtil.drawCrosshairs(separation.getValue(), bend.getValue(), width.getValue(), thickness.getValue(), mode.getValue() == 0,  colorPicker.getColor().getRGB());
     }
 }

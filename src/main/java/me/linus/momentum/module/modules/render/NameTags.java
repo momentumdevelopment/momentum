@@ -49,6 +49,7 @@ public class NameTags extends Module {
     public static Checkbox health = new Checkbox("Health", true);
     public static Checkbox ping = new Checkbox("Ping", true);
     public static Checkbox gamemode = new Checkbox("GameMode", false);
+    public static Checkbox totemPops = new Checkbox("Totem Pops", false);
     public static Checkbox armor = new Checkbox("Armor", true);
     public static Checkbox durability = new Checkbox("Durability", true);
 
@@ -72,6 +73,7 @@ public class NameTags extends Module {
         addSetting(health);
         addSetting(ping);
         addSetting(gamemode);
+        addSetting(totemPops);
         addSetting(armor);
         addSetting(durability);
         addSetting(mainhand);
@@ -287,7 +289,7 @@ public class NameTags extends Module {
 
     public String generateNameTag(EntityPlayer entityPlayer) {
         try {
-            return generateName(entityPlayer) + generateGamemode(entityPlayer) + getPingText(entityPlayer, mc.getConnection().getPlayerInfo(entityPlayer.getUniqueID()).getResponseTime()) + generatePing(entityPlayer) + getHealthText(EnemyUtil.getHealth(entityPlayer)) + generateHealth(entityPlayer);
+            return generateName(entityPlayer) + generateGamemode(entityPlayer) + TextFormatting.RESET + generateTotemPops(entityPlayer) + getPingText(entityPlayer, mc.getConnection().getPlayerInfo(entityPlayer.getUniqueID()).getResponseTime()) + generatePing(entityPlayer) + getHealthText(EnemyUtil.getHealth(entityPlayer)) + generateHealth(entityPlayer);
         } catch (Exception e) {
 
         }
@@ -329,6 +331,18 @@ public class NameTags extends Module {
             return ping.getValue() ? " " + mc.getConnection().getPlayerInfo(entityPlayer.getUniqueID()).getResponseTime() + "ms" : "";
         else
             return ping.getValue() ? " -1 ms" : "";
+    }
+
+    public String generateTotemPops(EntityPlayer entityPlayer) {
+        if (totemPops.getValue()) {
+            if (GearManager.totemMap.containsKey(entityPlayer.getName()))
+                return (FriendManager.isFriend(entityPlayer.getName()) ? TextFormatting.AQUA : TextFormatting.RESET) + " " + GearManager.totemMap.get(entityPlayer.getName());
+            else
+                return " 0";
+        }
+
+        else
+            return "";
     }
 
     public TextFormatting getPingText(EntityPlayer entityPlayer, float ping) {

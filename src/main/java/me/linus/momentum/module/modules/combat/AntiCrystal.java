@@ -92,16 +92,17 @@ public class AntiCrystal extends Module {
                 MessageUtil.sendClientMessage("No Pressure Plate, " + ChatFormatting.RED + "Disabling!");
                 this.toggle();
             }
-        } else {
-            if (woodenPressurePlateSlot != -1) {
+        }
+
+        else {
+            if (woodenPressurePlateSlot != -1)
                 InventoryUtil.switchToSlot(Blocks.WOODEN_PRESSURE_PLATE);
-            } else if (heavyWeightedPressurePlateSlot != -1) {
+            else if (heavyWeightedPressurePlateSlot != -1)
                 InventoryUtil.switchToSlot(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
-            } else if (lightWeightedPressurePlateSlot != -1) {
+            else if (lightWeightedPressurePlateSlot != -1)
                 InventoryUtil.switchToSlot(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE);
-            } else if (stonePressurePlateSlot != -1) {
+            else if (stonePressurePlateSlot != -1)
                 InventoryUtil.switchToSlot(Blocks.STONE_PRESSURE_PLATE);
-            }
         }
     }
 

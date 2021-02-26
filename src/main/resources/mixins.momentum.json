@@ -28,6 +28,7 @@
       "MixinWorld",
       "MixinTileEntityBeaconRenderer",
       "MixinTileEntityEnchantmentTableRenderer",
-      "MixinRender"
+      "MixinRender",
+      "MixinRenderGlobal"
     ]
 }

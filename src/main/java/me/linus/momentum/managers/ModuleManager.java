@@ -114,7 +114,6 @@ public class ModuleManager implements MixinInterface {
 			new HighJump(),
 			new IceSpeed(),
 			new Jesus(),
-			new LongJump(),
 			new NoSlow(),
 			new Parkour(),
 			new ReverseStep(),

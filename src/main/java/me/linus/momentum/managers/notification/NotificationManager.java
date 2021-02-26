@@ -14,7 +14,15 @@ public class NotificationManager implements MixinInterface {
 
     public static List<Notification> notifications = new ArrayList<>();
 
-    public static void addNotification(Notification notification) {
-        notifications.add(notification);
+    public static void addNotification(Notification queueNotification) {
+        boolean duplicate = false;
+
+        for (Notification notification : notifications) {
+            if (notification.getMessage().equals(queueNotification.getMessage()))
+                duplicate = true;
+        }
+
+        if (!duplicate)
+            notifications.add(queueNotification);
     }
 }

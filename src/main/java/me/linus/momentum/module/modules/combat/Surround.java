@@ -38,18 +38,18 @@ public class Surround extends Module {
     }
 
     public static Mode mode = new Mode("Mode", "Standard", "Full", "Anti-City");
-    public static Mode disable = new Mode("Disable", "Jump", "Completion", "Never");
+    public static Mode disable = new Mode("Disable", "Off-Ground", "Completion", "Never");
     public static Mode centerPlayer = new Mode("Center", "Teleport", "NCP", "None");
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
 
     public static Checkbox timeout = new Checkbox("Timeout", true);
     public static SubSlider timeoutTick = new SubSlider(timeout, "Timeout Ticks", 1.0D, 15.0D, 20.0D, 1);
 
-    public static Checkbox raytrace = new Checkbox("Raytrace", false);
+    public static Checkbox raytrace = new Checkbox("Raytrace", true);
     public static Checkbox packet = new Checkbox("Packet", false);
     public static Checkbox swingArm = new Checkbox("Swing Arm", true);
     public static Checkbox antiGlitch = new Checkbox("Anti-Glitch", false);
-    public static Checkbox rotate = new Checkbox("Rotate", true);
+    public static Checkbox rotate = new Checkbox("Rotate", false);
     public static Checkbox strict = new Checkbox("NCP Strict", true);
     public static Checkbox onlyObsidian = new Checkbox("Only Obsidian", true);
     public static Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
@@ -79,11 +79,10 @@ public class Surround extends Module {
     }
 
     int obsidianSlot;
-    boolean hasPlaced;
+    public static boolean hasPlaced;
     Vec3d center = Vec3d.ZERO;
     int blocksPlaced = 0;
     BlockPos renderBlock;
-    BlockPos originalPos;
 
     @Override
     public void onEnable() {
@@ -93,7 +92,6 @@ public class Surround extends Module {
         super.onEnable();
 
         obsidianSlot = InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN);
-        originalPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
 
         if (obsidianSlot == -1) {
             NotificationManager.addNotification(new Notification("No Obsidian, " + ChatFormatting.RED + "Disabling!", Type.Info));
@@ -115,8 +113,6 @@ public class Surround extends Module {
                     mc.player.motionX = (center.x - mc.player.posX) / 2;
                     mc.player.motionZ = (center.z - mc.player.posZ) / 2;
                     break;
-                case 2:
-                    break;
             }
         }
     }
@@ -127,7 +123,7 @@ public class Surround extends Module {
 
         switch (disable.getValue()) {
             case 0:
-                if (mc.player.posY > originalPos.getY())
+                if (!mc.player.onGround)
                     this.disable();
                 break;
             case 1:

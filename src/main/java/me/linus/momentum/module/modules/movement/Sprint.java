@@ -38,6 +38,6 @@ public class Sprint extends Module {
 
     @Override
     public String getHUDData() {
-        return mode.getMode(mode.getValue());
+        return " " + mode.getMode(mode.getValue());
     }
 }
