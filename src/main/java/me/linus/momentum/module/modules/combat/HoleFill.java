@@ -10,7 +10,6 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
@@ -103,10 +102,7 @@ public class HoleFill extends Module {
         List<BlockPos> fillHoles = getHoles();
         BlockPos currentFill = null;
 
-        if (fillHoles.size() > 0)
-            processing = true;
-        else
-            processing = false;
+        processing = !fillHoles.isEmpty();
 
         for (BlockPos hole : fillHoles) {
             if (mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(hole)).isEmpty())
@@ -146,7 +142,7 @@ public class HoleFill extends Module {
     public List<BlockPos> getHoles() {
         switch (mode.getValue()) {
             case 0:
-                return BlockUtil.getNearbyBlocks(fillTarget, smartRange.getValue(), false).stream().filter(HoleUtil::isHole).filter(blockPos -> mc.player.getDistanceSq(blockPos) < MathUtil.square(range.getValue())).collect(Collectors.toList());
+                return BlockUtil.getNearbyBlocks(fillTarget, smartRange.getValue(), false).stream().filter(HoleUtil::isHole).filter(blockPos -> mc.player.getDistanceSq(blockPos) < Math.pow(range.getValue(), 2)).collect(Collectors.toList());
             case 1:
                 return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(HoleUtil::isHole).collect(Collectors.toList());
         }

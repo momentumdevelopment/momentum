@@ -10,6 +10,8 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.client.MessageUtil;
+import me.linus.momentum.util.player.MotionUtil;
 import net.minecraft.network.play.server.SPacketExplosion;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -24,14 +26,14 @@ public class Speed extends Module {
         super("Speed", Category.MOVEMENT, "Allows you to go faster");
     }
 
-    public static Mode mode = new Mode("Mode", "NCP", "SmoothHop", "StrictHop", "CrystalHop", "PullHop");
+    public static Mode mode = new Mode("Mode", "SmoothHop", "GayHop", "CrystalHop", "PullHop");
 
-    public static Slider multiplier = new Slider("Multiplier", 0.0D, 0.07D, 0.3D, 3);
+    public static Slider multiplier = new Slider("Multiplier", 1.0D, 1.2D, 1.5D, 3);
 
     public static Checkbox useTimer = new Checkbox("Use Timer", false);
     public static SubSlider timerTicks = new SubSlider(useTimer, "Timer Speed", 0.0D, 1.12D, 2.0D, 2);
 
-    public static Slider speed = new Slider("Speed", 0.0D, 0.27D, 1.0D, 2);
+    public static Slider speed = new Slider("Speed", 0.0D, 0.26D, 1.0D, 2);
     public static Slider stepHeight = new Slider("Step Height", 0.0D, 0.6D, 2.0D, 1);
 
     public static Checkbox jump = new Checkbox("Jump", true);
@@ -63,12 +65,9 @@ public class Speed extends Module {
                 speedMode = new GayHop();
                 break;
             case 1:
-                speedMode = new StrictHop();
-                break;
-            case 2:
                 speedMode = new CrystalHop();
                 break;
-            case 3:
+            case 2:
                 speedMode = new PullHop();
                 break;
         }

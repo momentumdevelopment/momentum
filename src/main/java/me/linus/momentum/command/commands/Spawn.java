@@ -9,12 +9,14 @@ public class Spawn extends Command {
         super("spawn");
     }
 
+    int offset = 6641;
+
     @Override
     public void onCommand(String[] args) {
-        if (args.length >= 1) {
-            WorldUtil.createFakePlayer(args[1], true, true, true, false, null);
-        }
+        offset++;
 
+        if (args.length >= 1)
+            WorldUtil.createFakePlayer(args[1], true, true, true, false, offset);
         else
             MessageUtil.usageException(this, "[name]");
     }

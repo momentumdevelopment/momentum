@@ -1,10 +1,11 @@
 package me.linus.momentum.module.modules.player;
 
+import me.linus.momentum.managers.notification.Notification.Type;
+import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.BlockPos;
 
@@ -42,10 +43,10 @@ public class Rubberband extends Module {
         if (nullCheck())
             return;
 
-        if (mc.player.getDistanceSq(preRubberbandPos) <= MathUtil.square(distance.getValue()))
-            MessageUtil.sendClientMessage("Move " + distance.getValue() + " blocks to trigger a rubberband!");
+        if (mc.player.getDistanceSq(preRubberbandPos) <= Math.pow(distance.getValue(), 2))
+            NotificationManager.addNotification(new Notification("Move " + distance.getValue() + " blocks to trigger a rubberband!", Type.Info));
 
-        if (mc.player.getDistanceSq(preRubberbandPos) > MathUtil.square(distance.getValue())) {
+        if (mc.player.getDistanceSq(preRubberbandPos) > Math.pow(distance.getValue(), 2)) {
             switch (mode.getValue()) {
                 case 0:
                     mc.player.setPosition(preRubberbandPos.x, mc.player.prevPosY, mc.player.prevPosZ);

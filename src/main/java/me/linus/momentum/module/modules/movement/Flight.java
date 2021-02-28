@@ -46,7 +46,7 @@ public class Flight extends Module {
                 else
                     mc.player.motionY = 0;
 
-                FlightUtil.horizontalEntityFlight(hSpeed.getValue());
+                FlightUtil.horizontalFlight(hSpeed.getValue());
                 break;
             case 1:
                 mc.player.capabilities.setFlySpeed((float) (hSpeed.getValue() / 23));

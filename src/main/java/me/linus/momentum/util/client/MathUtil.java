@@ -13,10 +13,6 @@ import java.math.RoundingMode;
 
 public class MathUtil {
 
-	public static double square(double in) {
-		return in * in;
-	}
-
 	public static double roundDouble(double number, int scale) {
 		BigDecimal bd = new BigDecimal(number);
 		bd = bd.setScale(scale, RoundingMode.HALF_UP);
@@ -26,12 +22,6 @@ public class MathUtil {
 	public static double roundAvoid(double value, int places) {
 		double scale = Math.pow(10, places);
 		return Math.round(value * scale) / scale;
-	}
-
-	public static double round(double value) {
-		BigDecimal bd = new BigDecimal(value);
-		bd = bd.setScale(3, RoundingMode.HALF_UP);
-		return bd.doubleValue();
 	}
 
 	public static float clamp(float val, float min, float max) {

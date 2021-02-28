@@ -1,8 +1,10 @@
 package me.linus.momentum.util.player;
 
+import me.linus.momentum.event.events.player.MoveEvent;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.world.Timer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.math.MathHelper;
@@ -16,106 +18,139 @@ import java.text.DecimalFormat;
  */
 
 public class MotionUtil implements MixinInterface {
-    
-    static DecimalFormat formatter = new DecimalFormat("#.#");
-    static float roundedForward = getRoundedMovementInput(mc.player.movementInput.moveForward);
-    static float roundedStrafing = getRoundedMovementInput(mc.player.movementInput.moveStrafe);
-    static double prevPosX;
-    static double prevPosZ;
-    static Timer timer = new Timer();
+
+    public static void impressMoveSpeed(MoveEvent event, double speed, float stepHeight) {
+        float forward = mc.player.movementInput.moveForward;
+        float strafe = mc.player.movementInput.moveStrafe;
+        float yaw = mc.player.rotationYaw;
+
+        if (!MotionUtil.isMoving()) {
+            event.setX(0.0);
+            event.setZ(0.0);
+        }
+
+        else if (forward != 0.0f) {
+            if (strafe >= 1.0f) {
+                yaw += (float) (forward > 0.0f ? -45 : 45);
+                strafe = 0.0f;
+            }
+
+            else if (strafe <= -1.0f) {
+                yaw += (float) (forward > 0.0f ? 45 : -45);
+                strafe = 0.0f;
+            }
+
+            if (forward > 0.0f)
+                forward = 1.0f;
+
+            else if (forward < 0.0f)
+                forward = -1.0f;
+        }
+
+        event.setX((double) forward * speed * Math.cos(Math.toRadians(yaw + 90.0f)) + (double) strafe * speed * Math.sin(Math.toRadians(yaw + 90.0f)));
+        event.setZ((double) forward * speed * Math.sin(Math.toRadians(yaw + 90.0f)) - (double) strafe * speed * Math.cos(Math.toRadians(yaw + 90.0f)));
+        mc.player.stepHeight = stepHeight;
+
+        if (!MotionUtil.isMoving()) {
+            event.setX(0.0);
+            event.setZ(0.0);
+        }
+    }
+
+    public static void setMoveSpeed(double speed, float stepHeight) {
+        Entity currentMover = mc.player.isRiding() ? mc.player.ridingEntity : mc.player;
+
+        float forward = mc.player.movementInput.moveForward;
+        float strafe = mc.player.movementInput.moveStrafe;
+        float yaw = mc.player.rotationYaw;
+
+        if (!MotionUtil.isMoving()) {
+            currentMover.motionX = 0;
+            currentMover.motionZ = 0;
+        }
+
+        else if (forward != 0.0f) {
+            if (strafe >= 1.0f) {
+                yaw += (float) (forward > 0.0f ? -45 : 45);
+                strafe = 0.0f;
+            }
+
+            else if (strafe <= -1.0f) {
+                yaw += (float) (forward > 0.0f ? 45 : -45);
+                strafe = 0.0f;
+            }
+
+            if (forward > 0.0f)
+                forward = 1.0f;
+
+            else if (forward < 0.0f)
+                forward = -1.0f;
+        }
+
+        currentMover.motionX = (double) forward * speed * Math.cos(Math.toRadians(yaw + 90.0f)) + (double) strafe * speed * Math.sin(Math.toRadians(yaw + 90.0f));
+        currentMover.motionZ = (double) forward * speed * Math.sin(Math.toRadians(yaw + 90.0f)) - (double) strafe * speed * Math.cos(Math.toRadians(yaw + 90.0f));
+        currentMover.stepHeight = stepHeight;
+
+        if (!MotionUtil.isMoving()) {
+            currentMover.motionX = 0;
+            currentMover.motionZ = 0;
+        }
+    }
+
+    public static double[] getMoveSpeed(double speed) {
+        Entity currentMover = mc.player.isRiding() ? mc.player.ridingEntity : mc.player;
+
+        float forward = mc.player.movementInput.moveForward;
+        float strafe = mc.player.movementInput.moveStrafe;
+        float yaw = mc.player.rotationYaw;
+
+        double motionX;
+        double motionZ;
+
+        if (!MotionUtil.isMoving()) {
+            motionX = 0;
+            motionZ = 0;
+        }
+
+        else if (forward != 0.0f) {
+            if (strafe >= 1.0f) {
+                yaw += (float) (forward > 0.0f ? -45 : 45);
+                strafe = 0.0f;
+            }
+
+            else if (strafe <= -1.0f) {
+                yaw += (float) (forward > 0.0f ? 45 : -45);
+                strafe = 0.0f;
+            }
+
+            if (forward > 0.0f)
+                forward = 1.0f;
+
+            else if (forward < 0.0f)
+                forward = -1.0f;
+        }
+
+        motionX = (double) forward * speed * Math.cos(Math.toRadians(yaw + 90.0f)) + (double) strafe * speed * Math.sin(Math.toRadians(yaw + 90.0f));
+        motionZ = (double) forward * speed * Math.sin(Math.toRadians(yaw + 90.0f)) - (double) strafe * speed * Math.cos(Math.toRadians(yaw + 90.0f));
+
+        if (!MotionUtil.isMoving()) {
+            motionX = 0;
+            motionZ = 0;
+        }
+
+        return new double[] {
+                motionX, motionZ
+        };
+    }
 
     public static boolean isMoving() {
         return (mc.player.moveForward != 0.0D || mc.player.moveStrafing != 0.0D);
     }
 
-    public static boolean hasMotion() {
-        return mc.player.motionX != 0.0 && mc.player.motionZ != 0.0 && mc.player.motionY != 0.0;
-    }
-
-    public static double calcMoveYaw(float yawIn) {
-        float moveForward = roundedForward;
-        float moveString = roundedStrafing;
-
-        float strafe = 90 * moveString;
-        if (moveForward != 0f)
-            strafe *= moveForward * 0.5f;
-        else
-            strafe *= 1f;
-
-        float yaw = yawIn - strafe;
-        if (moveForward < 0f)
-            yaw -= 180;
-        else
-            yaw -= 0;
-
-        return Math.toRadians(yaw);
-    }
-
-    static float getRoundedMovementInput(float input) {
-        if (input > 0)
-            input = 1f;
-        else if (input < 0)
-            input = -1f;
-        else
-            input = 0f;
-
-        return input;
-    }
-
-    public static void setSpeed(EntityLivingBase entity, double speed) {
-        double[] dir = directionSpeed(speed);
-        entity.motionX = dir[0];
-        entity.motionZ = dir[1];
-    }
-
-    public static double getBaseMoveSpeed() {
-        double baseSpeed = 0.2873;
-        if (mc.player != null && mc.player.isPotionActive(Potion.getPotionById(1))) {
-            int amplifier = mc.player.getActivePotionEffect(Potion.getPotionById(1)).getAmplifier();
-            baseSpeed *= 1.0 + 0.2 * (amplifier + 1);
-        }
-
-        return baseSpeed;
-    }
-
-    public static double[] directionSpeed(double speed) {
-        float forward = mc.player.movementInput.moveForward;
-        float side = mc.player.movementInput.moveStrafe;
-        float yaw = mc.player.prevRotationYaw + (mc.player.rotationYaw - mc.player.prevRotationYaw) * mc.getRenderPartialTicks();
-
-        if (forward != 0.0f) {
-            if (side > 0.0f)
-                yaw += (float) (forward > 0.0f ? -45 : 45);
-            else if (side < 0.0f) {
-                yaw += (float) (forward > 0.0f ? 45 : -45);
-
-                side = 0.0f;
-                if (forward > 0.0f)
-                    forward = 1.0f;
-                else if (forward < 0.0f)
-                    forward = -1.0f;
-
-            }
-        }
-
-        double sin = Math.sin(Math.toRadians(yaw + 90.0f));
-        double cos = Math.cos(Math.toRadians(yaw + 90.0f));
-        double posX = (double) forward * speed * cos + (double) side * speed * sin;
-        double posZ = (double) forward * speed * sin - (double) side * speed * cos;
-
-        return new double[] {
-                posX, posZ
-        };
-    }
-
     public static String getSpeed() {
-        if (timer.passed(1000, Timer.Format.System)) {
-            prevPosX = mc.player.prevPosX;
-            prevPosZ = mc.player.prevPosZ;
-        }
-
-        double deltaX = mc.player.posX - prevPosX;
-        double deltaZ = mc.player.posZ - prevPosZ;
+        DecimalFormat formatter = new DecimalFormat("#.#");
+        double deltaX = mc.player.posX - mc.player.prevPosX;
+        double deltaZ = mc.player.posZ - mc.player.prevPosZ;
 
         double KMH = MathUtil.roundAvoid((MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ) / 1000.0f) / (0.05f / 3600.0f), 1);
 
@@ -124,12 +159,11 @@ public class MotionUtil implements MixinInterface {
         if (!formattedString.contains("."))
             formattedString += ".0";
 
-        String bps = " " + formattedString + TextFormatting.WHITE + " km/h";
-
-        return bps;
+        return formattedString + TextFormatting.WHITE + " km/h";
     }
 
     public String format(double input) {
+        DecimalFormat formatter = new DecimalFormat("#.#");
         String result = formatter.format(input);
 
         if (!result.contains("."))

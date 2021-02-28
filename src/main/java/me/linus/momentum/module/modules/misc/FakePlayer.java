@@ -41,7 +41,7 @@ public class FakePlayer extends Module {
 
         switch (mode.getValue()) {
             case 0:
-                WorldUtil.createFakePlayer(name.getMode(name.getValue()), inventory.getValue(), angles.getValue(), true, false, mc.player.getPosition().add(0.5, 0, 0.5));
+                WorldUtil.createFakePlayer(name.getMode(name.getValue()), inventory.getValue(), angles.getValue(), true, false, -6640);
                 break;
         }
         
@@ -50,6 +50,6 @@ public class FakePlayer extends Module {
 
     @Override
     public void onDisable() {
-        mc.world.removeEntityFromWorld(69420);
+        mc.world.removeEntityFromWorld(-6640);
     }
 }

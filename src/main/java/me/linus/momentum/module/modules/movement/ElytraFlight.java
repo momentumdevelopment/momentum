@@ -35,7 +35,7 @@ public class ElytraFlight extends Module {
 
     public static Mode boost = new Mode("Boost", "None", "Firework", "Accelerate");
 
-    public static Slider hSpeed = new Slider("Glide Speed", 0.0D, 2.1D, 3.0D, 1);
+    public static Slider hSpeed = new Slider("Glide Speed", 0.0D, 2.9D, 4.0D, 1);
     public static Slider ySpeed = new Slider("Rise Speed", 0.0D, 1.0D, 3.0D, 1);
     public static Slider yOffset = new Slider("Y-Offset", 0.0D, 0.009D, 0.1D, 3);
     public static Slider fallSpeed = new Slider("Fall Speed", 0.0D, 0.0D, 0.1D, 3);
@@ -87,45 +87,42 @@ public class ElytraFlight extends Module {
     }
 
     @Override
-    public void onValueChange() {
-        switch (mode.getValue()) {
-            case -1:
-                elytraMode = new Control();
-                break;
-            case 0:
-                elytraMode = new MotionControl();
-                break;
-            case 1:
-                elytraMode = new Pitch();
-                break;
-            case 2:
-                elytraMode = new PitchNCP();
-                break;
-            case 3:
-                elytraMode = new Firework();
-                break;
-            case 4:
-                elytraMode = new Deer();
-                break;
-            case 5:
-                elytraMode = new Dynamic();
-                break;
-            case 6:
-                elytraMode = new DynamicNCP();
-                break;
-            case 7:
-                elytraMode = new Glide();
-                break;
-            case 8:
-                elytraMode = new Vanilla();
-                break;
-        }
-    }
-
-    @Override
     public void onUpdate() {
         if (nullCheck())
             return;
+
+        switch (mode.getValue()) {
+            case 0:
+                elytraMode = new Control();
+                break;
+            case 1:
+                elytraMode = new MotionControl();
+                break;
+            case 2:
+                elytraMode = new Pitch();
+                break;
+            case 3:
+                elytraMode = new PitchNCP();
+                break;
+            case 4:
+                elytraMode = new Firework();
+                break;
+            case 5:
+                elytraMode = new Deer();
+                break;
+            case 6:
+                elytraMode = new Dynamic();
+                break;
+            case 7:
+                elytraMode = new DynamicNCP();
+                break;
+            case 8:
+                elytraMode = new Glide();
+                break;
+            case 9:
+                elytraMode = new Vanilla();
+                break;
+        }
 
         disableCheck();
         flyTick();

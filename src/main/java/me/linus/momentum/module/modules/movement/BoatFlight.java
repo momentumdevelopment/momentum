@@ -83,7 +83,7 @@ public class BoatFlight extends Module {
             else if (mc.gameSettings.keyBindSneak.isKeyDown())
                 mc.player.ridingEntity.motionY = (ySpeed.getValue() * -1);
 
-            FlightUtil.horizontalEntityFlight(hSpeed.getValue());
+            FlightUtil.horizontalFlight(hSpeed.getValue());
         }
     }
 

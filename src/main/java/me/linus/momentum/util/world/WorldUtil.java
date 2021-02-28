@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class WorldUtil implements MixinInterface {
 
-    public static void createFakePlayer(@Nullable String name, boolean copyInventory, boolean copyAngles, boolean health, boolean player, BlockPos position) {
+    public static void createFakePlayer(@Nullable String name, boolean copyInventory, boolean copyAngles, boolean health, boolean player, int entityID) {
         EntityOtherPlayerMP entity = player ? new EntityOtherPlayerMP(mc.world, mc.getSession().getProfile()) : new EntityOtherPlayerMP(mc.world, new GameProfile(UUID.fromString("70ee432d-0a96-4137-a2c0-37cc9df67f03"), name));
         entity.copyLocationAndAnglesFrom(mc.player);
 
@@ -39,13 +39,10 @@ public class WorldUtil implements MixinInterface {
         if (health)
             entity.setHealth(mc.player.getHealth() + mc.player.getAbsorptionAmount());
 
-        mc.world.addEntityToWorld(69420, entity);
+        mc.world.addEntityToWorld(entityID, entity);
     }
 
     public static EntityPlayer getClosestPlayer(double range) {
-        if (mc.world.getLoadedEntityList().size() == 0)
-            return null;
-
         EntityPlayer closestPlayer = null;
 
         for (EntityPlayer nearbyPlayer : mc.world.playerEntities) {
@@ -68,9 +65,6 @@ public class WorldUtil implements MixinInterface {
     }
 
     public static EntityPlayer getTarget(double range, int mode) {
-        if (mc.world.getLoadedEntityList().size() == 0)
-            return null;
-
         EntityPlayer targetPlayer = null;
         List<EntityPlayer> selectionPlayers = new ArrayList<>();
 

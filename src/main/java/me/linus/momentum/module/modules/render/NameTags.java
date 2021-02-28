@@ -96,7 +96,7 @@ public class NameTags extends Module {
         mc.world.playerEntities.stream().filter(entity -> entity instanceof EntityPlayer && EntityUtil.isLiving(entity) && entity != mc.getRenderViewEntity()).forEach(entityPlayer -> {
             RenderUtil.camera.setPosition(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
 
-            if (!RaytraceUtil.raytraceEntity(entityPlayer) && onlyInViewFrustrum.getValue())
+            if (!RenderUtil.camera.isBoundingBoxInFrustum(entityPlayer.boundingBox) && onlyInViewFrustrum.getValue())
                 return;
 
             nametagEntities.add(entityPlayer);

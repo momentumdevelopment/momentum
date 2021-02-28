@@ -12,9 +12,7 @@ public class PullHop extends SpeedMode {
 
     @Override
     public void onMotionUpdate() {
-        double xDist = mc.player.posX - mc.player.prevPosX;
-        double zDist = mc.player.posZ - mc.player.prevPosZ;
-        lastDist = Math.sqrt(xDist * xDist + zDist * zDist);
+        lastDist = Math.sqrt(Math.pow(mc.player.posX - mc.player.prevPosX, 2) + Math.pow(mc.player.posZ - mc.player.prevPosZ, 2));
     }
 
     @Override

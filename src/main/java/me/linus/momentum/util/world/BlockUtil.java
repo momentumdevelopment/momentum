@@ -93,7 +93,7 @@ public class BlockUtil implements MixinInterface {
             player.getPosition().add(new Vec3i(player.motionX, player.motionY, player.motionZ));
 
         for (int x = -range; x <= range; x++)
-            for (int y = -range; y <= range; y++)
+            for (int y = -range; y <= range - (range / 2); y++)
                 for (int z = -range; z <= range; z++)
                     nearbyBlocks.add(player.getPosition().add(x, y, z));
 

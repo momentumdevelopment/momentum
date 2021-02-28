@@ -11,11 +11,8 @@ import me.linus.momentum.mixin.MixinInterface;
 public class SpeedMode implements MixinInterface {
 
     public double moveSpeed = 0.0;
-    public int level = 4;
-    public int ticks = 0;
     public double lastDist = 0.0;
-    public int timerDelay;
-    public boolean boostable = true;
+    public Stage stage = Stage.Cycle;
 
     public void onMotionUpdate() {
 
@@ -27,13 +24,22 @@ public class SpeedMode implements MixinInterface {
 
     public void onRubberband() {
         moveSpeed = 0.0;
-        level = 4;
-        timerDelay = 0;
-        moveSpeed = 0.2873;
+        stage = Stage.Cycle;
         lastDist = 0;
     }
 
     public void onKnockback() {
 
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public enum Stage {
+        Pre,
+        Jump,
+        Post,
+        Cycle
     }
 }

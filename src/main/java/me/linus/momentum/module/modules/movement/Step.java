@@ -77,7 +77,7 @@ public class Step extends Module {
         if (mc.player.isSneaking() && sneakPause.getValue())
             return;
 
-        forwardStep = MotionUtil.directionSpeed(0.1);
+        forwardStep = MotionUtil.getMoveSpeed(0.1);
 
         if (getStepHeight().equals(StepHeight.Unsafe)) {
             if (disable.getValue() == 2)

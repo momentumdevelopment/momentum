@@ -91,7 +91,7 @@ public class StorageESP extends Module {
     }
 
     public void renderTileEntities() {
-        mc.world.loadedTileEntityList.stream().filter(tileEntity -> mc.player.getDistanceSq(tileEntity.getPos()) <= MathUtil.square(range.getValue())).forEach(tileEntity -> {
+        mc.world.loadedTileEntityList.stream().filter(tileEntity -> mc.player.getDistanceSq(tileEntity.getPos()) <= Math.pow(range.getValue(), 2)).forEach(tileEntity -> {
             if (colorManager.abstractColorRegistry.containsKey(tileEntity)) {
                 switch (mode.getValue()) {
                     case 0:

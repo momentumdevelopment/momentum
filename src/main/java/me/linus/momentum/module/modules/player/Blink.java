@@ -37,7 +37,7 @@ public class Blink extends Module {
             return;
 
         if (playerModel.getValue())
-            WorldUtil.createFakePlayer(null, true, true, true, true, mc.player.getPosition());
+            WorldUtil.createFakePlayer(null, true, true, true, true, 6640);
 
         MessageUtil.sendClientMessage("Cancelling all player packets!");
     }
@@ -49,8 +49,9 @@ public class Blink extends Module {
 
         mc.world.removeEntityFromWorld(69420);
 
-        for (Packet packet : packets)
+        for (Packet packet : packets) {
             mc.player.connection.sendPacket(packet);
+        }
 
         packets.clear();
     }

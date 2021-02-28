@@ -14,56 +14,7 @@ import net.minecraft.util.EnumHand;
 public class FlightUtil implements MixinInterface {
 
     public static void horizontalFlight(double hSpeed) {
-        double yaw = MotionUtil.calcMoveYaw(mc.player.rotationYaw);
-        double motX = 0;
-        double motZ = 0;
-
-        yaw -= mc.player.moveStrafing * 90;
-
-        if (mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindForward.isKeyDown()) {
-            motX = (-Math.sin(yaw) * hSpeed) * -1;
-            motZ = (Math.cos(yaw) * hSpeed) * -1;
-        }
-
-        else if (mc.gameSettings.keyBindForward.isKeyDown()) {
-            motX = -Math.sin(yaw) * hSpeed;
-            motZ = Math.cos(yaw) * hSpeed;
-        }
-
-        mc.player.motionX = motX;
-        mc.player.motionZ = motZ;
-
-        if (mc.player.moveStrafing == 0 && mc.player.moveForward == 0) {
-            mc.player.motionX = 0;
-            mc.player.motionZ = 0;
-        }
-    }
-
-    public static void horizontalEntityFlight(double hSpeed) {
-        Entity ridingEntity = mc.player.ridingEntity;
-        double yaw = MotionUtil.calcMoveYaw(ridingEntity.rotationYaw);
-        double motX = 0;
-        double motZ = 0;
-
-        yaw -= mc.player.moveStrafing * 90;
-
-        if (mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindForward.isKeyDown()) {
-            motX = (-Math.sin(yaw) * hSpeed) * -1;
-            motZ = (Math.cos(yaw) * hSpeed) * -1;
-        }
-
-        else if (mc.gameSettings.keyBindForward.isKeyDown()) {
-            motX = -Math.sin(yaw) * hSpeed;
-            motZ = Math.cos(yaw) * hSpeed;
-        }
-
-        ridingEntity.motionX = motX;
-        ridingEntity.motionZ = motZ;
-
-        if (mc.player.moveStrafing == 0 && mc.player.moveForward == 0) {
-            ridingEntity.motionX = 0;
-            ridingEntity.motionZ = 0;
-        }
+        MotionUtil.setMoveSpeed(hSpeed, 0.6f);
     }
 
     public static void fireworkElytra(double rotation) {

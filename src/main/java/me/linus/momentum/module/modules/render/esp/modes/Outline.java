@@ -62,7 +62,7 @@ public class Outline extends ESPMode {
             mc.renderManager.renderEngine.bindTexture(texture);
 
             float rotationRounded = MathHelper.sin(rotation * 0.2f) / 2.0f + 0.5f;
-            rotationRounded += MathUtil.square(rotationRounded);
+            rotationRounded += Math.pow(rotationRounded, 2);
 
             GL11.glLineWidth((float) (3 + ESP.lineWidth.getValue()));
 
