@@ -1,4 +1,4 @@
-package me.linus.momentum.module.modules.player;
+package me.linus.momentum.module.modules.movement;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.mode.Mode;
@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class NoFall extends Module {
     public NoFall() {
-        super("NoFall", Category.PLAYER, "Prevents fall damage");
+        super("NoFall", Category.MOVEMENT, "Prevents fall damage");
     }
 
     public static Mode mode = new Mode("Mode", "NCP", "AAC", "Bucket");

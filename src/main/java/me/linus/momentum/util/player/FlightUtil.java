@@ -13,8 +13,8 @@ import net.minecraft.util.EnumHand;
 
 public class FlightUtil implements MixinInterface {
 
-    public static void horizontalFlight(double hSpeed) {
-        MotionUtil.setMoveSpeed(hSpeed, 0.6f);
+    public static void horizontalFlight(double speed) {
+        MotionUtil.setMoveSpeed(speed, 0.6f);
     }
 
     public static void fireworkElytra(double rotation) {

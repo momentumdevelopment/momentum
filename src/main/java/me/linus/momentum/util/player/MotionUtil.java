@@ -98,8 +98,6 @@ public class MotionUtil implements MixinInterface {
     }
 
     public static double[] getMoveSpeed(double speed) {
-        Entity currentMover = mc.player.isRiding() ? mc.player.ridingEntity : mc.player;
-
         float forward = mc.player.movementInput.moveForward;
         float strafe = mc.player.movementInput.moveStrafe;
         float yaw = mc.player.rotationYaw;
