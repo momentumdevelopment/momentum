@@ -63,8 +63,8 @@ public class Trajectories extends Module {
         double motionX = -MathHelper.sin(mc.player.rotationYaw / 180.0f * 3.1415927f) * MathHelper.cos(mc.player.rotationPitch / 180.0f * 3.1415927f) * ((item instanceof ItemBow) ? 1.0 : 0.4);
         double motionY = -MathHelper.sin(mc.player.rotationPitch / 180.0f * 3.1415927f) * ((item instanceof ItemBow) ? 1.0 : 0.4);
         double motionZ = MathHelper.cos(mc.player.rotationYaw / 180.0f * 3.1415927f) * MathHelper.cos(mc.player.rotationPitch / 180.0f * 3.1415927f) * ((item instanceof ItemBow) ? 1.0 : 0.4);
-        int var6 = 72000 - mc.player.getItemInUseCount();
-        float power = var6 / 20.0f;
+        int useCount = 72000 - mc.player.getItemInUseCount();
+        float power = useCount / 20.0f;
         power = (power * power + power * 2.0f) / 3.0f;
 
         if (power > 1.0f)

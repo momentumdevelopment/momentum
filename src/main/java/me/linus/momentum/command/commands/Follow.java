@@ -10,7 +10,7 @@ import me.linus.momentum.util.client.MessageUtil;
 
 public class Follow extends Command {
     public Follow() {
-        super("follow");
+        super("follow", "[add/remove] [player name]", "Follows a specified player");
     }
 
     @Override
@@ -20,11 +20,6 @@ public class Follow extends Command {
         }
 
         else
-            MessageUtil.usageException(this, "[target name]");
-    }
-
-    @Override
-    public String getUsageException() {
-        return "[add/remove] [player name]";
+            MessageUtil.usageException(this.getUsage(), this.getUsageException());
     }
 }

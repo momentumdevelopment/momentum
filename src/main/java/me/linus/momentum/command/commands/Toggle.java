@@ -13,7 +13,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class Toggle extends Command {
     public Toggle() {
-        super("toggle");
+        super("toggle", "[module name]", "Toggles the specified module");
     }
 
     @Override
@@ -33,16 +33,6 @@ public class Toggle extends Command {
         }
 
         else
-            MessageUtil.usageException(this, "[module name]");
-    }
-
-    @Override
-    public String getUsageException() {
-        return "[module name]";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Toggles the specified module";
+            MessageUtil.usageException(this.getUsage(), this.getUsageException());
     }
 }

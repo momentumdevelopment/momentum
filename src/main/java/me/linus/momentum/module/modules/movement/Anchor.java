@@ -5,8 +5,6 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.world.HoleUtil;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
 /**

@@ -13,7 +13,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class Drawn extends Command {
     public Drawn() {
-        super("drawn");
+        super("drawn", "[module name]", "Hides or draws a module on the arraylist");
     }
 
     @Override
@@ -33,16 +33,6 @@ public class Drawn extends Command {
         }
 
         else
-            MessageUtil.usageException(this, "[module name]");
-    }
-
-    @Override
-    public String getDescription() {
-        return "Hides or draws a module on the arraylist";
-    }
-
-    @Override
-    public String getUsageException() {
-        return "[module name]";
+            MessageUtil.usageException(this.getUsage(), this.getUsageException());
     }
 }

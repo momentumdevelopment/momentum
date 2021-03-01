@@ -1,26 +1,16 @@
 package me.linus.momentum.module.modules.misc;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import me.linus.momentum.Momentum;
-import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.managers.GearManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
-import me.linus.momentum.util.world.Timer;
-import me.linus.momentum.util.world.Timer.Format;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.passive.EntityDonkey;
 import net.minecraft.entity.passive.EntityLlama;
 import net.minecraft.entity.passive.EntityMule;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import java.util.HashMap;
 
 /**
  * @author linustouchtips & olliem5
@@ -49,31 +39,23 @@ public class Notifier extends Module {
         addSetting(entityAlert);
     }
 
-    Timer notificationTimer = new Timer();
-
     @Override
     public void onUpdate() {
         if (nullCheck())
             return;
 
-        if (armor.getValue() && mc.player.getArmorInventoryList() != null && EnemyUtil.getArmor(mc.player) < 15 && notificationTimer.passed(60, Format.Ticks))
+        if (armor.getValue() && mc.player.getArmorInventoryList() != null && EnemyUtil.getArmor(mc.player) < 15)
             MessageUtil.sendClientMessage("Your armor durability is getting low!");
 
         mc.world.loadedEntityList.forEach(entity -> {
-            if (entity instanceof EntityDonkey && donkeys.getValue() && notificationTimer.passed(60, Format.Ticks)) {
-                MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "donkey " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
-                mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
-            }
+            if (entity instanceof EntityDonkey && donkeys.getValue())
+                MessageUtil.sendClientMessage("Found a donkey at " + "[" +  Math.round(entity.lastTickPosX) + ", " +  Math.round(entity.lastTickPosY) + ", " +  Math.round(entity.lastTickPosZ) + "]");
 
-            if (entity instanceof EntityLlama && llamas.getValue() && notificationTimer.passed(60, Format.Ticks)) {
-                MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "llama " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
-                mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
-            }
+            if (entity instanceof EntityLlama && llamas.getValue())
+                MessageUtil.sendClientMessage("Found a llama at " + "[" +  Math.round(entity.lastTickPosX) + ", " +  Math.round(entity.lastTickPosY) + ", " +  Math.round(entity.lastTickPosZ) + "]");
 
-            if (entity instanceof EntityMule && mules.getValue() && notificationTimer.passed(60, Format.Ticks)) {
-                MessageUtil.sendClientMessage("Found a " + ChatFormatting.AQUA + "mule " + ChatFormatting.WHITE + "at " + ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + Math.round(entity.lastTickPosX) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosY) + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + Math.round(entity.lastTickPosZ) + ChatFormatting.GRAY + "]");
-                mc.getSoundHandler().playSound(PositionedSoundRecord.getRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F));
-            }
+            if (entity instanceof EntityMule && mules.getValue())
+                MessageUtil.sendClientMessage("Found a mule at " + "[" +  Math.round(entity.lastTickPosX) + ", " +  Math.round(entity.lastTickPosY) + ", " +  Math.round(entity.lastTickPosZ) + "]");
         });
 
         mc.world.playerEntities.stream().forEach(player -> {
@@ -87,11 +69,11 @@ public class Notifier extends Module {
                 }
             }
 
-            if (player != mc.player && visualRange.getValue() && notificationTimer.passed(60, Format.Ticks)) {
+            if (player != mc.player && visualRange.getValue()) {
                 if (Momentum.friendManager.isFriend(player.getName()))
                     MessageUtil.sendClientMessage("Your friend, " + player.getName() + ", has entered your visual range!");
-                else if (notificationTimer.passed(60, Format.Ticks))
-                    MessageUtil.sendClientMessage(player.getName() + "has entered your visual range!");
+                else
+                    MessageUtil.sendClientMessage(player.getName() + " has entered your visual range!");
             }
         });
     }

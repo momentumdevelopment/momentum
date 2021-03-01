@@ -8,9 +8,13 @@ package me.linus.momentum.command;
 public class Command {
 
     String usage;
+    String specialUsage;
+    String description;
 
-    public Command(String usage) {
+    public Command(String usage, String specialUsage, String description) {
         this.usage = usage;
+        this.specialUsage = specialUsage;
+        this.description = description;
     }
 
     public void onCommand(String[] args) {}
@@ -20,10 +24,10 @@ public class Command {
     }
 
     public String getDescription() {
-        return "";
+        return this.description;
     }
 
     public String getUsageException() {
-        return "";
+        return this.specialUsage;
     }
 }

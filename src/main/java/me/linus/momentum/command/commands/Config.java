@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class Config extends Command {
     public Config() {
-        super("config");
+        super("config", "", "Opens the config folder");
     }
 
     @Override
@@ -22,13 +22,8 @@ public class Config extends Command {
         try {
             Desktop.getDesktop().open(new File("momentum"));
             MessageUtil.addOutput("Opened config folder!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+        } catch (IOException ignored) {
 
-    @Override
-    public String getDescription() {
-        return "Opens the config folder";
+        }
     }
 }

@@ -11,7 +11,7 @@ import me.linus.momentum.util.client.MessageUtil;
 public class Scale extends Command {
 
     public Scale() {
-        super("scale");
+        super("scale", "[scale]", "Allows you to change gui scale");
     }
 
     public static float scale = 1.0f;
@@ -24,16 +24,6 @@ public class Scale extends Command {
         }
 
         else
-            MessageUtil.usageException(this, "[scale]");
-    }
-
-    @Override
-    public String getDescription() {
-        return "Allows you to change gui scale";
-    }
-
-    @Override
-    public String getUsageException() {
-        return "[scale]";
+            MessageUtil.usageException(this.getUsage(), this.getUsageException());
     }
 }

@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinGuiMainMenu extends GuiScreen {
 
 	@Inject(method = "drawScreen", at = @At("TAIL"), cancellable = true)
-	public void drawText(int mouseX, int mouseY, float partialTicks, CallbackInfo callbackInfo) {
+	public void drawText(int mouseX, int mouseY, float partialTicks, CallbackInfo info) {
 		FontUtil.drawString(Momentum.NAME + TextFormatting.WHITE + " " + Momentum.VERSION, 2, 2, ThemeColor.BRIGHT);
 	}
 }

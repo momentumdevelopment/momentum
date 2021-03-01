@@ -2,6 +2,7 @@ package me.linus.momentum.command.commands;
 
 import me.linus.momentum.command.Command;
 import me.linus.momentum.mixin.MixinInterface;
+import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import net.minecraft.util.math.Vec3d;
@@ -13,12 +14,12 @@ import net.minecraft.util.math.Vec3d;
 
 public class HClip extends Command implements MixinInterface {
     public HClip() {
-        super("hclip");
+        super("hclip", "[distance]", "Teleports you in the horizontal direction");
     }
 
     @Override
     public void onCommand(String[] args) {
-        Vec3d direction = RotationUtil.direction(mc.player.rotationYaw);
+        Vec3d direction = new Vec3d(Math.cos(MathUtil.degToRad(mc.player.rotationYaw + 90f)), 0, Math.sin(MathUtil.degToRad(mc.player.rotationYaw + 90f)));
 
         if (direction != null && args.length > 0) {
             (mc.player.isRiding() ? mc.player.getRidingEntity() : mc.player).setPosition(mc.player.posX + direction.x * Double.valueOf(args[1]), mc.player.posY, mc.player.posZ + direction.z * Double.valueOf(args[1]));
@@ -27,16 +28,6 @@ public class HClip extends Command implements MixinInterface {
         }
 
         else
-            MessageUtil.usageException(this, "[distance]");
-    }
-
-    @Override
-    public String getDescription() {
-        return "Teleports you in the horizontal direction";
-    }
-
-    @Override
-    public String getUsageException() {
-        return "[distance]";
+            MessageUtil.usageException(this.getUsage(), this.getUsageException());
     }
 }

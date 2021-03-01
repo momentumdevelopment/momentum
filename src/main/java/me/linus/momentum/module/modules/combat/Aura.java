@@ -11,6 +11,7 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.player.PlayerUtil;
+import me.linus.momentum.util.player.rotation.Rotation.RotationMode;
 import me.linus.momentum.util.player.rotation.Rotation;
 import me.linus.momentum.util.player.rotation.RotationPriority;
 import me.linus.momentum.util.player.rotation.RotationUtil;
@@ -116,10 +117,10 @@ public class Aura extends Module {
         if (currentTarget != null && !FriendManager.isFriend(currentTarget.getName()) && FriendManager.isFriendModuleEnabled()) {
             switch (rotate.getValue()) {
                 case 0:
-                    auraRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], Rotation.RotationMode.Packet, RotationPriority.High);
+                    auraRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], RotationMode.Packet, RotationPriority.High);
                     break;
                 case 1:
-                    auraRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], Rotation.RotationMode.Legit, RotationPriority.High);
+                    auraRotation = new Rotation(RotationUtil.getAngles(currentTarget)[0], RotationUtil.getAngles(currentTarget)[1], RotationMode.Legit, RotationPriority.High);
                     break;
             }
 

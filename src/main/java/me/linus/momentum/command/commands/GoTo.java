@@ -12,7 +12,7 @@ import me.linus.momentum.util.client.MessageUtil;
 
 public class GoTo extends Command {
     public GoTo() {
-        super("goto");
+        super("goto", "[x] [y] [z]", "Sets a baritone xyz goal path");
     }
 
     @Override
@@ -23,16 +23,6 @@ public class GoTo extends Command {
         }
 
         else
-            MessageUtil.usageException(this, "[x] [y] [z]");
-    }
-
-    @Override
-    public String getDescription() {
-        return "Sets a baritone xyz goal path";
-    }
-
-    @Override
-    public String getUsageException() {
-        return "[x] [y] [z]";
+            MessageUtil.usageException(this.getUsage(), this.getUsageException());
     }
 }

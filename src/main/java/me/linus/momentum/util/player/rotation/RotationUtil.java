@@ -103,55 +103,12 @@ public class RotationUtil implements MixinInterface {
         return MathUtil.calcAngle(new Vec3d(tileEntity.getPos().x, tileEntity.getPos().y, tileEntity.getPos().z), new Vec3d(tileEntity.getPos().x, tileEntity.getPos().y, tileEntity.getPos().z));
     }
 
-    /**
-     * lock rotations
-     */
-
     public static void resetYaw(double rotation) {
-        if (mc.player.rotationYaw >= rotation)
-            mc.player.rotationYaw = 0;
-
-        if (mc.player.rotationYaw <= rotation)
-            mc.player.rotationYaw = 0;
+        mc.player.rotationYaw = MathUtil.clamp(mc.player.rotationYaw, (float) -rotation, (float) rotation);
     }
 
     public static void resetPitch(double rotation) {
-        if (mc.player.rotationPitch >= rotation)
-            mc.player.rotationPitch = 0;
-
-        if (mc.player.rotationPitch <= rotation)
-            mc.player.rotationPitch = 0;
-    }
-
-    /**
-     * player directions
-     */
-
-    public static Vec3d direction(float yaw) {
-        return new Vec3d(Math.cos(MathUtil.degToRad(yaw + 90f)), 0, Math.sin(MathUtil.degToRad(yaw + 90f)));
-    }
-
-    public static double getDirection() {
-        float rotationYaw = mc.player.rotationYaw;
-
-        if (mc.player.moveForward < 0f)
-            rotationYaw += 180f;
-
-        float forward = 1f;
-
-        if (mc.player.moveForward < 0f)
-            forward = -0.5f;
-
-        else if (mc.player.moveForward > 0f)
-            forward = 0.5f;
-
-        if (mc.player.moveStrafing > 0f)
-            rotationYaw -= 90f * forward;
-
-        if (mc.player.moveStrafing < 0f)
-            rotationYaw += 90f * forward;
-
-        return Math.toRadians(rotationYaw);
+        mc.player.rotationPitch = MathUtil.clamp(mc.player.rotationPitch, (float) -rotation, (float) rotation);
     }
 
     public static String getFacing() {
@@ -174,7 +131,7 @@ public class RotationUtil implements MixinInterface {
                 return "South East";
         }
 
-        return "Invalid";
+        return "";
     }
 
     public static String getTowards() {
@@ -197,6 +154,6 @@ public class RotationUtil implements MixinInterface {
                 return "+X +Z";
         }
 
-        return "Invalid";
+        return "";
     }
 }

@@ -13,9 +13,7 @@ import org.lwjgl.opengl.GL11;
 public class Render2DBuilder implements MixinInterface {
 
     public static void prepareScissor(int x, int y, int x2, int y2) {
-        ScaledResolution scale = new ScaledResolution(mc);
-        int factor = scale.getScaleFactor();
-        GL11.glScissor((int) (x * (float) factor), (int)(((float) scale.getScaledHeight() - y2) * (float) factor), (int) ((x2 - x) * (float) factor), (int) ((y2 - y) * (float) factor));
+        GL11.glScissor(x * new ScaledResolution(mc).getScaleFactor(), (new ScaledResolution(mc).getScaledHeight() - y2) * new ScaledResolution(mc).getScaleFactor(), (x2 - x) * new ScaledResolution(mc).getScaleFactor(), (y2 - y) * new ScaledResolution(mc).getScaleFactor());
     }
 
     public static void scaleProportion(int x, int y, float factorX, float factorY) {

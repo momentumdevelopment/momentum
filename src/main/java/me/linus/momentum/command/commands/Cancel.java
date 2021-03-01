@@ -11,17 +11,12 @@ import me.linus.momentum.util.client.MessageUtil;
 
 public class Cancel extends Command {
     public Cancel() {
-        super("cancel");
+        super("cancel", "", "Cancels current baritone pathing goal");
     }
 
     @Override
     public void onCommand(String[] args) {
         BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoal(null);
         MessageUtil.addOutput("Canceled all baritone process!");
-    }
-
-    @Override
-    public String getDescription() {
-        return "Cancels current baritone pathing goal";
     }
 }

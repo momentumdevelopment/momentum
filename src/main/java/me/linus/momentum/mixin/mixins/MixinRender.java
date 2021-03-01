@@ -1,6 +1,7 @@
 package me.linus.momentum.mixin.mixins;
 
 import me.linus.momentum.managers.ModuleManager;
+import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.modules.render.ESP;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -21,7 +22,7 @@ public class MixinRender<T extends Entity> {
     public void getTeamColor(T entityIn, CallbackInfoReturnable callbackInfo) {
         if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.colorManager.abstractColorRegistry.containsKey(entityIn.getClass())) {
             callbackInfo.cancel();
-            callbackInfo.setReturnValue(ESP.colorManager.abstractColorRegistry.get(entityIn.getClass()).getRGB());
+            callbackInfo.setReturnValue(FriendManager.isFriend(entityIn.getName()) ? ESP.colorManager.colorRegistry.get("Friend").getRGB() : ESP.colorManager.abstractColorRegistry.get(entityIn.getClass()).getRGB());
         }
     }
 }

@@ -84,6 +84,7 @@ public class ESP extends Module {
         colorManager.registerAbstractColorList(EntityUtil.getVehicles(), vehiclePicker.getColor());
         colorManager.registerAbstractColor(EntityEnderCrystal.class, crystalPicker.getColor());
         colorManager.registerColor("XQZ", xqzPicker.getColor());
+        colorManager.registerColor("Friend", new Color(4, 241, 241));
 
         switch (mode.getValue()) {
             case 0:

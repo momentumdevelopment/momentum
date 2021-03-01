@@ -6,7 +6,7 @@ import me.linus.momentum.util.client.MessageUtil;
 
 public class Commands extends Command {
     public Commands() {
-        super("commands");
+        super("commands", "", "Lists all available commands");
     }
 
     @Override
@@ -14,10 +14,5 @@ public class Commands extends Command {
         for (Command command : CommandManager.getCommands()) {
             MessageUtil.addOutput(command.getUsage() + " - " + command.getDescription());
         }
-    }
-
-    @Override
-    public String getDescription() {
-        return "Lists all available commands";
     }
 }

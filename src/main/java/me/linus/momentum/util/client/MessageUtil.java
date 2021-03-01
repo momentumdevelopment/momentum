@@ -31,8 +31,8 @@ public class MessageUtil implements MixinInterface {
 		ConsoleWindow.outputs.add("[Momentum] " + TextFormatting.WHITE + message);
 	}
 
-	public static void usageException(Command command, @Nullable String specialUsage) {
-		ConsoleWindow.outputs.add("[Momentum] " + TextFormatting.WHITE + "Usage: " + command.getUsage() + " " + specialUsage);
+	public static void usageException(String usage, String specialUsage) {
+		ConsoleWindow.outputs.add("[Momentum] " + TextFormatting.WHITE + "Usage: " + usage + " " + specialUsage);
 	}
 
 	public static String toUnicode(String s) {

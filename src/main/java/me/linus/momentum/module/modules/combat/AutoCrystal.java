@@ -60,7 +60,7 @@ public class AutoCrystal extends Module {
     }
 
     public static Checkbox explode = new Checkbox("Break", true);
-    public static SubMode breakMode = new SubMode(explode, "Mode", "All");
+    public static SubMode breakMode = new SubMode(explode, "Mode", "All", "Smart");
     public static SubMode breakHand = new SubMode(explode, "BreakHand", "OffHand", "MainHand", "Both", "MultiSwing");
     public static SubSlider breakRange = new SubSlider(explode, "Break Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider breakDelay = new SubSlider(explode, "Break Delay", 0.0D, 80.0D, 200.0D, 0);
@@ -81,7 +81,7 @@ public class AutoCrystal extends Module {
     public static SubSlider maxLocalDamage = new SubSlider(place, "Maximum Local Damage", 0.0D, 8.0D, 36.0D, 0);
     public static SubSlider threshold = new SubSlider(place, "Threshold", 0.0D, 5.0D, 10.0D, 0);
     public static SubMode autoSwitch = new SubMode(place, "Switch", "None", "Normal", "Packet");
-    public static SubMode rayTrace = new SubMode(place, "Ray-Trace", "Normal", "Quill", "None");
+    public static SubMode rayTrace = new SubMode(place, "Ray-Trace", "Normal", "Quill-Trace", "None");
     public static SubCheckbox packetPlace = new SubCheckbox(place, "Packet Place", true);
     public static SubCheckbox boundary = new SubCheckbox(place, "Boundaries", true);
     public static SubCheckbox prediction = new SubCheckbox(place, "Prediction", true);
@@ -214,7 +214,7 @@ public class AutoCrystal extends Module {
             return;
 
         crystal = new Crystal((EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(CrystalUtil::attackCheck).min(Comparator.comparing(crystal -> mc.player.getDistance(crystal))).orElse(null), 0, 0);
-        if (crystal.getCrystal() != null && explode.getValue()) {
+        if (crystal.getCrystal() != null && explode.getValue() && crystalTarget != null) {
             if (crystal.getCrystal().getDistance(mc.player) > breakRange.getValue())
                 return;
 
@@ -362,16 +362,18 @@ public class AutoCrystal extends Module {
     }
 
     public boolean handleMinDamage() {
-        if (EnemyUtil.getHealth(crystalTarget) < facePlaceHealth.getValue())
-            return false;
-        else if (EnemyUtil.getArmor(crystalTarget, armorBreaker.getValue(), armorScale.getValue()))
-            return false;
-        else if (facePlaceHole.getValue() && HoleUtil.isInHole(crystalTarget))
-            return false;
-        else if (Keyboard.isKeyDown(forceFaceplace.getKey()))
-            return false;
-        else
-            return true;
+        if (crystalTarget != null) {
+            if (EnemyUtil.getHealth(crystalTarget) < facePlaceHealth.getValue())
+                return false;
+            else if (EnemyUtil.getArmor(crystalTarget, armorBreaker.getValue(), armorScale.getValue()))
+                return false;
+            else if (facePlaceHole.getValue() && HoleUtil.isInHole(crystalTarget))
+                return false;
+            else if (Keyboard.isKeyDown(forceFaceplace.getKey()))
+                return false;
+        }
+
+        return true;
     }
 
     public void handleRotations() {

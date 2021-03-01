@@ -2,9 +2,6 @@ package me.linus.momentum.module.modules.movement;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.util.world.EntityUtil;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 
 import java.util.Objects;
 
@@ -27,23 +24,12 @@ public class RotationLock extends Module {
         addSetting(playerPitch);
     }
 
-    BlockPos northBlockPos;
-    BlockPos southBlockPos;
-    BlockPos eastBlockPos;
-    BlockPos westBlockPos;
-
     @Override
     public void onUpdate() {
         if (nullCheck())
             return;
 
-        Vec3d vec3d = EntityUtil.getInterpolatedPos(mc.player, 0);
-        northBlockPos = new BlockPos(vec3d).north();
-        southBlockPos = new BlockPos(vec3d).south();
-        eastBlockPos = new BlockPos(vec3d).east();
-        westBlockPos = new BlockPos(vec3d).west();
-
-        int angle = 360 / 4;
+        int angle = 90;
 
         float yaw = mc.player.rotationYaw;
         float pitch = mc.player.rotationPitch;

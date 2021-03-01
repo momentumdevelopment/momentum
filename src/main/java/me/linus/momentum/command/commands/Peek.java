@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntityShulkerBox;
 // TODO: fix the rendering on screen
 public class Peek extends Command implements MixinInterface {
     public Peek() {
-        super("peek");
+        super("peek", "", "Allows you to preview shulker contents");
     }
 
     public static TileEntityShulkerBox shulkerBox;
@@ -33,10 +33,5 @@ public class Peek extends Command implements MixinInterface {
         entityShulkerBox.setWorld(mc.world);
         entityShulkerBox.readFromNBT(shulker.getTagCompound().getCompoundTag("BlockEntityTag"));
         shulkerBox = entityShulkerBox;
-    }
-
-    @Override
-    public String getDescription() {
-        return "Allows you to preview shulker contents";
     }
 }

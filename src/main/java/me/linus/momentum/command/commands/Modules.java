@@ -7,7 +7,7 @@ import me.linus.momentum.util.client.MessageUtil;
 
 public class Modules extends Command {
     public Modules() {
-        super("modules");
+        super("modules", "", "Lists all modules");
     }
 
     @Override
@@ -15,10 +15,5 @@ public class Modules extends Command {
         for (Module module : ModuleManager.getModules()) {
             MessageUtil.addOutput(module.getName() + " - " + module.getDescription());
         }
-    }
-
-    @Override
-    public String getDescription() {
-        return "Lists all modules";
     }
 }

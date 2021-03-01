@@ -8,13 +8,11 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.world.EntityUtil;
-import me.linus.momentum.util.world.RaytraceUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.enchantment.Enchantment;
@@ -102,7 +100,6 @@ public class NameTags extends Module {
             nametagEntities.add(entityPlayer);
         });
 
-        nametagEntities.sort((entity1, entity2) -> Double.compare(entity2.getDistance(mc.getRenderViewEntity()), entity1.getDistance(mc.getRenderViewEntity())));
         nametagEntities.stream().forEach(entityPlayer -> {
             Entity viewEntity = mc.getRenderViewEntity();
             Vec3d nametagPosition = EntityUtil.interpolateEntityByTicks(entityPlayer, event.getPartialTicks());
@@ -168,10 +165,7 @@ public class NameTags extends Module {
 
             for (ItemStack stack : stacks) {
                 renderItemStack(entityPlayer, stack, offsetScaled, -32, 0, false);
-
-                if (enchants.getValue())
-                    renderItemEnchantments(stack, offsetScaled, -62);
-
+                renderItemEnchantments(stack, offsetScaled, -62);
                 offsetScaled += 16;
             }
 
@@ -240,16 +234,18 @@ public class NameTags extends Module {
             GlStateManager.enableDepth();
         }
 
-        while (iterator.hasNext()) {
-            Enchantment enchantment;
-            if ((enchantment = iterator2.next()) == null)
-                iterator = iterator2;
+        if (enchants.getValue()) {
+            while (iterator.hasNext()) {
+                Enchantment enchantment;
+                if ((enchantment = iterator2.next()) == null)
+                    iterator = iterator2;
 
-            else {
-                FontUtil.drawString(getEnchantName(enchantment, EnchantmentHelper.getEnchantmentLevel(enchantment, itemStack)), (float) (x * 2), (float) y, -1);
+                else {
+                    FontUtil.drawString(getEnchantName(enchantment, EnchantmentHelper.getEnchantmentLevel(enchantment, itemStack)), (float) (x * 2), (float) y, -1);
 
-                y += 8;
-                iterator = iterator2;
+                    y += 8;
+                    iterator = iterator2;
+                }
             }
         }
 

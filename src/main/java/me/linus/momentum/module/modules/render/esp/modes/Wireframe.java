@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.render.esp.modes;
 
+import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.util.render.ESPUtil;
@@ -33,20 +34,20 @@ public class Wireframe extends ESPMode {
             glLineWidth((float) (ESP.lineWidth.getValue() - 1));
 
             if (ESP.xqz.getValue())
-                ESPUtil.setColor(ESP.colorManager.colorRegistry.get("XQZ"));
+                ESPUtil.setColor(FriendManager.isFriend(entitylivingbaseIn.getName()) ? ESP.colorManager.colorRegistry.get("Friend") : ESP.colorManager.colorRegistry.get("XQZ"));
             else
-                ESPUtil.setColor(ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
+                ESPUtil.setColor(FriendManager.isFriend(entitylivingbaseIn.getName()) ? ESP.colorManager.colorRegistry.get("Friend") : ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
 
             glDisable(GL_TEXTURE_2D);
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             glEnable(GL_DEPTH_TEST);
-            ESPUtil.setColor(ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
+            ESPUtil.setColor(FriendManager.isFriend(entitylivingbaseIn.getName()) ? ESP.colorManager.colorRegistry.get("Friend") : ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
             if (ESP.xqz.getValue())
-                ESPUtil.setColor(ESP.colorManager.colorRegistry.get("XQZ"));
+                ESPUtil.setColor(FriendManager.isFriend(entitylivingbaseIn.getName()) ? ESP.colorManager.colorRegistry.get("Friend") : ESP.colorManager.colorRegistry.get("XQZ"));
             else
-                ESPUtil.setColor(ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
+                ESPUtil.setColor(FriendManager.isFriend(entitylivingbaseIn.getName()) ? ESP.colorManager.colorRegistry.get("Friend") : ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
 
             glEnable(GL_TEXTURE_2D);
             glEnable(GL_ALPHA_TEST);

@@ -13,7 +13,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class Enemy extends Command {
     public Enemy() {
-        super("enemy");
+        super("enemy", "[add/remove] [player name]", "Adds player to enemies list");
     }
 
     @Override
@@ -41,16 +41,6 @@ public class Enemy extends Command {
         }
 
         else
-            MessageUtil.usageException(this, "[add/remove] [player name]");
-    }
-
-    @Override
-    public String getDescription() {
-        return "Adds player to enemies list";
-    }
-
-    @Override
-    public String getUsageException() {
-        return "[add/remove] [player name]";
+            MessageUtil.usageException(this.getUsage(), this.getUsageException());
     }
 }

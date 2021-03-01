@@ -35,7 +35,7 @@ import java.nio.file.Paths;
 
 public class ConfigManagerJSON {
 
-    static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void createDirectory() throws IOException {
         if (!Files.exists(Paths.get("momentum/")))

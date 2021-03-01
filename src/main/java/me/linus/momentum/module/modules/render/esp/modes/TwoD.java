@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.render.esp.modes;
 
+import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.util.render.ESPUtil;
@@ -50,7 +51,7 @@ public class TwoD extends ESPMode {
                 ESPUtil.setColor(Color.WHITE);
                 glLineWidth(1.0f);
                 glEnable(GL_LINE_SMOOTH);
-                ESPUtil.setColor(ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
+                ESPUtil.setColor(FriendManager.isFriend(entitylivingbaseIn.getName()) ? ESP.colorManager.colorRegistry.get("Friend") : ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
                 ESPUtil.draw2D(entitylivingbaseIn);
                 GlStateManager.enableCull();
                 GlStateManager.depthMask(true);

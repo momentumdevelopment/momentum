@@ -18,6 +18,7 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
 import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -56,7 +57,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 	public void drawTitles(String name, int x, int y) {
 		GuiScreen.drawRect(x, y, (x + width), y + height, 0xCC000000);
 		GuiScreen.drawRect(x - 1, y - 1, x + width + 1, y, 0xFF202020);
-		drawTextWithShadow(name, (x + ((x + width) - x) / 2 - (ModuleManager.getModuleByName("Font").isEnabled() ? Momentum.fontManager.getCustomFont().getStringWidth(name) : font.getStringWidth(name)) / 2), y + 3, -1);
+		FontUtil.drawString(name, (x + ((x + width) - x) / 2 - (ModuleManager.getModuleByName("Font").isEnabled() ? Momentum.fontManager.getCustomFont().getStringWidth(name) : font.getStringWidth(name)) / 2), y + 3, -1);
 	}
 
 	@Override
@@ -74,10 +75,10 @@ public class DarkTheme extends Theme implements MixinInterface {
 
 			GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 			GuiScreen.drawRect(x + 1, y + height + (boost * height) + 1, (x + width) - 1, y + height*2 + (boost * height), m.isEnabled() ? (ThemeColor.COLOR) : 0xCC232323);
-			drawTextWithShadow(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
+			FontUtil.drawString(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
 
 			if (m.hasSettings())
-				drawText("...", (x + width) - 12, y + 1 + height + (boost * height), -1);
+				FontUtil.drawString("...", (x + width) - 12, y + 1 + height + (boost * height), -1);
 
 			if (m.isOpened()) {
 				if (m.hasSettings())
@@ -196,10 +197,10 @@ public class DarkTheme extends Theme implements MixinInterface {
 
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), checkbox.getValue() ? (ThemeColor.COLOR) : 0xCC232323);
-		drawTextWithShadow(checkbox.getName(), x + 7, (y + height) + 4 + (boost * height), -1);
+		FontUtil.drawString(checkbox.getName(), x + 7, (y + height) + 4 + (boost * height), -1);
 
 		if (checkbox.hasSubSettings())
-			drawText("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
+			FontUtil.drawString("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
 	}
 
 	private static void drawSubCheckbox(SubCheckbox sc, int x, int y) {
@@ -210,7 +211,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), sc.getValue() ? (ThemeColor.COLOR) : 0xCC232323);
-		drawTextWithShadow(sc.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
+		FontUtil.drawString(sc.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
 	}
 
 	private static void drawMode(Mode m, int x, int y) {
@@ -224,11 +225,11 @@ public class DarkTheme extends Theme implements MixinInterface {
 
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), 0xCC232323);
-		drawTextWithShadow(m.getName(), x + 7, (y + height) + 4 + (boost * height), -1);
-		drawTextWithShadow(m.getMode(m.getValue()), x + (ModuleManager.getModuleByName("Font").isEnabled() ? 10 : 14) + font.getStringWidth(m.getName()), (y + height) + 4 + (boost * height), 0xFF767676);
+		FontUtil.drawString(m.getName(), x + 7, (y + height) + 4 + (boost * height), -1);
+		FontUtil.drawString(m.getMode(m.getValue()), x + (ModuleManager.getModuleByName("Font").isEnabled() ? 10 : 14) + font.getStringWidth(m.getName()), (y + height) + 4 + (boost * height), 0xFF767676);
 
 		if (m.hasSubSettings())
-			drawText("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
+			FontUtil.drawString("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
 	}
 
 	private static void drawSubMode(SubMode sm, int x, int y) {
@@ -239,8 +240,8 @@ public class DarkTheme extends Theme implements MixinInterface {
 
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), 0xCC232323);
-		drawTextWithShadow(sm.getName(), x + 12, (y + height) + 4 + (boost * height), -1);
-		drawTextWithShadow(sm.getMode(sm.getValue()), x + (ModuleManager.getModuleByName("Font").isEnabled() ? 12 : 16) + font.getStringWidth(sm.getName()), (y + height) + 4 + (boost * height), 0xFF767676);
+		FontUtil.drawString(sm.getName(), x + 12, (y + height) + 4 + (boost * height), -1);
+		FontUtil.drawString(sm.getMode(sm.getValue()), x + (ModuleManager.getModuleByName("Font").isEnabled() ? 12 : 16) + font.getStringWidth(sm.getName()), (y + height) + 4 + (boost * height), 0xFF767676);
 	}
 
 	private static void drawSlider(Slider sl, int x, int y) {
@@ -270,11 +271,11 @@ public class DarkTheme extends Theme implements MixinInterface {
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), 0xCC232323);
 		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, x + 4 + (rectAdd > width - 1 ? (width - 5) : rectAdd), (y + height) + height + (boost * height), (ThemeColor.COLOR));
-		drawTextWithShadow(sl.getName(), x + 6, (y + height) + 4 + (boost * height), -1);
-		drawTextWithShadow(Double.toString(sl.getValue()), x + font.getStringWidth(sl.getName()) + (ModuleManager.getModuleByName("Font").isEnabled() ? 8 : 12), (y + height) + 4 + (boost * height), 0xFF767676);
+		FontUtil.drawString(sl.getName(), x + 6, (y + height) + 4 + (boost * height), -1);
+		FontUtil.drawString(Double.toString(sl.getValue()), x + font.getStringWidth(sl.getName()) + (ModuleManager.getModuleByName("Font").isEnabled() ? 8 : 12), (y + height) + 4 + (boost * height), 0xFF767676);
 
 		if (sl.hasSubSettings())
-			drawText("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
+			FontUtil.drawString("...", (x + width) - 12, (y + height + 1) + (boost * height), -1);
 	}
 
 	private static void drawSubSlider(SubSlider ssl, int x, int y) {
@@ -304,8 +305,8 @@ public class DarkTheme extends Theme implements MixinInterface {
 		GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), 0xCC232323);
 		GuiScreen.drawRect(x + 8, y + height + (boost * height) + 1, x + 8 + (rectAdd > width ? (width-8) : rectAdd), (y + height) + height + (boost * height), (ThemeColor.COLOR));
-		drawTextWithShadow(ssl.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
-		drawTextWithShadow(Double.toString(ssl.getValue()), x + font.getStringWidth(ssl.getName()) + (ModuleManager.getModuleByName("Font").isEnabled() ? 8 : 12), (y + height) + 4 + (boost * height), 0xFF767676);
+		FontUtil.drawString(ssl.getName(), x + 10, (y + height) + 4 + (boost * height), -1);
+		FontUtil.drawString(Double.toString(ssl.getValue()), x + font.getStringWidth(ssl.getName()) + (ModuleManager.getModuleByName("Font").isEnabled() ? 8 : 12), (y + height) + 4 + (boost * height), 0xFF767676);
 	}
 
 	public static void drawBind(Module m, int key, int x, int y) {
@@ -328,12 +329,12 @@ public class DarkTheme extends Theme implements MixinInterface {
 		GuiScreen.drawRect(x + 4, y + height + (boost * height) + 1, (x + width) - 1, (y + height) + height + (boost * height), 0xCC232323);
 
 		if (!m.isBinding()) {
-			drawTextWithShadow("Keybind", x + 7, (y + height) + 4 + (boost * height), -1);
-			drawTextWithShadow(m.getKeybind().getDisplayName().equalsIgnoreCase("NONE") ? "None" : m.getKeybind().getDisplayName(), x + (ModuleManager.getModuleByName("Font").isEnabled() ? 6 : 10) + font.getStringWidth("Keybind") + 3, (y + height) + 4 + (boost * height), 0xFF767676);
+			FontUtil.drawString("Keybind", x + 7, (y + height) + 4 + (boost * height), -1);
+			FontUtil.drawString(m.getKeybind().getDisplayName().equalsIgnoreCase("NONE") ? "None" : m.getKeybind().getDisplayName(), x + (ModuleManager.getModuleByName("Font").isEnabled() ? 6 : 10) + font.getStringWidth("Keybind") + 3, (y + height) + 4 + (boost * height), 0xFF767676);
 		}
 
 		else
-			drawTextWithShadow("Listening...", x + 7, (y + height) + 4 + (boost * height), -1);
+			FontUtil.drawString("Listening...", x + 7, (y + height) + 4 + (boost * height), -1);
 	}
 
 	@Override
@@ -350,16 +351,8 @@ public class DarkTheme extends Theme implements MixinInterface {
 
 			GuiScreen.drawRect(x, y + height + (boost * height), x + width, y + height*2 + (boost * height), 0x99202020);
 			GuiScreen.drawRect(x + 1, y + height + (boost * height) + 1, (x + width) - 1, y + height*2 + (boost * height), m.isEnabled() ? (ThemeColor.COLOR) : 0xCC232323);
-			drawTextWithShadow(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
+			FontUtil.drawString(m.getName(), x + 4, y + height + 4 + (boost * height), -1);
 			boost++;
 		}
-	}
-
-	public static void drawTextWithShadow(String text, float x, float y, int color) {
-		Momentum.fontManager.getCustomFont().drawStringWithShadow(text, x, y, color);
-	}
-
-	public static void drawText(String text, float x, float y, int color) {
-		Momentum.fontManager.getCustomFont().drawString(text, (int) x, (int)  y, color);
 	}
 }

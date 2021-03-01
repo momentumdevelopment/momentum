@@ -12,7 +12,7 @@ import me.linus.momentum.util.client.MessageUtil;
 
 public class Client extends Command {
     public Client() {
-        super("client");
+        super("client", "[new client name]","Changes the client name");
     }
 
     @Override
@@ -23,16 +23,6 @@ public class Client extends Command {
         }
 
         else
-            MessageUtil.usageException(this, "[new client name]");
-    }
-
-    @Override
-    public String getDescription() {
-        return "Changes the client name";
-    }
-
-    @Override
-    public String getUsageException() {
-        return "[new client name]";
+            MessageUtil.usageException(this.getUsage(), this.getUsageException());
     }
 }

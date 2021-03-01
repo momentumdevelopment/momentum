@@ -14,7 +14,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class Panic extends Command {
     public Panic () {
-        super("panic");
+        super("panic",  "", "Toggles off everything enabled");
     }
 
     @Override
@@ -38,10 +38,5 @@ public class Panic extends Command {
             else
                 MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "No HUD elements to disable!");
         }
-    }
-
-    @Override
-    public String getDescription() {
-        return "Toggles off all modules";
     }
 }

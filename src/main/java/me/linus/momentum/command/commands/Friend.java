@@ -13,7 +13,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class Friend extends Command {
     public Friend() {
-        super("friend");
+        super("friend", "[add/remove] [player name]", "Adds player to friends list");
     }
 
     @Override
@@ -41,16 +41,6 @@ public class Friend extends Command {
         }
 
         else
-            MessageUtil.usageException(this, "[add/remove] [player name]");
-    }
-
-    @Override
-    public String getDescription() {
-        return "Adds player to friends list";
-    }
-
-    @Override
-    public String getUsageException() {
-        return "[add/remove] [player name]";
+            MessageUtil.usageException(this.getUsage(), this.getUsageException());
     }
 }

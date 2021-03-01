@@ -1,11 +1,13 @@
 package me.linus.momentum.module.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.linus.momentum.managers.notification.Notification.Type;
+import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
@@ -46,10 +48,10 @@ public class AntiCrystal extends Module {
         addSetting(renderPlacement);
     }
 
-    private int woodenPressurePlateSlot;
-    private int heavyWeightedPressurePlateSlot;
-    private int lightWeightedPressurePlateSlot;
-    private int stonePressurePlateSlot;
+    int woodenPressurePlateSlot;
+    int heavyWeightedPressurePlateSlot;
+    int lightWeightedPressurePlateSlot;
+    int stonePressurePlateSlot;
 
     Timer placeTimer = new Timer();
     BlockPos renderBlock;
@@ -81,7 +83,7 @@ public class AntiCrystal extends Module {
         }
     }
 
-    private void handlePressurePlates(boolean search) {
+    void handlePressurePlates(boolean search) {
         if (search) {
             woodenPressurePlateSlot = InventoryUtil.getBlockInHotbar(Blocks.WOODEN_PRESSURE_PLATE);
             heavyWeightedPressurePlateSlot = InventoryUtil.getBlockInHotbar(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
@@ -89,8 +91,8 @@ public class AntiCrystal extends Module {
             stonePressurePlateSlot = InventoryUtil.getBlockInHotbar(Blocks.STONE_PRESSURE_PLATE);
 
             if (woodenPressurePlateSlot == -1 && heavyWeightedPressurePlateSlot == -1 && lightWeightedPressurePlateSlot == -1 && stonePressurePlateSlot == -1) {
-                MessageUtil.sendClientMessage("No Pressure Plate, " + ChatFormatting.RED + "Disabling!");
-                this.toggle();
+                NotificationManager.addNotification(new Notification("No Pressure Plate, " + ChatFormatting.RED + "Disabling!", Type.Info));
+                this.disable();
             }
         }
 

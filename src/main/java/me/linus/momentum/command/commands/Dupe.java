@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class Dupe extends Command {
     public Dupe() {
-        super("dupe");
+        super("dupe", "[x] [y] [z]", "Sets the starting position for the dupe");
     }
 
     public static BlockPos startingPosition;
@@ -24,16 +24,6 @@ public class Dupe extends Command {
         }
 
         else
-            MessageUtil.usageException(this, "[x] [y] [z]");
-    }
-
-    @Override
-    public String getDescription() {
-        return "Sets the starting position for the dupe";
-    }
-
-    @Override
-    public String getUsageException() {
-        return "[x] [y] [z]";
+            MessageUtil.usageException(this.getUsage(), this.getUsageException());
     }
 }

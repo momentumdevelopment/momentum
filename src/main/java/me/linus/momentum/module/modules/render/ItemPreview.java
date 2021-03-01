@@ -90,12 +90,12 @@ public class ItemPreview extends Module {
         }
     }
 
-    public static void tooltipMap(ItemStack itemStack, int x, int y, CallbackInfo callbackInfo) {
+    public static void tooltipMap(ItemStack itemStack, int x, int y, CallbackInfo info) {
         if (!itemStack.isEmpty && itemStack.getItem() instanceof ItemMap) {
             MapData mapData = ((ItemMap) itemStack.getItem()).getMapData(itemStack, mc.world);
 
             if (mapData != null) {
-                callbackInfo.cancel();
+                info.cancel();
 
                 GlStateManager.pushMatrix();
                 GlStateManager.color(1f, 1f, 1f);

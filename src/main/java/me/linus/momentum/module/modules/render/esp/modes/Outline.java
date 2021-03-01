@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.render.esp.modes;
 
+import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.util.client.MathUtil;
@@ -37,7 +38,8 @@ public class Outline extends ESPMode {
             return;
 
         if (ESP.colorManager.abstractColorRegistry.containsKey(entitylivingbaseIn.getClass())) {
-            ESPUtil.setColor(ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
+
+            ESPUtil.setColor(FriendManager.isFriend(entitylivingbaseIn.getName()) ? ESP.colorManager.colorRegistry.get("Friend") : ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             ESPUtil.renderOne((float) ESP.lineWidth.getValue());
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
@@ -45,7 +47,7 @@ public class Outline extends ESPMode {
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             ESPUtil.renderThree();
             ESPUtil.renderFour();
-            ESPUtil.setColor(ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
+            ESPUtil.setColor(FriendManager.isFriend(entitylivingbaseIn.getName()) ? ESP.colorManager.colorRegistry.get("Friend") : ESP.colorManager.abstractColorRegistry.get(entitylivingbaseIn.getClass()));
             mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
             ESPUtil.renderFive();
             ESPUtil.setColor(Color.WHITE);
@@ -53,9 +55,9 @@ public class Outline extends ESPMode {
     }
 
     @Override
-    public void drawESPCrystal(ModelBase modelEnderCrystal, ModelBase modelEnderCrystalNoBase, EntityEnderCrystal entity, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo callback, ResourceLocation texture) {
-        if (ESP.colorManager.abstractColorRegistry.containsKey(entity.getClass())) {
-            float rotation = entity.innerRotation + partialTicks;
+    public void drawESPCrystal(ModelBase modelEnderCrystal, ModelBase modelEnderCrystalNoBase, EntityEnderCrystal entityEnderCrystalIn, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo callback, ResourceLocation texture) {
+        if (ESP.colorManager.abstractColorRegistry.containsKey(entityEnderCrystalIn.getClass())) {
+            float rotation = entityEnderCrystalIn.innerRotation + partialTicks;
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
@@ -66,33 +68,34 @@ public class Outline extends ESPMode {
 
             GL11.glLineWidth((float) (3 + ESP.lineWidth.getValue()));
 
-            if (entity.shouldShowBottom())
-                modelEnderCrystal.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
+            if (entityEnderCrystalIn.shouldShowBottom())
+                modelEnderCrystal.render(entityEnderCrystalIn, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
             else
-                modelEnderCrystalNoBase.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
+                modelEnderCrystalNoBase.render(entityEnderCrystalIn, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
 
             ESPUtil.renderOne((float) (3 + ESP.lineWidth.getValue()));
 
-            if (entity.shouldShowBottom())
-                modelEnderCrystal.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
+            if (entityEnderCrystalIn.shouldShowBottom())
+                modelEnderCrystal.render(entityEnderCrystalIn, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
             else
-                modelEnderCrystalNoBase.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
+                modelEnderCrystalNoBase.render(entityEnderCrystalIn, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
 
             ESPUtil.renderTwo();
 
-            if (entity.shouldShowBottom())
-                modelEnderCrystal.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
+            if (entityEnderCrystalIn.shouldShowBottom())
+                modelEnderCrystal.render(entityEnderCrystalIn, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
             else
-                modelEnderCrystalNoBase.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
+                modelEnderCrystalNoBase.render(entityEnderCrystalIn, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
 
             ESPUtil.renderThree();
             ESPUtil.renderFour();
-            ESPUtil.setColor(ESP.colorManager.abstractColorRegistry.get(entity.getClass()));
 
-            if (entity.shouldShowBottom())
-                modelEnderCrystal.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
+            ESPUtil.setColor(ESP.colorManager.abstractColorRegistry.get(entityEnderCrystalIn.getClass()));
+
+            if (entityEnderCrystalIn.shouldShowBottom())
+                modelEnderCrystal.render(entityEnderCrystalIn, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
             else
-                modelEnderCrystalNoBase.render(entity, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
+                modelEnderCrystalNoBase.render(entityEnderCrystalIn, 0.0f, rotation * 3.0f, rotationRounded * 0.2f, 0.0f, 0.0f, 0.0625f);
 
             ESPUtil.renderFive();
             GlStateManager.popMatrix();
