@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.render;
 
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
@@ -34,7 +35,7 @@ public class CityESP extends Module {
     public static Checkbox burrow = new Checkbox("Burrow", true);
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", new Color(255, 0, 0, 55));
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", ThemeColor.RAW);
 
     @Override
     public void setup() {

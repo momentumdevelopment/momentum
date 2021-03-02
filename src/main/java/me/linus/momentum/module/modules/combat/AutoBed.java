@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.managers.RotationManager;
 import me.linus.momentum.managers.notification.Notification;
 import me.linus.momentum.managers.notification.NotificationManager;
@@ -72,7 +73,7 @@ public class AutoBed extends Module {
     public static SubMode logicMode = new SubMode(logic, "Logic", "Break -> Place", "Place -> Break");
 
     public static Checkbox renderBed = new Checkbox("Render", true);
-    public static ColorPicker colorPicker = new ColorPicker(renderBed, "Color Picker", new Color(255, 0, 0, 55));
+    public static ColorPicker colorPicker = new ColorPicker(renderBed, "Color Picker", ThemeColor.RAW);
 
     @Override
     public void setup() {

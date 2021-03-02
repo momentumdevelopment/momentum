@@ -4,6 +4,7 @@ import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
 import me.linus.momentum.util.render.ESPUtil;
+import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.Profile;
@@ -27,6 +28,11 @@ public class CSGO extends ESPMode {
 
     @Override
     public void drawESPMixin(ModelBase mainModel, Entity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+        RenderUtil.camera.setPosition(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
+
+        if (!RenderUtil.camera.isBoundingBoxInFrustum(entitylivingbaseIn.getEntityBoundingBox()))
+            return;
+
         if (ESP.colorManager.abstractColorRegistry.containsKey(entitylivingbaseIn.getClass())) {
             GlStateManager.enableBlendProfile(Profile.TRANSPARENT_MODEL);
 
@@ -60,6 +66,11 @@ public class CSGO extends ESPMode {
 
     @Override
     public void drawESPCrystal(ModelBase modelEnderCrystal, ModelBase modelEnderCrystalNoBase, EntityEnderCrystal entityEnderCrystalIn, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo callback, ResourceLocation texture) {
+        RenderUtil.camera.setPosition(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
+
+        if (!RenderUtil.camera.isBoundingBoxInFrustum(entityEnderCrystalIn.getEntityBoundingBox()))
+            return;
+
         if (ESP.colorManager.abstractColorRegistry.containsKey(entityEnderCrystalIn.getClass())) {
             GlStateManager.enableBlendProfile(Profile.TRANSPARENT_MODEL);
 

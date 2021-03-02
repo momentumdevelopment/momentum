@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.render;
 
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
@@ -20,10 +21,10 @@ public class SkyColor extends Module {
     }
 
     public static Checkbox color = new Checkbox("Sky", true);
-    public static ColorPicker skyPicker = new ColorPicker(color, "Sky Picker", new Color(255, 0, 0, 255));
+    public static ColorPicker skyPicker = new ColorPicker(color, "Sky Picker", ThemeColor.RAW);
 
-    public static Checkbox fog = new Checkbox("Fog", false);
-    public static ColorPicker fogPicker = new ColorPicker(fog, "Fog Picker", new Color(255, 0, 0, 255));
+    public static Checkbox fog = new Checkbox("Fog", true);
+    public static ColorPicker fogPicker = new ColorPicker(fog, "Fog Picker", ThemeColor.RAW);
     public static SubCheckbox fogCancel = new SubCheckbox(fog, "No Fog", true);
 
     @Override

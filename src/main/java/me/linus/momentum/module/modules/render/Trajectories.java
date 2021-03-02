@@ -1,5 +1,6 @@
 package me.linus.momentum.module.modules.render;
 
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
@@ -32,7 +33,7 @@ public class Trajectories extends Module {
     }
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", new Color(0, 255, 255, 255));
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", ThemeColor.RAW);
 
     @Override
     public void setup() {

@@ -55,6 +55,11 @@ public class Outline extends ESPMode {
 
     @Override
     public void drawESPCrystal(ModelBase modelEnderCrystal, ModelBase modelEnderCrystalNoBase, EntityEnderCrystal entityEnderCrystalIn, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo callback, ResourceLocation texture) {
+        RenderUtil.camera.setPosition(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
+
+        if (!RenderUtil.camera.isBoundingBoxInFrustum(entityEnderCrystalIn.getEntityBoundingBox()))
+            return;
+
         if (ESP.colorManager.abstractColorRegistry.containsKey(entityEnderCrystalIn.getClass())) {
             float rotation = entityEnderCrystalIn.innerRotation + partialTicks;
 

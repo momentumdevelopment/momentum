@@ -26,7 +26,7 @@ public class Colors extends Module {
 	public static SubSlider speed = new SubSlider(rainbow, "Speed", 1.0D, 30.0D, 100.0D, 0);
 
 	public static Checkbox clientColor = new Checkbox("Color", true);
-	public static ColorPicker clientPicker = new ColorPicker(clientColor, "Color Picker", new Color(48, 191, 215, 130));
+	public static ColorPicker clientPicker = new ColorPicker(clientColor, "Color Picker", new Color(139, 48, 215, 100));
 
 	@Override
 	public void setup() {

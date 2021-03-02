@@ -1,6 +1,7 @@
 package me.linus.momentum.module.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.managers.notification.Notification;
 import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.NotificationManager;
@@ -55,7 +56,7 @@ public class HoleFill extends Module {
     public static Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker",  new Color(255, 0, 0, 55));
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", ThemeColor.RAW);
 
     @Override
     public void setup() {

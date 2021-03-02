@@ -1,6 +1,7 @@
 package me.linus.momentum.module.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.managers.notification.Notification;
 import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.NotificationManager;
@@ -40,7 +41,7 @@ public class AntiCrystal extends Module {
     public static Slider placeDelay = new Slider("Place Delay", 0, 2, 20, 1);
 
     public static Checkbox renderPlacement = new Checkbox("Render Placement", true);
-    public static ColorPicker colorPicker = new ColorPicker(renderPlacement, "Color Picker", new Color(0, 217, 255, 55));
+    public static ColorPicker colorPicker = new ColorPicker(renderPlacement, "Color Picker", ThemeColor.RAW);
 
     @Override
     public void setup() {

@@ -2,6 +2,7 @@ package me.linus.momentum.module.modules.combat;
 
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
 import me.linus.momentum.event.events.packet.PacketSendEvent;
+import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.managers.CrystalManager;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.managers.RotationManager;
@@ -126,7 +127,7 @@ public class AutoCrystal extends Module {
     public static SubMode enemyLogic = new SubMode(logic, "Enemy Logic", "Closest", "LowestHealth", "LowestArmor");
 
     public static Checkbox renderCrystal = new Checkbox("Render", true);
-    public static ColorPicker colorPicker = new ColorPicker(renderCrystal, "Color Picker", new Color(250, 0, 250, 50));
+    public static ColorPicker colorPicker = new ColorPicker(renderCrystal, "Color Picker", ThemeColor.RAW);
     public static SubMode renderMode = new SubMode(renderCrystal, "Render Mode", "Fill", "Outline", "Both", "Claw");
     public static SubCheckbox renderDamage = new SubCheckbox(renderCrystal, "Render Damage", true);
 
