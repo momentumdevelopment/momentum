@@ -17,7 +17,7 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk
 
-    working_directory: ~/momentum-client-1.2.1
+    working_directory: ~/momentum-<< pipeline.parameters.version >>
 
     environment:
       JVM_OPTS: -Xmx3200m
