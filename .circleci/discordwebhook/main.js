@@ -17,7 +17,7 @@ axios.post(process.env.discord_webhook, {
         {
             title: `Build #${build}`,
             description: description,
-            color: "#3c4ad3"
+            color: 3951315
         }
     ]
 })
