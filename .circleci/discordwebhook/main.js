@@ -8,7 +8,7 @@ const compareUrl = process.argv[5]
 let description = ""
 
 description += `**Changes:** [${branch}](${compareUrl})`
-description += `\n**Download:** [Momentum v${version} Build #${build}]`
+description += `\n**Download:** [Momentum v${version} Build #${build}](https://${build}-319857183-gh.circle-artifacts.com/0/build/libs/repo.jar)`
 
 axios.post(process.env.discord_webhook, {
     username: "Momentum Beta Builds",
