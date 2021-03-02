@@ -93,7 +93,7 @@ public class SpeedMine extends Module {
             return;
 
         for (BlockPos renderBlock : renderBlocks) {
-            switch (mode.getValue()) {
+            switch (renderMode.getValue()) {
                 case 0:
                     RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderMode.Claw);
                     break;

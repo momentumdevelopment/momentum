@@ -260,8 +260,8 @@ public class AutoCrystal extends Module {
             if (verifyPlace.getValue() && mc.player.getDistanceSq(calculatedPosition) > Math.pow(breakRange.getValue(), 2))
                 continue;
 
-            double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, crystalTarget);
-            double calculatedSelfDamage = mc.player.capabilities.isCreativeMode ? 0 : CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + 1, calculatedPosition.getZ() + 0.5, mc.player);
+            double calculatedTargetDamage = CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + offset.getValue(), calculatedPosition.getZ() + 0.5, crystalTarget);
+            double calculatedSelfDamage = mc.player.capabilities.isCreativeMode ? 0 : CrystalUtil.calculateDamage(calculatedPosition.getX() + 0.5, calculatedPosition.getY() + offset.getValue(), calculatedPosition.getZ() + 0.5, mc.player);
 
             if (calculatedTargetDamage < minDamage.getValue() && handleMinDamage())
                 continue;
