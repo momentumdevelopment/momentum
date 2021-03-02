@@ -15,9 +15,7 @@ public class RotationEvent extends MomentumEvent {
     float yaw;
     float pitch;
     
-    public RotationEvent() {
-
-    }
+    public RotationEvent() {}
 
     public float getYaw() {
         return yaw;
@@ -34,4 +32,5 @@ public class RotationEvent extends MomentumEvent {
     public void setPitch(float pitch) {
         this.pitch = pitch;
     }
+
 }

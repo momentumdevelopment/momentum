@@ -1,8 +1,8 @@
 package me.linus.momentum.gui.main.hud;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.theme.Theme;
+import me.linus.momentum.managers.HUDComponentManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.client.ClickGUI;
 import me.linus.momentum.util.render.GUIUtil;
@@ -25,14 +25,14 @@ public class HUDWindow implements MixinInterface {
 	private int lastmY;
 	private boolean ldown;
 	private boolean rdown;
-	
+
 	private final List<HUDComponent> modules;
 	
 	public HUDWindow(String name, int x, int y) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
-		this.modules = Momentum.componentManager.getComponents();
+		this.modules = HUDComponentManager.getComponents();
 	}
 	
 	public static HUDWindow hw = new HUDWindow("HUD", 300, 100);

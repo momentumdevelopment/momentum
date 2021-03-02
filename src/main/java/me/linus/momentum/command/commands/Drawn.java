@@ -1,7 +1,7 @@
 package me.linus.momentum.command.commands;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.command.Command;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.util.text.TextFormatting;
@@ -19,7 +19,7 @@ public class Drawn extends Command {
     @Override
     public void onCommand(String[] args) {
         if (args.length > 1) {
-            for (Module module : Momentum.moduleManager.getModules()) {
+            for (Module module : ModuleManager.getModules()) {
                 if (module.getName().equalsIgnoreCase(args[1]) && !module.isDrawn()) {
                     MessageUtil.addOutput(TextFormatting.AQUA + module.getName() + TextFormatting.WHITE + " is now " + TextFormatting.GREEN + "DRAWN");
                     module.setDrawn(true);

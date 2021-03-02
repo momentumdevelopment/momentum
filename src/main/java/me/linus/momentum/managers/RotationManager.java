@@ -36,7 +36,7 @@ public class RotationManager implements MixinInterface {
             currentRotation = null;
         }
 
-        if (currentRotation == null && !rotationQueue.isEmpty()) {
+        if (!rotationQueue.isEmpty()) {
             currentRotation = rotationQueue.poll();
             currentRotation.updateRotations();
         }
@@ -50,7 +50,7 @@ public class RotationManager implements MixinInterface {
                 event.setYaw(currentRotation.yaw);
                 event.setPitch(currentRotation.pitch);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }

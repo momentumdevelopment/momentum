@@ -11,9 +11,9 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.input.Keyboard;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +25,10 @@ import java.util.List;
 
 public abstract class Module implements MixinInterface {
 
-	private String name;
-	private Category category;
-	private String description;
-	private KeyBinding key;
+	private final String name;
+	private final Category category;
+	private final String description;
+	private final KeyBinding key;
 
 	private boolean enabled;
 	private boolean opened;

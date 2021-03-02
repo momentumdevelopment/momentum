@@ -16,7 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
 
 /**
  * @author linustouchtips
@@ -24,7 +25,7 @@ import static org.lwjgl.opengl.GL11.*;
  */
 
 @Mixin(value = RenderEntityItem.class)
-public abstract class MixinRenderEntityItem<T> extends Render<EntityItem> implements MixinInterface {
+public abstract class MixinRenderEntityItem extends Render<EntityItem> implements MixinInterface {
     protected MixinRenderEntityItem() {
         super(null);
     }

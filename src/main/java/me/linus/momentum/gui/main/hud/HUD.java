@@ -1,7 +1,7 @@
 package me.linus.momentum.gui.main.hud;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.managers.HUDComponentManager;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.client.HUDEditor;
 import me.linus.momentum.util.render.GUIUtil;
@@ -66,7 +66,7 @@ public class HUD extends GuiScreen {
 
 		 */
 
-		for (HUDComponent component : Momentum.componentManager.getComponents()) {
+		for (HUDComponent component : HUDComponentManager.getComponents()) {
 			GlStateManager.enableTexture2D();
 
 			if (component.isEnabled())
@@ -85,7 +85,7 @@ public class HUD extends GuiScreen {
 		if (mouseButton == 1)
 			GUIUtil.rclickListen();
 
-		for (HUDComponent component : Momentum.componentManager.getComponents())
+		for (HUDComponent component : HUDComponentManager.getComponents())
 			component.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 	
@@ -98,7 +98,7 @@ public class HUD extends GuiScreen {
 			GUIUtil.releaseListen();
 		}
 
-		for (HUDComponent component : Momentum.componentManager.getComponents())
+		for (HUDComponent component : HUDComponentManager.getComponents())
 			component.mouseReleased(mouseX, mouseY, state);
 	}
 	
@@ -107,7 +107,7 @@ public class HUD extends GuiScreen {
 		super.onGuiClosed();
 		ModuleManager.getModuleByName("HUD").disable();
 
-		for (HUDComponent component : Momentum.componentManager.getComponents())
+		for (HUDComponent component : HUDComponentManager.getComponents())
 			component.onGuiClosed();
 	}
 	

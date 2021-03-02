@@ -29,8 +29,7 @@ public class HUDEditor extends Module {
 	}
 	
 	public static HUD hudEditor = new HUD();
-	public static int boost = 0;
-	
+
 	@Override
 	public void onEnable() {
 		if (nullCheck())

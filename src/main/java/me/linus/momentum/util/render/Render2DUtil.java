@@ -135,9 +135,9 @@ public class Render2DUtil implements MixinInterface {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glBegin(GL_TRIANGLES);
 
-        glVertex2d(0, 0 + 6);
-        glVertex2d(0 + 3, 0 - 2);
-        glVertex2d(0 - 3, 0 - 2);
+        glVertex2d(0, 6);
+        glVertex2d(3, -2);
+        glVertex2d(-3, -2);
 
         glEnd();
         glDisable(GL_LINE_SMOOTH);
@@ -189,7 +189,7 @@ public class Render2DUtil implements MixinInterface {
         GlStateManager.popMatrix();
     }
 
-    public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityLivingBase ent) {
+    public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseY, EntityLivingBase ent) {
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) posX, (float) posY, 50.0F);

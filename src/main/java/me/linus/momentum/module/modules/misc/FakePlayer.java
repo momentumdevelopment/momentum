@@ -39,10 +39,8 @@ public class FakePlayer extends Module {
         if (nullCheck())
             return;
 
-        switch (mode.getValue()) {
-            case 0:
-                WorldUtil.createFakePlayer(name.getMode(name.getValue()), inventory.getValue(), angles.getValue(), true, false, -6640);
-                break;
+        if (mode.getValue() == 0) {
+            WorldUtil.createFakePlayer(name.getMode(name.getValue()), inventory.getValue(), angles.getValue(), true, false, -6640);
         }
         
         MessageUtil.sendClientMessage("Spawning fake player!");

@@ -27,34 +27,23 @@ import java.util.List;
 public class EntityUtil implements MixinInterface {
 
     public static List<Class<?>> getPassives() {
-        List<Class<?>> passives = new ArrayList<>();
-
-        passives.addAll(Arrays.asList(EntityPigZombie.class, EntitySquid.class, EntityIronGolem.class, EntityWolf.class, EntityEnderman.class, EntityChicken.class, EntityCow.class, EntitySheep.class, EntityRabbit.class, EntityPig.class, EntityBat.class, EntityHorse.class, EntitySkeletonHorse.class, EntitySnowman.class));
-
-        return passives;
+        return new ArrayList<>(Arrays.asList(EntityPigZombie.class, EntitySquid.class, EntityIronGolem.class, EntityWolf.class, EntityEnderman.class, EntityChicken.class, EntityCow.class, EntitySheep.class, EntityRabbit.class, EntityPig.class, EntityBat.class, EntityHorse.class, EntitySkeletonHorse.class, EntitySnowman.class));
     }
 
     public static List<Class<?>> getHostiles() {
-        List<Class<?>> hostiles = new ArrayList<>();
-
-        hostiles.addAll(Arrays.asList(EntitySpider.class, EntitySkeleton.class, EntityZombie.class, EntityShulker.class, EntityBlaze.class, EntityCreeper.class, EntityCaveSpider.class, EntityBlaze.class, EntityGhast.class, EntityZombieVillager.class, EntityWitch.class, EntityVex.class, EntitySlime.class, EntityEvoker.class, EntitySpellcasterIllager.class, EntityIllusionIllager.class, EntityWitherSkeleton.class, EntityWither.class));
-
-        return hostiles;
+        return new ArrayList<>(Arrays.asList(EntitySpider.class, EntitySkeleton.class, EntityZombie.class, EntityShulker.class, EntityBlaze.class, EntityCreeper.class, EntityCaveSpider.class, EntityBlaze.class, EntityGhast.class, EntityZombieVillager.class, EntityWitch.class, EntityVex.class, EntitySlime.class, EntityEvoker.class, EntitySpellcasterIllager.class, EntityIllusionIllager.class, EntityWitherSkeleton.class, EntityWither.class));
     }
 
     public static List<Class<?>> getVehicles() {
-        List<Class<?>> vehicles = new ArrayList<>();
 
-        vehicles.addAll(Arrays.asList(EntityBoat.class, EntityMinecart.class));
-
-        return vehicles;
+        return new ArrayList<>(Arrays.asList(EntityBoat.class, EntityMinecart.class));
     }
 
     public static boolean isPassive(Entity entity) {
         if (entity instanceof EntityWolf && ((EntityWolf) entity).isAngry())
             return false;
 
-        if (entity instanceof EntityAnimal || entity instanceof EntityAgeable || entity instanceof EntityTameable || entity instanceof EntityAmbientCreature || entity instanceof EntitySquid)
+        if (entity instanceof EntityAgeable || entity instanceof EntityAmbientCreature || entity instanceof EntitySquid)
             return true;
 
         return entity instanceof EntityIronGolem && ((EntityIronGolem) entity).getRevengeTarget() == null;

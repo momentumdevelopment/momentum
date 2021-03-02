@@ -35,8 +35,10 @@ public class FriendManager {
         boolean isFriend = false;
 
         for (Friend friend : getFriends()) {
-            if (friend.getName().equalsIgnoreCase(name))
+            if (friend.getName().equalsIgnoreCase(name)) {
                 isFriend = true;
+                break;
+            }
         }
 
         return isFriend;

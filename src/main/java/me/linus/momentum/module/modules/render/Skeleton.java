@@ -47,7 +47,8 @@ public class Skeleton extends Module {
         if (nullCheck())
             return;
 
-        if (mc.getRenderManager() == null || mc.getRenderManager().options == null)
+        mc.getRenderManager();
+        if (mc.getRenderManager().options == null)
             return;
 
         startEnd(true);

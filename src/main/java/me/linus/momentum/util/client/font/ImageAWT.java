@@ -14,17 +14,12 @@ import java.util.HashMap;
 
 @SideOnly(value=Side.CLIENT)
 public class ImageAWT implements MixinInterface {
-    private static boolean assumeNonVolatile = false;
-    private static ArrayList<ImageAWT> activeFontRenderers = new ArrayList();
+    private static final ArrayList<ImageAWT> activeFontRenderers = new ArrayList<>();
     private static int gcTicks = 0;
-    private static int GC_TICKS = 600;
-    private static int CACHED_FONT_REMOVAL_TIME = 30000;
-    private Font font;
-    private int startChar;
-    private int stopChar;
+    private final Font font;
     private int fontHeight = -1;
-    private CharLocation[] charLocations = null;
-    private HashMap<String, FontCache> cachedStrings = new HashMap();
+    private final CharLocation[] charLocations;
+    private final HashMap<String, FontCache> cachedStrings = new HashMap<>();
     private int textureID = 0;
     private int textureWidth = 0;
     private int textureHeight = 0;
@@ -38,8 +33,6 @@ public class ImageAWT implements MixinInterface {
 
     public ImageAWT(Font font, int startChar, int stopChar) {
         this.font = font;
-        this.startChar = startChar;
-        this.stopChar = stopChar;
         this.charLocations = new CharLocation[stopChar];
         this.renderBitmap(startChar, stopChar);
         activeFontRenderers.add(this);
@@ -83,11 +76,13 @@ public class ImageAWT implements MixinInterface {
         }
         
         int list = -1;
+        boolean assumeNonVolatile = false;
+
         if (assumeNonVolatile) {
             list = GL11.glGenLists(1);
             GL11.glNewList(list, 4865);
         }
-        
+
         GL11.glBegin(7);
         for (char ch : text.toCharArray()) {
             CharLocation fontChar;
@@ -111,12 +106,12 @@ public class ImageAWT implements MixinInterface {
         }
         
         GL11.glEnd();
-        
+
         if (assumeNonVolatile) {
             this.cachedStrings.put(text, new FontCache(list, System.currentTimeMillis()));
             GL11.glEndList();
         }
-        
+
         GlStateManager.popMatrix();
     }
 
@@ -184,7 +179,7 @@ public class ImageAWT implements MixinInterface {
             if (fontImages[targetChar] == null || this.charLocations[targetChar] == null) 
                 continue;
             
-            graphics2D.drawImage((Image)fontImages[targetChar], this.charLocations[targetChar].x, this.charLocations[targetChar].y, null);
+            graphics2D.drawImage(fontImages[targetChar], this.charLocations[targetChar].x, this.charLocations[targetChar].y, null);
         }
         
         this.textureID = TextureUtil.uploadTextureImageAllocate(TextureUtil.glGenTextures(), bufferedImage, true, true);
@@ -233,10 +228,10 @@ public class ImageAWT implements MixinInterface {
     }
 
     private static class CharLocation {
-        private int x;
-        private int y;
-        private int width;
-        private int height;
+        private final int x;
+        private final int y;
+        private final int width;
+        private final int height;
 
         CharLocation(int x, int y, int width, int height) {
             this.x = x;

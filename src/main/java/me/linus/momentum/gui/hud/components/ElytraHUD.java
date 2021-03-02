@@ -12,6 +12,4 @@ public class ElytraHUD extends HUDComponent {
     public ElytraHUD() {
         super("ElytraHUD", 0, 0, AnchorPoint.None);
     }
-
-
 }

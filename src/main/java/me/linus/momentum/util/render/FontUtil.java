@@ -28,11 +28,11 @@ public class FontUtil implements MixinInterface {
 
     public void load() {
         try {
-            this.lato = new FontRender(FontUtil.getFont("Lato.ttf", (float) ClientFont.scale.getValue()));
-            this.comfortaa = new FontRender(FontUtil.getFont("comfortaa.ttf", (float) ClientFont.scale.getValue()));
-            this.comicsans = new FontRender(FontUtil.getFont("comic-sans.ttf", (float) ClientFont.scale.getValue()));
-            this.verdana = new FontRender(FontUtil.getFont("Verdana.ttf", (float) ClientFont.scale.getValue()));
-            this.ubuntu = new FontRender(FontUtil.getFont("Ubuntu.ttf", (float) ClientFont.scale.getValue()));
+            lato = new FontRender(FontUtil.getFont("Lato.ttf", (float) ClientFont.scale.getValue()));
+            comfortaa = new FontRender(FontUtil.getFont("comfortaa.ttf", (float) ClientFont.scale.getValue()));
+            comicsans = new FontRender(FontUtil.getFont("comic-sans.ttf", (float) ClientFont.scale.getValue()));
+            verdana = new FontRender(FontUtil.getFont("Verdana.ttf", (float) ClientFont.scale.getValue()));
+            ubuntu = new FontRender(FontUtil.getFont("Ubuntu.ttf", (float) ClientFont.scale.getValue()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,31 +42,31 @@ public class FontUtil implements MixinInterface {
         try {
             InputStream inputStream = FontUtil.class.getResourceAsStream("/assets/momentum/fonts/" + fontName);
             Font awtClientFont = Font.createFont(0, inputStream);
-            awtClientFont = awtClientFont.deriveFont(0, size);
+            awtClientFont = awtClientFont.deriveFont(Font.PLAIN, size);
             inputStream.close();
 
             return awtClientFont;
         } catch (Exception e) {
             e.printStackTrace();
-            return new Font("default", 0, (int) size);
+            return new Font("default", Font.PLAIN, (int) size);
         }
     }
 
     public FontRender getCustomFont() {
         switch (ClientFont.family.getValue()) {
             case 0:
-                return this.lato;
+                return lato;
             case 1:
-                return this.ubuntu;
+                return ubuntu;
             case 2:
-                return this.verdana;
+                return verdana;
             case 3:
-                return this.comfortaa;
+                return comfortaa;
             case 4:
-                return this.comicsans;
+                return comicsans;
         }
 
-        return this.lato;
+        return lato;
     }
 
     public static void drawString(String text, float x, float y, int color) {

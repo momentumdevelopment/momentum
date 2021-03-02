@@ -3,7 +3,6 @@ package me.linus.momentum.module.modules.movement.speed.modes;
 import me.linus.momentum.event.events.player.MoveEvent;
 import me.linus.momentum.module.modules.movement.Speed;
 import me.linus.momentum.module.modules.movement.speed.SpeedMode;
-import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.player.MotionUtil;
 import me.linus.momentum.util.world.Timer;
 

@@ -66,7 +66,6 @@ public class ClickGUI extends Module {
 	public void onUpdate() {
 		if (nullCheck()) {
 			this.disable();
-			return;
 		}
 	}
 }

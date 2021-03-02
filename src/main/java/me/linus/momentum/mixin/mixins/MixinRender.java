@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinRender<T extends Entity> {
 
     @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
-    public void getTeamColor(T entityIn, CallbackInfoReturnable callbackInfo) {
+    public void getTeamColor(T entityIn, CallbackInfoReturnable<Integer> callbackInfo) {
         if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.colorManager.abstractColorRegistry.containsKey(entityIn.getClass())) {
             callbackInfo.cancel();
             callbackInfo.setReturnValue(FriendManager.isFriend(entityIn.getName()) ? ESP.colorManager.colorRegistry.get("Friend").getRGB() : ESP.colorManager.abstractColorRegistry.get(entityIn.getClass()).getRGB());

@@ -54,12 +54,7 @@ public class CrystalUtil implements MixinInterface {
         if (!(crystal instanceof EntityEnderCrystal))
             return false;
 
-        switch (AutoCrystal.breakMode.getValue()) {
-            case 0:
-                return true;
-        }
-
-        return false;
+        return AutoCrystal.breakMode.getValue() == 0;
     }
 
     public static void swingArm(int mode) {
@@ -154,10 +149,10 @@ public class CrystalUtil implements MixinInterface {
             double damage = 1.0;
 
             if (entity instanceof EntityLivingBase)
-                damage = getBlastReduction((EntityLivingBase) entity, calculatedDamage * ((mc.world.getDifficulty().getDifficultyId() == 0) ? 0.0f : ((mc.world.getDifficulty().getDifficultyId() == 2) ? 1.0f : ((mc.world.getDifficulty().getDifficultyId() == 1) ? 0.5f : 1.5f))), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
+                damage = getBlastReduction((EntityLivingBase) entity, calculatedDamage * ((mc.world.getDifficulty().getId() == 0) ? 0.0f : ((mc.world.getDifficulty().getId() == 2) ? 1.0f : ((mc.world.getDifficulty().getId() == 1) ? 0.5f : 1.5f))), new Explosion(mc.world, null, posX, posY, posZ, 6.0f, false, true));
 
             return (float) damage;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
 

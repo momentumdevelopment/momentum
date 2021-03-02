@@ -24,33 +24,30 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = RenderEnderCrystal.class, priority = 1006)
 public abstract class MixinRenderEnderCrystal implements MixinInterface {
 
+    @Final
     @Shadow
-    public ModelBase modelEnderCrystal;
+    private ModelBase modelEnderCrystal;
 
+    @Final
     @Shadow
-    public ModelBase modelEnderCrystalNoBase;
+    private ModelBase modelEnderCrystalNoBase;
 
     @Final
     @Shadow
     private static ResourceLocation ENDER_CRYSTAL_TEXTURES;
 
-    @Shadow
-    public abstract void doRender(EntityEnderCrystal p0, double p1, double p2, double p3, float p4, float p5);
-
     @Redirect(method = "doRender(Lnet/minecraft/entity/item/EntityEnderCrystal;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V"))
     private void render1(ModelBase modelBase, Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue() && (ESP.mode.getValue() == 3 || ESP.mode.getValue() == 4))
-            return;
-        else
+        if (!ModuleManager.getModuleByName("ESP").isEnabled() || !ESP.crystals.getValue() || (ESP.mode.getValue() != 3 || ESP.mode.getValue() != 4)) {
             modelBase.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        }
     }
 
     @Redirect(method = "doRender(Lnet/minecraft/entity/item/EntityEnderCrystal;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V", ordinal = 1))
     private void render2(ModelBase modelBase, Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue() && (ESP.mode.getValue() == 3 || ESP.mode.getValue() == 4))
-            return;
-        else
+        if (!ModuleManager.getModuleByName("ESP").isEnabled() || !ESP.crystals.getValue() || (ESP.mode.getValue() != 3 || ESP.mode.getValue() != 4)) {
             modelBase.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        }
     }
 
     @Inject(method = "doRender(Lnet/minecraft/entity/item/EntityEnderCrystal;DDDFF)V", at = @At("RETURN"), cancellable = true)
@@ -58,7 +55,7 @@ public abstract class MixinRenderEnderCrystal implements MixinInterface {
         try {
             if (ModuleManager.getModuleByName("ESP").isEnabled() && ESP.crystals.getValue())
                 ESP.espMode.drawESPCrystal(modelEnderCrystal, modelEnderCrystalNoBase, entity, x, y, z, entityYaw, partialTicks, callback, ENDER_CRYSTAL_TEXTURES);
-        } catch (Exception exception) {
+        } catch (Exception ignored) {
 
         }
     }

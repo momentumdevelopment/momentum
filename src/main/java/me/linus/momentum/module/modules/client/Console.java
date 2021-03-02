@@ -33,7 +33,6 @@ public class Console extends Module {
     public void onUpdate() {
         if (nullCheck()) {
             this.disable();
-            return;
         }
     }
 }

@@ -69,7 +69,7 @@ public class ConfigManagerJSON {
             saveHUD();
             saveFriends();
             saveEnemies();
-        } catch (IOException e) {
+        } catch (IOException ignored) {
 
         }
     }
@@ -82,7 +82,7 @@ public class ConfigManagerJSON {
             loadHUD();
             loadFriends();
             loadEnemies();
-        } catch (IOException e) {
+        } catch (IOException ignored) {
 
         }
     }
@@ -256,7 +256,7 @@ public class ConfigManagerJSON {
                                 greenValueObject = subColorObject.get("Green");
                                 blueValueObject = subColorObject.get("Blue");
                                 alphaValueObject = subColorObject.get("Alpha");
-                            } catch (Exception e) {
+                            } catch (Exception ignored) {
 
                             }
                         }
@@ -545,9 +545,7 @@ public class ConfigManagerJSON {
 
         JsonArray friendObject = mainObject.get("Friends").getAsJsonArray();
 
-        friendObject.forEach(object -> {
-            FriendManager.addFriend(object.getAsString());
-        });
+        friendObject.forEach(object -> FriendManager.addFriend(object.getAsString()));
 
         inputStream.close();
     }
@@ -581,9 +579,7 @@ public class ConfigManagerJSON {
 
         JsonArray enemyObject = mainObject.get("Enemies").getAsJsonArray();
 
-        enemyObject.forEach(object -> {
-            EnemyManager.addEnemy(object.getAsString());
-        });
+        enemyObject.forEach(object -> EnemyManager.addEnemy(object.getAsString()));
 
         inputStream.close();
     }

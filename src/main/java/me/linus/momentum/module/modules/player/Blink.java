@@ -29,7 +29,7 @@ public class Blink extends Module {
         addSetting(playerModel);
     }
 
-    Queue<Packet> packets = new ConcurrentLinkedQueue();
+    Queue<Packet<?>> packets = new ConcurrentLinkedQueue<>();
 
     @Override
     public void onEnable() {
@@ -49,7 +49,7 @@ public class Blink extends Module {
 
         mc.world.removeEntityFromWorld(69420);
 
-        for (Packet packet : packets) {
+        for (Packet<? extends net.minecraft.network.INetHandler> packet : packets) {
             mc.player.connection.sendPacket(packet);
         }
 

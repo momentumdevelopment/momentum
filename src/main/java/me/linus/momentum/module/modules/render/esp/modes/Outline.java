@@ -3,7 +3,6 @@ package me.linus.momentum.module.modules.render.esp.modes;
 import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
-import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.ESPUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import net.minecraft.client.model.ModelBase;

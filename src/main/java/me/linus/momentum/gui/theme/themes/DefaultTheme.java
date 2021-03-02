@@ -17,18 +17,16 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.render.AnimationUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
 import me.linus.momentum.util.render.Render2DUtil;
 import me.linus.momentum.util.render.builder.Render2DBuilder.Render2DMode;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.settings.KeyModifier;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.input.Keyboard;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.List;
 
@@ -326,11 +324,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             color = 0xCC383838;
 
             if (GUIUtil.ldown) {
-                try {
-                    module.onValueChange();
-                } catch (Exception e) {
-
-                }
+                if (module != null) module.onValueChange();
 
                 m.setMode(m.nextMode());
             }
@@ -357,11 +351,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
             color = 0xCC383838;
 
             if (GUIUtil.ldown) {
-                try {
-                    module.onValueChange();
-                } catch (Exception e) {
-
-                }
+                if (module != null) module.onValueChange();
 
                 sm.setMode(sm.nextMode());
             }
@@ -451,7 +441,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         }
 
         if (keybind.isBinding() && key != -1 && key != Keyboard.KEY_ESCAPE && key != Keyboard.KEY_DELETE) {
-            keybind.setKey((key == Keyboard.KEY_DELETE || key == Keyboard.KEY_BACK) ? Keyboard.KEY_NONE : key);
+            keybind.setKey(key == Keyboard.KEY_BACK ? Keyboard.KEY_NONE : key);
             keybind.setBinding(false);
         }
 
@@ -476,7 +466,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         }
 
         if (skb.isBinding() && key != -1 && key != Keyboard.KEY_ESCAPE && key != Keyboard.KEY_DELETE) {
-            skb.setKey((key == Keyboard.KEY_DELETE || key == Keyboard.KEY_BACK) ? Keyboard.KEY_NONE : key);
+            skb.setKey(key == Keyboard.KEY_BACK ? Keyboard.KEY_NONE : key);
             skb.setBinding(false);
         }
 
@@ -513,7 +503,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
         }
 
         if (m.isBinding() && key != -1 && key != Keyboard.KEY_ESCAPE && key != Keyboard.KEY_DELETE) {
-            m.getKeybind().setKeyModifierAndCode(KeyModifier.NONE, (key == Keyboard.KEY_DELETE || key == Keyboard.KEY_BACK) ? Keyboard.KEY_NONE : key);
+            m.getKeybind().setKeyModifierAndCode(KeyModifier.NONE, key == Keyboard.KEY_BACK ? Keyboard.KEY_NONE : key);
             m.setBinding(false);
         }
 
@@ -531,7 +521,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
     public static void drawPicker(ColorPicker subColor, int mouseX, int mouseY, int pickerX, int pickerY, int hueSliderX, int hueSliderY, int alphaSliderX, int alphaSliderY) {
         float[] color = new float[]{
-                subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[0], subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[1], subColor.getColor().RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[2]
+                Color.RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[0], Color.RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[1], Color.RGBtoHSB(subColor.getColor().getRed(), subColor.getColor().getGreen(), subColor.getColor().getBlue(), null)[2]
         };
 
         boolean pickingColor = false;
@@ -542,37 +532,23 @@ public class DefaultTheme extends Theme implements MixinInterface {
         int pickerHeight = 100;
         int hueSliderWidth = pickerWidth + 3;
         int hueSliderHeight = 10;
-        int alphaSliderWidth = pickerWidth;
         int alphaSliderHeight = 10;
 
         if (GUIUtil.lheld && GUIUtil.mouseOver(pickerX, pickerY, pickerX + pickerWidth, pickerY + pickerHeight))
             pickingColor = true;
         if (GUIUtil.lheld && GUIUtil.mouseOver(hueSliderX, hueSliderY, hueSliderX + hueSliderWidth, hueSliderY + hueSliderHeight))
             pickingHue = true;
-        if (GUIUtil.lheld && GUIUtil.mouseOver(alphaSliderX, alphaSliderY, alphaSliderX + alphaSliderWidth, alphaSliderY + alphaSliderHeight))
+        if (GUIUtil.lheld && GUIUtil.mouseOver(alphaSliderX, alphaSliderY, alphaSliderX + pickerWidth, alphaSliderY + alphaSliderHeight))
             pickingAlpha = true;
 
-        if (!GUIUtil.lheld)
-            pickingColor = pickingHue = pickingAlpha = false;
-
         if (pickingHue) {
-            if (hueSliderWidth > hueSliderHeight) {
-                float restrictedX = (float) Math.min(Math.max(hueSliderX, mouseX), hueSliderX + hueSliderWidth);
-                color[0] = (restrictedX - (float) hueSliderX) / hueSliderWidth;
-            } else {
-                float restrictedY = (float) Math.min(Math.max(hueSliderY, mouseY), hueSliderY + hueSliderHeight);
-                color[0] = (restrictedY - (float) hueSliderY) / hueSliderHeight;
-            }
+            float restrictedX = (float) Math.min(Math.max(hueSliderX, mouseX), hueSliderX + hueSliderWidth);
+            color[0] = (restrictedX - (float) hueSliderX) / hueSliderWidth;
         }
 
         if (pickingAlpha) {
-            if (alphaSliderWidth > alphaSliderHeight) {
-                float restrictedX = (float) Math.min(Math.max(alphaSliderX, mouseX), alphaSliderX + alphaSliderWidth);
-                finalAlpha = 1 - (restrictedX - (float) alphaSliderX) / alphaSliderWidth;
-            } else {
-                float restrictedY = (float) Math.min(Math.max(alphaSliderY, mouseY), alphaSliderY + alphaSliderHeight);
-                finalAlpha = 1 - (restrictedY - (float) alphaSliderY) / alphaSliderHeight;
-            }
+            float restrictedX = (float) Math.min(Math.max(alphaSliderX, mouseX), alphaSliderX + pickerWidth);
+            finalAlpha = 1 - (restrictedX - (float) alphaSliderX) / pickerWidth;
         }
 
         if (pickingColor) {
@@ -599,7 +575,7 @@ public class DefaultTheme extends Theme implements MixinInterface {
 
         Render2DUtil.drawRect(cursorX - 2, cursorY - 2, cursorX + 2, cursorY + 2, 0, -1, -1, false, Render2DMode.Normal);
 
-        drawAlphaSlider(alphaSliderX, alphaSliderY, alphaSliderWidth, alphaSliderHeight, selectedRed, selectedGreen, selectedBlue, finalAlpha);
+        drawAlphaSlider(alphaSliderX, alphaSliderY, pickerWidth, alphaSliderHeight, selectedRed, selectedGreen, selectedBlue, finalAlpha);
 
         finalColor = alphaIntegrate(new Color(Color.HSBtoRGB(color[0], color[1], color[2])), finalAlpha);
     }

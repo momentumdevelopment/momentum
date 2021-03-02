@@ -1,7 +1,7 @@
 package me.linus.momentum.managers;
 
-import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;

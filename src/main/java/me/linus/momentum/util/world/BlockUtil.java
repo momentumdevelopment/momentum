@@ -34,7 +34,7 @@ public class BlockUtil implements MixinInterface {
     public static void placeBlock(BlockPos pos, boolean rotate, boolean strict, boolean raytrace, boolean packet, boolean swingArm, boolean antiGlitch) {
         for (EnumFacing enumFacing : EnumFacing.values()) {
             if (!(getBlockResistance(pos.offset(enumFacing)) == BlockResistance.Blank) && !EntityUtil.isIntercepted(pos)) {
-                Vec3d vec = new Vec3d(pos.getX() + 0.5D + (double) enumFacing.getFrontOffsetX() * 0.5D, pos.getY() + 0.5D + (double) enumFacing.getFrontOffsetY() * 0.5D, pos.getZ() + 0.5D + (double) enumFacing.getFrontOffsetZ() * 0.5D);
+                Vec3d vec = new Vec3d(pos.getX() + 0.5D + (double) enumFacing.getXOffset() * 0.5D, pos.getY() + 0.5D + (double) enumFacing.getYOffset() * 0.5D, pos.getZ() + 0.5D + (double) enumFacing.getZOffset() * 0.5D);
 
                 float[] old = new float[] {
                         mc.player.rotationYaw, mc.player.rotationPitch

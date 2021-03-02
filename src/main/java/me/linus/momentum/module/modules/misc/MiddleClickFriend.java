@@ -1,7 +1,7 @@
 package me.linus.momentum.module.modules.misc;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.linus.momentum.Momentum;
+import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,13 +37,13 @@ public class MiddleClickFriend extends Module {
             if (result == null || result.typeOfHit != RayTraceResult.Type.ENTITY || !(result.entityHit instanceof EntityPlayer))
                 return;
 
-            if (Momentum.friendManager.isFriend(mc.objectMouseOver.entityHit.getName())) {
-                Momentum.friendManager.removeFriend(mc.objectMouseOver.entityHit.getName());
+            if (FriendManager.isFriend(mc.objectMouseOver.entityHit.getName())) {
+                FriendManager.removeFriend(mc.objectMouseOver.entityHit.getName());
                 MessageUtil.sendClientMessage(ChatFormatting.RED + "Removed " + ChatFormatting.LIGHT_PURPLE + mc.objectMouseOver.entityHit.getName() + ChatFormatting.WHITE + " from friends list");
             }
 
             else {
-                Momentum.friendManager.addFriend(mc.objectMouseOver.entityHit.getName());
+                FriendManager.addFriend(mc.objectMouseOver.entityHit.getName());
                 MessageUtil.sendClientMessage(ChatFormatting.GREEN + "Added " + ChatFormatting.LIGHT_PURPLE + mc.objectMouseOver.entityHit.getName() + ChatFormatting.WHITE + " to friends list");
             }
         }

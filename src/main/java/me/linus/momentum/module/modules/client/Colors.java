@@ -2,7 +2,6 @@ package me.linus.momentum.module.modules.client;
 
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.SubSlider;
 
@@ -21,7 +20,6 @@ public class Colors extends Module {
 	}
 
 	public static Checkbox rainbow = new Checkbox("Rainbow", false);
-	public static SubCheckbox gradient = new SubCheckbox(rainbow, "Gradient", true);
 	public static SubSlider saturation = new SubSlider(rainbow, "Saturation", 0.0D, 0.8D, 1.0D, 2);
 	public static SubSlider brightness = new SubSlider(rainbow, "Brightness", 0.0D, 0.8D, 1.0D, 2);
 	public static SubSlider difference = new SubSlider(rainbow, "Difference", 1.0D, 30.0D, 100.0D, 0);

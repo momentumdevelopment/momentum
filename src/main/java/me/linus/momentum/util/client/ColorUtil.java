@@ -18,8 +18,7 @@ public abstract class ColorUtil implements MixinInterface {
 		int red = rgb >> 16 & 255;
 		int green = rgb >> 8 & 255;
 		int blue = rgb & 255;
-		int color = toRGBA(red, green, blue, Colors.clientPicker.getColor().getAlpha());
-		return color;
+		return toRGBA(red, green, blue, Colors.clientPicker.getColor().getAlpha());
 	}
 
 	public static Color staticRainbow() {
@@ -47,6 +46,6 @@ public abstract class ColorUtil implements MixinInterface {
 	}
 
 	public static int toRGBA(int r, int g, int b, int a) {
-		return (r << 16) + (g << 8) + (b << 0) + (a << 24);
+		return (r << 16) + (g << 8) + (b) + (a << 24);
 	}
 }

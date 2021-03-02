@@ -133,11 +133,9 @@ public class ESPUtil implements MixinInterface {
     public static void checkSetupFBO() {
         Framebuffer fbo = mc.getFramebuffer();
 
-        if (fbo != null) {
-            if (fbo.depthBuffer > -1) {
-                setupFBO(fbo);
-                fbo.depthBuffer = -1;
-            }
+        if (fbo.depthBuffer > -1) {
+            setupFBO(fbo);
+            fbo.depthBuffer = -1;
         }
     }
 

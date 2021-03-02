@@ -166,11 +166,11 @@ public class HoleESP extends Module {
     }
 
     List<BlockPos> findObsidianHoles() {
-        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.isObsidianHole(blockPos)).collect(Collectors.toList());
+        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(HoleUtil::isObsidianHole).collect(Collectors.toList());
     }
 
     List<BlockPos> findBedRockHoles() {
-        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(blockPos -> HoleUtil.isBedRockHole(blockPos)).collect(Collectors.toList());
+        return BlockUtil.getNearbyBlocks(mc.player, range.getValue(), false).stream().filter(HoleUtil::isBedRockHole).collect(Collectors.toList());
     }
 
     @Override

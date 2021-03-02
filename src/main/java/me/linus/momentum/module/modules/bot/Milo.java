@@ -86,7 +86,7 @@ public class Milo extends Module {
     }
 
     private List<BlockPos> getHoles() {
-        return BlockUtil.getNearbyBlocks(mc.player, 20, false).stream().filter(blockPos -> HoleUtil.isHole(blockPos)).collect(Collectors.toList());
+        return BlockUtil.getNearbyBlocks(mc.player, 20, false).stream().filter(HoleUtil::isHole).collect(Collectors.toList());
     }
 
     public boolean playerCheck() {

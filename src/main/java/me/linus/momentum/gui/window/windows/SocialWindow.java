@@ -1,6 +1,5 @@
 package me.linus.momentum.gui.window.windows;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.gui.window.Window;
 import me.linus.momentum.managers.social.friend.FriendManager;
@@ -8,8 +7,8 @@ import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
 import me.linus.momentum.util.render.Render2DUtil;
-import me.linus.momentum.util.render.builder.Render2DBuilder.Render2DMode;
 import me.linus.momentum.util.render.builder.Render2DBuilder;
+import me.linus.momentum.util.render.builder.Render2DBuilder.Render2DMode;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -51,11 +50,11 @@ public class SocialWindow extends Window {
                 friendColor = 0xCC383838;
 
                 if (GUIUtil.ldown) {
-                    if (Momentum.friendManager.isFriend(player.getName()))
-                        Momentum.friendManager.removeFriend(player.getName());
+                    if (FriendManager.isFriend(player.getName()))
+                        FriendManager.removeFriend(player.getName());
 
                     else
-                        Momentum.friendManager.addFriend(player.getName());
+                        FriendManager.addFriend(player.getName());
                 }
             }
 

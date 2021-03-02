@@ -10,7 +10,6 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -112,7 +111,7 @@ public class ESP extends Module {
 
         try {
             espMode.drawESP();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
 

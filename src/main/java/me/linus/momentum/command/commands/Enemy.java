@@ -1,6 +1,5 @@
 package me.linus.momentum.command.commands;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.command.Command;
 import me.linus.momentum.managers.social.enemy.EnemyManager;
 import me.linus.momentum.util.client.MessageUtil;
@@ -24,7 +23,7 @@ public class Enemy extends Command {
                     MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is already an enemy!");
 
                 else if (!EnemyManager.isEnemy(args[2])) {
-                    Momentum.enemyManager.addEnemy(args[2]);
+                    EnemyManager.addEnemy(args[2]);
                     MessageUtil.addOutput("Added " + TextFormatting.GREEN + args[2] + TextFormatting.WHITE + " to enemies list");
                 }
             }
@@ -34,7 +33,7 @@ public class Enemy extends Command {
                     MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is not an enemy!");
 
                 else if (EnemyManager.isEnemy(args[2])) {
-                    Momentum.enemyManager.removeEnemy(args[2]);
+                    EnemyManager.removeEnemy(args[2]);
                     MessageUtil.addOutput("Removed " + TextFormatting.RED + args[2] + TextFormatting.WHITE + " from enemies list");
                 }
             }

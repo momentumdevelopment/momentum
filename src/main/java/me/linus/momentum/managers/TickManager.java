@@ -32,9 +32,7 @@ public class TickManager {
         int tickCount = 0;
         float tickRate = 0.0f;
 
-        for (int i = 0; i < TPS.length; i++) {
-            float tick = TPS[i];
-
+        for (float tick : TPS) {
             if (tick > 0.0f) {
                 tickRate += tick;
                 tickCount++;
@@ -45,7 +43,7 @@ public class TickManager {
     }
 
     @SubscribeEvent
-    public void onPacketRecieve(PacketReceiveEvent event) {
+    public void onPacketReceive(PacketReceiveEvent event) {
         if (event.getPacket() instanceof SPacketTimeUpdate) {
             if (prevTime != -1) {
                 TPS[currentTick % TPS.length] = MathHelper.clamp((20.0f / ((float) (System.currentTimeMillis() - prevTime) / 1000.0f)), 0.0f, 20.0f);

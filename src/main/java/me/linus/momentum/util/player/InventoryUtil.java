@@ -118,16 +118,16 @@ public class InventoryUtil implements MixinInterface {
     }
 
     public static boolean Is32k(ItemStack stack) {
-        if (stack.getEnchantmentTagList() != null) {
-            for (int i = 0; i < stack.getEnchantmentTagList().tagCount(); i++) {
-                if (stack.getEnchantmentTagList().getCompoundTagAt(i)!= null && Enchantment.getEnchantmentByID(stack.getEnchantmentTagList().getCompoundTagAt(i).getByte("id")) != null) {
-                    if (Enchantment.getEnchantmentByID(stack.getEnchantmentTagList().getCompoundTagAt(i).getShort("id")) != null) {
-                        if (Enchantment.getEnchantmentByID(stack.getEnchantmentTagList().getCompoundTagAt(i).getShort("id")).isCurse())
-                            continue;
+        stack.getEnchantmentTagList();
+        for (int i = 0; i < stack.getEnchantmentTagList().tagCount(); i++) {
+            stack.getEnchantmentTagList().getCompoundTagAt(i);
+            if (Enchantment.getEnchantmentByID(stack.getEnchantmentTagList().getCompoundTagAt(i).getByte("id")) != null) {
+                if (Enchantment.getEnchantmentByID(stack.getEnchantmentTagList().getCompoundTagAt(i).getShort("id")) != null) {
+                    if (Enchantment.getEnchantmentByID(stack.getEnchantmentTagList().getCompoundTagAt(i).getShort("id")).isCurse())
+                        continue;
 
-                        if (stack.getEnchantmentTagList().getCompoundTagAt(i).getShort("lvl") >= 1000)
-                            return true;
-                    }
+                    if (stack.getEnchantmentTagList().getCompoundTagAt(i).getShort("lvl") >= 1000)
+                        return true;
                 }
             }
         }

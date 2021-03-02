@@ -8,9 +8,8 @@ import me.linus.momentum.util.combat.EnemyUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -89,10 +88,10 @@ public class WorldUtil implements MixinInterface {
                 targetPlayer = selectionPlayers.stream().min(Comparator.comparing(target -> mc.player.getDistance(target))).orElse(null);
                 break;
             case 1:
-                targetPlayer = selectionPlayers.stream().min(Comparator.comparing(target -> EnemyUtil.getHealth(target))).orElse(null);
+                targetPlayer = selectionPlayers.stream().min(Comparator.comparing(EnemyUtil::getHealth)).orElse(null);
                 break;
             case 2:
-                targetPlayer = selectionPlayers.stream().min(Comparator.comparing(target -> EnemyUtil.getArmor(target))).orElse(null);
+                targetPlayer = selectionPlayers.stream().min(Comparator.comparing(EnemyUtil::getArmor)).orElse(null);
                 break;
         }
 
@@ -105,9 +104,7 @@ public class WorldUtil implements MixinInterface {
 
         List<EntityPlayer> nearbyPlayers = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !(EnemyUtil.getHealth(entityPlayer) < 0)).collect(Collectors.toList());
 
-        for (EntityPlayer closestPlayer : nearbyPlayers)
-            if (FriendManager.isFriend(closestPlayer.getName()) && FriendManager.isFriendModuleEnabled())
-                nearbyPlayers.remove(closestPlayer);
+        nearbyPlayers.removeIf(closestPlayer -> FriendManager.isFriend(closestPlayer.getName()) && FriendManager.isFriendModuleEnabled());
 
         return nearbyPlayers;
     }
@@ -123,16 +120,14 @@ public class WorldUtil implements MixinInterface {
                 nearbyTargets = getNearbyPlayers(range);
                 break;
             case 1:
-                nearbyTargets = getNearbyPlayers(range).stream().sorted(Comparator.comparing(entityPlayer -> EnemyUtil.getHealth(entityPlayer))).collect(Collectors.toList());
+                nearbyTargets = getNearbyPlayers(range).stream().sorted(Comparator.comparing(EnemyUtil::getHealth)).collect(Collectors.toList());
                 break;
             case 2:
-                nearbyTargets = getNearbyPlayers(range).stream().sorted(Comparator.comparing(entityPlayer -> EnemyUtil.getArmor(entityPlayer))).collect(Collectors.toList());
+                nearbyTargets = getNearbyPlayers(range).stream().sorted(Comparator.comparing(EnemyUtil::getArmor)).collect(Collectors.toList());
                 break;
         }
 
-        for (EntityPlayer closestPlayer : nearbyTargets)
-            if (FriendManager.isFriend(closestPlayer.getName()) && FriendManager.isFriendModuleEnabled())
-                nearbyTargets.remove(closestPlayer);
+        nearbyTargets.removeIf(closestPlayer -> FriendManager.isFriend(closestPlayer.getName()) && FriendManager.isFriendModuleEnabled());
 
         return nearbyTargets;
     }
@@ -141,8 +136,7 @@ public class WorldUtil implements MixinInterface {
         if (mc.world.getLoadedEntityList().size() == 0)
             return null;
 
-        List<EntityPlayer> nearbyFriends = mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !entityPlayer.isDead).filter(entityPlayer -> FriendManager.isFriend(entityPlayer.getName())).collect(Collectors.toList());
-        return nearbyFriends;
+        return mc.world.playerEntities.stream().filter(entityPlayer -> mc.player != entityPlayer).filter(entityPlayer -> mc.player.getDistance(entityPlayer) <= range).filter(entityPlayer -> !entityPlayer.isDead).filter(entityPlayer -> FriendManager.isFriend(entityPlayer.getName())).collect(Collectors.toList());
     }
 
     public static void disconnectFromWorld(Module module) {

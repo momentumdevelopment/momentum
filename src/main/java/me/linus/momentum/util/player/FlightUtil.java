@@ -1,7 +1,6 @@
 package me.linus.momentum.util.player;
 
 import me.linus.momentum.mixin.MixinInterface;
-import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.EnumHand;

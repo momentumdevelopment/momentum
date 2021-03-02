@@ -1,0 +1,60 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@4.0.1
+
+parameters:
+  version:
+    type: string
+    default: 1.2.1
+
+general:
+  branches:
+    - master
+
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk
+
+    working_directory: ~/momentum-<< pipeline.parameters.version >>
+
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-
+
+      - run:
+          name: Setup build workspace.
+          command: |
+            ./gradlew setupCiWorkspace
+
+      - run:
+          name: Build.
+          command: |
+            ./gradlew build
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+
+      - store_artifacts:
+          path: build/libs/
+
+      - node/install:
+          install-yarn: true
+
+      - run:
+          name: Discord webhook
+          command: |
+            cd .circleci/discordwebhook
+            yarn install
+            yarn start << pipeline.git.branch >> << pipeline.parameters.version >> $CIRCLE_BUILD_NUM https://github.com/linustouchtips/momentum/compare/<< pipeline.git.base_revision >>...<< pipeline.git.revision >>
