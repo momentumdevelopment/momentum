@@ -1,9 +1,7 @@
 package me.linus.momentum.util.combat.crystal;
 
-import me.linus.momentum.managers.CrystalManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.combat.AutoCrystal;
-import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.world.BlockUtil;
 import me.linus.momentum.util.world.BlockUtil.BlockResistance;
 import net.minecraft.enchantment.EnchantmentHelper;

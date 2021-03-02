@@ -98,8 +98,8 @@ public class AutoCrystal extends Module {
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubMode pauseMode = new SubMode(pause, "Pause Mode", "Place", "Break", "Both");
-    public static SubMode friendProtect = new SubMode(pause, "Friend Protect", "Ignore", "Place", "Break");
     public static SubSlider pauseHealth = new SubSlider(pause, "Pause Health", 0.0D, 7.0D, 36.0D, 0);
+    public static SubCheckbox friendProtect = new SubCheckbox(pause, "Friend Protect", false);
     public static SubCheckbox whenMining = new SubCheckbox(pause, "When Mining", false);
     public static SubCheckbox whenEating = new SubCheckbox(pause, "When Eating", false);
     public static SubCheckbox closePlacements = new SubCheckbox(pause, "Close Placements", false);
@@ -317,7 +317,7 @@ public class AutoCrystal extends Module {
         if (crystalTarget == null)
             return true;
 
-        if (friendProtect.getValue() != 0) {
+        if (friendProtect.getValue()) {
             for (EntityPlayer friend : Objects.requireNonNull(WorldUtil.getNearbyFriends(placeRange.getValue()))) {
                 if (EnemyUtil.getHealth(friend) - (CrystalUtil.calculateDamage(crystal.crystal.posX + 0.5, crystal.crystal.posY + 1, crystal.crystal.posZ + 0.5, friend)) <= pauseHealth.getValue())
                     return true;
