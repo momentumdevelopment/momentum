@@ -37,9 +37,14 @@ jobs:
             chmod +x gradlew
 
       - run:
+          name: Show the Gradle version in use with other details.
+          command: |
+            ./gradlew --version
+
+      - run:
           name: Set up the workspace for ci build
           command: |
-            ./gradlew setupDevWorkspace
+            ./gradlew setupCiWorkspace
 
       - run:
           name: Clean the workspace ready for a fresh build.
@@ -49,10 +54,15 @@ jobs:
       - run:
           name: Attempt to build the mod.
           command: |
-            ./gradlew clean build --refresh-dependencies
+            ./gradlew build
 
       - store_artifacts:
           path: ./build/libs
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
 
       - node/install:
           install-yarn: true
