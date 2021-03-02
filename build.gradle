@@ -68,7 +68,7 @@ dependencies {
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2854"
+    version = "1.12.2-14.23.5.2845"
     runDir = "run"
     mappings = "snapshot_20171003"
     coreMod = 'me.linus.momentum.mixin.MixinLoader'
