@@ -37,19 +37,19 @@ jobs:
             chmod +x gradlew
 
       - run:
-          name: Clear cache
-          command: |
-            ./gradlew cleanCache
-
-      - run:
           name: Set up the workspace for ci build
           command: |
             ./gradlew setupCiWorkspace
 
       - run:
+          name: Clean the workspace ready for a fresh build.
+          command: |
+            ./gradlew clean
+
+      - run:
           name: Attempt to build the mod.
           command: |
-            ./gradlew clean build --refresh-dependencies
+            ./gradlew build
 
       - store_artifacts:
           path: ./build/libs
