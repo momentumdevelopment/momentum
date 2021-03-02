@@ -1,6 +1,5 @@
 package me.linus.momentum.command.commands;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.command.Command;
 import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.util.client.MessageUtil;
@@ -24,7 +23,7 @@ public class Friend extends Command {
                     MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is already a friend!");
 
                 else if (!FriendManager.isFriend(args[2])) {
-                    Momentum.friendManager.addFriend(args[2]);
+                    FriendManager.addFriend(args[2]);
                     MessageUtil.addOutput("Added " + TextFormatting.GREEN + args[2] + TextFormatting.WHITE + " to friends list");
                 }
             }
@@ -34,7 +33,7 @@ public class Friend extends Command {
                     MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + args[2] + TextFormatting.WHITE + " is not a friend!");
 
                 else if (FriendManager.isFriend(args[2])) {
-                    Momentum.friendManager.removeFriend(args[2]);
+                    FriendManager.removeFriend(args[2]);
                     MessageUtil.addOutput("Removed " + TextFormatting.RED + args[2] + TextFormatting.WHITE + " from friends list");
                 }
             }

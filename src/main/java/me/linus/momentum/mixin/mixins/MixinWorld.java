@@ -6,7 +6,6 @@ import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.combat.AutoCrystal;
 import me.linus.momentum.module.modules.render.SkyColor;
-import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityExpBottle;
@@ -59,7 +58,7 @@ public class MixinWorld implements MixinInterface {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }

@@ -119,8 +119,8 @@ public class Step extends Module {
     }
 
     public void updateStepPackets(double[] stepArray) {
-        for (int i = 0; i < stepArray.length; i++) {
-            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + stepArray[i], mc.player.posZ, mc.player.onGround));
+        for (double v : stepArray) {
+            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + v, mc.player.posZ, mc.player.onGround));
         }
     }
 

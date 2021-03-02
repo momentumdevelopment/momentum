@@ -1,6 +1,5 @@
 package me.linus.momentum.managers.config;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.gui.hud.HUDComponent;
 import me.linus.momentum.gui.main.gui.Window;
 import me.linus.momentum.managers.HUDComponentManager;
@@ -492,7 +491,7 @@ public class ConfigManager {
         try {
             File guiPos = new File(config.getAbsolutePath(), "HUDPositions.txt");
             BufferedWriter bw = new BufferedWriter(new FileWriter(guiPos));
-            for (HUDComponent component : Momentum.componentManager.getComponents()) {
+            for (HUDComponent component : HUDComponentManager.getComponents()) {
                 bw.write( component.getX() + ":" + component.getY());
                 bw.write("\r\n");
             }
@@ -511,7 +510,7 @@ public class ConfigManager {
             int lineIndex = 0;
             for (String line : linezz) {
                 String[] regex = line.split(":");
-                HUDComponent component = Momentum.componentManager.getComponents().get(lineIndex);
+                HUDComponent component = HUDComponentManager.getComponents().get(lineIndex);
 
                 component.setX(Integer.parseInt(regex[0]));
                 component.setY(Integer.parseInt(regex[1]));
@@ -529,7 +528,7 @@ public class ConfigManager {
         try {
             File modules = new File(config.getAbsolutePath(), "HUDComponents.txt");
             BufferedWriter bw = new BufferedWriter(new FileWriter(modules));
-            for (HUDComponent component : Momentum.componentManager.getComponents()) {
+            for (HUDComponent component : HUDComponentManager.getComponents()) {
                 bw.write(component.getName() + ":");
                 if (component.isEnabled()) {
                     bw.write("true");
@@ -552,7 +551,7 @@ public class ConfigManager {
             int lineIndex = 0;
             for (String line : linezz) {
                 String[] regex = line.split(":");
-                HUDComponent component = Momentum.componentManager.getComponents().get(lineIndex);
+                HUDComponent component = HUDComponentManager.getComponents().get(lineIndex);
                 if (regex[0].startsWith(component.getName())) {
                     component.setEnabled(Boolean.parseBoolean(regex[1]));
 

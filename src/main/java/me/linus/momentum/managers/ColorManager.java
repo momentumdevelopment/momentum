@@ -1,8 +1,8 @@
 package me.linus.momentum.managers;
 
-import java.util.List;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author linustouchtips
@@ -19,8 +19,8 @@ public class ColorManager {
     }
 
     public void registerAbstractColorList(List<Class<?>> clazz, Color color) {
-        for (int i = 0; i < clazz.size(); i++) {
-            abstractColorRegistry.put(clazz.get(i), color);
+        for (Class<?> aClass : clazz) {
+            abstractColorRegistry.put(aClass, color);
         }
     }
 
@@ -29,8 +29,8 @@ public class ColorManager {
     }
 
     public void registerColorList(List<String> identifiers, Color color) {
-        for (int i = 0; i < identifiers.size(); i++) {
-            colorRegistry.put(identifiers.get(i), color);
+        for (String identifier : identifiers) {
+            colorRegistry.put(identifier, color);
         }
     }
 }

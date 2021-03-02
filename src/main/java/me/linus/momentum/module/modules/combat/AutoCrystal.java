@@ -5,8 +5,8 @@ import me.linus.momentum.event.events.packet.PacketSendEvent;
 import me.linus.momentum.managers.CrystalManager;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.managers.RotationManager;
-import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
@@ -41,12 +41,13 @@ import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.eventhandler.*;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**

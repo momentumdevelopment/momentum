@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinGuiPlayerTabOverlay {
 
     @Inject(method = "getPlayerName", at = @At("HEAD"), cancellable = true)
-    public void getPlayerName(NetworkPlayerInfo networkPlayerInfoIn, CallbackInfoReturnable callbackInfoReturnable) {
+    public void getPlayerName(NetworkPlayerInfo networkPlayerInfoIn, CallbackInfoReturnable<String> callbackInfoReturnable) {
         if (ModuleManager.getModuleByName("Social").isEnabled()) {
             callbackInfoReturnable.cancel();
             callbackInfoReturnable.setReturnValue(getPlayerName(networkPlayerInfoIn));

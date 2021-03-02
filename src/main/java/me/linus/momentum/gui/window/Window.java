@@ -127,7 +127,7 @@ public class Window implements MixinInterface {
             this.isTyping = !this.isTyping;
     }
 
-    public void rclickListen(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public void rclickListen(int mouseX, int mouseY, int mouseButton) {
         if (GUIUtil.mouseOver(this.x, this.y, this.x + this.width, this.y + 14))
             this.opened = !this.opened;
     }

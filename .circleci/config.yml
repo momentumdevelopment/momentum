@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Set up the workspace for ci build
           command: |
-            ./gradlew setupCiWorkspace
+            ./gradlew setupDevWorkspace
 
       - run:
           name: Clean the workspace ready for a fresh build.
@@ -49,7 +49,7 @@ jobs:
       - run:
           name: Attempt to build the mod.
           command: |
-            ./gradlew build
+            ./gradlew clean build --refresh-dependencies
 
       - store_artifacts:
           path: ./build/libs

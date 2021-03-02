@@ -3,10 +3,7 @@ package me.linus.momentum.util.player;
 import me.linus.momentum.event.events.player.MoveEvent;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.util.client.MathUtil;
-import me.linus.momentum.util.world.Timer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 
@@ -47,8 +44,11 @@ public class MotionUtil implements MixinInterface {
                 forward = -1.0f;
         }
 
-        event.setX((double) forward * speed * Math.cos(Math.toRadians(yaw + 90.0f)) + (double) strafe * speed * Math.sin(Math.toRadians(yaw + 90.0f)));
-        event.setZ((double) forward * speed * Math.sin(Math.toRadians(yaw + 90.0f)) - (double) strafe * speed * Math.cos(Math.toRadians(yaw + 90.0f)));
+        final double sin = Math.sin(Math.toRadians(yaw + 90.0f));
+        final double cos = Math.cos(Math.toRadians(yaw + 90.0f));
+
+        event.setX((double) forward * speed * cos + (double) strafe * speed * sin);
+        event.setZ((double) forward * speed * sin - (double) strafe * speed * cos);
         mc.player.stepHeight = stepHeight;
 
         if (!MotionUtil.isMoving()) {
@@ -87,8 +87,11 @@ public class MotionUtil implements MixinInterface {
                 forward = -1.0f;
         }
 
-        currentMover.motionX = (double) forward * speed * Math.cos(Math.toRadians(yaw + 90.0f)) + (double) strafe * speed * Math.sin(Math.toRadians(yaw + 90.0f));
-        currentMover.motionZ = (double) forward * speed * Math.sin(Math.toRadians(yaw + 90.0f)) - (double) strafe * speed * Math.cos(Math.toRadians(yaw + 90.0f));
+        final double sin = Math.sin(Math.toRadians(yaw + 90.0f));
+        final double cos = Math.cos(Math.toRadians(yaw + 90.0f));
+
+        currentMover.motionX = (double) forward * speed * cos + (double) strafe * speed * sin;
+        currentMover.motionZ = (double) forward * speed * sin - (double) strafe * speed * cos;
         currentMover.stepHeight = stepHeight;
 
         if (!MotionUtil.isMoving()) {
@@ -105,12 +108,7 @@ public class MotionUtil implements MixinInterface {
         double motionX;
         double motionZ;
 
-        if (!MotionUtil.isMoving()) {
-            motionX = 0;
-            motionZ = 0;
-        }
-
-        else if (forward != 0.0f) {
+        if (forward != 0.0f) {
             if (strafe >= 1.0f) {
                 yaw += (float) (forward > 0.0f ? -45 : 45);
                 strafe = 0.0f;
@@ -128,8 +126,11 @@ public class MotionUtil implements MixinInterface {
                 forward = -1.0f;
         }
 
-        motionX = (double) forward * speed * Math.cos(Math.toRadians(yaw + 90.0f)) + (double) strafe * speed * Math.sin(Math.toRadians(yaw + 90.0f));
-        motionZ = (double) forward * speed * Math.sin(Math.toRadians(yaw + 90.0f)) - (double) strafe * speed * Math.cos(Math.toRadians(yaw + 90.0f));
+        double sin = Math.sin(Math.toRadians(yaw + 90.0f));
+        double cos = Math.cos(Math.toRadians(yaw + 90.0f));
+
+        motionX = (double) forward * speed * cos + (double) strafe * speed * sin;
+        motionZ = (double) forward * speed * sin - (double) strafe * speed * cos;
 
         if (!MotionUtil.isMoving()) {
             motionX = 0;

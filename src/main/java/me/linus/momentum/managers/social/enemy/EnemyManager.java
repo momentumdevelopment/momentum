@@ -34,8 +34,10 @@ public class EnemyManager {
         boolean isEnemy = false;
 
         for (Enemy enemy : getEnemies()) {
-            if (enemy.getName().equalsIgnoreCase(name))
+            if (enemy.getName().equalsIgnoreCase(name)) {
                 isEnemy = true;
+                break;
+            }
         }
 
         return isEnemy;

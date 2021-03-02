@@ -11,15 +11,11 @@ import java.awt.*;
 import java.util.Random;
 
 public class FontRender extends FontRenderer implements MixinInterface {
-    private Font font;
-    private ImageAWT defaultFont;
-    private ImageAWT italicFont;
+    private final ImageAWT defaultFont;
 
     public FontRender(Font font) {
         super(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), null, false);
-        this.font = font;
         this.defaultFont = new ImageAWT(font);
-        this.italicFont = new ImageAWT(font.deriveFont(2));
         this.FONT_HEIGHT = this.getHeight();
     }
 
@@ -157,7 +153,6 @@ public class FontRender extends FontRenderer implements MixinInterface {
 
     @Override
     public int getStringWidth(String text) {
-        String currentText = text;
         if (text.contains("§")) {
             String[] parts = text.split("§");
             ImageAWT currentFont = this.defaultFont;
@@ -183,7 +178,7 @@ public class FontRender extends FontRenderer implements MixinInterface {
             return width / 2;
         }
 
-        return this.defaultFont.getStringWidth(currentText) / 2;
+        return this.defaultFont.getStringWidth(text) / 2;
     }
 
     public int getCharWidth(char character) {

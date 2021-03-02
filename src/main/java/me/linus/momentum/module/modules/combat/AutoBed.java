@@ -36,7 +36,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author linustouchtips & bon
@@ -62,15 +61,12 @@ public class AutoBed extends Module {
     public static SubSlider placeDelay = new SubSlider(place, "Place Delay", 0.0D, 1000.0D, 2000.0D, 0);
     public static SubSlider placeRange = new SubSlider(place, "Place Range", 0.0D, 5.0D, 7.0D, 1);
     public static SubSlider enemyRange = new SubSlider(place, "Enemy Range", 0.0D, 5.0D, 15.0D, 1);
-    public static SubCheckbox airPlace = new SubCheckbox(place, "Air Place", true);
     public static SubCheckbox autoSwitch = new SubCheckbox(place, "Auto-Switch", false);
     public static SubCheckbox spoofAngles = new SubCheckbox(place, "Spoof Angles", true);
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubSlider pauseHealth = new SubSlider(pause, "Pause Health", 0.0D, 7.0D, 36.0D, 0);
     public static SubCheckbox whenOverworld = new SubCheckbox(pause, "Nether Check", true);
-    public static SubCheckbox whenMining = new SubCheckbox(pause, "When Mining", false);
-    public static SubCheckbox whenEating = new SubCheckbox(pause, "When Eating", false);
 
     public static Checkbox logic = new Checkbox("Logic", true);
     public static SubMode logicMode = new SubMode(logic, "Logic", "Break -> Place", "Place -> Break");
@@ -138,7 +134,7 @@ public class AutoBed extends Module {
     }
 
     public void breakBed() {
-        TileEntityBed bed = (TileEntityBed) mc.world.loadedTileEntityList.stream().filter(e -> e instanceof TileEntityBed).filter(e -> mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()) <= breakRange.getValue()).sorted(Comparator.comparing(e -> mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()))).findFirst().orElse(null);
+        TileEntityBed bed = (TileEntityBed) mc.world.loadedTileEntityList.stream().filter(e -> e instanceof TileEntityBed).filter(e -> mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()) <= breakRange.getValue()).min(Comparator.comparing(e -> mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()))).orElse(null);
 
         if (bed != null && breakTimer.passed((long) breakDelay.getValue(), Format.System)) {
             if (pause.getValue() && PlayerUtil.getHealth() <= pauseHealth.getValue())
@@ -167,8 +163,7 @@ public class AutoBed extends Module {
             return;
 
         Entity entity = null;
-        List<Entity> entities = new ArrayList<>();
-        entities.addAll(mc.world.playerEntities.stream().collect(Collectors.toList()));
+        List<Entity> entities = new ArrayList<>(new ArrayList<>(mc.world.playerEntities));
 
         for (Entity entityTarget : entities) {
             if (entityTarget != mc.player) {
@@ -188,17 +183,17 @@ public class AutoBed extends Module {
         currentTarget = entity;
 
         if (currentTarget != null)
-            currentBlock = BedUtil.getBedPosition((EntityPlayer) currentTarget, nowTop, rotVar);
+            currentBlock = BedUtil.getBedPosition((EntityPlayer) currentTarget);
 
         if (place.getValue()) {
             switch (placeTimerMode.getValue()) {
                 case 0:
                     if (placeTimer.passed((long) (750 + placeDelay.getValue()), Format.System))
-                        BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, nowTop, spoofAngles.getValue());
+                        BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, spoofAngles.getValue());
                     break;
                 case 1:
                     if (placeTimer.passed((long) placeTickDelay.getValue(), Format.Ticks))
-                        BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, nowTop, spoofAngles.getValue());
+                        BedUtil.placeBed(currentBlock, EnumFacing.DOWN, rotVar, spoofAngles.getValue());
                     break;
             }
         }

@@ -1,8 +1,9 @@
 package me.linus.momentum.command.commands;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.command.Command;
 import me.linus.momentum.gui.hud.HUDComponent;
+import me.linus.momentum.managers.HUDComponentManager;
+import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.util.client.MessageUtil;
 import net.minecraft.util.text.TextFormatting;
@@ -19,7 +20,7 @@ public class Panic extends Command {
 
     @Override
     public void onCommand(String[] args) {
-        for (Module m: Momentum.moduleManager.getModules()) {
+        for (Module m: ModuleManager.getModules()) {
             if (m.isEnabled()) {
                 m.disable();
                 MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "All modules toggled off!");
@@ -29,7 +30,7 @@ public class Panic extends Command {
                 MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "No modules to disable!");
         }
 
-        for (HUDComponent hud : Momentum.componentManager.getComponents()) {
+        for (HUDComponent hud : HUDComponentManager.getComponents()) {
             if (hud.isEnabled()) {
                 hud.toggle();
                 MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "All HUD elements toggled off!");

@@ -104,7 +104,7 @@ public class Refill extends Module {
             return false;
 
         if ((stack1.getItem() instanceof ItemBlock) && (stack2.getItem() instanceof ItemBlock)) {
-            if (!((ItemBlock) stack1.getItem()).getBlock().blockMaterial.equals(((ItemBlock) stack2.getItem()).getBlock().blockMaterial))
+            if (!((ItemBlock) stack1.getItem()).getBlock().material.equals(((ItemBlock) stack2.getItem()).getBlock().material))
                 return false;
         }
 

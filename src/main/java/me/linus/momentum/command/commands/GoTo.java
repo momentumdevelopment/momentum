@@ -18,7 +18,7 @@ public class GoTo extends Command {
     @Override
     public void onCommand(String[] args) {
         if (args.length > 2) {
-            BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(new GoalXZ(Integer.valueOf(args[1]), Integer.valueOf(args[3])));
+            BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(new GoalXZ(Integer.parseInt(args[1]), Integer.parseInt(args[3])));
             MessageUtil.addOutput("Started pathing to " + args[1] + ", " + args[2] + ", " + args[3] + "!");
         }
 

@@ -32,65 +32,57 @@ public class BedUtil implements MixinInterface {
      * place
      */
 
-    public static BlockPos getBedPosition(EntityPlayer currentTarget, boolean nowTop, float rotVar) {
+    public static BlockPos getBedPosition(EntityPlayer currentTarget) {
         BlockPos placeTarget = null;
 
         if (currentTarget != null) {
-            placeTarget = new BlockPos(currentTarget.getPositionVector().addVector(1, 1, 0));
-            nowTop = false;
-            rotVar = 90;
+            placeTarget = new BlockPos(currentTarget.getPositionVector().add(1, 1, 0));
+            boolean nowTop = false;
 
             BlockPos block1 = placeTarget;
             if (!canPlaceBed(block1)) {
-                placeTarget = new BlockPos(currentTarget.getPositionVector().addVector(-1, 1, 0));
-                rotVar = -90;
+                placeTarget = new BlockPos(currentTarget.getPositionVector().add(-1, 1, 0));
                 nowTop = false;
             }
 
             BlockPos block2 = placeTarget;
             if (!canPlaceBed(block2)) {
-                placeTarget = new BlockPos(currentTarget.getPositionVector().addVector(0, 1, 1));
-                rotVar = 180;
+                placeTarget = new BlockPos(currentTarget.getPositionVector().add(0, 1, 1));
                 nowTop = false;
             }
 
             BlockPos block3 = placeTarget;
             if (!canPlaceBed(block3)) {
-                placeTarget = new BlockPos(currentTarget.getPositionVector().addVector(0, 1, -1));
-                rotVar = 0;
+                placeTarget = new BlockPos(currentTarget.getPositionVector().add(0, 1, -1));
                 nowTop = false;
             }
 
             BlockPos block4 = placeTarget;
             if (!canPlaceBed(block4)) {
-                placeTarget = new BlockPos(currentTarget.getPositionVector().addVector(0, 2, -1));
-                rotVar = 0;
+                placeTarget = new BlockPos(currentTarget.getPositionVector().add(0, 2, -1));
                 nowTop = true;
             }
 
             BlockPos blockt1 = placeTarget;
             if (nowTop && !canPlaceBed(blockt1)) {
-                placeTarget = new BlockPos(currentTarget.getPositionVector().addVector(-1, 2, 0));
-                rotVar = -90;
+                placeTarget = new BlockPos(currentTarget.getPositionVector().add(-1, 2, 0));
             }
 
             BlockPos blockt2 = placeTarget;
             if (nowTop && !canPlaceBed(blockt2)) {
-                placeTarget = new BlockPos(currentTarget.getPositionVector().addVector(0, 2, 1));
-                rotVar = 180;
+                placeTarget = new BlockPos(currentTarget.getPositionVector().add(0, 2, 1));
             }
 
             BlockPos blockt3 = placeTarget;
             if (nowTop && !canPlaceBed(blockt3)) {
-                placeTarget = new BlockPos(currentTarget.getPositionVector().addVector(1, 2, 0));
-                rotVar = 90;
+                placeTarget = new BlockPos(currentTarget.getPositionVector().add(1, 2, 0));
             }
         }
 
         return placeTarget;
     }
 
-    public static void placeBed(BlockPos pos, EnumFacing side, float rotVar, boolean nowTop, boolean rotate) {
+    public static void placeBed(BlockPos pos, EnumFacing side, float rotVar, boolean rotate) {
         mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
 
         if (rotate)
@@ -98,12 +90,11 @@ public class BedUtil implements MixinInterface {
 
         BlockPos neighbour = pos.offset(side);
         EnumFacing opposite = side.getOpposite();
-        Vec3d hitVec = new Vec3d(neighbour).addVector(0.5, 0.5, 0.5).add(new Vec3d(opposite.getDirectionVec()).scale(0.5));
+        Vec3d hitVec = new Vec3d(neighbour).add(0.5, 0.5, 0.5).add(new Vec3d(opposite.getDirectionVec()).scale(0.5));
 
         mc.playerController.processRightClickBlock(mc.player, mc.world, neighbour, opposite, hitVec, EnumHand.MAIN_HAND);
 
         mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
-        nowTop = false;
     }
 
     public static boolean canPlaceBed(BlockPos pos) {

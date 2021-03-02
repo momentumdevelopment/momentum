@@ -12,14 +12,15 @@ import net.minecraftforge.fml.common.eventhandler.Cancelable;
 @Cancelable
 public class PacketEvent extends MomentumEvent {
 
-	Packet packet;
+	Packet<?> packet;
 
-	public PacketEvent(final Packet packet, Stage stage) {
+	public PacketEvent(Packet<?> packet, Stage stage) {
 		super(stage);
 		this.packet = packet;
 	}
 	
-	public Packet getPacket(){
+	public Packet<?> getPacket(){
 		return this.packet;
 	}
+
 }

@@ -1,8 +1,8 @@
 package me.linus.momentum.module.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 import java.util.Comparator;
+import java.util.Objects;
 
 /**
  * @author olliem5 & linustouchtips
@@ -67,7 +68,7 @@ public class AntiCrystal extends Module {
         if (nullCheck()) 
             return;
 
-        EntityEnderCrystal entityEnderCrystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(entity -> entity != null).filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> mc.player.getDistance(entity) <= placeRange.getValue()).filter(entity -> !mc.world.getBlockState(entity.getPosition()).getBlock().equals(Blocks.WOODEN_PRESSURE_PLATE)).min(Comparator.comparing(entity -> mc.player.getDistance(entity))).orElse(null);
+        EntityEnderCrystal entityEnderCrystal = (EntityEnderCrystal) mc.world.loadedEntityList.stream().filter(Objects::nonNull).filter(entity -> entity instanceof EntityEnderCrystal).filter(entity -> mc.player.getDistance(entity) <= placeRange.getValue()).filter(entity -> !mc.world.getBlockState(entity.getPosition()).getBlock().equals(Blocks.WOODEN_PRESSURE_PLATE)).min(Comparator.comparing(entity -> mc.player.getDistance(entity))).orElse(null);
 
         if (entityEnderCrystal != null) {
             handlePressurePlates(false);

@@ -16,7 +16,6 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.client.ColorUtil;
 import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
@@ -46,7 +45,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		super(name, width, height);
 	}
 
-	private static FontRenderer font = mc.fontRenderer;
+	private static final FontRenderer font = mc.fontRenderer;
 
 	@Override
 	public void updateColors() {
@@ -317,7 +316,7 @@ public class DarkTheme extends Theme implements MixinInterface {
 		}
 
 		if (m.isBinding() && key != -1 && key != Keyboard.KEY_ESCAPE && key != Keyboard.KEY_DELETE) {
-			m.getKeybind().setKeyCode((key == Keyboard.KEY_DELETE || key == Keyboard.KEY_BACK) ? Keyboard.KEY_NONE : key);
+			m.getKeybind().setKeyCode(key == Keyboard.KEY_BACK ? Keyboard.KEY_NONE : key);
 			m.setBinding(false);
 		}
 

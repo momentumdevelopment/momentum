@@ -1,7 +1,7 @@
 package me.linus.momentum.module.modules.misc;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.managers.GearManager;
+import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
@@ -44,8 +44,10 @@ public class Notifier extends Module {
         if (nullCheck())
             return;
 
-        if (armor.getValue() && mc.player.getArmorInventoryList() != null && EnemyUtil.getArmor(mc.player) < 15)
-            MessageUtil.sendClientMessage("Your armor durability is getting low!");
+        if (armor.getValue()) {
+            mc.player.getArmorInventoryList();
+            if (EnemyUtil.getArmor(mc.player) < 15) MessageUtil.sendClientMessage("Your armor durability is getting low!");
+        }
 
         mc.world.loadedEntityList.forEach(entity -> {
             if (entity instanceof EntityDonkey && donkeys.getValue())
@@ -58,7 +60,7 @@ public class Notifier extends Module {
                 MessageUtil.sendClientMessage("Found a mule at " + "[" +  Math.round(entity.lastTickPosX) + ", " +  Math.round(entity.lastTickPosY) + ", " +  Math.round(entity.lastTickPosZ) + "]");
         });
 
-        mc.world.playerEntities.stream().forEach(player -> {
+        mc.world.playerEntities.forEach(player -> {
             if (totem.getValue()) {
                 if (!GearManager.totemMap.containsKey(player.getName()))
                     return;
@@ -70,7 +72,7 @@ public class Notifier extends Module {
             }
 
             if (player != mc.player && visualRange.getValue()) {
-                if (Momentum.friendManager.isFriend(player.getName()))
+                if (FriendManager.isFriend(player.getName()))
                     MessageUtil.sendClientMessage("Your friend, " + player.getName() + ", has entered your visual range!");
                 else
                     MessageUtil.sendClientMessage(player.getName() + " has entered your visual range!");

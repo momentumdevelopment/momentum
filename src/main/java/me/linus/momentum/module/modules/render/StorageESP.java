@@ -6,7 +6,6 @@ import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
-import me.linus.momentum.util.client.MathUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
 import net.minecraft.client.renderer.GlStateManager;

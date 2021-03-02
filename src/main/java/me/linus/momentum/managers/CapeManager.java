@@ -24,7 +24,7 @@ public class CapeManager implements MixinInterface {
             String inputLine;
             while ((inputLine = in.readLine()) != null)
                 uuids.add(UUID.fromString(inputLine));
-        } catch(Exception e) {
+        } catch(Exception ignored) {
 
         }
     }

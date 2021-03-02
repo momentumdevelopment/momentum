@@ -50,6 +50,6 @@ public class HoleUtil implements MixinInterface {
     }
 
     public static List<BlockPos> getNearbyHoles(double range) {
-        return BlockUtil.getNearbyBlocks(mc.player, range, false).stream().filter(blockPos -> HoleUtil.isHole(blockPos)).collect(Collectors.toList());
+        return BlockUtil.getNearbyBlocks(mc.player, range, false).stream().filter(HoleUtil::isHole).collect(Collectors.toList());
     }
 }

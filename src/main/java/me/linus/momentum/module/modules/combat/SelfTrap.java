@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -137,7 +138,7 @@ public class SelfTrap extends Module {
         return headTrap;
     }
 
-    List<Vec3d> headTrap = new ArrayList<>(Arrays.asList(
+    List<Vec3d> headTrap = new ArrayList<>(Collections.singletonList(
             new Vec3d(0, 2, 0)
     ));
 

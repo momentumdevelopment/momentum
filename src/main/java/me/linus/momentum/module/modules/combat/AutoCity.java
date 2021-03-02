@@ -65,9 +65,7 @@ public class AutoCity extends Module {
 
         super.onEnable();
 
-        for (BlockPos cityBlock : EnemyUtil.getCityBlocks(currentTarget, false)) {
-            cityBlocks.add(cityBlock);
-        }
+        cityBlocks.addAll(EnemyUtil.getCityBlocks(currentTarget, false));
 
        if (BlockUtil.getBlockResistance(breakTarget) == BlockResistance.Blank && disable.getValue()) {
             MessageUtil.sendClientMessage("Finished citying!");

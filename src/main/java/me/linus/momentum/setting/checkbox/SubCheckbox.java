@@ -13,8 +13,8 @@ import me.linus.momentum.setting.slider.Slider;
 
 public class SubCheckbox extends SubSetting {
 
-	private Setting parent;
-	private String name;
+	private final Setting parent;
+	private final String name;
 	private boolean checked;
 
 	public SubCheckbox(Setting parent, String name, boolean checked) {

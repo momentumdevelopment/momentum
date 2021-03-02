@@ -16,8 +16,8 @@ import java.awt.*;
 
 public class ColorPicker extends SubSetting {
 
-    private String name;
-    private Setting parent;
+    private final String name;
+    private final Setting parent;
     private Color color;
     private boolean opened;
 

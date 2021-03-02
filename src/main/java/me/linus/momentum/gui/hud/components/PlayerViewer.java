@@ -36,7 +36,7 @@ public class PlayerViewer extends HUDComponent {
         GlStateManager.disableTexture2D();
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
 
-        Render2DUtil.drawEntityOnScreen(this.x + 28, this.y + 67, (int) scale.getValue(), this.x + 40, this.y + 13, mc.player);
+        Render2DUtil.drawEntityOnScreen(this.x + 28, this.y + 67, (int) scale.getValue(), this.y + 13, mc.player);
 
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableTexture2D();

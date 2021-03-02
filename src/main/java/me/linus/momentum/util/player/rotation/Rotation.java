@@ -38,7 +38,7 @@ public class Rotation implements MixinInterface {
                 mc.player.rotationPitch = this.pitch;
                 break;
         }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }
@@ -50,7 +50,7 @@ public class Rotation implements MixinInterface {
             mc.player.rotationYawHead = mc.player.rotationYaw;
 
             rotationStay.reset();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }

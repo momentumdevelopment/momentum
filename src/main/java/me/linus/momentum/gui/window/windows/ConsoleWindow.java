@@ -81,7 +81,7 @@ public class ConsoleWindow extends Window {
         try {
             if ((!CommandManager.predictCommands(command[0]).isEmpty() || CommandManager.predictCommands(command[0]).size() != 0) && typedCharacters.length() > 0)
                 predictionString = CommandManager.predictCommands(command[0]).get(0).getUsage() + " " + (command.length < 2 ? CommandManager.predictCommands(command[0]).get(0).getUsageException() : "");
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException ignored) {
 
         }
 

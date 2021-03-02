@@ -66,7 +66,7 @@ public class Tracers extends Module {
         colorManager.registerAbstractColor(EntityItem.class, itemsPicker.getColor());
         colorManager.registerAbstractColor(EntityEnderCrystal.class, crystalPicker.getColor());
 
-        if (mc.getRenderManager() == null || mc.getRenderManager().options == null)
+        if (mc.getRenderManager().options == null)
             return;
 
         mc.world.loadedEntityList.stream().filter(entity -> mc.player != entity).forEach(entity -> {

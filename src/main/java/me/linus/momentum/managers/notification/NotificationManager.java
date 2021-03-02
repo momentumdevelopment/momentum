@@ -18,8 +18,10 @@ public class NotificationManager implements MixinInterface {
         boolean duplicate = false;
 
         for (Notification notification : notifications) {
-            if (notification.getMessage().equals(queueNotification.getMessage()))
+            if (notification.getMessage().equals(queueNotification.getMessage())) {
                 duplicate = true;
+                break;
+            }
         }
 
         if (!duplicate)

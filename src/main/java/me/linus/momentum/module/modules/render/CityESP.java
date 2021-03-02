@@ -52,11 +52,7 @@ public class CityESP extends Module {
         cityBlocks.clear();
         burrowList.clear();
 
-        WorldUtil.getNearbyPlayers(20).forEach(entityPlayer -> {
-            EnemyUtil.getCityBlocks(entityPlayer, false).stream().filter(blockPos -> mc.player.getDistanceSq(blockPos) <= range.getValue()).forEach(blockPos -> {
-                cityBlocks.add(blockPos);
-            });
-        });
+        WorldUtil.getNearbyPlayers(20).forEach(entityPlayer -> EnemyUtil.getCityBlocks(entityPlayer, false).stream().filter(blockPos -> mc.player.getDistanceSq(blockPos) <= range.getValue()).forEach(blockPos -> cityBlocks.add(blockPos)));
 
         if (burrow.getValue()) {
             WorldUtil.getNearbyPlayers(20).forEach(entityPlayer -> {

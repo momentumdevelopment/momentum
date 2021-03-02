@@ -43,7 +43,7 @@ public class Notifications extends HUDComponent {
     public void renderComponent() {
         count = 0;
         if (mc.currentScreen instanceof HUD) {
-            GuiScreen.drawRect(this.x - 33, this.y - 18 - (count * 37), (int) (this.x + FontUtil.getStringWidth("This is an example notification!")) + 2, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, new Color(0, 0, 0, 120).getRGB());
+            GuiScreen.drawRect(this.x - 33, this.y - 18, (int) (this.x + FontUtil.getStringWidth("This is an example notification!")) + 2, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, new Color(0, 0, 0, 120).getRGB());
             GuiScreen.drawRect(this.x - 33, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 3, (int) (this.x + FontUtil.getStringWidth("This is an example notification!")) + 2, (int) (this.y + FontUtil.getFontHeight()) - (count * 37) + 5, Notification.Type.Info.getColor());
             FontUtil.drawString("Info", this.x, this.y - (count * 37) - 14, -1);
             FontUtil.drawString("This is an example notification!", this.x, this.y - (count * 37) - 1, -1);
@@ -62,7 +62,7 @@ public class Notifications extends HUDComponent {
         }
 
         else {
-            NotificationManager.notifications.stream().forEach(notification -> {
+            NotificationManager.notifications.forEach(notification -> {
                 if (this.x > this.x - FontUtil.getStringWidth(notification.getMessage()))
                     AnimationUtil.moveTowards(this.x, this.x - FontUtil.getStringWidth(notification.getMessage()), (float) (0.01f + ClickGUI.speed.getValue() / 30), 0.1f);
 
@@ -94,7 +94,7 @@ public class Notifications extends HUDComponent {
                         break;
                 }
 
-                NotificationManager.notifications.removeIf(continuedNotification -> continuedNotification.isComplete());
+                NotificationManager.notifications.removeIf(Notification::isComplete);
 
                 count++;
             });

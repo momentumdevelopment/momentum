@@ -1,7 +1,7 @@
 package me.linus.momentum.managers;
 
-import me.linus.momentum.Momentum;
 import me.linus.momentum.event.events.packet.PacketReceiveEvent;
+import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.misc.Notifier;
 import me.linus.momentum.util.client.MessageUtil;
@@ -33,7 +33,7 @@ public class GearManager implements MixinInterface {
             totemMap.put(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName(), totemMap.containsKey(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()) ? totemMap.get(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()) + 1 : 1);
 
             if (ModuleManager.getModuleByName("Notifier").isEnabled() && Notifier.totem.getValue()) {
-                if (Momentum.friendManager.isFriend(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()))
+                if (FriendManager.isFriend(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()))
                     MessageUtil.sendClientMessage("Your friend, " + ((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + ", popped " + TextFormatting.RED + totemMap.get(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()) + TextFormatting.WHITE + " totems!");
                 else
                     MessageUtil.sendClientMessage(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName() + " popped " + totemMap.get(((SPacketEntityStatus) event.getPacket()).getEntity(mc.world).getName()) + " totems!");

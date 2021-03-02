@@ -30,4 +30,5 @@ public class Command {
     public String getUsageException() {
         return this.specialUsage;
     }
+
 }

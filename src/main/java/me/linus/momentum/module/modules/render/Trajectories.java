@@ -91,10 +91,7 @@ public class Trajectories extends Module {
         GL11.glHint(3155, 4354);
         GL11.glLineWidth(2);
 
-        if (power > 0.6f)
-            GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255f, colorPicker.getColor().getBlue() / 255f, colorPicker.getColor().getAlpha() / 255f);
-        else
-            GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255f, colorPicker.getColor().getBlue() / 255f, colorPicker.getColor().getAlpha() / 255f);
+        GlStateManager.color(colorPicker.getColor().getRed() / 255f, colorPicker.getColor().getGreen() / 255f, colorPicker.getColor().getBlue() / 255f, colorPicker.getColor().getAlpha() / 255f);
 
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         float size = (float) ((item instanceof ItemBow) ? 0.3 : 0.25);
@@ -112,19 +109,18 @@ public class Trajectories extends Module {
             }
 
             AxisAlignedBB arrowBox = new AxisAlignedBB(posX - size, posY - size, posZ - size, posX + size, posY + size, posZ + size);
-            List entities = this.getEntitiesWithinAABB(arrowBox.offset(motionX, motionY, motionZ).expand(1.0, 1.0, 1.0));
-            for (Object entity : entities) {
-                Entity boundingBox = (Entity) entity;
-                if (boundingBox.canBeCollidedWith() && boundingBox != mc.player) {
+            List<Entity> entities = this.getEntitiesWithinAABB(arrowBox.offset(motionX, motionY, motionZ).expand(1.0, 1.0, 1.0));
+            for (Entity entity : entities) {
+                if (entity.canBeCollidedWith() && entity != mc.player) {
                     float var7 = 0.3f;
-                    AxisAlignedBB var8 = boundingBox.getEntityBoundingBox().expand(var7, var7, var7);
+                    AxisAlignedBB var8 = entity.getEntityBoundingBox().expand(var7, var7, var7);
                     RayTraceResult possibleEntityLanding = var8.calculateIntercept(present, future);
 
                     if (possibleEntityLanding == null)
                         continue;
 
                     hasLanded = true;
-                    landingOnEntity = boundingBox;
+                    landingOnEntity = entity;
                     landingPosition = possibleEntityLanding;
                 }
             }
@@ -187,8 +183,8 @@ public class Trajectories extends Module {
         GL11.glVertex3d(var1, var2, var3);
     }
 
-    List getEntitiesWithinAABB(AxisAlignedBB bb) {
-        ArrayList list = new ArrayList<>();
+    List<Entity> getEntitiesWithinAABB(AxisAlignedBB bb) {
+        ArrayList<Entity> list = new ArrayList<>();
         int chunkMinX = MathHelper.floor((bb.minX - 2.0) / 16.0);
         int chunkMaxX = MathHelper.floor((bb.maxX + 2.0) / 16.0);
         int chunkMinZ = MathHelper.floor((bb.minZ - 2.0) / 16.0);
@@ -197,7 +193,7 @@ public class Trajectories extends Module {
         for (int x = chunkMinX; x <= chunkMaxX; ++x) {
             for (int z = chunkMinZ; z <= chunkMaxZ; ++z) {
                 if (mc.world.getChunkProvider().getLoadedChunk(x, z) != null)
-                    mc.world.getChunkFromChunkCoords(x, z).getEntitiesWithinAABBForEntity(mc.player, bb, list, null);
+                    mc.world.getChunk(x, z).getEntitiesWithinAABBForEntity(mc.player, bb, list, null);
             }
         }
 

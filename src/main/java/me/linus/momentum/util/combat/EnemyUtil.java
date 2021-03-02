@@ -50,10 +50,7 @@ public class EnemyUtil implements MixinInterface {
     }
 
     public static boolean getGearPlay(EntityPlayer target, double stacks) {
-        if (InventoryUtil.getItemCount(target, Items.DIAMOND_HELMET) < 1 && (InventoryUtil.getItemCount(target, Items.EXPERIENCE_BOTTLE) / 64) < stacks)
-            return true;
-
-        return false;
+        return InventoryUtil.getItemCount(target, Items.DIAMOND_HELMET) < 1 && (InventoryUtil.getItemCount(target, Items.EXPERIENCE_BOTTLE) / 64) < stacks;
     }
 
     public static List<BlockPos> getCityBlocks(EntityPlayer player, boolean crystal) {
@@ -104,9 +101,6 @@ public class EnemyUtil implements MixinInterface {
         if (animals && (EntityUtil.isPassive(entity) || EntityUtil.isNeutralMob(entity)))
             return true;
 
-        if (mobs && EntityUtil.isHostileMob(entity))
-            return true;
-
-        return false;
+        return mobs && EntityUtil.isHostileMob(entity);
     }
 }
