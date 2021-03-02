@@ -29,17 +29,41 @@ jobs:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "build.gradle" }}
+            # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: gradle build
+      - run:
+          name: Grant access to ./gradlew.
+          command: |
+            chmod +x gradlew
+
+      - run:
+          name: Show the Gradle version in use with other details.
+          command: |
+           ./gradlew --version
+
+      - run:
+          name: Set up the workspace for ci build
+          command: |
+           ./gradlew setupCiWorkspace
+
+      - run:
+          name: Clean the workspace ready for a fresh build.
+          command: |
+           ./gradlew clean
+
+      - run:
+          name: Attempt to build the mod.
+          command: |
+           ./gradlew build
+
+      - store_artifacts:
+          path: ./build/libs
 
       - save_cache:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
-
-      - store_artifacts:
-          path: build/libs/
 
       - node/install:
           install-yarn: true
