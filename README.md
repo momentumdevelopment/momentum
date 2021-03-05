@@ -1,5 +1,4 @@
 # Momentum
-![logo](https://github.com/linustouchtips/momentum/blob/main/src/main/resources/assets/momentum/textures/momentum-watermarkpng.png)
 
 Momentum is a 1.12.2 minecraft utility mod designed for anarchy servers made with Forge. Momentum was created in early August 2020. You can download the latest release in the releases tab. Compatability has not been tested for any clients other than Phobos 1.5.4, Gamesense, SalHack, Konas, and Future. There will be no updates or commits to the public version.
 
