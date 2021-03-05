@@ -1,10 +1,28 @@
 # Momentum
 
-Momentum is a 1.12.2 minecraft utility mod designed for anarchy servers made with Forge. Momentum was created in early August 2020. You can download the latest release in the releases tab. Compatability has not been tested for any clients other than Phobos 1.5.4, Gamesense, SalHack, Konas, and Future. There will be no updates or commits to the public version.
+Momentum is a 1.12.2 Utility Mod designed for anarchy servers made with Forge. Momentum was created in early August 2020. You can download the latest release in the releases tab. Compatability has not been tested for any clients other than Phobos 1.5.4, Gamesense, SalHack, Konas, and Future. There will be no updates or commits to the public version.
 
 # Information:
 
 The ClickGUI bind is comma (,). You can change this or any other keybind in the Minecraft controls menu. 
+
+# Features
+
+Listed below are some of the features:
+
+* AutoCrystal - The AutoCrystal is the highlight of the client, featuring both a fast break speed and good placements. The rotations & raytracing can be configured to bypass most servers and is generally good for high ping. 
+
+* HoleFill - Works well on most servers, uses strict rotations to work on strict servers. Has a smart mode that fills holes only near players.
+
+* ESP & Nametags - Good rendering and has numerous modes to please the eye. Nametags tracks information on players, so you can keep track of enemies during a fight.
+
+* ElytraFlight - Fast and configurable, works well on a lot of servers. Features numerous modes for multiple servers.
+
+* Speed - Fast and has multiple unique modes. Works well on most servers.
+
+* Console/GUI - Clean and easy to use, good rendering featuring multiple themes and window support. Simple to add friends or change most anything in the client.
+
+And much, much more ...
 
 # Contributors
 
