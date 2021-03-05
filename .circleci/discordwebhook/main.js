@@ -1,3 +1,7 @@
+/**
+ * @author seasnail8169
+ */
+
 const axios = require("axios").default
 
 const branch = process.argv[2]
