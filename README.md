@@ -8,4 +8,4 @@ The ClickGUI bind is comma (,). You can change this or any other keybind in the 
 
 # Contributors
 
-linustouchtips, olliem5, seasnail8169, bon55, Papa Quill
+linustouchtips, olliem5, seasnail8169, bon55, Papa Quill, Reap, 0IMAX
