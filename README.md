@@ -1,5 +1,8 @@
 # Momentum
 
-chad client
+Momentum is a 1.12.2 minecraft utility mod designed for anarchy servers.
 
-hacked by floba :3
+Current or Past Contributors:
+linustouchtips, olliem5, Reap, seasnail8169, Papa Quill
+
+No support provided.
