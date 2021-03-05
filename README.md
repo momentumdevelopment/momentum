@@ -1,6 +1,7 @@
 # Momentum
 
 [![discord](https://img.shields.io/badge/Discord-c6g2tCRN8A-8080c0)](https://discord.gg/c6g2tCRN8A)
+![GitHub All Releases](https://img.shields.io/github/downloads/linustouchtips/momentum/total)
 
 Momentum is a 1.12.2 Utility Mod designed for anarchy servers made with Forge. Momentum was created in early August 2020. You can download the latest release in the releases tab. Compatibility has not been tested for any clients other than Phobos 1.5.4, Gamesense, SalHack, Konas, and Future. There will be no updates or commits to the public version.
 
