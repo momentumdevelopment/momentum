@@ -27,3 +27,7 @@ And much, much more ...
 # Contributors
 
 linustouchtips, olliem5, seasnail8169, bon55, Papa Quill, Reap, 0IMAX
+
+# License
+
+Any use or modifcation of the code in Momentum, recquires the user to disclose the modified or used source code.
