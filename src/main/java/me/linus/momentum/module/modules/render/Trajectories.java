@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author ingros devs & linustouchtips
+ * @author ingros devs, ported in and cleaned up by linustouchtips
  * @since 11/29/2020
  */
 

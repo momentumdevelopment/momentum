@@ -78,10 +78,10 @@ public class ElytraFlight extends Module {
         if (nullCheck())
             return;
         
-        if (takeoff.getValue()) {
-            if (mc.player.onGround && !mc.player.isElytraFlying())
+        if (takeoff.getValue() && !mc.player.isElytraFlying()) {
+            if (mc.player.onGround)
                 mc.player.motionY = 0.405f;
-            else if (!mc.player.isElytraFlying() && takeOffTimer.passed(5, Format.Ticks))
+            else if (takeOffTimer.passed(5, Format.Ticks))
                 mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_FALL_FLYING));
         }
     }

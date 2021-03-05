@@ -12,6 +12,7 @@ import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -28,7 +29,7 @@ public class ESP extends Module {
         super("ESP", Category.RENDER, "Highlights entities");
     }
 
-    public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "CS:GO", "Wireframe");
+    public static Mode mode = new Mode("Mode", "Outline", "Glow", "2D", "CS:GO", "Wireframe", "Shader");
 
     public static Checkbox players = new Checkbox("Players", true);
     public static ColorPicker playerPicker = new ColorPicker(players, "Player Picker", new Color(215, 46, 46));
@@ -83,7 +84,7 @@ public class ESP extends Module {
         colorManager.registerAbstractColorList(EntityUtil.getVehicles(), vehiclePicker.getColor());
         colorManager.registerAbstractColor(EntityEnderCrystal.class, crystalPicker.getColor());
         colorManager.registerColor("XQZ", xqzPicker.getColor());
-        colorManager.registerColor("Friend", new Color(4, 241, 241));
+        colorManager.registerColor("Friend", Color.CYAN);
 
         switch (mode.getValue()) {
             case 0:
@@ -111,6 +112,7 @@ public class ESP extends Module {
 
         try {
             espMode.drawESP();
+            espMode.drawESPOverlay(eventRender);
         } catch (Exception ignored) {
 
         }

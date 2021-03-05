@@ -12,6 +12,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * @author liquidbounce
+ * @since 12/17/2020
+ */
+
 @SideOnly(value=Side.CLIENT)
 public class ImageAWT implements MixinInterface {
     private static final ArrayList<ImageAWT> activeFontRenderers = new ArrayList<>();

@@ -3,7 +3,10 @@ package me.linus.momentum.module.modules.render.esp.modes;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.modules.render.ESP;
 import me.linus.momentum.module.modules.render.esp.ESPMode;
+import net.minecraft.client.shader.Shader;
 import net.minecraft.entity.Entity;
+
+import java.util.Objects;
 
 /**
  * @author linustouchtips

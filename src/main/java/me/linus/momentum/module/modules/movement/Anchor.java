@@ -4,7 +4,7 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.setting.slider.SubSlider;
-import me.linus.momentum.util.world.HoleUtil;
+import me.linus.momentum.util.world.hole.HoleUtil;
 import net.minecraft.util.math.BlockPos;
 
 /**

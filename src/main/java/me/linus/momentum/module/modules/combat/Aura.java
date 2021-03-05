@@ -15,7 +15,7 @@ import me.linus.momentum.util.player.rotation.Rotation;
 import me.linus.momentum.util.player.rotation.Rotation.RotationMode;
 import me.linus.momentum.util.player.rotation.RotationPriority;
 import me.linus.momentum.util.player.rotation.RotationUtil;
-import me.linus.momentum.util.world.HoleUtil;
+import me.linus.momentum.util.world.hole.HoleUtil;
 import me.linus.momentum.util.world.RaytraceUtil;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.world.Timer.Format;

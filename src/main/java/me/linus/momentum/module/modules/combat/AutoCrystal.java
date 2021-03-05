@@ -28,10 +28,10 @@ import me.linus.momentum.util.player.rotation.RotationPriority;
 import me.linus.momentum.util.player.rotation.RotationUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
-import me.linus.momentum.util.world.HoleUtil;
 import me.linus.momentum.util.world.RaytraceUtil;
 import me.linus.momentum.util.world.Timer;
 import me.linus.momentum.util.world.WorldUtil;
+import me.linus.momentum.util.world.hole.HoleUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -85,8 +85,8 @@ public class AutoCrystal extends Module {
     public static SubMode autoSwitch = new SubMode(place, "Switch", "None", "Normal", "Packet");
     public static SubMode rayTrace = new SubMode(place, "Ray-Trace", "Normal", "Quill-Trace", "None");
     public static SubCheckbox packetPlace = new SubCheckbox(place, "Packet Place", true);
-    public static SubCheckbox boundary = new SubCheckbox(place, "Boundaries", true);
-    public static SubCheckbox prediction = new SubCheckbox(place, "Prediction", true);
+    public static SubCheckbox boundary = new SubCheckbox(place, "Boundaries", false);
+    public static SubCheckbox extend = new SubCheckbox(place, "Extension", false);
     public static SubCheckbox multiPlace = new SubCheckbox(place, "MultiPlace", false);
 
     public static Checkbox rotate = new Checkbox("Rotate", true);
@@ -96,7 +96,7 @@ public class AutoCrystal extends Module {
     public static SubCheckbox onlyInViewFrustrum = new SubCheckbox(rotate, "Only In View Frustrum", false);
     public static SubCheckbox rubberband = new SubCheckbox(rotate, "Rubberband Detect", false);
     public static SubCheckbox randomRotate = new SubCheckbox(rotate, "Random Rotations", false);
-    public static SubCheckbox strict = new SubCheckbox(rotate, "NCP Strict", false);
+    public static SubCheckbox strict = new SubCheckbox(rotate, "Strict", false);
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubMode pauseMode = new SubMode(pause, "Pause Mode", "Place", "Break", "Both");
@@ -254,7 +254,7 @@ public class AutoCrystal extends Module {
         List<CrystalPosition> crystalPositions = new ArrayList<>();
         CrystalPosition tempPosition;
 
-        for (BlockPos calculatedPosition : CrystalUtil.crystalBlocks(mc.player, placeRange.getValue(), prediction.getValue(), !multiPlace.getValue(), blockCalc.getValue())) {
+        for (BlockPos calculatedPosition : CrystalUtil.crystalBlocks(mc.player, placeRange.getValue(), extend.getValue(), !multiPlace.getValue(), blockCalc.getValue())) {
             if (handleRaytrace(calculatedPosition))
                 continue;
 

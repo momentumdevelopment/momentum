@@ -15,7 +15,7 @@ import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.world.BlockUtil;
-import me.linus.momentum.util.world.HoleUtil;
+import me.linus.momentum.util.world.hole.HoleUtil;
 import me.linus.momentum.util.world.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -26,7 +26,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 

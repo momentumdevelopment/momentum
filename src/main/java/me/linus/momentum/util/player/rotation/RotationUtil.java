@@ -31,6 +31,7 @@ public class RotationUtil implements MixinInterface {
 
     // override vanilla packet sending here, we replace them with our own custom values
     public static void updateRotationPackets(RotationEvent event) {
+
         if (mc.player.isSprinting() != mc.player.serverSprintState) {
             if (mc.player.isSprinting()) 
                 mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SPRINTING));

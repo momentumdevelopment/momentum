@@ -13,10 +13,11 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 /**
- * @author linustouchtips
+ * @author osiris devs & linustouchtips
  * @since 11/30/2020
  */
 
+// TODO: rewrite this
 public class AutoArmor extends Module {
     public AutoArmor() {
         super("AutoArmor", Category.COMBAT, "Automatically replaces armor");

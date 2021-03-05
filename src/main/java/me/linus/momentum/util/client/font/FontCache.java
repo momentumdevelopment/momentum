@@ -2,6 +2,11 @@ package me.linus.momentum.util.client.font;
 
 import org.lwjgl.opengl.GL11;
 
+/**
+ * @author liquidbounce
+ * @since 12/17/2020
+ */
+
 public class FontCache {
     int displayList;
     long lastUsage;

@@ -8,7 +8,7 @@ import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
 import me.linus.momentum.util.world.BlockUtil;
-import me.linus.momentum.util.world.HoleUtil;
+import me.linus.momentum.util.world.hole.HoleUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;

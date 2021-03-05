@@ -10,6 +10,11 @@ import net.minecraft.util.ResourceLocation;
 import java.awt.*;
 import java.util.Random;
 
+/**
+ * @author liquidbounce
+ * @since 12/17/2020
+ */
+
 public class FontRender extends FontRenderer implements MixinInterface {
     private final ImageAWT defaultFont;
 

@@ -25,18 +25,18 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-group =  project.group
-version =  project.version
-archivesBaseName =  project.archivesBaseName
+group =  'me.linus.momentum'
+version =  '1.2.2-beta'
+archivesBaseName =  'momentum'
 
 compileJava {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 minecraft {
-    version = project.forgeVersion
+    version = '1.12.2-14.23.5.2768'
     runDir = 'run'
-    mappings = project.mcpVersion
+    mappings = 'snapshot_20180814'
     coreMod = 'me.linus.momentum.mixin.MixinLoader'
     makeObfSourceJar = false
 }

@@ -40,6 +40,7 @@ public class CSGO extends ESPMode {
             glPushAttrib(GL_ALL_ATTRIB_BITS);
             glDisable(GL_ALPHA_TEST);
             glDisable(GL_DEPTH_TEST);
+            glEnable(GL_POLYGON_SMOOTH);
 
             if (ESP.xqz.getValue())
                 ESPUtil.setColor(FriendManager.isFriend(entitylivingbaseIn.getName()) ? ESP.colorManager.colorRegistry.get("Friend") : ESP.colorManager.colorRegistry.get("XQZ"));
