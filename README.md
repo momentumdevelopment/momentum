@@ -3,7 +3,7 @@
 [![discord](https://img.shields.io/badge/Discord-c6g2tCRN8A-8080c0)](https://discord.gg/c6g2tCRN8A)
 ![GitHub All Releases](https://img.shields.io/github/downloads/linustouchtips/momentum/total)
 
-Momentum is a 1.12.2 Utility Mod designed for anarchy servers made with Forge. Momentum was created in early August 2020. You can download the latest release in the releases tab. Compatibility has not been tested for any clients other than Phobos 1.5.4, Gamesense, SalHack, Konas, and Future. There will be no updates or commits to the public version.
+Momentum is a 1.12.2 Forge Utility Mod, designed for anarchy servers (Use on other servers where clients are not allowed is prohibited). You can download the latest release in the releases tab. Compatibility has not been tested for any clients other than Phobos 1.5.4, Gamesense, SalHack, Konas, and Future. There will be no updates or commits to the public version. **No support will be provided, issues and pull requests will be not be reviewed.**
 
 # Information:
 
@@ -17,13 +17,13 @@ Listed below are some of the features:
 
 * HoleFill - Works well on most servers, uses strict rotations to work on strict servers. Has a smart mode that fills holes only near players.
 
-* ESP & Nametags - Good rendering and has numerous modes to please the eye. Nametags tracks information on players, so you can keep track of enemies during a fight.
+* ESP & Nametags - Good rendering and has numerous modes to please the eye. Nametags tracks gear information on players, so you can keep track of enemies' gear during a fight.
 
 * ElytraFlight - Fast and configurable, works well on a lot of servers. Features numerous modes for multiple servers.
 
 * Speed - Fast and has multiple unique modes. Works well on most servers.
 
-* Console/GUI - Clean and easy to use, good rendering featuring multiple themes and window support. Simple to add friends or change most anything in the client.
+* Console/GUI - Clean and easy to use, good rendering, featuring multiple themes and window support. Simple to add friends or change anything in the client.
 
 And much, much more ...
 
@@ -31,7 +31,11 @@ And much, much more ...
 
 linustouchtips, olliem5, seasnail8169, bon55, Papa Quill, Reap, 0IMAX
 
+# Credits
+
+All files should have an author credit attached to them, refer to specific files for credits.
+
 # License
 
 Any use or modification of the code in Momentum, requires the user to disclose the modified or used source code.  
-:warning: **DISCLAIMER: This license applies only to this release and no future versions (unless otherwise specified).**
+**DISCLAIMER: This license applies only to this release and no future versions (unless otherwise specified).**
