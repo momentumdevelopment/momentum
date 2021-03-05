@@ -1,10 +1,10 @@
 # Momentum
 
-Momentum is a 1.12.2 Utility Mod designed for anarchy servers made with Forge. Momentum was created in early August 2020. You can download the latest release in the releases tab. Compatability has not been tested for any clients other than Phobos 1.5.4, Gamesense, SalHack, Konas, and Future. There will be no updates or commits to the public version.
+Momentum is a 1.12.2 Utility Mod designed for anarchy servers made with Forge. Momentum was created in early August 2020. You can download the latest release in the releases tab. Compatibility has not been tested for any clients other than Phobos 1.5.4, Gamesense, SalHack, Konas, and Future. There will be no updates or commits to the public version.
 
 # Information:
 
-The ClickGUI bind is comma (,). You can change this or any other keybind in the Minecraft controls menu. 
+The Click GUI bind is comma `,`. You can change this or any other keybind in the Minecraft controls menu. 
 
 # Features
 
@@ -30,4 +30,5 @@ linustouchtips, olliem5, seasnail8169, bon55, Papa Quill, Reap, 0IMAX
 
 # License
 
-Any use or modifcation of the code in Momentum, recquires the user to disclose the modified or used source code.
+Any use or modification of the code in Momentum, requires the user to disclose the modified or used source code.  
+:warning: **DISCLAIMER: This license applies only to this release and no future versions (unless otherwise specified).**
