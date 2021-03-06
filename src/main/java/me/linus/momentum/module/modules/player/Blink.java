@@ -1,10 +1,13 @@
 package me.linus.momentum.module.modules.player;
 
 import me.linus.momentum.event.events.packet.PacketSendEvent;
+import me.linus.momentum.managers.notification.Notification.Type;
+import me.linus.momentum.managers.notification.Notification;
+import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
-import me.linus.momentum.util.client.MessageUtil;
 import me.linus.momentum.util.world.WorldUtil;
+import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -39,7 +42,7 @@ public class Blink extends Module {
         if (playerModel.getValue())
             WorldUtil.createFakePlayer(null, true, true, true, true, 6640);
 
-        MessageUtil.sendClientMessage("Cancelling all player packets!");
+        NotificationManager.addNotification(new Notification("Cancelling all player packets!", Type.Info));
     }
 
     @Override
@@ -49,7 +52,7 @@ public class Blink extends Module {
 
         mc.world.removeEntityFromWorld(69420);
 
-        for (Packet<? extends net.minecraft.network.INetHandler> packet : packets) {
+        for (Packet<? extends INetHandler> packet : packets) {
             mc.player.connection.sendPacket(packet);
         }
 
