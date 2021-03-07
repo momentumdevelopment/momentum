@@ -1,5 +1,3 @@
-# FLOBAA IS VERY PRETTY
-
 # Momentum
 
 [![discord](https://img.shields.io/badge/Discord-c6g2tCRN8A-8080c0)](https://discord.gg/c6g2tCRN8A)
