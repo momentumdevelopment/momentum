@@ -7,7 +7,7 @@ Momentum is a 1.12.2 Forge Utility Mod, designed for anarchy servers (Use on oth
 
 # Information:
 
-The Click GUI bind is comma `,`. You can change this or any other keybind in the Minecraft controls menu. 
+The Click GUI bind is comma `,`. You can change this or any other keybind in the controls menu. 
 
 # Features
 
