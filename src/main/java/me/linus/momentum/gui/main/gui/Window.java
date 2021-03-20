@@ -40,8 +40,8 @@ public class Window implements MixinInterface {
 	public List<Module> modules;
 	public static List<Window> windows = new ArrayList<>();
 
-	public Window(String name, int x, int y, Category category) {
-		this.name = name;
+	public Window(Category category, int x, int y) {
+		this.name = category.getName();
 		this.x = x;
 		this.y = y;
 		this.category = category;
@@ -49,13 +49,13 @@ public class Window implements MixinInterface {
 	}
 
 	public static void initGui() {
-		windows.add(new Window(Category.COMBAT.getName(), 18, 22, Category.COMBAT));
-		windows.add(new Window(Category.PLAYER.getName(), 128, 22, Category.PLAYER));
-		windows.add(new Window(Category.MISC.getName(), 238, 22, Category.MISC));
-		windows.add(new Window(Category.MOVEMENT.getName(), 348, 22, Category.MOVEMENT));
-		windows.add(new Window(Category.RENDER.getName(), 458, 22, Category.RENDER));
-		windows.add(new Window(Category.CLIENT.getName(), 568, 22, Category.CLIENT));
-		windows.add(new Window(Category.BOT.getName(), 568, 258, Category.BOT));
+		windows.add(new Window(Category.COMBAT, 18, 22));
+		windows.add(new Window(Category.PLAYER, 128, 22));
+		windows.add(new Window(Category.MISC, 238, 22));
+		windows.add(new Window(Category.MOVEMENT, 348, 22));
+		windows.add(new Window(Category.RENDER, 458, 22));
+		windows.add(new Window(Category.CLIENT, 568, 22));
+		windows.add(new Window(Category.BOT, 568, 258));
 	}
 
 	public void drawGui(int mouseX, int mouseY, float partialTicks) {
