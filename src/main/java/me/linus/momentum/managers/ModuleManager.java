@@ -96,6 +96,7 @@ public class ModuleManager implements MixinInterface {
 			new MiddleClickFriend(),
 			new Notifier(),
 			new Portal(),
+                        new Pay(),
 			new SkinBlinker(),
 			new StashFinder(),
 			new Timer(),
