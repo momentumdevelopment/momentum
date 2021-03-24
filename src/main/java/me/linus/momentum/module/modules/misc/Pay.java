@@ -10,7 +10,7 @@ public class Pay extends Module {
     }
         @Override
         public void toggle(){
-                mc.player.sendChatMessage("I bought momentum thanks to Linustouchtips!");
+                mc.player.sendChatMessage(">I bought momentum thanks to Linustouchtips!");
         }
 
 
