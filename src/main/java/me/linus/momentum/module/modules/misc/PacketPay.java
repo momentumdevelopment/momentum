@@ -1,6 +1,5 @@
 package me.linus.momentum.module.modules.misc;
 
-
 import me.linus.momentum.module.Module;
 
 /**
