@@ -3,9 +3,12 @@ package me.linus.momentum.module.modules.misc;
 
 import me.linus.momentum.module.Module;
 
+/**
+ * @author CrawLeyYou
+ */
 
-public class Pay extends Module {
-    public Pay() {
+public class PacketPay extends Module {
+    public PacketPay() {
         super("PacketPay", Category.MISC, "awsom module");
     }
         @Override
