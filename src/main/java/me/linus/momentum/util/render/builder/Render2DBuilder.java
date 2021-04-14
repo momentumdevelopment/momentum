@@ -12,8 +12,24 @@ import org.lwjgl.opengl.GL11;
 
 public class Render2DBuilder implements MixinInterface {
 
-    public static void prepareScissor(int x, int y, int x2, int y2) {
-        GL11.glScissor(x * new ScaledResolution(mc).getScaleFactor(), (new ScaledResolution(mc).getScaledHeight() - y2) * new ScaledResolution(mc).getScaleFactor(), (x2 - x) * new ScaledResolution(mc).getScaleFactor(), (y2 - y) * new ScaledResolution(mc).getScaleFactor());
+    public static void prepareScissor(int x, double y, int width, double height) {
+        GL11.glPushAttrib(GL11.GL_SCISSOR_BIT);
+        GL11.glScissor(x * new ScaledResolution(mc).getScaleFactor(), (int) (new ScaledResolution(mc).getScaledHeight() - height) * new ScaledResolution(mc).getScaleFactor(), (width - x) * new ScaledResolution(mc).getScaleFactor(), (int) (height - y) * new ScaledResolution(mc).getScaleFactor());
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+    }
+
+    public static void restoreScissor() {
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        GL11.glPopAttrib();
+    }
+
+    public static void prepareScale(float factorX, float factorY) {
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(factorX, factorY, 1);
+    }
+
+    public static void restoreScale() {
+        GlStateManager.popMatrix();
     }
 
     public static void scaleProportion(int x, int y, float factorX, float factorY) {

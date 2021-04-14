@@ -68,6 +68,9 @@ public class Step extends Module {
         if ((mc.player.isInWater() || mc.player.isInLava()) && waterPause.getValue())
             return;
 
+        if (!mc.player.onGround)
+            return;
+
         if (useTimer.getValue())
             mc.timer.tickLength = (float) (50.0f / timerTicks.getValue());
 

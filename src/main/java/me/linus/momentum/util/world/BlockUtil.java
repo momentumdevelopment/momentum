@@ -69,22 +69,6 @@ public class BlockUtil implements MixinInterface {
         }
     }
 
-    public static boolean isCollidedBlocks(BlockPos pos) {
-        return getBlockResistance(new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ)) == BlockResistance.Resistant || isInterceptedByOther(pos) || InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) == -1;
-    }
-
-    public static boolean isInterceptedByOther(BlockPos blockPos) {
-        for (Entity entity : mc.world.loadedEntityList) {
-            if (entity.equals(mc.player))
-                continue;
-
-            if (new AxisAlignedBB(blockPos).intersects(entity.getEntityBoundingBox()))
-                return true;
-        }
-
-        return false;
-    }
-
     public static List<BlockPos> getNearbyBlocks(EntityPlayer player, double blockRange, boolean motion) {
         List<BlockPos> nearbyBlocks = new ArrayList<>();
         int range = (int) MathUtil.roundDouble(blockRange, 0);
@@ -100,6 +84,7 @@ public class BlockUtil implements MixinInterface {
         return nearbyBlocks;
     }
 
+    @SuppressWarnings("deprecation")
     public static BlockResistance getBlockResistance(BlockPos block) {
         if (mc.world.isAirBlock(block))
             return BlockResistance.Blank;

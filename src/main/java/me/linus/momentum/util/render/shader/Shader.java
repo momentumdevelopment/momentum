@@ -13,18 +13,19 @@ public abstract class Shader {
 
     private Map<String, Integer> uniformsMap;
 
-    public Shader(final String fragmentShader) {
+    @SuppressWarnings("deprecation")
+    public Shader(String fragmentShader) {
         int vertexShaderID, fragmentShaderID;
 
         try {
-            final InputStream vertexStream = getClass().getResourceAsStream("/assets/momentum/shader/vertex.vert");
+            InputStream vertexStream = getClass().getResourceAsStream("/assets/momentum/shader/vertex.vert");
             vertexShaderID = createShader(IOUtils.toString(vertexStream), ARBVertexShader.GL_VERTEX_SHADER_ARB);
             IOUtils.closeQuietly(vertexStream);
 
-            final InputStream fragmentStream = getClass().getResourceAsStream("/assets/momentum/shader/fragment/" + fragmentShader);
+            InputStream fragmentStream = getClass().getResourceAsStream("/assets/momentum/shader/fragment/" + fragmentShader);
             fragmentShaderID = createShader(IOUtils.toString(fragmentStream), ARBFragmentShader.GL_FRAGMENT_SHADER_ARB);
             IOUtils.closeQuietly(fragmentStream);
-        } catch (final Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return;
         }
@@ -81,7 +82,7 @@ public abstract class Shader {
                 throw new RuntimeException("Error creating shader: " + getLogInfo(shader));
 
             return shader;
-        } catch (final Exception e) {
+        } catch (Exception e) {
             ARBShaderObjects.glDeleteObjectARB(shader);
             throw e;
         }
@@ -91,15 +92,15 @@ public abstract class Shader {
         return ARBShaderObjects.glGetInfoLogARB(i, ARBShaderObjects.glGetObjectParameteriARB(i, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
     }
 
-    public void setUniform(final String uniformName, final int location) {
+    public void setUniform(String uniformName, int location) {
         uniformsMap.put(uniformName, location);
     }
 
-    public void setupUniform(final String uniformName) {
+    public void setupUniform(String uniformName) {
         setUniform(uniformName, GL20.glGetUniformLocation(program, uniformName));
     }
 
-    public int getUniform(final String uniformName) {
+    public int getUniform(String uniformName) {
         return uniformsMap.get(uniformName);
     }
 }

@@ -1,8 +1,8 @@
 package me.linus.momentum.command.commands;
 
 import me.linus.momentum.command.Command;
-import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.managers.HUDComponentManager;
+import me.linus.momentum.gui.hud.element.HUDElement;
+import me.linus.momentum.managers.HUDElementManager;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.util.client.MessageUtil;
@@ -21,23 +21,17 @@ public class Panic extends Command {
     @Override
     public void onCommand(String[] args) {
         for (Module m: ModuleManager.getModules()) {
-            if (m.isEnabled()) {
+            if (m.isEnabled())
                 m.disable();
-                MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "All modules toggled off!");
-            }
-
-            else
-                MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "No modules to disable!");
         }
 
-        for (HUDComponent hud : HUDComponentManager.getComponents()) {
-            if (hud.isEnabled()) {
-                hud.toggle();
-                MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "All HUD elements toggled off!");
-            }
+        MessageUtil.addOutput("All modules toggled off!");
 
-            else
-                MessageUtil.addOutput(TextFormatting.LIGHT_PURPLE + "No HUD elements to disable!");
+        for (HUDElement hud : HUDElementManager.getComponents()) {
+            if (hud.isDrawn())
+                hud.toggleElement();
         }
+
+        MessageUtil.addOutput("All HUD elements toggled off!");
     }
 }

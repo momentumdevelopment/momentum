@@ -1,10 +1,10 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
+import me.linus.momentum.util.client.color.ThemeColor;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -21,10 +21,10 @@ public class SkyColor extends Module {
     }
 
     public static Checkbox color = new Checkbox("Sky", true);
-    public static ColorPicker skyPicker = new ColorPicker(color, "Sky Picker", ThemeColor.RAW);
+    public static ColorPicker skyPicker = new ColorPicker(color, "Sky Picker", new Color(250, 0, 250, 50));
 
     public static Checkbox fog = new Checkbox("Fog", true);
-    public static ColorPicker fogPicker = new ColorPicker(fog, "Fog Picker", ThemeColor.RAW);
+    public static ColorPicker fogPicker = new ColorPicker(fog, "Fog Picker", new Color(250, 0, 250, 50));
     public static SubCheckbox fogCancel = new SubCheckbox(fog, "No Fog", true);
 
     @Override

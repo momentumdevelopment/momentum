@@ -95,16 +95,16 @@ public class SpeedMine extends Module {
         for (BlockPos renderBlock : renderBlocks) {
             switch (renderMode.getValue()) {
                 case 0:
-                    RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderMode.Claw);
+                    RenderUtil.drawBoxBlockPos(renderBlock, 0, 0, 0, colorPicker.getColor(), RenderMode.Claw);
                     break;
                 case 1:
-                    RenderUtil.drawBoxBlockPos(renderBlock, 0, new Color(colorPicker.getRed(), colorPicker.getGreen(), colorPicker.getBlue(), 144), RenderMode.Outline);
+                    RenderUtil.drawBoxBlockPos(renderBlock, 0, 0, 0, new Color(colorPicker.getRed(), colorPicker.getGreen(), colorPicker.getBlue(), 144), RenderMode.Outline);
                     break;
                 case 2:
-                    RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderMode.Fill);
+                    RenderUtil.drawBoxBlockPos(renderBlock, 0, 0, 0, colorPicker.getColor(), RenderMode.Fill);
                     break;
                 case 3:
-                    RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderMode.Both);
+                    RenderUtil.drawBoxBlockPos(renderBlock, 0, 0, 0, colorPicker.getColor(), RenderMode.Both);
                     break;
             }
         }

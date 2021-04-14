@@ -1,6 +1,6 @@
 package me.linus.momentum.module.modules.movement;
 
-import me.linus.momentum.gui.main.gui.GUI;
+import me.linus.momentum.gui.main.GUIScreen;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.checkbox.SubCheckbox;
@@ -52,7 +52,7 @@ public class NoSlow extends Module {
         }
 
         if (mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat) && inventoryMove.getValue()) {
-            if (mc.currentScreen instanceof GUI && !guiMove.getValue())
+            if (mc.currentScreen instanceof GUIScreen && !guiMove.getValue())
                 return;
 
             if (Keyboard.isKeyDown(200))

@@ -6,6 +6,7 @@ import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.NotificationManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
+import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
@@ -41,6 +42,7 @@ public class Surround extends Module {
     public static Mode disable = new Mode("Disable", "Off-Ground", "Completion", "Never");
     public static Mode centerPlayer = new Mode("Center", "Teleport", "NCP", "None");
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
+    public static Mode autoSwitch = new Mode("Switch", "SwitchBack", "Normal", "Packet", "None");
 
     public static Checkbox timeout = new Checkbox("Timeout", true);
     public static SubSlider timeoutTick = new SubSlider(timeout, "Timeout Ticks", 1.0D, 15.0D, 20.0D, 1);
@@ -49,12 +51,13 @@ public class Surround extends Module {
     public static Checkbox packet = new Checkbox("Packet", false);
     public static Checkbox swingArm = new Checkbox("Swing Arm", true);
     public static Checkbox antiGlitch = new Checkbox("Anti-Glitch", false);
+
     public static Checkbox rotate = new Checkbox("Rotate", false);
-    public static Checkbox strict = new Checkbox("NCP Strict", true);
+    public static SubCheckbox strict = new SubCheckbox(rotate, "Strict", true);
+
     public static Checkbox onlyObsidian = new Checkbox("Only Obsidian", true);
     public static Checkbox antiChainPop = new Checkbox("Anti-ChainPop", true);
     public static Checkbox chorusSave = new Checkbox("Chorus Save", false);
-    public static Checkbox switchBack = new Checkbox("Switch Back", true);
 
     public static Checkbox renderSurround = new Checkbox("Render", true);
     public static ColorPicker colorPicker = new ColorPicker(renderSurround, "Color Picker", new Color(0, 255, 0, 55));
@@ -70,7 +73,6 @@ public class Surround extends Module {
         addSetting(swingArm);
         addSetting(antiGlitch);
         addSetting(rotate);
-        addSetting(strict);
         addSetting(centerPlayer);
         addSetting(onlyObsidian);
         addSetting(antiChainPop);
@@ -144,31 +146,39 @@ public class Surround extends Module {
     }
 
     public void surroundPlayer() {
+        int previousSlot = mc.player.inventory.currentItem;
+
+        switch (autoSwitch.getValue()) {
+            case 0:
+            case 1:
+                InventoryUtil.switchToSlot(onlyObsidian.getValue() ? InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) : InventoryUtil.getAnyBlockInHotbar());
+                break;
+            case 2:
+                InventoryUtil.switchToSlotGhost(onlyObsidian.getValue() ? InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) : InventoryUtil.getAnyBlockInHotbar());
+                break;
+        }
+
         for (Vec3d placePositions : getSurround()) {
             if (BlockUtil.getBlockResistance(new BlockPos(placePositions.add(mc.player.getPositionVector()))).equals(BlockUtil.BlockResistance.Blank)) {
-                int oldInventorySlot = mc.player.inventory.currentItem;
-
-                InventoryUtil.switchToSlot(onlyObsidian.getValue() ? InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN) : InventoryUtil.getAnyBlockInHotbar());
-
                 if (obsidianSlot != -1)
                     BlockUtil.placeBlock(new BlockPos(placePositions.add(mc.player.getPositionVector())), rotate.getValue(), strict.getValue(), raytrace.getValue(), packet.getValue(), swingArm.getValue(), antiGlitch.getValue());
 
                 renderBlock = new BlockPos(placePositions.add(mc.player.getPositionVector()));
                 blocksPlaced++;
 
-                if (switchBack.getValue())
-                    InventoryUtil.switchToSlot(oldInventorySlot);
-
                 if (blocksPlaced == blocksPerTick.getValue() && disable.getValue() != 2)
                     return;
             }
         }
+
+        if (autoSwitch.getValue() == 0)
+            InventoryUtil.switchToSlot(previousSlot);
     }
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (renderSurround.getValue() && renderBlock != null)
-            RenderUtil.drawBoxBlockPos(renderBlock, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
+            RenderUtil.drawBoxBlockPos(renderBlock, 0, 0, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
     }
 
     List<Vec3d> getSurround() {

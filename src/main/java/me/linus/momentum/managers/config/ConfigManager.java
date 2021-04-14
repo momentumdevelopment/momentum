@@ -1,8 +1,8 @@
 package me.linus.momentum.managers.config;
 
-import me.linus.momentum.gui.hud.HUDComponent;
-import me.linus.momentum.gui.main.gui.Window;
-import me.linus.momentum.managers.HUDComponentManager;
+import me.linus.momentum.gui.click.Frame;
+import me.linus.momentum.gui.hud.element.HUDElement;
+import me.linus.momentum.managers.HUDElementManager;
 import me.linus.momentum.managers.ModuleManager;
 import me.linus.momentum.managers.social.friend.Friend;
 import me.linus.momentum.managers.social.friend.FriendManager;
@@ -46,7 +46,7 @@ public class ConfigManager {
         saveFriends();
         saveGUI();
         saveHUDPositions();
-        saveHUDComponents();
+        saveHUDElements();
         saveHUDSettings();
         saveBinds();
         saveDrawn();
@@ -61,7 +61,7 @@ public class ConfigManager {
         loadFriends();
         loadGUI();
         loadHUDPositions();
-        loadHUDComponents();
+        loadHUDElements();
         loadHUDSettings();
         loadBinds();
         loadDrawn();
@@ -456,7 +456,7 @@ public class ConfigManager {
         try {
             File guiPos = new File(config.getAbsolutePath(), "ClickGUI.txt");
             BufferedWriter bw = new BufferedWriter(new FileWriter(guiPos));
-            for (Window w : Window.windows) {
+            for (Frame w : Frame.frames) {
                 bw.write("x:" + w.x + ":" + "y:" + w.y);
                 bw.write("\r\n");
             }
@@ -475,7 +475,7 @@ public class ConfigManager {
             int lineIndex = 0;
             for (String line : linezz) {
                 String[] regex = line.split(":");
-                Window w = Window.windows.get(lineIndex);
+                Frame w = Frame.frames.get(lineIndex);
                 w.x = Integer.parseInt(regex[1]);
                 w.y = Integer.parseInt(regex[3]);
                 lineIndex++;
@@ -491,8 +491,8 @@ public class ConfigManager {
         try {
             File guiPos = new File(config.getAbsolutePath(), "HUDPositions.txt");
             BufferedWriter bw = new BufferedWriter(new FileWriter(guiPos));
-            for (HUDComponent component : HUDComponentManager.getComponents()) {
-                bw.write( component.getX() + ":" + component.getY());
+            for (HUDElement component : HUDElementManager.getComponents()) {
+                bw.write( component.x + ":" + component.y);
                 bw.write("\r\n");
             }
 
@@ -510,10 +510,10 @@ public class ConfigManager {
             int lineIndex = 0;
             for (String line : linezz) {
                 String[] regex = line.split(":");
-                HUDComponent component = HUDComponentManager.getComponents().get(lineIndex);
+                HUDElement component = HUDElementManager.getComponents().get(lineIndex);
 
-                component.setX(Integer.parseInt(regex[0]));
-                component.setY(Integer.parseInt(regex[1]));
+                component.x = (Integer.parseInt(regex[0]));
+                component.y = (Integer.parseInt(regex[1]));
 
                 lineIndex++;
             }
@@ -524,13 +524,13 @@ public class ConfigManager {
         }
     }
 
-    public static void saveHUDComponents() {
+    public static void saveHUDElements() {
         try {
-            File modules = new File(config.getAbsolutePath(), "HUDComponents.txt");
+            File modules = new File(config.getAbsolutePath(), "HUDElements.txt");
             BufferedWriter bw = new BufferedWriter(new FileWriter(modules));
-            for (HUDComponent component : HUDComponentManager.getComponents()) {
+            for (HUDElement component : HUDElementManager.getComponents()) {
                 bw.write(component.getName() + ":");
-                if (component.isEnabled()) {
+                if (component.isDrawn()) {
                     bw.write("true");
                 } else {
                     bw.write("false");
@@ -543,17 +543,17 @@ public class ConfigManager {
         }
     }
 
-    public static void loadHUDComponents() {
+    public static void loadHUDElements() {
         try {
-            File modules = new File(config.getAbsolutePath(), "HUDComponents.txt");
+            File modules = new File(config.getAbsolutePath(), "HUDElements.txt");
             BufferedReader br = new BufferedReader(new FileReader(modules));
             List<String> linezz = Files.readAllLines(modules.toPath());
             int lineIndex = 0;
             for (String line : linezz) {
                 String[] regex = line.split(":");
-                HUDComponent component = HUDComponentManager.getComponents().get(lineIndex);
+                HUDElement component = HUDElementManager.getComponents().get(lineIndex);
                 if (regex[0].startsWith(component.getName())) {
-                    component.setEnabled(Boolean.parseBoolean(regex[1]));
+                    component.toggleElement();
 
                 } lineIndex++;
             } br.close();
@@ -566,9 +566,9 @@ public class ConfigManager {
         try {
             File settings = new File(config.getAbsolutePath(), "HUDSettings.txt");
             BufferedWriter bw = new BufferedWriter(new FileWriter(settings));
-            for (HUDComponent component : HUDComponentManager.getComponents()) {
+            for (HUDElement component : HUDElementManager.getComponents()) {
                 bw.write(component.getName() + ":");
-                for (Setting s : component.getSettings()) {
+                for (Setting s : component.settingList) {
                     if (s instanceof Checkbox) {
                         bw.write(((Checkbox) s).getValue() + ":");
                     }
@@ -597,10 +597,10 @@ public class ConfigManager {
             int lineIndex = 0;
             for (String line : linezz) {
                 String[] regex = line.split(":");
-                HUDComponent component = HUDComponentManager.getComponents().get(lineIndex);
+                HUDElement component = HUDElementManager.getComponents().get(lineIndex);
                 if (regex[0].startsWith(component.getName())) {
                     int regexCount = 0;
-                    for (Setting s : component.getSettings()) {
+                    for (Setting s : component.settingList) {
                         if (s instanceof Checkbox) {
                             ((Checkbox) s).setChecked(Boolean.parseBoolean(regex[regexCount + 1]));
                             regexCount++;

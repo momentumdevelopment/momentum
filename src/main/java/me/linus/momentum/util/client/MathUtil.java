@@ -24,6 +24,11 @@ public class MathUtil {
 		return Math.round(value * scale) / scale;
 	}
 
+	public static int roundUp(double value) {
+		double difference = 1 - value;
+		return (int) (value + difference);
+	}
+
 	public static float clamp(float val, float min, float max) {
 		if (val <= min)
 			val = min;
@@ -32,23 +37,5 @@ public class MathUtil {
 			val = max;
 
 		return val;
-	}
-
-	public static float[] calcAngle(Vec3d from, Vec3d to) {
-		double difX = to.x - from.x;
-		double difY = (to.y - from.y) * -1.0;
-		double difZ = to.z - from.z;
-		double dist = MathHelper.sqrt(difX * difX + difZ * difZ);
-		return new float[] {
-				(float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0), (float)MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist)))
-		};
-	}
-
-	public static double degToRad(double deg) {
-		return deg * (float) (Math.PI / 180.0f);
-	}
-
-	public static float calculateAngle(float serverValue, float currentValue) {
-		return ((currentValue - serverValue)) / 4;
 	}
 }

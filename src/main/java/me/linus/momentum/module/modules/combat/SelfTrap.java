@@ -1,7 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.managers.notification.Notification;
 import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.NotificationManager;
@@ -11,6 +10,7 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.client.color.ThemeColor;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
@@ -42,18 +42,19 @@ public class SelfTrap extends Module {
     public static Mode mode = new Mode("Mode", "Head", "Anti-FacePlace", "Full");
     public static Slider delay = new Slider("Delay", 0.0D, 3.0D, 6.0D, 0);
     public static Slider blocksPerTick = new Slider("Blocks Per Tick", 0.0D, 1.0D, 6.0D, 0);
+    public static Mode autoSwitch = new Mode("Switch", "SwitchBack", "Normal", "Packet", "None");
     public static Checkbox raytrace = new Checkbox("Raytrace", true);
     public static Checkbox packet = new Checkbox("Packet", false);
     public static Checkbox swingArm = new Checkbox("Swing Arm", true);
     public static Checkbox antiGlitch = new Checkbox("Anti-Glitch", false);
 
     public static Checkbox rotate = new Checkbox("Rotate", false);
-    public static SubCheckbox strict = new SubCheckbox(rotate, "NCP Strict", false);
+    public static SubCheckbox strict = new SubCheckbox(rotate, "Strict", false);
 
     public static Checkbox disable = new Checkbox("Disables", false);
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", ThemeColor.RAW);
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker",  new Color(250, 0, 250, 50));
 
     @Override
     public void setup() {
@@ -100,6 +101,17 @@ public class SelfTrap extends Module {
             this.disable();
 
         int blocksPlaced = 0;
+        int previousSlot = mc.player.inventory.currentItem;
+
+        switch (autoSwitch.getValue()) {
+            case 0:
+            case 1:
+                InventoryUtil.switchToSlot(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
+                break;
+            case 2:
+                InventoryUtil.switchToSlotGhost(InventoryUtil.getBlockInHotbar(Blocks.OBSIDIAN));
+                break;
+        }
 
         for (Vec3d autoTrapBox : getTrap()) {
             if (BlockUtil.getBlockResistance(new BlockPos(autoTrapBox.add(mc.player.getPositionVector()))).equals(BlockResistance.Blank)) {
@@ -116,6 +128,9 @@ public class SelfTrap extends Module {
             }
         }
 
+        if (autoSwitch.getValue() == 0)
+            InventoryUtil.switchToSlot(previousSlot);
+
         if (blocksPlaced == 0)
             hasPlaced = true;
     }
@@ -123,7 +138,7 @@ public class SelfTrap extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (placeBlock != null)
-            RenderUtil.drawBoxBlockPos(placeBlock, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
+            RenderUtil.drawBoxBlockPos(placeBlock, 0, 0, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
     }
 
     public List<Vec3d> getTrap() {

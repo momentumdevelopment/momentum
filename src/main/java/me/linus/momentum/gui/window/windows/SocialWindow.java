@@ -1,9 +1,9 @@
 package me.linus.momentum.gui.window.windows;
 
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.gui.window.Window;
 import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.color.ThemeColor;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
 import me.linus.momentum.util.render.Render2DUtil;
@@ -22,6 +22,11 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+
+/**
+ * @author linustouchtips
+ * @since 03/11/21
+ */
 
 public class SocialWindow extends Window {
     public SocialWindow() {
@@ -59,7 +64,6 @@ public class SocialWindow extends Window {
             }
 
             Render2DBuilder.prepareScissor(x, y + 14, x + this.width - 9, y + 29 + this.height);
-            GL11.glEnable(GL11.GL_SCISSOR_TEST);
             Render2DBuilder.translate(0, (int) MathUtil.clamp(this.scrollbar, -10000, 0));
 
             Render2DUtil.drawRect(x + 1, y + 14 + 1 + (16 * playerOffset), x + this.width - 5, y + 14 + 18 + (16 * playerOffset), 1, new Color(18, 18, 18, 90).getRGB(), new Color(0, 0, 0, 90).getRGB(), false, Render2DBuilder.Render2DMode.Both);
@@ -80,7 +84,7 @@ public class SocialWindow extends Window {
             FontUtil.drawString("Friend", x + this.width - 38, y + 14 + 4 + (16 * playerOffset) + 1, -1);
 
             Render2DBuilder.translate(0, (int) -MathUtil.clamp(this.scrollbar, -10000, 0));
-            GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            Render2DBuilder.restoreScissor();
 
             playerOffset++;
         }

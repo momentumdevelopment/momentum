@@ -25,11 +25,11 @@ public class Criticals extends Module {
         super("Criticals", Category.COMBAT, "Makes every attack a critical");
     }
 
-    public static Mode mode = new Mode("Mode", "Packet", "NCP", "Jump", "MiniJump");
+    public static Mode mode = new Mode("Mode", "Packet", "Strict", "Jump", "MiniJump");
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubCheckbox crystalTarget = new SubCheckbox(pause, "Crystal", false);
-    public static SubCheckbox auraNotEnabled = new SubCheckbox(pause, "Aura not Enabled", false);
+    public static SubCheckbox auraNotEnabled = new SubCheckbox(pause, "Aura Only", false);
     public static SubCheckbox whenFalling = new SubCheckbox(pause, "When Falling", true);
     public static SubCheckbox waterPause = new SubCheckbox(pause, "When in Liquid", true);
 
@@ -45,7 +45,7 @@ public class Criticals extends Module {
     public void onPacketSend(PacketSendEvent event) {
         if (event.getPacket() instanceof CPacketUseEntity) {
             if (((CPacketUseEntity) event.getPacket()).getAction() == CPacketUseEntity.Action.ATTACK && mc.player.onGround && ((CPacketUseEntity) event.getPacket()).getEntityFromWorld(mc.world) != null) {
-                if (mc.player.fallDistance > 0.0f && whenFalling.getValue())
+                if (mc.player.fallDistance > 4 && whenFalling.getValue())
                     return;
 
                 if ((mc.player.isInLava() || mc.player.isInWater()) && waterPause.getValue())

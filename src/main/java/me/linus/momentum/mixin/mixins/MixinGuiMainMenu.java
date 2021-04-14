@@ -1,7 +1,7 @@
 package me.linus.momentum.mixin.mixins;
 
 import me.linus.momentum.Momentum;
-import me.linus.momentum.gui.theme.ThemeColor;
+import me.linus.momentum.util.client.color.ThemeColor;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;

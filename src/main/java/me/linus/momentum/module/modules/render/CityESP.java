@@ -1,11 +1,11 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.client.color.ThemeColor;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
@@ -35,7 +35,7 @@ public class CityESP extends Module {
     public static Checkbox burrow = new Checkbox("Burrow", true);
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", ThemeColor.RAW);
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", new Color(250, 0, 250, 50));
 
     @Override
     public void setup() {
@@ -71,16 +71,16 @@ public class CityESP extends Module {
         for (BlockPos cityPos : cityBlocks) {
             switch (mode.getValue()) {
                 case 0:
-                    RenderUtil.drawBoxBlockPos(cityPos, 0, colorPicker.getColor(), RenderMode.Fill);
+                    RenderUtil.drawBoxBlockPos(cityPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Fill);
                     break;
                 case 1:
-                    RenderUtil.drawBoxBlockPos(cityPos, 0, colorPicker.getColor(), RenderMode.Outline);
+                    RenderUtil.drawBoxBlockPos(cityPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Outline);
                     break;
                 case 2:
-                    RenderUtil.drawBoxBlockPos(cityPos, 0, colorPicker.getColor(), RenderMode.Both);
+                    RenderUtil.drawBoxBlockPos(cityPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Both);
                     break;
                 case 3:
-                    RenderUtil.drawBoxBlockPos(cityPos, 0, colorPicker.getColor(), RenderMode.Claw);
+                    RenderUtil.drawBoxBlockPos(cityPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Claw);
                     break;
             }
         }
@@ -88,16 +88,16 @@ public class CityESP extends Module {
         for (BlockPos burrowPos : burrowList) {
             switch (mode.getValue()) {
                 case 0:
-                    RenderUtil.drawBoxBlockPos(burrowPos, 0, colorPicker.getColor(), RenderMode.Fill);
+                    RenderUtil.drawBoxBlockPos(burrowPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Fill);
                     break;
                 case 1:
-                    RenderUtil.drawBoxBlockPos(burrowPos, 0, colorPicker.getColor(), RenderMode.Outline);
+                    RenderUtil.drawBoxBlockPos(burrowPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Outline);
                     break;
                 case 2:
-                    RenderUtil.drawBoxBlockPos(burrowPos, 0, colorPicker.getColor(), RenderMode.Both);
+                    RenderUtil.drawBoxBlockPos(burrowPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Both);
                     break;
                 case 3:
-                    RenderUtil.drawBoxBlockPos(burrowPos, 0, colorPicker.getColor(), RenderMode.Claw);
+                    RenderUtil.drawBoxBlockPos(burrowPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Claw);
                     break;
             }
         }

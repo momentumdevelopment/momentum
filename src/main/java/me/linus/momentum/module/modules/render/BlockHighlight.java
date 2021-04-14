@@ -1,10 +1,10 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
+import me.linus.momentum.util.client.color.ThemeColor;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
 import net.minecraft.util.math.RayTraceResult;
@@ -21,7 +21,7 @@ public class BlockHighlight extends Module {
     public static Mode mode = new Mode("Mode", "Claw", "Outline", "Fill", "Both");
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker",  ThemeColor.RAW);
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker",   new Color(250, 0, 250, 50));
 
     @Override
     public void setup() {
@@ -34,16 +34,16 @@ public class BlockHighlight extends Module {
         if (mc.objectMouseOver.typeOfHit.equals(RayTraceResult.Type.BLOCK)) {
             switch (mode.getValue()) {
                 case 0:
-                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, colorPicker.getColor(), RenderMode.Claw);
+                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, 0, 0, colorPicker.getColor(), RenderMode.Claw);
                     break;
                 case 1:
-                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, new Color(colorPicker.getRed(), colorPicker.getGreen(), colorPicker.getBlue(), 144), RenderMode.Outline);
+                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, 0, 0, new Color(colorPicker.getRed(), colorPicker.getGreen(), colorPicker.getBlue(), 144), RenderMode.Outline);
                     break;
                 case 2:
-                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, colorPicker.getColor(), RenderMode.Fill);
+                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, 0, 0, colorPicker.getColor(), RenderMode.Fill);
                     break;
                 case 3:
-                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, colorPicker.getColor(), RenderMode.Both);
+                    RenderUtil.drawBoxBlockPos(mc.objectMouseOver.getBlockPos(), 0, 0, 0, colorPicker.getColor(), RenderMode.Both);
                     break;
             }
         }

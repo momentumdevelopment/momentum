@@ -1,12 +1,12 @@
 package me.linus.momentum.module.modules.render;
 
 import me.linus.momentum.event.events.packet.PacketSendEvent;
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.client.color.ThemeColor;
 import me.linus.momentum.util.render.Render2DUtil;
 import me.linus.momentum.util.world.Timer;
 import net.minecraft.network.play.client.CPacketUseEntity;
@@ -34,10 +34,10 @@ public class CrossHairs extends Module {
     public static SubSlider bend = new SubSlider(custom, "Bend", 0.0D, 0.0D, 5.0D, 0);
 
     public static Checkbox hitMarkers = new Checkbox("HitMarkers", true);
-    public static ColorPicker hitMarkerPicker = new ColorPicker(hitMarkers, "HitMarkers Picker", ThemeColor.RAW);
+    public static ColorPicker hitMarkerPicker = new ColorPicker(hitMarkers, "HitMarkers Picker", new Color(250, 0, 250, 50));
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", ThemeColor.RAW);
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", new Color(250, 0, 250, 50));
 
     @Override
     public void setup() {

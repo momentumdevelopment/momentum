@@ -1,6 +1,5 @@
 package me.linus.momentum.managers;
 
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.module.Module.Category;
@@ -11,6 +10,7 @@ import me.linus.momentum.module.modules.misc.*;
 import me.linus.momentum.module.modules.movement.*;
 import me.linus.momentum.module.modules.player.*;
 import me.linus.momentum.module.modules.render.*;
+import me.linus.momentum.util.client.color.ThemeColor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -38,7 +38,7 @@ public class ModuleManager implements MixinInterface {
 			new Colors(),
 			new Console(),
 			new ClientFont(),
-			new HUDEditor(),
+			new HUD(),
 			new Social(),
 
 			// combat
@@ -64,7 +64,6 @@ public class ModuleManager implements MixinInterface {
 			new Web(),
 
 			// player
-			new AntiHunger(),
 			new AutoMine(),
 			new Blink(),
 			new ExtraSlots(),
@@ -72,7 +71,6 @@ public class ModuleManager implements MixinInterface {
 			new HandProgress(),
 			new LiquidInteract(),
 			new NoEntityTrace(),
-			new NoFall(),
 			new NoRotate(),
 			new PacketEat(),
 			new Reach(),
@@ -113,6 +111,7 @@ public class ModuleManager implements MixinInterface {
 			new HighJump(),
 			new IceSpeed(),
 			new Jesus(),
+			new NoFall(),
 			new NoSlow(),
 			new Parkour(),
 			new ReverseStep(),

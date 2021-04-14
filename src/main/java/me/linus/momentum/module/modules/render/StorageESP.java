@@ -95,18 +95,18 @@ public class StorageESP extends Module {
                 switch (mode.getValue()) {
                     case 0:
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Claw);
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, 0, 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Claw);
                         break;
                     case 1:
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Outline);
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, 0, 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Outline);
                         break;
                     case 2:
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Fill);
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, 0, 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Fill);
                         break;
                     case 3:
                         GlStateManager.glLineWidth((float) lineWidth.getValue());
-                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Both);
+                        RenderUtil.drawBoxBlockPos(tileEntity.getPos(), 0, 0, 0, colorManager.abstractColorRegistry.get(tileEntity), RenderMode.Both);
                         break;
                 }
             }

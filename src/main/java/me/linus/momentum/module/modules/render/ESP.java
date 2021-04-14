@@ -10,13 +10,16 @@ import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
 import me.linus.momentum.util.world.EntityUtil;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.shader.Shader;
+import net.minecraft.client.shader.ShaderGroup;
+import net.minecraft.client.shader.ShaderUniform;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.awt.*;
+import java.awt.Color;
+import java.util.List;
 
 /**
  * @author linustouchtips
@@ -52,7 +55,7 @@ public class ESP extends Module {
     public static Checkbox xqz = new Checkbox("XQZ", false);
     public static ColorPicker xqzPicker = new ColorPicker(xqz, "XQZ Picker", new Color(19, 70, 199, 255));
 
-    public static Slider lineWidth = new Slider("Line Width", 0.0D, 2.5D, 5.0D, 1);
+    public static Slider lineWidth = new Slider("Width", 0.0D, 2.5D, 5.0D, 1);
 
     @Override
     public void setup() {
@@ -74,8 +77,6 @@ public class ESP extends Module {
     public void onUpdate() {
         if (nullCheck())
             return;
-
-        mc.gameSettings.fancyGraphics = true;
 
         colorManager.registerAbstractColor(EntityOtherPlayerMP.class, playerPicker.getColor());
         colorManager.registerAbstractColorList(EntityUtil.getPassives(), animalPicker.getColor());
@@ -103,6 +104,19 @@ public class ESP extends Module {
                 espMode = new Wireframe();
                 break;
         }
+
+        if (mode.getValue() != 1)
+            return;
+
+        ShaderGroup outlineShaderGroup = mc.renderGlobal.entityOutlineShader;
+        List<Shader> shaders = outlineShaderGroup.listShaders;
+
+        shaders.forEach(shader -> {
+            ShaderUniform outlineRadius = shader.getShaderManager().getShaderUniform("Radius");
+
+            if (outlineRadius != null)
+                outlineRadius.set((float) (lineWidth.getValue() / 2));
+        });
     }
 
     @SubscribeEvent

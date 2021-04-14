@@ -21,6 +21,7 @@ public class IceSpeed extends Module {
         addSetting(slipperiness);
     }
 
+    @SuppressWarnings("deprecation")
     public void onUpdate() {
         if (nullCheck())
             return;
@@ -30,6 +31,7 @@ public class IceSpeed extends Module {
         Blocks.FROSTED_ICE.slipperiness = (float) slipperiness.getValue();
     }
 
+    @SuppressWarnings("deprecation")
     public void onDisable() {
         Blocks.ICE.slipperiness = 0.98F;
         Blocks.PACKED_ICE.slipperiness = 0.98F;

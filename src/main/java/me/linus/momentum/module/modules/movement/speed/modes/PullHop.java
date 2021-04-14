@@ -2,6 +2,7 @@ package me.linus.momentum.module.modules.movement.speed.modes;
 
 import me.linus.momentum.event.events.player.MoveEvent;
 import me.linus.momentum.module.modules.movement.speed.SpeedMode;
+import me.linus.momentum.util.player.MotionUtil;
 
 /**
  * @author linustouchtips
@@ -24,5 +25,7 @@ public class PullHop extends SpeedMode {
 
         else
             mc.player.motionY--;
+
+        MotionUtil.impressMoveSpeed(event, 0.2, 0.6f);
     }
 }

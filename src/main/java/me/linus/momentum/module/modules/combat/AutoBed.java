@@ -1,6 +1,5 @@
 package me.linus.momentum.module.modules.combat;
 
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.managers.RotationManager;
 import me.linus.momentum.managers.notification.Notification;
 import me.linus.momentum.managers.notification.NotificationManager;
@@ -11,6 +10,7 @@ import me.linus.momentum.setting.checkbox.SubCheckbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.SubMode;
 import me.linus.momentum.setting.slider.SubSlider;
+import me.linus.momentum.util.client.color.ThemeColor;
 import me.linus.momentum.util.combat.BedUtil;
 import me.linus.momentum.util.combat.EnemyUtil;
 import me.linus.momentum.util.player.InventoryUtil;
@@ -73,7 +73,7 @@ public class AutoBed extends Module {
     public static SubMode logicMode = new SubMode(logic, "Logic", "Break -> Place", "Place -> Break");
 
     public static Checkbox renderBed = new Checkbox("Render", true);
-    public static ColorPicker colorPicker = new ColorPicker(renderBed, "Color Picker", ThemeColor.RAW);
+    public static ColorPicker colorPicker = new ColorPicker(renderBed, "Color Picker",  new Color(250, 0, 250, 50));
 
     @Override
     public void setup() {
@@ -203,8 +203,8 @@ public class AutoBed extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (currentBlock != null && currentTarget != null && renderBed.getValue()) {
-            RenderUtil.drawBoxBlockPos(currentBlock, -0.5, colorPicker.getColor(), RenderBuilder.RenderMode.Outline);
-            RenderUtil.drawBoxBlockPos(new BlockPos(currentBlock.x + 1, currentBlock.y, currentBlock.z), -0.5, colorPicker.getColor(), RenderBuilder.RenderMode.Outline);
+            RenderUtil.drawBoxBlockPos(currentBlock, -0.5, 0, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Outline);
+            RenderUtil.drawBoxBlockPos(new BlockPos(currentBlock.x + 1, currentBlock.y, currentBlock.z), -0.5, 0, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Outline);
         }
     }
 

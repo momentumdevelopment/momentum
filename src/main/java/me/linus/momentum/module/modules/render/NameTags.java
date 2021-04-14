@@ -56,7 +56,7 @@ public class NameTags extends Module {
 
     public static Checkbox offhand = new Checkbox("Offhand", true);
     public static Checkbox enchants = new Checkbox("Enchants", true);
-    public static Checkbox exp = new Checkbox("EXP", true);
+    public static Checkbox exp = new Checkbox("EXP", false);
 
     public static Checkbox onlyInViewFrustrum = new Checkbox("View Frustrum", false);
 

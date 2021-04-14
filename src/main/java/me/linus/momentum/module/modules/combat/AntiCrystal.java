@@ -1,7 +1,6 @@
 package me.linus.momentum.module.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.managers.notification.Notification;
 import me.linus.momentum.managers.notification.Notification.Type;
 import me.linus.momentum.managers.notification.NotificationManager;
@@ -9,6 +8,7 @@ import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.client.color.ThemeColor;
 import me.linus.momentum.util.player.InventoryUtil;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
@@ -41,7 +41,7 @@ public class AntiCrystal extends Module {
     public static Slider placeDelay = new Slider("Place Delay", 0, 2, 20, 1);
 
     public static Checkbox renderPlacement = new Checkbox("Render Placement", true);
-    public static ColorPicker colorPicker = new ColorPicker(renderPlacement, "Color Picker", ThemeColor.RAW);
+    public static ColorPicker colorPicker = new ColorPicker(renderPlacement, "Color Picker",  new Color(250, 0, 250, 50));
 
     @Override
     public void setup() {
@@ -113,6 +113,6 @@ public class AntiCrystal extends Module {
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent eventRender) {
         if (renderBlock != null && renderPlacement.getValue())
-            RenderUtil.drawBoxBlockPos(renderBlock, -0.9, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
+            RenderUtil.drawBoxBlockPos(renderBlock, -0.9, 0, 0, colorPicker.getColor(), RenderBuilder.RenderMode.Fill);
     }
 }

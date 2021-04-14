@@ -2,7 +2,7 @@ package me.linus.momentum.util.render;
 
 import me.linus.momentum.mixin.MixinInterface;
 import me.linus.momentum.module.modules.render.NameTags;
-import me.linus.momentum.util.client.ColorUtil;
+import me.linus.momentum.util.client.color.ColorUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder;
 import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
 import net.minecraft.client.gui.GuiScreen;
@@ -33,63 +33,63 @@ public class RenderUtil implements MixinInterface {
     public static Tessellator tessellator = Tessellator.getInstance();
     public static BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-    public static void drawBoxBlockPos(BlockPos blockPos, double height, Color color, RenderMode renderMode) {
+    public static void drawBoxBlockPos(BlockPos blockPos, double height, double length, double width, Color color, RenderMode renderMode) {
         AxisAlignedBB axisAlignedBB = new AxisAlignedBB(blockPos.getX() - mc.getRenderManager().viewerPosX, blockPos.getY() - mc.getRenderManager().viewerPosY, blockPos.getZ() - mc.getRenderManager().viewerPosZ, blockPos.getX() + 1 - mc.getRenderManager().viewerPosX, blockPos.getY() + 1 - mc.getRenderManager().viewerPosY, blockPos.getZ() + 1 - mc.getRenderManager().viewerPosZ);
 
         RenderBuilder.glSetup();
         switch (renderMode) {
             case Fill:
-                drawSelectionBox(axisAlignedBB, height, color);
+                drawSelectionBox(axisAlignedBB, height, length, width, color);
                 break;
             case Outline:
-                drawSelectionBoundingBox(axisAlignedBB, height, color);
+                drawSelectionBoundingBox(axisAlignedBB, height, length, width, new Color(color.getRed(), color.getGreen(), color.getBlue(), 144));
                 break;
             case Both:
-                drawSelectionBox(axisAlignedBB, height, color);
-                drawSelectionBoundingBox(axisAlignedBB, height, new Color(color.getRed(), color.getGreen(), color.getBlue(), 144));
+                drawSelectionBox(axisAlignedBB, height, length, width, color);
+                drawSelectionBoundingBox(axisAlignedBB, height, length, width, new Color(color.getRed(), color.getGreen(), color.getBlue(), 144));
                 break;
             case Glow:
                 RenderBuilder.glPrepare();
-                drawSelectionGlowFilledBox(axisAlignedBB, height, color, new Color(color.getRed(), color.getGreen(), color.getBlue(), 0));
+                drawSelectionGlowFilledBox(axisAlignedBB, height, length, width, color, new Color(color.getRed(), color.getGreen(), color.getBlue(), 0));
                 RenderBuilder.glRestore();
                 break;
             case Claw:
-                drawClawBox(axisAlignedBB, height, new Color(color.getRed(), color.getGreen(), color.getBlue(), 255));
+                drawClawBox(axisAlignedBB, height, length, width, new Color(color.getRed(), color.getGreen(), color.getBlue(), 255));
                 break;
         }
 
         RenderBuilder.glRelease();
     }
 
-    public static void drawBox(AxisAlignedBB axisAlignedBB, double height, Color color, RenderMode renderMode) {
+    public static void drawBox(AxisAlignedBB axisAlignedBB, double height, double length, double width, Color color, RenderMode renderMode) {
         RenderBuilder.glSetup();
         switch (renderMode) {
             case Fill:
-                drawSelectionBox(axisAlignedBB, height, color);
+                drawSelectionBox(axisAlignedBB, height, length, width, color);
                 break;
             case Outline:
-                drawSelectionBoundingBox(axisAlignedBB, height, color);
+                drawSelectionBoundingBox(axisAlignedBB, height, length, width, color);
                 break;
             case Both:
-                drawSelectionBox(axisAlignedBB, height, color);
-                drawSelectionBoundingBox(axisAlignedBB, height, color);
+                drawSelectionBox(axisAlignedBB, height, length, width, color);
+                drawSelectionBoundingBox(axisAlignedBB, height, length, width, color);
                 break;
             case Glow:
                 RenderBuilder.glPrepare();
-                drawSelectionGlowFilledBox(axisAlignedBB, height, color, new Color(color.getRed(), color.getGreen(), color.getBlue(), 0));
+                drawSelectionGlowFilledBox(axisAlignedBB, height, length, width, color, new Color(color.getRed(), color.getGreen(), color.getBlue(), 0));
                 RenderBuilder.glRestore();
                 break;
             case Claw:
-                drawClawBox(axisAlignedBB, height, color);
+                drawClawBox(axisAlignedBB, height, length, width, color);
                 break;
         }
 
         RenderBuilder.glRelease();
     }
 
-    public static void drawSelectionBox(AxisAlignedBB axisAlignedBB, double height, Color color) {
+    public static void drawSelectionBox(AxisAlignedBB axisAlignedBB, double height, double length, double width, Color color) {
         bufferbuilder.begin(GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-        addChainedFilledBoxVertices(bufferbuilder, axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, axisAlignedBB.maxX, axisAlignedBB.maxY + height, axisAlignedBB.maxZ, color);
+        addChainedFilledBoxVertices(bufferbuilder, axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, axisAlignedBB.maxX + length, axisAlignedBB.maxY + height, axisAlignedBB.maxZ + width, color);
         tessellator.draw();
     }
 
@@ -126,9 +126,9 @@ public class RenderUtil implements MixinInterface {
         builder.pos(maxX, maxY, maxZ).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
     }
 
-    public static void drawSelectionBoundingBox(AxisAlignedBB axisAlignedBB, double height, Color color) {
+    public static void drawSelectionBoundingBox(AxisAlignedBB axisAlignedBB, double height, double length, double width, Color color) {
         bufferbuilder.begin(GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-        addChainedBoundingBoxVertices(bufferbuilder, axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, axisAlignedBB.maxX, axisAlignedBB.maxY + height, axisAlignedBB.maxZ, color);
+        addChainedBoundingBoxVertices(bufferbuilder, axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, axisAlignedBB.maxX + length, axisAlignedBB.maxY + height, axisAlignedBB.maxZ + width, color);
         tessellator.draw();
     }
 
@@ -153,9 +153,9 @@ public class RenderUtil implements MixinInterface {
         buffer.pos(maxX, minY, minZ).color(color.getRed(), color.getGreen(), color.getBlue(), 0.0F).endVertex();
     }
 
-    public static void drawSelectionGlowFilledBox(AxisAlignedBB axisAlignedBB, double height, Color startColor, Color endColor) {
+    public static void drawSelectionGlowFilledBox(AxisAlignedBB axisAlignedBB, double height, double length, double width, Color startColor, Color endColor) {
         bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        addChainedGlowBoxVertices(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, axisAlignedBB.maxX, axisAlignedBB.maxY + height, axisAlignedBB.maxZ, startColor, endColor);
+        addChainedGlowBoxVertices(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, axisAlignedBB.maxX + length, axisAlignedBB.maxY + height, axisAlignedBB.maxZ + width, startColor, endColor);
         tessellator.draw();
     }
 
@@ -186,9 +186,9 @@ public class RenderUtil implements MixinInterface {
         bufferbuilder.pos(minX, maxY, minZ).color(endColor.getRed() / 255.0f, endColor.getGreen() / 255.0f, endColor.getBlue() / 255.0f, endColor.getAlpha() / 255.0f).endVertex();
     }
 
-    public static void drawClawBox(AxisAlignedBB axisAlignedBB, double height, Color color) {
+    public static void drawClawBox(AxisAlignedBB axisAlignedBB, double height, double length, double width, Color color) {
         bufferbuilder.begin(GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-        addChainedClawBoxVertices(bufferbuilder, axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, axisAlignedBB.maxX, axisAlignedBB.maxY + height, axisAlignedBB.maxZ, color);
+        addChainedClawBoxVertices(bufferbuilder, axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ, axisAlignedBB.maxX + length, axisAlignedBB.maxY + height, axisAlignedBB.maxZ + width, color);
         tessellator.draw();
     }
 

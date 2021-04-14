@@ -1,11 +1,11 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.managers.social.friend.FriendManager;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.client.color.ThemeColor;
 import me.linus.momentum.util.render.ESPUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.model.ModelPlayer;
@@ -33,7 +33,7 @@ public class Skeleton extends Module {
     }
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", ThemeColor.RAW);
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", new Color(250, 0, 250, 50));
 
     public static Slider lineWidth = new Slider("Line Width", 0.0D, 1.0D, 5.0D, 1);
 

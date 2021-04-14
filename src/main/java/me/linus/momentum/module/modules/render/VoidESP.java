@@ -70,16 +70,16 @@ public class VoidESP extends Module {
         for (BlockPos voidPos : voidBlocks) {
             switch (mode.getValue()) {
                 case 0:
-                    RenderUtil.drawBoxBlockPos(voidPos, 0, colorPicker.getColor(), RenderMode.Fill);
+                    RenderUtil.drawBoxBlockPos(voidPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Fill);
                     break;
                 case 1:
-                    RenderUtil.drawBoxBlockPos(voidPos, 0, colorPicker.getColor(), RenderMode.Outline);
+                    RenderUtil.drawBoxBlockPos(voidPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Outline);
                     break;
                 case 2:
-                    RenderUtil.drawBoxBlockPos(voidPos, 0, colorPicker.getColor(), RenderMode.Both);
+                    RenderUtil.drawBoxBlockPos(voidPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Both);
                     break;
                 case 3:
-                    RenderUtil.drawBoxBlockPos(voidPos, 0, colorPicker.getColor(), RenderMode.Claw);
+                    RenderUtil.drawBoxBlockPos(voidPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Claw);
                     break;
             }
         }
@@ -87,16 +87,16 @@ public class VoidESP extends Module {
         for (BlockPos portalPos : portalBlocks) {
             switch (mode.getValue()) {
                 case 0:
-                    RenderUtil.drawBoxBlockPos(portalPos, 0, colorPicker.getColor(), RenderMode.Fill);
+                    RenderUtil.drawBoxBlockPos(portalPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Fill);
                     break;
                 case 1:
-                    RenderUtil.drawBoxBlockPos(portalPos, 0, colorPicker.getColor(), RenderMode.Outline);
+                    RenderUtil.drawBoxBlockPos(portalPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Outline);
                     break;
                 case 2:
-                    RenderUtil.drawBoxBlockPos(portalPos, 0, colorPicker.getColor(), RenderMode.Both);
+                    RenderUtil.drawBoxBlockPos(portalPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Both);
                     break;
                 case 3:
-                    RenderUtil.drawBoxBlockPos(portalPos, 0, colorPicker.getColor(), RenderMode.Claw);
+                    RenderUtil.drawBoxBlockPos(portalPos, 0, 0, 0, colorPicker.getColor(), RenderMode.Claw);
                     break;
             }
         }

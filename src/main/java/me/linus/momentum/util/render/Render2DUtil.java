@@ -1,7 +1,7 @@
 package me.linus.momentum.util.render;
 
 import me.linus.momentum.mixin.MixinInterface;
-import me.linus.momentum.util.client.ColorUtil;
+import me.linus.momentum.util.client.color.ColorUtil;
 import me.linus.momentum.util.player.MotionUtil;
 import me.linus.momentum.util.render.builder.Render2DBuilder;
 import net.minecraft.client.gui.ScaledResolution;
@@ -23,7 +23,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Render2DUtil implements MixinInterface {
 
-    public static void drawRect(int left, int top, int right, int bottom, int borderWidth, int insideColor, int borderColor, boolean scissor, Render2DBuilder.Render2DMode render2DMode) {
+    public static void drawRect(int left, double top, int right, double bottom, int borderWidth, int insideColor, int borderColor, boolean scissor, Render2DBuilder.Render2DMode render2DMode) {
         if (scissor) {
             Render2DBuilder.prepareScissor(left, top, right, bottom);
             GL11.glEnable(GL_SCISSOR_TEST);
@@ -34,7 +34,7 @@ public class Render2DUtil implements MixinInterface {
                 drawRectBase(left, top, right, bottom, insideColor);
                 break;
             case Border:
-                drawBorder(left, top, right, bottom, borderWidth, insideColor);
+                drawBorderedRect(left, top, right, bottom, borderWidth, new Color(0, 0, 0, 0).getRGB(), borderColor);
                 break;
             case Both:
                 drawBorderedRect(left, top, right, bottom, borderWidth, insideColor, borderColor);
@@ -45,7 +45,29 @@ public class Render2DUtil implements MixinInterface {
             GL11.glDisable(GL_SCISSOR_TEST);
     }
 
-    public static void drawBorderedRect(int left, int top, int right, int bottom, int borderWidth, int insideColor, int borderColor) {
+    public static void drawRect(int left, double top, double right, double bottom, int borderWidth, int insideColor, int borderColor, boolean scissor, Render2DBuilder.Render2DMode render2DMode) {
+        if (scissor) {
+            Render2DBuilder.prepareScissor(left, top, (int) right, bottom);
+            GL11.glEnable(GL_SCISSOR_TEST);
+        }
+
+        switch (render2DMode) {
+            case Normal:
+                drawRectBase(left, top, right, bottom, insideColor);
+                break;
+            case Border:
+                drawBorderedRect(left, top, (int) right, bottom, borderWidth, new Color(0, 0, 0, 0).getRGB(), borderColor);
+                break;
+            case Both:
+                drawBorderedRect(left, top, (int) right, bottom, borderWidth, insideColor, borderColor);
+                break;
+        }
+
+        if (scissor)
+            GL11.glDisable(GL_SCISSOR_TEST);
+    }
+
+    public static void drawBorderedRect(int left, double top, int right, double bottom, int borderWidth, int insideColor, int borderColor) {
         drawRectBase(left + borderWidth, top + borderWidth, right - borderWidth, bottom - borderWidth, insideColor);
 
         drawRectBase(left, top + borderWidth, left + borderWidth, bottom - borderWidth, borderColor);
@@ -60,14 +82,43 @@ public class Render2DUtil implements MixinInterface {
         drawRectBase(left, top, right, top + borderWidth, color);
         drawRectBase(left, bottom - borderWidth, right, bottom, color);
     }
+
+    public static void drawRectBase(int left,double top, double right, double bottom, int color) {
+        double side;
+
+        if (left < right) {
+            side = left;
+            left = (int) right;
+            right = (int) side;
+        }
+
+        if (top < bottom) {
+            side = top;
+            top = bottom;
+            bottom = side;
+        }
+
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.color((float) (color >> 16 & 255) / 255.0F, (float) (color >> 8 & 255) / 255.0F, (float) (color & 255) / 255.0F, (float) (color >> 24 & 255) / 255.0F);
+        RenderUtil.bufferbuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION);
+        RenderUtil.bufferbuilder.pos(left, bottom, 0.0D).endVertex();
+        RenderUtil.bufferbuilder.pos(right, bottom, 0.0D).endVertex();
+        RenderUtil.bufferbuilder.pos(right, top, 0.0D).endVertex();
+        RenderUtil.bufferbuilder.pos(left, top, 0.0D).endVertex();
+        RenderUtil.tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
     
-    public static void drawRectBase(int left, int top, int right, int bottom, int color) {
-        int side;
+    public static void drawRectBase(int left,double top, int right, double bottom, int color) {
+        double side;
 
         if (left < right) {
             side = left;
             left = right;
-            right = side;
+            right = (int) side;
         }
 
         if (top < bottom) {

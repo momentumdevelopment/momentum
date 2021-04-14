@@ -1,11 +1,12 @@
 package me.linus.momentum;
 
-import me.linus.momentum.gui.main.gui.Window;
-import me.linus.momentum.gui.theme.Theme;
+import me.linus.momentum.gui.hud.HUDFrame;
+import me.linus.momentum.gui.window.Window;
 import me.linus.momentum.managers.*;
 import me.linus.momentum.managers.config.ConfigManagerJSON;
 import me.linus.momentum.managers.social.enemy.EnemyManager;
 import me.linus.momentum.managers.social.friend.FriendManager;
+import me.linus.momentum.gui.click.Frame;
 import me.linus.momentum.util.render.FontUtil;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -32,7 +33,7 @@ public class Momentum {
 	
     public static final String MODID = "momentum";
     public static final String CLIENTNAME = "Momentum";
-    public static final String VERSION = "1.2.2-beta";
+    public static final String VERSION = "1.2.2";
     public static String NAME = "Momentum";
     public static final Logger LOGGER;
     
@@ -40,8 +41,7 @@ public class Momentum {
     public static CommandManager commandManager;
     public static FriendManager friendManager;
     public static EnemyManager enemyManager;
-    public static HUDComponentManager componentManager;
-    public static WindowManager windowManager;
+    public static HUDElementManager componentManager;
     public static RotationManager rotationManager;
     public static CrystalManager crystalManager;
     public static TickManager tickManager;
@@ -49,6 +49,7 @@ public class Momentum {
     public static CapeManager capeManager;
     public static ReloadManager reloadManager;
     public static GearManager gearManager;
+    public static SwitchManager switchManager;
 
     @Mod.Instance
     private static Momentum INSTANCE;
@@ -74,17 +75,27 @@ public class Momentum {
         enemyManager = new EnemyManager();
         LOGGER.info("Enemy System Initialized!");
 
-    	Window.initGui();
-    	LOGGER.info("ClickGUI Windows Initialized!");
-
-        Theme.initThemes();
-        LOGGER.info("GUI Themes Initialized!");
-
-        windowManager = new WindowManager();
-        LOGGER.info("Console Windows Initialized!");
-
-        componentManager = new HUDComponentManager();
+        componentManager = new HUDElementManager();
         LOGGER.info("HUD System Initialized!");
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            ConfigManagerJSON.saveConfig();
+            Momentum.LOGGER.info("Saving Config!");
+        }));
+
+        LOGGER.info("Config System Saved!");
+
+        ConfigManagerJSON.loadConfig();
+        LOGGER.info("Config System Loaded!");
+
+        Frame.createFrames();
+        LOGGER.info("ClickGUI Frames Initialized!");
+
+        Window.createWindows();
+        LOGGER.info("ClickGUI Windows Initialized!");
+
+        HUDFrame.createHUDFrames();
+        LOGGER.info("HUD Frames Initialized!");
 
         commandManager = new CommandManager();
         LOGGER.info("Commands Initialized!");
@@ -104,15 +115,8 @@ public class Momentum {
         gearManager = new GearManager();
         LOGGER.info("Gear Tracking System Initialized!");
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            ConfigManagerJSON.saveConfig();
-            Momentum.LOGGER.info("Saving Config!");
-        }));
-
-        LOGGER.info("Config System Saved!");
-
-        ConfigManagerJSON.loadConfig();
-        LOGGER.info("Config System Loaded!");
+        switchManager = new SwitchManager();
+        LOGGER.info("Switching System Initialized!");
     }
     
     @EventHandler

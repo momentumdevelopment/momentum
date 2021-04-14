@@ -109,7 +109,7 @@ public class CrystalUtil implements MixinInterface {
     }
 
     public static List<BlockPos> crystalBlocks(EntityPlayer entityPlayer, double placeRange, boolean prediction, boolean antiSurround, int blockCalc) {
-        return BlockUtil.getNearbyBlocks(entityPlayer, placeRange, prediction).stream().filter(blockPos -> canPlaceCrystal(blockPos, antiSurround, blockCalc == 1)).collect(Collectors.toList());
+        return BlockUtil.getNearbyBlocks(entityPlayer, placeRange - 1, prediction).stream().filter(blockPos -> canPlaceCrystal(blockPos, antiSurround, blockCalc == 1)).collect(Collectors.toList());
     }
 
     public static boolean canPlaceCrystal(BlockPos blockPos, boolean antiSurround, boolean thirteen) {

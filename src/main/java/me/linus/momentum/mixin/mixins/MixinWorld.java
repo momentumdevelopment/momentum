@@ -31,6 +31,7 @@ public class MixinWorld implements MixinInterface {
         if (entity instanceof EntityEnderCrystal && mc.player.getDistance(entity) < AutoCrystal.breakRange.getValue()) {
             CrystalManager.swings = 0;
             CrystalManager.placements = 0;
+            CrystalManager.cleared = true;
         }
     }
 

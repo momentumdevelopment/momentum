@@ -14,7 +14,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,14 +63,6 @@ public abstract class Module implements MixinInterface {
 
 	public boolean isEnabled() {
 		return this.enabled;
-	}
-
-	public boolean isKeyDown() {
-		return this.isKeyDown;
-	}
-
-	public void setKeyDown(boolean b) {
-		this.isKeyDown = b;
 	}
 
 	public void onEnable() {

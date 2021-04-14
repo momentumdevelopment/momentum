@@ -28,16 +28,18 @@ public class Rotation implements MixinInterface {
     // updates player rotations here
     public void updateRotations() {
         try {
-        switch (this.mode) {
-            case Packet:
-                mc.player.renderYawOffset = this.yaw;
-                mc.player.rotationYawHead = this.yaw;
-                break;
-            case Legit:
-                mc.player.rotationYaw = this.yaw;
-                mc.player.rotationPitch = this.pitch;
-                break;
-        }
+            switch (this.mode) {
+                case Packet:
+                    mc.player.renderYawOffset = this.yaw;
+                    mc.player.rotationYawHead = this.yaw;
+                    break;
+                case Legit:
+                    mc.player.rotationYaw = this.yaw;
+                    mc.player.rotationPitch = this.pitch;
+                    break;
+                case None:
+                    break;
+            }
         } catch (Exception ignored) {
 
         }
@@ -57,6 +59,7 @@ public class Rotation implements MixinInterface {
 
     public enum RotationMode {
         Packet,
-        Legit
+        Legit,
+        None
     }
 }

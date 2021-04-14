@@ -1,11 +1,11 @@
 package me.linus.momentum.module.modules.render;
 
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.module.Module;
 import me.linus.momentum.setting.checkbox.Checkbox;
 import me.linus.momentum.setting.color.ColorPicker;
 import me.linus.momentum.setting.mode.Mode;
 import me.linus.momentum.setting.slider.Slider;
+import me.linus.momentum.util.client.color.ThemeColor;
 import me.linus.momentum.util.render.RenderUtil;
 import me.linus.momentum.util.render.builder.RenderBuilder.RenderMode;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -28,7 +28,7 @@ public class BreakESP extends Module {
     public static Checkbox showInfo = new Checkbox("Render Info", true);
 
     public static Checkbox color = new Checkbox("Color", true);
-    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker", ThemeColor.RAW);
+    public static ColorPicker colorPicker = new ColorPicker(color, "Color Picker",  new Color(250, 0, 250, 50));
 
     @Override
     public void setup() {
@@ -48,16 +48,16 @@ public class BreakESP extends Module {
             if (destroyBlockProgress.getPosition().getDistance((int) mc.player.posX,(int)  mc.player.posY,(int)  mc.player.posZ) <= range.getValue()) {
                 switch (mode.getValue()) {
                     case 0:
-                        RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), 0, colorPicker.getColor(), RenderMode.Fill);
+                        RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), 0, 0, 0, colorPicker.getColor(), RenderMode.Fill);
                         break;
                     case 1:
-                        RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), 0, colorPicker.getColor(), RenderMode.Outline);
+                        RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), 0, 0, 0, colorPicker.getColor(), RenderMode.Outline);
                         break;
                     case 2:
-                        RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), 0, colorPicker.getColor(), RenderMode.Both);
+                        RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), 0, 0, 0, colorPicker.getColor(), RenderMode.Both);
                         break;
                     case 3:
-                        RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), 0, colorPicker.getColor(), RenderMode.Claw);
+                        RenderUtil.drawBoxBlockPos(destroyBlockProgress.getPosition(), 0, 0, 0, colorPicker.getColor(), RenderMode.Claw);
                         break;
                 }
 

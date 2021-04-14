@@ -1,6 +1,6 @@
 package me.linus.momentum.managers.notification;
 
-import me.linus.momentum.gui.hud.components.Notifications;
+import me.linus.momentum.gui.hud.element.elements.Notifications;
 import me.linus.momentum.util.world.Timer;
 
 import java.awt.*;

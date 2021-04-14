@@ -23,6 +23,7 @@ public class CrystalManager {
     public static int debugSwings = 0;
     public static int debugPlacements = 0;
     public static boolean skipTick = false;
+    public static boolean cleared = true;
 
     public static void updateSwings() {
         debugSwings++;
@@ -32,6 +33,7 @@ public class CrystalManager {
     public static void updatePlacements() {
         debugPlacements++;
         placements++;
+        cleared = false;
     }
 
     public static void resetCount() {

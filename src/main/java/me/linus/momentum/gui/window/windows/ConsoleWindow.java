@@ -1,11 +1,11 @@
 package me.linus.momentum.gui.window.windows;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.linus.momentum.gui.theme.ThemeColor;
 import me.linus.momentum.gui.window.Window;
 import me.linus.momentum.managers.CommandManager;
 import me.linus.momentum.module.modules.client.Colors;
 import me.linus.momentum.util.client.MathUtil;
+import me.linus.momentum.util.client.color.ThemeColor;
 import me.linus.momentum.util.render.FontUtil;
 import me.linus.momentum.util.render.GUIUtil;
 import me.linus.momentum.util.render.Render2DUtil;
@@ -15,12 +15,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+/**
+ * @author linustouchtips
+ * @since 03/11/21
+ */
 
 public class ConsoleWindow extends Window {
     public ConsoleWindow() {
@@ -69,11 +73,10 @@ public class ConsoleWindow extends Window {
             outputLength++;
 
             Render2DBuilder.prepareScissor(x, y + 14, x + this.width - 9, y + 14 + this.height);
-            GL11.glEnable(GL11.GL_SCISSOR_TEST);
             Render2DBuilder.translate(0, (int) -MathUtil.clamp(this.scrollbar, -(16 * outputLength), 0));
             FontUtil.drawString(output, x + 3, y + 14 + this.height - (12 * outputLength), ThemeColor.BRIGHT);
             Render2DBuilder.translate(0, (int) MathUtil.clamp(this.scrollbar, -(16 * outputLength), 0));
-            GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            Render2DBuilder.restoreScissor();
         }
 
         Collections.reverse(outputs);

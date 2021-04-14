@@ -16,6 +16,7 @@ public class ReverseStep extends Module {
     }
 
     public static Slider height = new Slider("Height", 0.0D, 2.0D, 5.0D, 0);
+    public static Slider speed = new Slider("Speed", 0.0D, 1.0D, 20.0D, 0);
 
     public static Checkbox pause = new Checkbox("Pause", true);
     public static SubCheckbox sneakPause = new SubCheckbox(pause, "When Sneaking", false);
@@ -24,6 +25,7 @@ public class ReverseStep extends Module {
     @Override
     public void setup() {
         addSetting(height);
+        addSetting(speed);
         addSetting(pause);
     }
 
@@ -40,7 +42,7 @@ public class ReverseStep extends Module {
 
         for (double y = 0.0; y < height.getValue() + 0.5; y += 0.01) {
             if (!mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().offset(0.0, -y, 0.0)).isEmpty()) {
-                mc.player.motionY = -10.0;
+                mc.player.motionY = -speed.getValue();
                 break;
             }
         }

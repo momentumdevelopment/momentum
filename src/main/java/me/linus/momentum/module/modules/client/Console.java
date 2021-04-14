@@ -1,6 +1,7 @@
 package me.linus.momentum.module.modules.client;
 
-import me.linus.momentum.gui.main.window.WindowScreen;
+import me.linus.momentum.gui.main.WindowScreen;
+import me.linus.momentum.managers.ScreenManager;
 import me.linus.momentum.module.Module;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
@@ -16,7 +17,7 @@ public class Console extends Module {
         this.getKeybind().setKeyCode(Keyboard.KEY_SEMICOLON);
     }
 
-    public static WindowScreen windowScreen = new WindowScreen();
+    WindowScreen windowScreen = new WindowScreen();
 
     @Override
     public void onEnable() {
@@ -24,9 +25,7 @@ public class Console extends Module {
             return;
 
         super.onEnable();
-        mc.displayGuiScreen(windowScreen);
-
-        mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
+        ScreenManager.setScreen(windowScreen);
     }
 
     @Override
