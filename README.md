@@ -29,7 +29,7 @@ And much, much more ...
 
 # Contributors
 
-linustouchtips, olliem5, seasnail8169, bon55, Papa Quill, Reap, 0IMAX
+linustouchtips, olliem5, seasnail8169, bon55, Papa Quill, Reap, 0IMAX (and floba 3:<, she removed the backdoor 👀)
 
 # Credits
 
