@@ -8,6 +8,8 @@ import me.linus.momentum.util.player.FlightUtil;
 /**
  * @author linustouchtips
  * @since 11/30/2020
+ * @author AcaiBerii
+ * @since 5/11/2021
  */
 
 public class Flight extends Module {
@@ -30,6 +32,13 @@ public class Flight extends Module {
     public void onDisable() {
         mc.player.capabilities.isFlying = false;
         mc.player.capabilities.allowFlying = false;
+    }
+
+    @Override
+    public void onEnable() {
+        if (mc.player.capabilities.isFlying) {
+            mc.player.capabilities.isFlying = false;
+        }
     }
 
     @Override
