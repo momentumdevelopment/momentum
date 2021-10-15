@@ -6,6 +6,8 @@
 
 If you're looking for a client that is still being actively developed, I reccommend [Cosmos](https://github.com/linustouchtips/cosmos).
 
+# General
+
 Momentum is a 1.12.2 Forge Utility Mod, designed for anarchy servers (Use on other servers where clients are not allowed is prohibited). You can download the latest release in the releases tab. Compatibility has not been tested for any clients other than Phobos 1.5.4, Pyro, Gamesense, SalHack, Konas, Postman, Kami Blue and Future. **There will be no updates or commits to the public version. Lots of bad coding practices & broken modules in this client, the developer regrets everything and has moved on from the project. No support will be provided, issues and pull requests will be not be reviewed.**
 
 # Information:
