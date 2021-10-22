@@ -4,7 +4,7 @@
 
 # DISCONTINUED
 
-If you're looking for a client that is still being actively developed, I reccommend [Cosmos](https://github.com/linustouchtips/cosmos).
+If you're looking for a client that is still being actively developed, I recommend [Cosmos](https://github.com/linustouchtips/cosmos).
 
 # General
 
