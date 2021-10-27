@@ -37,6 +37,11 @@ jobs:
           name: Setup build workspace.
           command: |
             ./gradlew setupCiWorkspace
+      
+      - run:
+          name: clean.
+          command: |
+            ./gradlew clean
 
       - run:
           name: Build.
