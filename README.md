@@ -1,6 +1,6 @@
 # Momentum
 
-![GitHub All Releases](https://img.shields.io/badge/Downloads-20k)
+![GitHub All Releases](https://img.shields.io/badge/Downloads-12k-green)
 
 # DISCONTINUED
 
