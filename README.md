@@ -1,6 +1,6 @@
 # Momentum
 
-![GitHub All Releases](https://img.shields.io/github/downloads/linustouchtips/momentum/total)
+![GitHub All Releases](https://img.shields.io/badge/Downloads-20k)
 
 # DISCONTINUED
 
